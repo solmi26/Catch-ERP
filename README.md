@@ -15,7 +15,7 @@
 이를 통해 운영 효율을 향상시키고 데이터를 기반으로 한 전략적 의사결정을 지원합니다. <br>
 
 **<프로젝트 구성>**
-1. 개발환경설정 : JAVA / Spring Boot / Gradle / MyBatis
+1. 개발환경설정 : JAVA / Spring Boot / Gradle / MyBatis / Eclipse
 2. 기술 세부 스택
 
 ## 팀 소개
