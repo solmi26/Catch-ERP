@@ -1,5 +1,7 @@
 "use strict";
 
+
+console.log("gd")
 var logoHeaderContent = $('.sidebar .logo-header').html();
 $('.main-header .logo-header').html(logoHeaderContent);
 
@@ -294,12 +296,22 @@ $(document).ready(function(){
 
 	// addClass if nav-item click and has subnav
 
-	$(".nav-item a").on('click', (function(){
-		if ( $(this).parent().find('.collapse').hasClass("show") ) {
-			$(this).parent().removeClass('submenu');
-		} else {
-			$(this).parent().addClass('submenu');
-		}
+	$(".nav-item a").on('click', (function(e){
+		$(".nav-item a").parent().removeClass('submenu');
+
+		if ($(e.target).hasClass('nav nav-collapse')) {
+			if ( $(this).parent().find('.collapse').hasClass("show") ) {
+				$(this).parent().removeClass('submenu');
+			} else {
+				$(this).parent().addClass('submenu');
+			}
+		}		else {
+			if ( $(this).parent().find('.collapse').hasClass("show") ) {
+				$(this).parent().removeClass('submenu');
+			} else {
+				$(this).parent().addClass('submenu');
+			}
+		}	
 	}));
 
 
@@ -404,3 +416,4 @@ $('.form-floating-label .form-control').keyup(function(){
 	}
 })
 
+console.log("gd")
