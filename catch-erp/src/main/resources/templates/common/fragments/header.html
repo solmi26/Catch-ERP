@@ -1,8 +1,170 @@
 <!DOCTYPE html>
 <!-- HeaderFragment -->
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-				th:fragment="header">
-    <div style="border: solid 1px yellow">
-        <h1>Header 영역입니다.</h1>
-    </div>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="headerStack">
+        
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="index.html" class="logo">
+                <img
+                  src="assets/img/kaiadmin/logo_light.svg"
+                  alt="navbar brand"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+          >
+            <div class="container-fluid">
+              
+
+              <ul class="navbar-nav topbar-nav  align-items-center">
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="indexStack.html"
+                    style="font-size:16px; color:black; 
+                    padding:40px;"
+                  >
+                    재고
+                  </a>
+                </li>
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle" 
+                    href="indexHuman.html"
+                    style="font-size:16px; color:black; padding:40px;"
+                  >
+                   인사
+                  </a>
+                </li>
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle"                  
+                    href="indexAccount.html"
+                    style="font-size:16px; color:black; padding:40px;"
+                  >
+                  회계</a>
+                </li>
+
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a 
+                  class="nav-link dropdown-toggle"                  
+                  href="indexSales.html"
+                  style="font-size:16px; color:black; padding:40px;"
+                  >
+                  영업</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+</th:block>
+
+
+
+
+<th:block th:fragment="headerSales">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="index.html" class="logo">
+                <img
+                  src="assets/img/kaiadmin/logo_light.svg"
+                  alt="navbar brand"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+          >
+            <div class="container-fluid">
+              
+
+              <ul class="navbar-nav topbar-nav  align-items-center">
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="indexStack.html"
+                    style="font-size:16px; color:black; 
+                    padding:40px;"
+                  >
+                    재고
+                  </a>
+                </li>
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle" 
+                    href="indexHuman.html"
+                    style="font-size:16px; color:black; padding:40px;"
+                  >
+                   인사
+                  </a>
+                </li>
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle"                  
+                    href="indexAccount.html"
+                    style="font-size:16px; color:black; padding:40px;"
+                  >
+                  회계</a>
+                </li>
+
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a 
+                  class="nav-link dropdown-toggle"                  
+                  href="indexSales.html"
+                  style="font-size:16px; color:black; padding:40px;"
+                  >
+                  영업</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+</th:block>
+
+
+
+
+
 </html>
