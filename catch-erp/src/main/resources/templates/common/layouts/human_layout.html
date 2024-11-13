@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+				xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- ~{ html 파일경로 :: fragment 이름  } -->
+    <!-- common/configs/css_configs -->
+    <th:block th:replace="~{common/configs/bootstrapConfigs :: indexCss }"></th:block>
+    <title></title>
+  </head>
+  <body>
+  	<div class="wrapper">
+    <!-- header -->
+		<th:block th:replace="~{common/fragments/sidebar :: sidebarHuman }"></th:block>
+	
+	 <!-- content -->
+		<div class="main-panel">
+			<footer th:replace="~{common/fragments/header :: headerStack}"></footer>
+			
+			<main layout:fragment="Content"></main>
+		</div>	 
+	
+	 <!-- footer -->
+  	</div>
+  	
+	<th:block th:replace="~{common/configs/bootstrapConfigs :: indexJs}"></th:block>
+  </body>
+</html>

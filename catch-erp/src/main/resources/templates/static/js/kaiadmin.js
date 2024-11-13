@@ -289,7 +289,7 @@ $(document).ready(function(){
 		}
 	}).mouseleave(function(){
 		if (mini_sidebar == 1 && first_toggle_sidebar){
-			$('.wrapper').removeClass('sidebar_minimize_hover');
+			d$('.wrapper').removeClass('sidebar_minimize_hover');
 			first_toggle_sidebar = false;
 		}
 	});
