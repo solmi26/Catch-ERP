@@ -48,32 +48,36 @@
 		}
     </style>
     <div class="container-fluid p-4">
-        <!-- Search Section -->
-      <div class="card mb-4">
+        <!--  세부 검색 구역 -->
+      <div class="card mb-4 bg-white">
         <div class="card-body bg-light">
-        <h3>사원정보</h1>
+        <h3>사원정보</h3>
           <form>
+          	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
-              <div class="col-md-6">
+            <!-- 직위/직급 -->
+              <div class="col-md-6"><!-- 크기가 sm으로 변환시 한줄 전체차지 -->
                 <div class="row align-items-center">
                 	<div class="col-auto  pe-0">
             	      <label class="form-label me-1 mb-0 label-width">직위/직급</label>
                   	</div>
                   	<div class="col align-self-start ps-0">
-                  <select class="form-select input-width-120">
-                    <option value="">전체</option>
-                    <option value="사원">사원</option>
-                    <option value="대리">대리</option>
-                    <option value="과장">과장</option>
-                    <option value="차장">차장</option>
-                    <option value="부장">부장</option>
-                  </select>
+                  		<select class="form-select input-width-120">
+                    		<option value="">전체</option>
+                    		<option value="사원">사원</option>
+		                    <option value="대리">대리</option>
+		                    <option value="과장">과장</option>
+		                    <option value="차장">차장</option>
+		                    <option value="부장">부장</option>
+		                </select>
                   	</div>
                 </div>
               </div>
+              <!-- 직위/직급 끝-->
+              <!-- 사원 -->
               <div class="col">
                 <div class="row align-items-center">
-                	<div class="col-auto">
+                	<div class="col-auto"> <!-- auto로 크기를 줘서 컨텐츠 크기만큼만 너비 차지 -->
                   		<label class="form-label me-2 mb-0 label-width">사원</label>
                   	</div>
                   	<div class="col">
@@ -81,86 +85,99 @@
 					</div>
                 </div>
               </div>
+              <!-- 사원끝 -->
             </div>
-
+			<!-- 2행 시작 -->
             <div class="row align-items-center mb-3">
-              <div class="col-sm-5 ">
-              	<div class="row align-items-center">
-              		<div class="col-auto">
-                  		<label class="form-label me-2 mb-0 label-width">부서</label>
-                  	</div>
-                  	<div class="col">
-	                  <select class="form-select input-width-150">
-	                    <option value="">전체</option>
-	                    <option value="경영지원팀">경영지원팀</option>
-	                    <option value="인사팀">인사팀</option>
-	                    <option value="개발팀">개발팀</option>
-	                    <option value="영업팀">영업팀</option>
-	                    <option value="마케팅팀">마케팅팀</option>
-	                  </select>
-                  	</div>
-                  </div>
-              </div>
-              <div class=" col-sm-7 ">
-              	<div class="row align-items-center">
-              		<div class="col-auto">
-                  <label class="form-label me-2 mb-0 label-width">재직구분</label>
-                  </div>
-                  <div class="col">
-                    <input class="form-check-input" type="radio" name="status" id="status2" value="regular" />
-                    <label  for="status2">재직</label>
-                  </div>
-                  <div class="col">
-                    <input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
-                    <label  for="status3">휴직</label>
-                  </div>
-                    <div class="col">
-                    <input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
-                    <label  for="status3">퇴직</label>
-                  </div>
-                </div>
-              </div>
+            	<!-- 부서칸-->
+            	<div class="col-sm-5 ">
+              		<div class="row align-items-center">
+              			<div class="col-auto">
+                  			<label class="form-label me-2 mb-0 label-width">부서</label>
+                  		</div>
+                		<div class="col">
+		                	<select class="form-select input-width-150">
+			                   <option value="">전체</option>
+			                   <option value="경영지원팀">경영지원팀</option>
+			                   <option value="인사팀">인사팀</option>
+			                   <option value="개발팀">개발팀</option>
+			                   <option value="영업팀">영업팀</option>
+			                   <option value="마케팅팀">마케팅팀</option>
+		                 	</select>
+	                 	</div>
+    	            </div>
+              	</div>
+              	<!-- 부서칸 끝! -->
+              	<!-- 재직구분칸 시작! -->
+              	<div class=" col-sm-7 ">
+              		<!-- 라벨(재직구분)만 auto로 컨텐츠크기만 차지하게하고, 나머지 라디오버튼(라벨포함)에 대해서는 남는부분을 3등분 시켜 동일한 크기를 지니게함 -->
+              		<div class="row align-items-center">
+              			<div class="col-auto">
+                  			<label class="form-label me-2 mb-0 label-width">재직구분</label>
+                  		</div>
+                  		<div class="col">
+                    		<input class="form-check-input" type="radio" name="status" id="status2" value="regular" />
+                    		<label  for="status2">재직</label>
+                  		</div>
+                  		<div class="col">
+                    		<input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
+                    		<label  for="status3">휴직</label>
+                  		</div>
+                    	<div class="col">
+                    		<input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
+                    		<label  for="status3">퇴직</label>
+                  		</div>
+                	</div>
+              	</div>
+              	<!-- 재직구분칸끝!! -->
             </div>
-
+			<!-- 2행끝 (크기바뀌면 2행이아니라 각자 한줄임)-->
+			<!-- 3행시작 -->
+			<!--   날짜칸 시작 lg이하에서는 두줄로 표시하게 바꿈-->
             <div class="row mb-3 align-items-center row-gap-3">
-              <div class="col-lg-7 ">
-                  <label class="form-label me-2 mb-0 label-width">입사일자</label>
+            	<div class="col-lg-7 ">
+                	<label class="form-label me-2 mb-0 label-width">입사일자</label>
                     <input type="date">
+                    <!-- &nbsp;는 공백(띄워쓰기)임 -->
                     <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
                   	<input type="date">
                	</div>
-               <div class="col-auto">                    
-                  <label class="form-label me-2 mb-0 label-width">퇴사일자</label>
+              	<div class="col-auto">                    
+                	<label class="form-label me-2 mb-0 label-width">퇴사일자</label>
                   	<input type="date">
                     <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
                   	<input type="date">                    
-              </div>
-               </div>
-            <div class="row justify-content-between  mb-2">
-           	  <div class="col ">
-	           	<div class="row ">
-              	  	<div class="col-auto ">
-                  <label class="form-label me-2 mb-0 label-width">성명</label>
-                  	</div>
-                  	<div class="col-8 col-lg-6">
-                  <input type="text" class="form-control input-width-200" placeholder="성명" />
-                  </div>
-                  </div>
-                  </div>
-                	<div class="col-auto row justify-content-end">
-                			<div class="col">
-                         <button type="button" class="btn btn-primary">검색</button>
-                         </div>
-                    </div>
+              	</div>
             </div>
+            <!-- 날짜칸끝 -->
+            <!-- 4행 시작 -->
+            <!-- between으로 각 콘텐츠를 양끝에둠 -->
+            <div class="row justify-content-between  mb-2">
+           		<div class="col ">
+	           		<div class="row ">
+              	  		<div class="col-auto ">
+                  			<label class="form-label me-2 mb-0 label-width">성명</label>
+                  		</div>
+                  		<div class="col-8 col-lg-6">
+                  			<input type="text" class="form-control input-width-200" placeholder="성명" />
+                  		</div>
+                  	</div>
+                </div>
+                <div class="col-auto row justify-content-end">
+                	<div class="col">
+                        <button type="button" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 4행끝 -->
           </form>
         </div>
       </div>
-
+			<!--  세부 검색 구역 끝!!!! -->
 
         <div class="row g-4 gap-0">
 
-            <!-- Employee Form -->
+            <!-- 직원 세부 정보-->
             <div class="col-lg-8 pe-0">
                 <div class="card">
                     <div class="card-body">
@@ -380,8 +397,9 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Employee List -->
+			<!-- 세부 정보 끝!!! -->
+			
+            <!-- 직원리스트 테이블 -->
             <div class="col-lg-4 ps-0">
                 <div class="card">
                     <div class="card-body p-0">
