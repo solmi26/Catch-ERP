@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/account_layout}"
+      layout:fragment="Content">
+  <head>
+    <meta charset="UTF-8" />
+<title>전자세금계산서</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-size: 13px;
+      }
+      /* 스크롤 가능한 테이블 컨테이너 */
+      .scrollable-table-container {
+        max-height: 400px; /* 세로 최대 높이 설정 */
+        overflow-y: auto; /* 세로 스크롤 활성화 */
+        overflow-x: auto; /* 가로 스크롤 활성화 */
+        margin-bottom: 10px; /* 버튼과 테이블 사이 간격 */
+        width: 100%; /* 화면 크기에 따라 너비를 조정 */
+      }
+
+      /* 테이블의 폭을 고정하지 않고, 내용에 맞게 너비가 줄어들도록 설정 */
+      .table {
+        min-width: 1000px; /* 테이블의 최소 너비 설정 */
+        width: 100%;
+        white-space: nowrap; /* 자동 줄바꿈 방지 */
+      }
+
+      /* 버튼 고정 */
+      .button-group {
+        display: flex;
+        gap: 5px; /* 버튼들 사이 간격 */
+      }
+
+      .status-count {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .status-item {
+        border: 1px solid #dee2e6;
+        padding: 8px 15px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .status-number {
+        font-weight: bold;
+        color: #0d6efd;
+      }
+      .progress-dots {
+        display: flex;
+        gap: 3px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #dee2e6;
+      }
+      .dot.active {
+        background-color: #0d6efd;
+      }
+      .table {
+        white-space: nowrap;
+        font-size: 13px;
+      }
+      .table th {
+        background-color: #f8f9fa;
+        font-weight: 500;
+      }
+      .btn {
+        font-size: 13px;
+        padding: 4px 8px;
+      }
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .action-link {
+        color: #0d6efd;
+        text-decoration: none;
+      }
+      .action-link:hover {
+        text-decoration: underline;
+      }
+
+      .status-count {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+      }
+
+      .status-box {
+        text-align: center;
+        padding: 8px;
+        border-right: 1px solid #dee2e6;
+      }
+
+      .status-box:last-child {
+        border-right: none;
+      }
+
+      .status-number {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #0d6efd;
+      }
+
+      .status-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid p-4">
+      <!-- Search Bar -->
+      <div class="search-bar d-flex justify-content-end">
+        <input
+          type="text"
+          class="form-control"
+          style="width: 200px"
+          placeholder="검색어 입력"
+        />
+        <button class="btn btn-primary">Search(F3)</button>
+        <button class="btn btn-secondary">Option</button>
+      </div>
+      <!-- Status Counters -->
+      <div class="row status-count">
+        <div class="col status-box">
+          <div class="status-number">6</div>
+          <div class="status-label">전체</div>
+        </div>
+        <div class="col status-box">
+          <div class="status-number">0</div>
+          <div class="status-label">전송오류</div>
+        </div>
+        <div class="col status-box">
+          <div class="status-number">5</div>
+          <div class="status-label">확부전</div>
+        </div>
+        <!-- Add more status boxes as needed -->
+      </div>
+
+      <!--
+      <div class="status-count">
+        <div class="status-item">
+          <span>전체</span>
+          <span class="status-number">9</span>
+        </div>
+        <div class="status-item">
+          <span>전송오류</span>
+          <span class="status-number">0</span>
+        </div>
+        <div class="status-item">
+          <span>확부전</span>
+          <span class="status-number">9</span>
+        </div>
+        <div class="status-item">
+          <span>확부중</span>
+          <span class="status-number">0</span>
+        </div>
+      </div>
+    -->
+
+      <!-- Main Table -->
+      <!-- 테이블을 감싸는 스크롤 가능한 컨테이너 -->
+      <div class="scrollable-table-container">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th><input type="checkbox" onclick="toggleAllCheckboxes(this)" /></th>
+              <th>발행-No.</th>
+              <th>결부일자</th>
+              <th>거래처명</th>
+              <th>공급가액</th>
+              <th>부가세</th>
+              <th>합계금액</th>
+              <th>종류</th>
+              <th>전자(세금)계산서 전환단계</th>
+              <th>담당자기능</th>
+              <th>응답번호</th>
+              <th>내역보기</th>
+              <th>인쇄</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+               <!-- 여기부터 제거. 임시 데이터-->
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+
+            <tr th:each="invoice : ${invoices}">
+              <td><input type="checkbox" class="row-checkbox" /></td>
+              <td th:text="${invoice.number}">2024/11/13-8</td>
+              <td th:text="${invoice.date}">2024/11/13</td>
+              <td th:text="${invoice.company}">주식회사</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
+              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
+              <td th:text="${invoice.type}">전자</td>
+              <td>
+                <div class="progress-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </td>
+              <td><a href="#" class="action-link">인증서확인</a></td>
+              <td th:text="${invoice.responseNumber}"></td>
+              <td><a href="#" class="action-link">보기</a></td>
+              <td><a href="#" class="action-link">인쇄</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- 여기까지 제거. 임시 데이터-->
+
+      
+      
+      <!-- 버튼들이 고정된 위치에 나타나도록 합니다. -->
+      <div class="button-group">
+        <button class="btn btn-primary">인증서첨부</button>
+        <button class="btn btn-secondary">인쇄</button>
+        <button class="btn btn-secondary">매출전표 생성</button>
+        <button class="btn btn-secondary">인증서관리</button>
+        <button class="btn btn-secondary">Excel</button>
+        <button class="btn btn-secondary">자동알림</button>
+      </div>
+      
+      
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // 체크박스
+      function toggleAllCheckboxes(source) {
+        const checkboxes = document.querySelectorAll(".row-checkbox");
+        checkboxes.forEach((checkbox) => (checkbox.checked = source.checked));
+      }
+
+      // 전체, 미전송, 전송완료
+      document.addEventListener("DOMContentLoaded", function () {
+        const statusBoxes = document.querySelectorAll(".status-box");
+
+        statusBoxes.forEach((box) => {
+          box.addEventListener("click", function () {
+            const status = box.querySelector(".status-label").textContent;
+            filterByStatus(status);
+          });
+        });
+
+        function filterByStatus(status) {
+          console.log(`${status} 상태의 데이터만 표시합니다.`);
+          // 실제 필터링 로직을 추가하여 테이블이나 데이터를 갱신할 수 있습니다.
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Search functionality
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchButton = document.querySelector(".btn-primary");
+
+        searchButton.addEventListener("click", function () {
+          performSearch(searchInput.value);
+        });
+
+        // F3 shortcut for search
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "F3") {
+            e.preventDefault();
+            performSearch(searchInput.value);
+          }
+        });
+
+        function performSearch(query) {
+          // Implement search logic here
+          console.log("Searching for:", query);
+        }
+
+        // Format numbers
+        document.querySelectorAll(".text-end").forEach((cell) => {
+          const value = cell.textContent;
+          if (value && !isNaN(value.replace(/,/g, ""))) {
+            cell.textContent = Number(value.replace(/,/g, "")).toLocaleString(
+              "ko-KR"
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
