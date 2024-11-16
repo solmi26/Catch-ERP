@@ -10,4 +10,9 @@ public class TestController {
 	public String testView() {
 		return "human/test";
 	}
+
+	@GetMapping("testac")
+	public String testViewAc() {
+		return "account/statement";
+	}
 }
