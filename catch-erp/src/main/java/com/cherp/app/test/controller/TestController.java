@@ -15,4 +15,9 @@ public class TestController {
 	public String testViewAc() {
 		return "account/statement";
 	}
+	
+	@GetMapping("testStack")
+	public String testViewStack() {
+		return "stack/stackInquery";
+	}
 }
