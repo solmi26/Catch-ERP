@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/stack_layout}"
+      layout:fragment="Content">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>재고등록조회</title>
+	    <style>
+    
+	        .price-input {
+	            position: relative;
+	        }
+	        .price-input::after {
+	            content: '원';
+	            position: absolute;
+	            right: 25px;
+	            top: 50%;
+	            transform: translateY(-50%);
+	            color: #666;
+	        }
+	        .sort-icon {
+	            cursor: pointer;
+	            padding: 2px;
+	        }
+	        .sort-icon:hover {
+	            color: #0d6efd;
+	        }
+	        .list {
+	          margin-bottom : 10px;
+	        }
+	        .tui-grid-layer-selection, .tui-grid-cell-selected {
+			    background-color: rgba(255, 0, 0, 0.2) !important; /* 예: 연한 빨간색 */
+			    border-color: rgba(255, 0, 0, 0.5) !important; /* 테두리 색상 */
+			}
+	    </style>
+	</head>
+	<body>
+	    <div class="container mt-4">
+	        <!-- Header -->
+	        <div class="d-flex justify-content-between align-items-center mb-3">
+	            <h4>재고</h4>
+	        </div>
+	        <!-- Form -->
+	        <div class="card">
+	          <form class="bg-light p-4 rounded card-body">
+	              <div class="row g-3">
+	                  <div class="col-md-12">
+	                      <div class="row g-3">
+	                          <div class="col-md-2">
+	                              <label class="form-label">조회시작일자</label>
+	                              <input type="date" class="form-control">
+	                          </div>
+	                          <div class="col-md-2">
+	                            <label class="form-label">조회종료일자</label>
+	                            <input type="date" class="form-control">
+	                        </div>
+	                          <div class="col-md-3">
+	                              <label class="form-label">거래처</label>
+	                              <div class="input-group">
+	                                  <input type="text" class="form-control">
+	                                  <button class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+	                                  </svg></button>
+	                              </div>
+	                          </div>
+	                          <div class="col-md-2">
+	                              <label class="form-label">담당자</label>
+	                              <div class="input-group">
+	                                  <input type="text" class="form-control">
+	                                  <button class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+	                                  </svg></button>
+	                              </div>
+	                          </div>
+	                          <div class="col-md-3">
+	                            <label class="form-label">창고</label>
+	                            <div class="input-group">
+	                                <input type="text" class="form-control">
+	                                <button class="btn btn-outline-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+	                                  </svg></button>
+	                            </div>
+	                        </div>
+	                      </div>
+	                  </div>
+	                  
+	                  <div class="col-md-12">
+	                      <label class="form-label">상품명</label>
+	                      <div class="input-group">
+	                        <input type="text" class="form-control">
+	                        <button class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+	                          </svg></button>
+	                      </div>
+	                  </div>
+	                  <div class="col-md-6">
+	                      <label class="form-label">입력단가</label>
+	                      <div class="input-group">
+	                          <div class="price-input">
+	                              <input type="text" class="form-control" placeholder="0">
+	                          </div>
+	                          <span class="input-group-text" style="border:none;">-</span>
+	                          <div class="price-input">
+	                              <input type="text" class="form-control" placeholder="0">
+	                          </div>
+	                      </div>
+	                  </div>
+	                  <div class="col-md-6">
+	                      <label class="form-label">출력단가</label>
+	                      <div class="input-group">
+	                          <div class="price-input">
+	                              <input type="text" class="form-control" placeholder="0">
+	                          </div>
+	                          <span class="input-group-text" style="border:none;">-</span>
+	                          <div class="price-input">
+	                              <input type="text" class="form-control" placeholder="0">
+	                          </div>
+	                      </div>
+	                  </div>
+	              </div>
+	              <div style="margin-top: 10px;">
+	                <button class="btn btn-primary">조회하기</button>
+	              </div>
+	          </form>
+	        </div>
+	
+	        <!-- Transaction History Select -->
+	        <div class="btn-group dropdown">
+	          <button
+	            class="btn btn-primary dropdown-toggle"
+	            type="button"
+	            data-bs-toggle="dropdown"
+	            style="margin:10px 0px"
+	          >
+	            거래내역보기
+	          </button>
+	          <ul class="dropdown-menu" role="menu">
+	            <li>
+	              <a class="dropdown-item" href="#">구매내역</a>
+	              <a class="dropdown-item" href="#">판매내역</a>
+	            </li>
+	          </ul>
+	        </div>
+	
+	        <!-- Table -->
+	        <div class="table-responsive">
+	            <div id="wrap">
+	                <div id="gridDiv">
+	        
+	                </div>
+	            </div>
+	        </div>
+	
+	        <!-- Bottom Button -->
+	        <div class="mt-3">
+	            <button class="btn btn-success">재고조정</button>
+	        </div>
+	    </div>
+	
+	    <script>
+	        // // Price formatting
+	        // document.querySelectorAll('.price-input input').forEach(input => {
+	        //     input.addEventListener('input', function(e) {
+	        //         let value = this.value.replace(/,/g, '');
+	        //         if (value.length > 0) {
+	        //             value = parseInt(value).toLocaleString('ko-KR');
+	        //             this.value = value;
+	        //         }
+	        //     });
+	        // });
+	
+	        // // Sorting functionality
+	        // document.querySelectorAll('.sort-icon').forEach(icon => {
+	        //     icon.addEventListener('click', function() {
+	        //         const table = this.closest('table');
+	        //         const tbody = table.querySelector('tbody');
+	        //         const rows = Array.from(tbody.querySelectorAll('tr'));
+	        //         const column = this.closest('th').cellIndex;
+	        //         const ascending = this.querySelector('i').classList.contains('bi-arrow-down-up');
+	
+	        //         rows.sort((a, b) => {
+	        //             const aValue = parseInt(a.cells[column].textContent.replace(/,/g, ''));
+	        //             const bValue = parseInt(b.cells[column].textContent.replace(/,/g, ''));
+	        //             return ascending ? aValue - bValue : bValue - aValue;
+	        //         });
+	
+	        //         tbody.innerHTML = '';
+	        //         rows.forEach(row => tbody.appendChild(row));
+	                
+	        //         this.querySelector('i').classList.toggle('bi-arrow-down-up');
+	        //     });
+	        // });
+	
+	        class ImageRenderer {
+	            constructor(props) {
+	                this.el = document.createElement('img');
+	                this.el.src = props.value; // 이미지 URL을 props.value로 설정
+	                this.el.style.width = '130px'; // 이미지 크기 조절
+	                this.el.style.height = '100px';
+	            }
+	
+	            getElement() {
+	                return this.el;
+	            }
+	        }
+	
+	        class CustomTextEditor {
+	            constructor(props) {
+	                const el = document.createElement('input');
+	                const { maxLength } = props.columnInfo.editor.options;
+	
+	                el.type = 'text';
+	                el.maxLength = maxLength;
+	                el.value = String(props.value);
+	
+	                this.el = el;
+	            }
+	
+	            getElement() {
+	                return this.el;
+	            }
+	
+	            getValue() {
+	                return this.el.value;
+	            }
+	
+	            mounted() {
+	                this.el.select();
+	            }
+	        }
+	
+	        const initGrid = () => {
+	            // 그리드 객체
+	            const Grid = tui.Grid;
+	
+	            Grid.applyTheme('default',  {
+	                outline:{
+	                border : '#dee2e6'
+	            },
+	            cell: {
+	                normal: {
+	                    border: '#dee2e6'
+	                },
+	                header: {
+	                    background: '#f8f9fa',
+	                    text: 'black'
+	                },
+	                focused: {
+	                    background: '#f8f9fa',
+	                    border: '#f64a4a'
+	                },
+	                evenRow: {
+	                    background: 'white'
+	                },
+	                oddRow: {
+	                    background: 'white'
+	                }
+	            }
+	        });
+	    
+	        const grid = new Grid({
+	            el: document.getElementById('gridDiv'),
+	            scrollX: true,
+	            scrollY: true,
+	            header: { height: 40 },
+	            bodyHeight: 500,
+	            rowHeight: 102,
+	            width: 'auto',
+	            contextMenu: null,
+	            columnOptions: {
+	                minWidth: 130
+	            },
+	            rowHeaders: [{
+	                    type: 'rowNum',
+	                    header: "No.",
+	                    width: 50,
+	                    className:'border'
+	            }],
+	            columns: [
+	                {
+	                    header: '품목코드',
+	                    name: 'prodCode',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    className:'border'
+	                    
+	                },
+	                {
+	                    header: '품목명',
+	                    name: 'prodname',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal'
+	                },
+	                {
+	                    header: '규격',
+	                    name: 'standard',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    className:'border'
+	                },
+	                {
+	                    header: '입고단가',
+	                    name: 'rUnitPrice',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    sortable: true,
+	                    sortingType: 'desc',
+	                    className:'border',
+	                    formatter: function(e){
+							return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 자바스크립트 function 형태로 구성
+						},
+	                },
+	                {
+	                    header: '출고단가',
+	                    name: 'fUnitPrice',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    sortable: true,
+	                    sortingType: 'desc',
+	                    className:'border',
+	                    formatter: function(e){
+							return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 자바스크립트 function 형태로 구성
+						},
+	                },
+	                {
+	                    header: '출하수량',
+	                    name: 'fQuantity',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    editor: 'text',
+	                    sortable: true,
+	                    sortingType: 'desc',
+	                    validation: {
+	                        dataType: 'number'
+	                    },
+	                    className:'border'
+	                },
+	                {
+	                    header: '입고수량',
+	                    name: 'rQuantity',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    editor: 'text',
+	                    validation: {
+	                        dataType: 'number',
+	                        min: 1,
+	                        max: 100
+	                    },
+	                    className:'border'
+	                },
+	                {
+	                    header: '재고수량',
+	                    name: 'sQuantity',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    className:'border'
+	                },
+	                {
+	                    header: '이미지',
+	                    name: 'image',
+	                    align: "center",
+	                    width: 'auto',
+	                    whiteSpace: 'normal',
+	                    className:'border',
+	                    renderer: {
+	                        type: ImageRenderer
+	                    }
+	                }
+	            ]
+	        });
+	
+	        return grid;
+	    }
+	
+	    window.onload = () => {
+	        // 그리드 설정
+	        const createdGrid = initGrid();
+	
+	        // 샘플 데이터
+	        const sampleData = [
+	            {
+	                prodCode: 'A0000045',
+	                prodname: '석봉박1',
+	                standard: '부천',
+	                rUnitPrice: '8000',
+	                fUnitPrice: '12000',
+	                fQuantity: '5',
+	                rQuantity: '0',
+	                sQuantity: '100',
+	                image: ''
+	            },
+	            {
+	                prodCode: '2022-12-04',
+	                prodname: '석봉박1',
+	                standard: '부천',
+	                rUnitPrice: '10000',
+	                fUnitPrice: '15000',
+	                fQuantity: '6',
+	                rQuantity: '0',
+	                sQuantity: '100',
+	                image: ''
+	            },
+	            {
+	                prodCode: '2022-12-04',
+	                prodname: '석봉박1',
+	                standard: '부천',
+	                rUnitPrice: '12000',
+	                fUnitPrice: '20000',
+	                fQuantity: '7',
+	                rQuantity: '0',
+	                sQuantity: '100',
+	                image: ''
+	            }
+	            
+	        ];
+	
+	        // 그리드에 데이터 넣기(출력)
+	        createdGrid.resetData(sampleData);
+	    }
+	    </script>
+	</body>
+</html>
