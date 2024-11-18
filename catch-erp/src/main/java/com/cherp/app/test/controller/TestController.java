@@ -15,7 +15,7 @@ public class TestController {
 	// JSM TEST
 	@GetMapping("testac")
 	public String testViewAc() {
-		return "account/statement";
+		return "account/invoice";
 	}
 	// NKW TEST
 	@GetMapping("testStack")
