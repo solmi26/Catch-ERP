@@ -6,23 +6,29 @@
   <head>
     <meta charset="UTF-8" />
     <title>계약등록</title>
-
   </head>
   <body>
+   <!-- 페이지 컨테이너 -->
     <div class="container-fluid p-4">
       <form>
+      
+      <!-- 계약일자, 거래처 -->
         <div class="row mb-3">
+        <!-- 계약일자 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="contract-date">계약일자</label>
               <input type="date" class="form-control" id="contract-date" />
             </div>
           </div>
+          <!-- 거래처 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="client">거래처</label>
               <div class="input-group">
+                <!-- 거래처 입력 필드-->
                 <input type="text" class="form-control" id="client" placeholder="거래처" readonly />
+                <!-- 거래처 선택 모달 호출 버튼 -->
                 <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#client-modal">
                   <i class="lucide-search h-4 w-4"></i>
                 </button>
@@ -30,14 +36,18 @@
             </div>
           </div>
         </div>
-
+        
+		<!-- 계약코드, 계약명 -->
         <div class="row mb-3">
+        <!-- 계약코드 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="contract-code">계약코드</label>
+              <!-- 자동 생성된 계약 코드 표시, 읽기 전용 -->
               <input type="text" class="form-control" id="contract-code" value="00005" readonly />
             </div>
           </div>
+          <!-- 계약명 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="contract-name">계약명</label>
@@ -45,14 +55,17 @@
             </div>
           </div>
         </div>
-
+        
+		<!-- 계약시작일, 계약종료일 -->
         <div class="row mb-3">
+        <!-- 계약시작일 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="billing-start-date">계약시작일</label>
               <input type="date" class="form-control" id="billing-start-date" />
             </div>
           </div>
+          <!-- 계약종료일 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="billing-end-date">계약종료일</label>
@@ -60,8 +73,10 @@
             </div>
           </div>
         </div>
-
+        
+		<!-- 부가세유형, 계약상태 -->
         <div class="row mb-3">
+        <!-- 부가세 유형 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="vat-type">부가세유형</label>
@@ -70,9 +85,11 @@
               </select>
             </div>
           </div>
+          <!-- 계약 상태 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="status">계약상태</label>
+               <!-- 계약 상태 선택 -->
               <select class="form-select" id="status">
                 <option>진행</option>
                 <option>종료</option>
@@ -82,23 +99,30 @@
           </div>
         </div>
 
+		<!-- 담당자, 부서 -->
         <div class="row mb-3">
+        <!-- 담당자 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="manager">담당자</label>
               <div class="input-group">
+               <!-- 담당자 필드-->
                 <input type="text" class="form-control" id="manager" placeholder="담당자" readonly />
+                <!-- 담당자 선택 모달 호출 버튼 -->
                 <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#manager-modal">
                   <i class="lucide-search h-4 w-4"></i>
                 </button>
               </div>
             </div>
           </div>
+          <!-- 부서 -->
           <div class="col-md-4">
             <div class="form-group">
               <label for="department">부서</label>
               <div class="input-group">
+              <!-- 부서 필드-->
                 <input type="text" class="form-control" id="department" placeholder="부서" readonly />
+                <!-- 부서 선택 모달 호출 버튼 -->
                 <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#department-modal">
                   <i class="lucide-search h-4 w-4"></i>
                 </button>
@@ -106,21 +130,25 @@
             </div>
           </div>
         </div>
-
+		
+		<!-- 적요 -->
         <div class="row mb-3">
           <div class="col-md-8">
             <div class="form-group">
               <label for="description">적요</label>
+              <!-- 적요 입력 필드 -->
               <input type="text" class="form-control" id="description" placeholder="적요" />
             </div>
           </div>
         </div>
 
+		<!-- 첨부 -->
         <div class="row mb-3">
           <div class="col-md-8">
             <div class="form-group">
               <label for="attachment">첨부</label>
               <div class="input-group">
+              <!-- 첨부파일 업로드 -->
                 <input type="file" id="attachment-file" class="form-control" />
               </div>
             </div>
@@ -132,21 +160,23 @@
         <button type="button" class="btn btn-success" id="add-item-btn">+ 항목 추가</button>
       </div>
   
+  	<!-- 그리드 -->
 	<div id="grid"></div>
         
-        
+        <!-- 버튼 그룹 -->
         <div class="d-flex">
           <button type="button" class="btn btn-success me-2" id="save-btn">저장</button>
           <button type="button" class="btn btn-secondary me-2">다시 작성</button>
+         <!-- 리스트로 이동하는 버튼 -->
           <button type="button" class="btn btn-secondary">리스트</button>
         </div>
         
         </form>
-        </div>
+        </div> <!-- 페이지 컨테이너 끝 -->
       
       
 
-    <!-- 모달 - 거래처 -->
+    <!-- 모달/거래처 -->
     <div class="modal fade" id="client-modal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -164,7 +194,7 @@
       </div>
     </div>
 
-    <!-- 모달 - 담당자 -->
+    <!-- 모달/담당자 -->
     <div class="modal fade" id="manager-modal" tabindex="-1" aria-labelledby="managerModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -182,7 +212,7 @@
       </div>
     </div>
 
-    <!-- 모달 - 부서 -->
+    <!-- 모달/부서 -->
     <div class="modal fade" id="department-modal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -203,67 +233,91 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
     	  
+    	  // 그리드 데이터
     	  const gridData = [
     		  {
-    		    contractNumber: "CN-2024-001",
-    		    contractName: "Web Development Project",
-    		    client: "Acme Corp.",
-    		    contractDate: "2024-01-10",
-    		    startDate: "2024-01-15",
-    		    endDate: "2024-12-31",
-    		    totalAmount: 50000000,
-    		    status: "Active",
-    		    
+    		    itemName: '',        // 품목
+    		    unitPrice: 0,        // 단가
+    		    supplyAmount: 0,     // 공급가액
+    		    vat: 0,              // 부가세
+    		    totalAmount: 0,      // 총 금액
     		  },
     		  {
-    		    contractNumber: "CN-2024-002",
-    		    contractName: "Mobile App Development",
-    		    client: "Tech Solutions",
-    		    contractDate: "2024-02-01",
-    		    startDate: "2024-02-05",
-    		    endDate: "2024-10-15",
-    		    totalAmount: 75000000,
-    		    status: "Pending",
-    		   
-    		  },
+      		    itemName: '',        // 품목
+      		    unitPrice: 0,        // 단가
+      		    supplyAmount: 0,     // 공급가액
+      		    vat: 0,              // 부가세
+      		    totalAmount: 0,      // 총 금액
+      		  },
+    		  {
+      		    itemName: '',        // 품목
+      		    unitPrice: 0,        // 단가
+      		    supplyAmount: 0,     // 공급가액
+      		    vat: 0,              // 부가세
+      		    totalAmount: 0,      // 총 금액
+      		  },
     		];
+    	  
 
+		 
+    	  // 그리드 초기화
     	  const grid = new tui.Grid({
-    	    el: document.querySelector('#grid'),
-    	    data: gridData,
-    	    scrollX: true,
-    	    scrollY: true,
-    	    pageOptions: {
-    	      useClient: true,
-    	      perPage: 5,
+    	    el: document.querySelector('#grid'),  // 그리드 표시 위치
+    	    data: gridData,  // 초기 데이터
+    	    scrollX: true, // 가로 스크롤 사용
+    	    scrollY: true,  // 세로 스크롤 사용
+    	    pageOptions: { 
+    	      useClient: true, // 클라이언트 페이징 활성화
+    	      perPage: 5, 	  // 한 페이지 당 표시할 행 수
     	    },
-    	    columns: [
-    	    	  { header: "계약번호", name: "contractNumber", editor:'text' }, // 계약번호
-    	    	  { header: "계약명", name: "contractName" },     // 계약명
-    	    	  { header: "거래처", name: "client" },                 // 거래처
-    	    	  { header: "계약일", name: "contractDate" },    // 계약일
-    	    	  { header: "계약시작일", name: "startDate" },          // 계약시작일
-    	    	  { header: "계약종료일", name: "endDate" },              // 계약종료일
-    	    	  { header: "총 계약 금액", name: "totalAmount", align: "right" }, // 총 계약 금액
-    	    	  { header: "계약상태", name: "status" },                 // 계약상태
-    	    	
+    	    columns :[
+    	    	  {
+    	    	    header: '품목', // 열 제목
+    	    	    name: 'itemName', // 열의 데이터 키
+    	    	    editor: 'text',  // 입력 가능
+    	    	    align: 'left',  // 정렬
+    	    	  },
+    	   
+    	    	  {
+    	    	    header: '단가',
+    	    	    name: 'unitPrice',
+    	    	    editor: 'text',  // 숫자 입력 가능
+    	    	    align: 'right',
+    	    	  },
+    	    	  {
+    	    	    header: '공급가액',
+    	    	    name: 'supplyAmount',
+    	    	    editor: 'text',
+    	    	    align: 'right',
+    	    	    formatter: 'number', // 숫자 형식
+    	    	  },
+    	    	  {
+    	    	    header: '부가세',
+    	    	    name: 'vat',
+    	    	    editor: 'text',
+    	    	    align: 'right',
+    	    	    formatter: 'number',
+    	    	  },
+    	    	  {
+    	    	    header: '총 금액',
+    	    	    name: 'totalAmount',
+    	    	    editor: 'text',
+    	    	    align: 'right',
+    	    	    formatter: 'number',
+    	    	  },
     	    	],
-    	    rowHeaders: ['rowNum', 'checkbox'],
+    	    rowHeaders: ['rowNum', 'checkbox'], // 행 번호와 체크박스 표시
     	  });
 
+    	  // 그리드 클릭 이벤트 -> 추후 내가 필요한대로 수정
     	  grid.on('click', (event) => {
     	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
     	      console.log('클릭이벤트 발생');
-    	      console.log(event.rowKey);
+    	      console.log(event.rowKey);  // 클릭한 행의 키 값 출력
     	    }
     	  });
-    	  
-        // 날짜 선택 시 기본 값 설정
-        document.getElementById("contract-date").value = new Date().toISOString().split("T")[0];
-        document.getElementById("billing-start-date").value = new Date().toISOString().split("T")[0];
-        document.getElementById("billing-end-date").value = new Date().toISOString().split("T")[0];
 
-        // 모달에서 선택된 값 자동 입력
+        // 모달 띄우기
         document.querySelectorAll(".select-modal").forEach(function (btn) {
           btn.addEventListener("click", function () {
             const modalId = btn.getAttribute("data-bs-target").substring(1);
@@ -272,26 +326,10 @@
           });
         });
 
-        // 첨부파일 처리
+        // 첨부파일 처리(파일 선택 시 이름 표시)
         document.getElementById("attachment-file").addEventListener("change", function (event) {
           document.getElementById("attachment").value = event.target.files[0].name;
         });
-
-        // + 항목 추가 버튼 클릭 시 새로운 항목 추가
-        document.getElementById("add-item-btn").addEventListener("click", function () {
-        const tbody = document.getElementById("items-table-body");
-        const newRow = document.createElement("tr");
-
-        newRow.innerHTML = `
-          <td><input type="text" class="form-control" placeholder="품목" /></td>
-          <td><input type="number" class="form-control" placeholder="단가" /></td>
-          <td><input type="number" class="form-control" placeholder="공급가액" readonly /></td>
-          <td><input type="number" class="form-control" placeholder="부가세" readonly /></td>
-          <td><input type="number" class="form-control" placeholder="총금액" readonly /></td>
-        `;
-
-        tbody.appendChild(newRow);
-      });
       });
     </script>
   </body>
