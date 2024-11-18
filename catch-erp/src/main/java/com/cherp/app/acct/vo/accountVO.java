@@ -1,5 +1,5 @@
 package com.cherp.app.acct.vo;
 
-public class accountVO {
-
+public class accountVO { // 계좌
+	
 }

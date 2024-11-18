@@ -25,8 +25,9 @@ public class TestController {
 	// SGW TEST
 	@GetMapping("test1")
 	public String testView2() {
-		return "account/viewBankAccount"; // 계좌목록
-		//return "account/regregDebtReduction"; // 채무감소
+		//return "account/viewBankAccount"; // 계좌목록
+		return "account/regDebtReduction"; // 채무감소
 		//return "account/regBondReduction"; // 채권감소
+		//return "account/contract";
 	}
 }
