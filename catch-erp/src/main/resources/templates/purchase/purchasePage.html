@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)file:///C:/Users/admin/Downloads/%EC%9E%AC%EA%B3%A0%EB%93%B1%EB%A1%9D%EC%A1%B0%ED%9A%8C%20(1).html -->
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/stack_layout}"
+      layout:fragment="Content">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구매</title>
+    <style>
+        .price-input {
+            position: relative;
+        }
+
+        .price-input::after {
+            content: '원';
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .sort-icon {
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .sort-icon:hover {
+            color: #0d6efd;
+        }
+
+        .list {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>구매</h4>
+        <button class="btn btn-success">품질검사요청</button>
+    </div>
+
+    <!-- Form -->
+    <div class="card">
+        <form class="bg-light p-4 rounded card-body">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">작성일자</label>
+                            <input type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">거래처</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <button class="bi bi-search border px-4 btn btn-success"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">담당자</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <button class="bi bi-search border px-4 btn btn-success"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">입고창고</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <button type="button" class="bi bi-search border px-4 btn btn-success" data-bs-toggle="modal" data-bs-target="#whSearchModal"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">출금계좌</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <button type="button" class="bi bi-search border px-4 btn btn-success"
+                                        data-bs-toggle="modal" data-bs-target="#accountSearchModal"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Transaction History Select -->
+    <button class="btn btn-success px-4" id="sumbit" type="button" style="margin:10px 0px">
+        구매
+    </button>
+    <button class="btn btn-success px-2" id="addRowBtn" type="button" style="margin:10px 0px">
+        추가
+    </button>
+    <div class="btn-group dropdown">
+        <button class="btn btn-primary dropdown-toggle btn btn-success" type="button" data-bs-toggle="dropdown"
+                style="margin:10px 0px">
+            거래내역보기(구매)
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a class="dropdown-item" href="">구매내역</a>
+                <a class="dropdown-item" href="">판매내역</a>
+            </li>
+        </ul>
+    </div>
+    <button class="btn btn-success px-4" type="button" style="margin:10px 0px">
+        품목
+    </button>
+    <button class="btn btn-success px-5" type="button" style="margin:10px 0px">
+        청구서
+    </button>
+    <button class="btn btn-success px-5" type="button" style="margin:10px 0px">
+        거래명세서
+    </button>
+
+
+    <!-- Table -->
+    <div id="wrap">
+        <div id="gridDiv"> <!--gird html이 들어가는 div태그-->
+        </div>
+    </div>
+
+    <!-- Bottom Button -->
+
+    <!-- 출금계좌 모달 -->
+    <div class="modal fade" id="accountSearchModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #aacb73;">
+                    <h5 class="modal-title" id="accountSearchModalLabel">계좌검색</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="example-table"></div> <!-- modal tabulator 사용 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 입고창고 모달 -->
+    <div class="modal fade" id="whSearchModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #aacb73;">
+                    <h5 class="modal-title" id="whSearchModal">창고검색</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <table class="table table-hover" id="accountTable">
+                    <thead>
+                    <tr>
+                        <th>창고코드</th>
+                        <th>창고명</th>
+                        <th>구분</th>
+                        <th>창고위치</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>00001</td>
+                        <td>본사창고</td>
+                        <td>본사</td>
+                        <td>대구광역시 중구 OOO</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="modal-body">
+                    <div id="example-table"></div> <!-- modal tabulator 사용 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // 계좌 목록 조회 모달
+        let accountList = [
+            { accCode: "123124", accName: "예담담" },
+        ];
+        //Build Tabulator
+        let accList = new Tabulator("#example-table", {
+            layout: "fitColumns",
+            pagination: "local",
+            data: accountList,
+            paginationSize: 6,
+            paginationSizeSelector: [3, 6, 8, 10],
+            movableColumns: true,
+            paginationCounter: "rows",
+            columns: [
+                { title: "계좌코드", field: "accCode", width: 320, sorter: "string", headerFilter: "input" },
+                { title: "계좌명", field: "accName", width: 440, sorter: "string", headerFilter: "input" },
+            ],
+        });
+        accList.on("rowClick", function (event) {
+            alert("계좌 상세 이동 기능 구현");
+        })
+        // 신규 계좌 생성 모달
+        // 저장 버튼 클릭 이벤트
+        // saveButton.addEventListener('click', function () {
+        //     // 여기에 저장 로직 추가
+        //     alert('저장 기능 구현중.');
+        // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Price formatting
+        document.querySelectorAll('.price-input input').forEach(input => {
+            input.addEventListener('input', function (e) {
+                let value = this.value.replace(/,/g, '');
+                if (value.length > 0) {
+                    value = parseInt(value).toLocaleString('ko-KR');
+                    this.value = value;
+                }
+            });
+        });
+
+        // Sorting functionality
+        document.querySelectorAll('.sort-icon').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const table = this.closest('table');
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const column = this.closest('th').cellIndex;
+                const ascending = this.querySelector('i').classList.contains('bi-arrow-down-up');
+
+                rows.sort((a, b) => {
+                    const aValue = parseInt(a.cells[column].textContent.replace(/,/g, ''));
+                    const bValue = parseInt(b.cells[column].textContent.replace(/,/g, ''));
+                    return ascending ? aValue - bValue : bValue - aValue;
+                });
+
+                tbody.innerHTML = '';
+                rows.forEach(row => tbody.appendChild(row));
+
+                this.querySelector('i').classList.toggle('bi-arrow-down-up');
+                this.querySelector('i').classList.toggle('bi-arrow-up-down');
+            });
+        });
+
+        let createdGrid;  // 전역 변수로 설정하여 어디서든 접근 가능하게 함
+
+        const initGrid = () => {
+            const Grid = tui.Grid;
+
+            Grid.setLanguage('ko');
+            Grid.applyTheme('default', {
+                outline: { border: '#dee2e6' },
+                cell: {
+                    normal: { border: '#dee2e6' },
+                    header: { background: '#f8f9fa', text: 'black' },
+                    focused: { background: '#f8f9fa', border: '#f64a4a' },
+                    evenRow: { background: 'white' },
+                    oddRow: { background: 'white' }
+                }
+            });
+
+            const grid = new Grid({
+                el: document.getElementById('gridDiv'),
+                scrollX: true,
+                scrollY: true,
+                header: { height: 40 },
+                bodyHeight: 500,
+                rowHeight: 102,
+                width: 'auto',
+                contextMenu: null,
+                rowHeaders: [{
+                    type: 'rowNum',
+                    header: "No.",
+                    width: 50,
+                    className: 'border'
+                }],
+                columns: [
+                    { header: '품목코드', name: 'prodCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border' },
+                    { header: '품목명', name: 'prodname', align: "center", width: 200, whiteSpace: 'normal', editor: 'text', className: 'border' },
+                    { header: '출고단가', name: 'deliveryPrice', align: "center", width: 150, whiteSpace: 'normal', sortable: true, sortingType: 'desc', className: 'border' },
+                    { header: '수량', name: 'quantity', align: "center", width: 100, whiteSpace: 'normal', editor: 'text', sortable: true, sortingType: 'desc', className: 'border' },
+                    { header: '재고수량', name: 'stocksQuantity', align: "center", width: 100, whiteSpace: 'normal', className: 'border' },
+                    { header: '부족수량', name: 'deficiencyQuantity', align: "center", width: 100, whiteSpace: 'normal', sortingType: 'desc', className: 'border' },
+                    { header: '이미지', name: 'image', align: "center", width: 200, whiteSpace: 'normal', className: 'border' },
+                    { header: '내용', name: 'salesSummary', align: "center", width: 225, whiteSpace: 'normal', editor: 'text', className: 'border' },
+                ],
+                summary: {
+                    height: 40,
+                    position: 'bottom',
+                    columnContent: {
+                        quantity: { template: valueMap => `총합: ${valueMap.sum}` },
+                    }
+                }
+            });
+
+            return grid;
+        }
+
+        // 페이지 로드 시 그리드를 초기화하고 데이터를 설정
+        window.onload = () => {
+            createdGrid = initGrid();
+
+            // 샘플 데이터
+            const sampleData = [{
+
+            }];
+
+            // 그리드에 데이터 넣기
+            createdGrid.resetData(sampleData);
+        }
+
+        // 추가 버튼 클릭 시 빈 행 추가
+        document.getElementById('addRowBtn').addEventListener('click', () => {
+            createdGrid.appendRow({});  // 빈 객체로 appendRow 호출
+        });
+    </script>
+
+</body>
+
+</html>
