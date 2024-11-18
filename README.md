@@ -15,7 +15,31 @@
 이를 통해 운영 효율을 향상시키고 데이터를 기반으로 한 전략적 의사결정을 지원합니다. <br>
 
 **<프로젝트 구성>**
-1. 개발환경설정 : JAVA 21 / Spring Boot 3.2.11 / Gradle / MyBatis / Eclipse
+개발환경설정
+<table style="border-collapes: collapse; width: 100%;" border="1" 
+  <tbody>
+    <tr>
+      <td>Java</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>Spring Boot</td>
+      <td>3.2.11</td>
+    </tr>
+    <tr>
+      <td>Gradle</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>MyBatis</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Eclipse</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 2. 기술 세부 스택
 
 ## 팀 소개
