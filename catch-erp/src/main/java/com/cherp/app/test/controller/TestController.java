@@ -10,4 +10,8 @@ public class TestController {
 	public String testView() {
 		return "human/test";
 	}
+	@GetMapping("test1")
+	public String testView2() {
+		return "account/regBondReduction";
+	}
 }
