@@ -43,18 +43,54 @@
             this.el.select();
         }
     }
+	
+	class ButtonRenderer {
+            constructor(props) {
+                this.el = document.createElement('button');
+                this.el.innerText = props.value;
+                this.el.style.border = '1px solid gray';
+                this.el.style.borderRadius ='3px';
+                this.el.style.backgroundColor = 'white';
+                this.el.onclick = () => {
+                alert(`데이터이동 함수 필요`);
+                };
+            }
 
+            getElement() {
+                return this.el;
+            }
+    }
 /*==========================================
 		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
 ============================================*/
 document.addEventListener("DOMContentLoaded", function () {
     
-
-    const initGrid = () => {
-        // 그리드 객체
-        const Grid = tui.Grid;
-
-        Grid.applyTheme('default',  {
+    //모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용.
+	const Grid = tui.Grid;
+	Grid.setLanguage('ko', {
+                 Filter: {
+                     contains: '포함됨',
+                     eq: '같음',
+                     neq: '같지 않음',
+                     startsWith: '시작함',
+                     endsWith: '끝남',
+                     greaterThan: '이후',
+                     greaterThanOrEqualTo: '이후(포함)',
+                     lessThan: '이전',
+                     lessThanOrEqualTo: '이전(포함)'
+                 },
+                 DatePicker: {
+                     titles: {
+                         today: '오늘',
+                         clear: '지우기'
+                     },
+                     monthsLong: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                     monthsShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                     dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                     dayNamesShort: ['일', '월', '화', '수', '목', '금', '토']
+                 }
+    });
+	Grid.applyTheme('default',  {
             outline:{
             border : '#dee2e6'
         },
@@ -78,7 +114,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-
+    
+    const initGrid = () => {
+        // 그리드 객체
 
     const grid = new Grid({
         el: document.getElementById('adjustmentGrid'),
@@ -227,113 +265,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const initGrid2 = () => {
         // 그리드 객체
-        const Grid = tui.Grid;
 
-        Grid.applyTheme('default',  {
-            outline:{
-            border : '#dee2e6'
-        },
-        cell: {
-            normal: {
-                border: '#dee2e6'
-            },
-            header: {
-                background: '#f8f9fa',
-                text: 'black'
-            },
-            focused: {
-                background: '#f8f9fa',
-                border: '#f64a4a'
-            },
-            evenRow: {
-                background: 'white'
-            },
-            oddRow: {
-                background: 'white'
-            }
-        }
-    });
-
-
-    const grid = new Grid({
-        el: document.getElementById('inqueryGrid'),
-        scrollX: true,
-        scrollY: true,
-        header: { height: 40 },
-        bodyHeight: 500,
-        rowHeight: 102,
-        width: 'auto',
-        contextMenu: null,
-        rowHeaders: [{
-                type: 'rowNum',
-                header: "No.",
-                width: 50,
-                className:'border'
-        }],
-        columns: [
-            {
-                header: '품목코드',
-                name: 'd1',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                className:'border'
-                
-            },
-            {
-                header: '품목명',
-                name: 'd2',
-                align: "center",
-                width: 130,
-                whiteSpace: 'normal'
-            },
-            {
-                header: '거래처',
-                name: 'd3',
-                align: "center",
-                width: 120,
-                whiteSpace: 'normal',
-                className:'border'
-            },
-            {
-                header: '입고단가',
-                name: 'd4',
-                align: "center",
-                width: 140,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className:'border',
-                validation: {
-                    dataType: 'number'
-                }
-            },
-            {
-                header: '재고현황',
-                name: 'd5',
-                align: "center",
-                width: 140,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className:'border'
-            },
-            {
-                header: '창고명',
-                name: 'd6',
-                align: "center",
-                width: 135,
-                whiteSpace: 'normal',
-                editor: 'text',
-                sortable: true,
-                sortingType: 'desc',
-                className:'border'
-            }
-        ]
-    });
-
-    return grid;
-}
+	    const grid = new Grid({
+	        el: document.getElementById('inqueryGrid'),
+	        scrollX: true,
+	        scrollY: true,
+	        header: { height: 40 },
+	        bodyHeight: 500,
+	        rowHeight: 102,
+	        width: 'auto',
+	        contextMenu: null,
+	        rowHeaders: [{
+	                type: 'rowNum',
+	                header: "No.",
+	                width: 50,
+	                className:'border'
+	        }],
+	        columns: [
+	            {
+	                header: '품목코드',
+	                name: 'd1',
+	                align: "center",
+	                width: 150,
+	                whiteSpace: 'normal',
+	                className:'border'
+	                
+	            },
+	            {
+	                header: '품목명',
+	                name: 'd2',
+	                align: "center",
+	                width: 130,
+	                whiteSpace: 'normal'
+	            },
+	            {
+	                header: '거래처',
+	                name: 'd3',
+	                align: "center",
+	                width: 120,
+	                whiteSpace: 'normal',
+	                className:'border'
+	            },
+	            {
+	                header: '입고단가',
+	                name: 'd4',
+	                align: "center",
+	                width: 140,
+	                whiteSpace: 'normal',
+	                sortable: true,
+	                sortingType: 'desc',
+	                className:'border',
+	                validation: {
+	                    dataType: 'number'
+	                }
+	            },
+	            {
+	                header: '재고현황',
+	                name: 'd5',
+	                align: "center",
+	                width: 140,
+	                whiteSpace: 'normal',
+	                sortable: true,
+	                sortingType: 'desc',
+	                className:'border'
+	            },
+	            {
+	                header: '창고명',
+	                name: 'd6',
+	                align: "center",
+	                width: 135,
+	                whiteSpace: 'normal',
+	                editor: 'text',
+	                sortable: true,
+	                sortingType: 'desc',
+	                className:'border'
+	            }
+	        ]
+	    });
+	    return grid;
+	}
 
 
     // 그리드 설정
@@ -389,77 +399,25 @@ document.addEventListener("DOMContentLoaded", function () {
     ==============================*/
     
     // 모달 관련 JavaScript
-        const warehouseModal = document.getElementById('warehouseModal')
-        const tableRows = warehouseModal.querySelectorAll('tbody tr')
-        let selectedRow = null
+        const clientModal = document.getElementById('clientModal');
 
         //모달실행 시 grid refresh를 위한 코드
-        document.getElementById('openWarehouseModal').addEventListener('click', function() {
+        document.getElementById('openClientModal').addEventListener('click', function() {
             window.setTimeout(function(){
                 grid3.refreshLayout();
             }, 200) 
+            window.setTimeout(function(){
+                grid4.refreshLayout();
+            }, 200)
         });
 
-        // 행 선택 이벤트
-        tableRows.forEach(row => {
-            row.addEventListener('click', function() {
-                if (selectedRow) {
-                    selectedRow.classList.remove('selected-row')
-                }
-                this.classList.add('selected-row')
-                selectedRow = this
-            })
-        })
-
-        let grid3;
-        class ButtonRenderer {
-            constructor(props) {
-                this.el = document.createElement('button');
-                this.el.innerText = props.value;
-                this.el.style.border = '1px solid gray';
-                this.el.style.borderRadius ='3px';
-                this.el.style.backgroundColor = 'white';
-                this.el.onclick = () => {
-                alert(`데이터이동 함수 필요`);
-                };
-            }
-
-            getElement() {
-                return this.el;
-            }
-        }
+        let grid3; //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
+        
         const initGrid3 = () => {
             // 그리드 객체
-            const Grid = tui.Grid;
-            Grid.setLanguage('ko');
-            
-            Grid.applyTheme('default',  {
-                outline:{
-                border : '#dee2e6'
-            },
-            cell: {
-                normal: {
-                    border: '#dee2e6'
-                },
-                header: {
-                    background: '#f8f9fa',
-                    text: 'black'
-                },
-                focused: {
-                    background: '#f8f9fa',
-                    border: '#f64a4a'
-                },
-                evenRow: {
-                    background: 'white'
-                },
-                oddRow: {
-                    background: 'white'
-                }
-            }
-        });
     
-        grid = new Grid({
-            el: document.getElementById('gridDiv3'),
+        grid3 = new Grid({
+            el: document.getElementById("clientGrid"),
             scrollX: true,
             scrollY: true,
             header: { height: 40 },
@@ -532,8 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             ]
         });
-
-        return grid;
+        return grid3;
     }
 
     // 그리드 설정
@@ -556,13 +513,169 @@ document.addEventListener("DOMContentLoaded", function () {
     /*============================
     	StackInquery 창고 모달 JS
     ==============================*/
+    // 모달 관련 JavaScript
+    const warehouseModal = document.getElementById('warehouseModal')
+
+    //모달실행 시 grid refresh를 위한 코드
+    document.getElementById('openWarehouseModal').addEventListener('click', function() {
+        window.setTimeout(function(){
+            grid4.refreshLayout();
+        }, 200) 
+    });
     
+    let grid4;
+    const initGrid4 = () => {
+		grid4 = new Grid({
+            el: document.getElementById('warehouseGrid'),
+            scrollX: true,
+            scrollY: true,
+            header: { height: 40 },
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                    type: 'rowNum',
+                    header: "No.",
+                    width: 50,
+                    className:'border'
+            }],
+            columns: [
+                {
+                    header: '창고명',
+                    name: 'c1',
+                    align: "center",
+                    width: 183,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    renderer: {
+                        type: ButtonRenderer
+                    },
+                    filter: 'select'
+                    
+                },
+                {
+                    header: '창고코드',
+                    name: 'c2',
+                    align: "center",
+                    width: 183,
+                    whiteSpace: 'normal',
+                    className:'border'
+                },
+                {
+                    header: '위치',
+                    name: 'c3',
+                    align: "center",
+                    width: 184,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '구분',
+                    name: 'c4',
+                    align: "center",
+                    width: 184,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                }
+            ]
+        });
+
+        return grid4;
+		
+	}
     
+    const createdGrid4 = initGrid4();
+
+	// 샘플 데이터
+	const sampleData4 = [
+	    {
+	        c1: '물류창고',
+	        c2: 'A0000045',
+	        c3: '천안아산',
+	        c4: '소요량높음'
+	    }
+	];
+	
+	// 그리드에 데이터 넣기(출력)
+	createdGrid4.resetData(sampleData4);
     
     /*============================
-    	StackInquery 상품명 모달 JS
+    	StackInquery 품목조회 모달 JS
     ==============================*/
+    // 모달 관련 JavaScript
+    var purchaseOrderModal = document.getElementById('purchaseOrderModal')
+    purchaseOrderModal.addEventListener('show.bs.modal', function (event) {
+        // 모달이 표시되기 전에 실행할 코드
+        console.log('모달이 열립니다');
+        window.setTimeout(function(){
+            grid5.refreshLayout();
+        }, 200) 
+    })
+
+    purchaseOrderModal.addEventListener('hidden.bs.modal', function (event) {
+        // 모달이 완전히 숨겨진 후 실행할 코드
+        console.log('모달이 닫혔습니다');
+    })
+    let grid5;
+    const initGrid5 = () => {
+		grid5 = new Grid({
+            el: document.getElementById('itemGrid'),
+            scrollX: true,
+            scrollY: true,
+            header: { height: 40 },
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                    type: 'rowNum',
+                    header: "No.",
+                    width: 50,
+                    className:'border'
+            }],
+            columns: [
+                {
+                    header: '품목 코드',
+                    name: 'c1',
+                    align: "center",
+                    width: 203,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    renderer: {
+                        type: ButtonRenderer
+                    },
+                    filter: 'select'
+                    
+                },
+                {
+                    header: '품목명',
+                    name: 'c2',
+                    align: "center",
+                    width: 203,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                }
+            ]
+        });
+
+        return grid5;
+		
+	}
     
+    const createdGrid5 = initGrid5();
+
+	// 샘플 데이터
+	const sampleData5 = [
+	    {
+	        c1: 'A0000045',
+	        c2: '컵홀더'
+	    }
+	];
+	
+	// 그리드에 데이터 넣기(출력)
+	createdGrid5.resetData(sampleData5);
     
     
     /*============================
