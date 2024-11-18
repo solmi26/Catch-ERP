@@ -22,8 +22,9 @@
       
     </script>
 
-    <!-- bootstrap@5.3.3 -->
+    <!-- bootstrap@5.3.3 및 템플릿 css-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/index/plugins.min.css}" />
     <link rel="stylesheet" th:href="@{/css/index/kaiadmin.min.css}" />
     
@@ -31,9 +32,23 @@
 	<link rel="stylesheet" th:href="@{/css/index/commonCss.css}" />    
 	
     <!-- 토스트 ui -->
-    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+    <!--  tabulator grid cdn -->
+	<!-- <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet"> -->
+	<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+	<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+	<!-- <script type="text/javascript" src="dist/js/tabulator.min.js"></script> -->
+	<!--  toast grid pagination cdn -->
+	<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.min.js"></script> <!-- 최신 버전으로 로드 -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css"> <!-- 1순위 페이징 -->
+	<!-- toast grid cdn -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script> <!-- 2순위 toast 나머지 -->
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 	<!-- 템플릿 css -->
+
+	<!-- 템플릿 js(제이쿼리)-->
     <script th:src="@{/js/index/core/jquery-3.7.1.min.js}"></script>
 </th:block>
 
