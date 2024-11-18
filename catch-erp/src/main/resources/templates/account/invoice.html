@@ -32,6 +32,9 @@
         display: flex;
         gap: 5px; /* 버튼들 사이 간격 */
         font-size: 18px;
+        margin-top:20px;
+        margin-bottom:10px;
+        justify-content: flex-end; /* 버튼을 왼쪽에 정렬 */
       }
 
       .status-count {
@@ -46,10 +49,6 @@
         display: flex;
         align-items: center;
         gap: 8px;
-      }
-      .status-number {
-        font-weight: bold;
-        color: #0d6efd;
       }
       .progress-dots {
         display: flex;
@@ -69,7 +68,7 @@
         font-size: 18px;
       }
       .table thead th{
-    	font-size: 1.2rem; 
+    	font-size: 1rem; 
   }
       .table th {
         background-color: #f8f9fa;
@@ -110,20 +109,22 @@
       }
 
       .status-number {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: bold;
-        color: #0d6efd;
+        color: #31ce36;
       }
 
       .status-label {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         color: #6c757d;
       }
     </style>
   </head>
   <body>
     <div class="container-fluid p-4">
+    
       <!-- Search Bar -->
+      <!--  
       <div class="search-bar d-flex justify-content-end">
         <input
           type="text"
@@ -131,9 +132,11 @@
           style="width: 200px"
           placeholder="검색어 입력"
         />
-        <button class="btn btn-primary">Search(F3)</button>
+        <button class="btn btn-success">Search(F3)</button>
         <button class="btn btn-secondary">Option</button>
       </div>
+      -->
+      
       <!-- Status Counters -->
       <div class="row status-count">
         <div class="col status-box">
@@ -171,56 +174,100 @@
         </div>
       </div>
     -->
-
-      <!-- Main Table -->
-      <!-- 테이블을 감싸는 스크롤 가능한 컨테이너 -->
-      <div class="scrollable-table-container">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th><input type="checkbox" onclick="toggleAllCheckboxes(this)" /></th>
-              <th>일자</th>
-              <th>거래처명</th>
-              <th>공급가액</th>
-              <th>부가세</th>
-              <th>합계금액</th>
-              <th>전자세금계산서 진행단계</th>
-              <th>인쇄</th>
-            </tr>
-          </thead>
-          <tbody>
-          
-            <tr th:each="invoice : ${invoices}">
-              <td><input type="checkbox" class="row-checkbox"  /></td>
-              <td th:text="${invoice.number}">2024/11/13-8</td>
-              <td th:text="${invoice.company}">주식회사</td>
-              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.supplyAmount, 0, 'COMMA', 0, 'POINT')}">12,800,000</td>
-              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.taxAmount, 0, 'COMMA', 0, 'POINT')}">1,280,000</td>
-              <td class="text-end" th:text="${#numbers.formatDecimal(invoice.totalAmount, 0, 'COMMA', 0, 'POINT')}">14,080,000</td>
-              <td>미전송</td>
-              <td><a href="#" class="action-link">인쇄</a></td>
-            </tr>
-
-             
-          </tbody>
-        </table>
-      </div>
-     
-
-      
-      
       <!-- 버튼들이 고정된 위치에 나타나도록 합니다. -->
       <div class="button-group">
-        <button class="btn btn-primary">인증서첨부</button>
+        <button class="btn btn-success">전송</button>
         <button class="btn btn-secondary">인쇄</button>
-        <button class="btn btn-secondary">매출전표 생성</button>
-        <button class="btn btn-secondary">인증서관리</button>
         <button class="btn btn-secondary">Excel</button>
-        <button class="btn btn-secondary">자동알림</button>
       </div>
+
+      <!-- Main Table -->
+       <div id="grid"></div>
+  	   <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
+  
       
-      
+      </div>
     <script>
+    
+    // Grid 데이터 정의
+    const gridData = [
+      {
+        date: '2024/11/10',
+        clientName: '김치좋아',
+        supplyAmount: 100000,
+        vat: 10000,
+        totalAmount: 110000,
+        taxProgress: '완료',
+      },
+      // 추가 데이터는 여기 삽입
+    ];
+
+	  const grid = new tui.Grid({
+	    el: document.querySelector('#grid'),
+	    data: gridData,
+	    scrollX: true,
+	    scrollY: true,
+	    pageOptions: {
+	      useClient: true,
+	      perPage: 5,
+	    },
+	    columns: [
+	        {
+	          header: '일자',
+	          name: 'date',
+	          sortable: true,
+	       
+	          align: 'center',
+	        },
+	        {
+	          header: '거래처명',
+	          name: 'clientName',
+	          sortable: true,
+	         
+	          align: 'left',
+	        },
+	        {
+	          header: '공급가액',
+	          name: 'supplyAmount',
+	          sortable: true,
+	       
+	          align: 'right',
+	          formatter: 'number', // 숫자 형식으로 표시
+	        },
+	        {
+	          header: '부가세',
+	          name: 'vat',
+	          sortable: true,
+	         
+	          align: 'right',
+	          formatter: 'number',
+	        },
+	        {
+	          header: '합계금액',
+	          name: 'totalAmount',
+	          sortable: true,
+	         
+	          align: 'right',
+	          formatter: 'number',
+	        },
+	        {
+	          header: '전자세금계산서 진행단계',
+	          name: 'taxProgress',
+	          sortable: true,
+	         
+	          align: 'center',
+	        },],
+	    rowHeaders: ['rowNum', 'checkbox'],
+	  });
+
+	  grid.on('click', (event) => {
+	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
+	      console.log('클릭이벤트 발생');
+	      console.log(event.rowKey);
+	    }
+	  });
+	  
+    
       // 체크박스
       function toggleAllCheckboxes(source) {
         const checkboxes = document.querySelectorAll(".row-checkbox");
