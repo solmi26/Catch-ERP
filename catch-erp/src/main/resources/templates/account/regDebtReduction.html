@@ -96,12 +96,11 @@
       {
         debentureNo: '11234578956',
         startDate: '2024/11/10',
-        endDate: '2024/11/14',
-        debentureName: '외상매출금',
         clientCode: '15631534',
         clientName: '김치좋아',
         balance: '98000',
         depositAmount: '',
+        debtStatus: '미지급',
       }
     ];
     //toast ui table 기본 틀 작성
@@ -126,20 +125,6 @@
                 {
                     header: '발생일자',
                     name: 'startDate',
-                    editor: 'text',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '만기일자',
-                    name: 'endDate',
-                    editor: 'text',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '채무계정명',
-                    name: 'debentureName',
                     editor: 'text',
                     sortable: true,
                     align: 'left'
@@ -173,6 +158,13 @@
                     editor: 'text',
                     sortable: true,
                     align: 'left'
+                },
+                {
+                	header: '채무상태',
+                	name: 'debtStatus',
+                	editor: 'text',
+                	sortable: true,
+                	align: 'left'
                 }
             ],
       rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
