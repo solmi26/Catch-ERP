@@ -28,4 +28,7 @@ public class TestController {
 	public String testView2() {
 		return "account/regBondReduction";
 	}
+	// GHT TEST
+	@GetMapping("testPurchase")
+	public String testPurchase() { return "purchase/purchasePage"; }
 }
