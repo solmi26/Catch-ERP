@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/human_layout}"
+      layout:fragment="Content">
+<head>
+
+<style>
+	.limit-box {
+	max-width:650px;
+	}
+</style>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="container-fluid bg-white shadow-sm rounded p-4">
+		<div class="row justify-content-start">
+			<div class="col-12 limit-box">
+					<div class="row justify-content-between mb-2">
+						<div class="col">
+							<h3>근태항목목록</h3>
+						</div>
+						<div class="col-auto">
+							<div class="row justify-content-end">
+								<div class="col-auto">
+									<input class="form-control form-control-sm" type="text">					
+								</div>
+								<div class="col-auto">
+									<button type="button" class="btn btn-success btn-sm" >검색</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+						<div class="border" id="grid"></div>
+						</div>
+					</div>
+					<div class="row justify-content-start mt-4">
+						<div class="col-auto">
+							<button type="button" class="btn btn-success btn-sm" >신규</button>
+						</div>
+						<div class="col-auto ps-0">
+							<button type="button" class="btn btn-danger btn-sm" >삭제</button>
+						</div>
+						<div class="col-auto ps-0">
+							<button type="button" class="btn btn-warning btn-sm hihi" >추가</button>						
+						</div>
+						
+					</div>
+				</div>
+				
+
+			
+			</div>
+		</div>
+	<script>
+	    var gridData = [{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'}]
+		const Grid = tui.Grid;
+		const instance = new Grid({
+			  el: document.getElementById('grid'), // Container element
+		      data: gridData.slice(0, 8),
+		      width: 650,
+		      bodyHeight: 600,
+		      scrollX: true,
+		      scrollY: false,
+			  columns: [
+			    {
+			      header: '근태코드',
+			      name: 'name'
+			    },
+			    {
+			      header: '근태명칭',
+			      name: 'artist'
+			    },
+			    {
+			      header: '근태유형',
+			      name: 'release'
+			    }
+			  ],
+			  data: [
+			    {
+			      name: 'Beautiful Lies',
+			      artist: 'Birdy',
+			      release: '2016.03.26',
+			      genre: 'Pop'
+			    },
+			    {
+				      name: 'Beautiful Lies',
+				      artist: 'Birdy',
+				      release: '2016.03.26',
+				      genre: 'Pop'
+				},
+			    {
+				      name: 'Beautiful Lies',
+				      artist: 'Birdy',
+				      release: '2016.03.26',
+				      genre: 'Pop'
+				},
+			    {
+				      name: 'Beautiful Lies',
+				      artist: 'Birdy',
+				      release: '2016.03.26',
+				      genre: 'Pop'
+				},
+			    {
+				      name: 'Beautiful Lies',
+				      artist: 'Birdy',
+				      release: '2016.03.26',
+				      genre: 'Pop'
+				},
+			    {
+				      name: 'Beautiful Lies',
+				      artist: 'Birdy',
+				      release: '2016.03.26',
+				      genre: 'Pop'
+				},
+
+
+			  ],
+			showDummyRows: true
+			});
+
+			instance.resetData(newData); // Call API of instance's public method
+		      
+			Grid.applyTheme('striped'); // Call API of static method
+			
+
+	</script>
+	<script>
+	document.querySelector('.hihi').addEventListener('click',function () {
+		console.log('hi')
+		instance.appendRow()
+	})
+	</script>
+</body>
+</html>
