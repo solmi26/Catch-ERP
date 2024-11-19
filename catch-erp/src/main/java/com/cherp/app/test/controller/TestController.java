@@ -27,8 +27,8 @@ public class TestController {
 	public String testView2() {
 		//return "account/viewBankAccount"; // 계좌목록
 		//return "account/regDebtReduction"; // 채무감소
-		//return "account/regBondReduction"; // 채권감소
-		return "account/contract";
+		return "account/regBondReduction"; // 채권감소
+		//return "account/contract";
 	}
 	@GetMapping("test2")
 	public String testView3() {

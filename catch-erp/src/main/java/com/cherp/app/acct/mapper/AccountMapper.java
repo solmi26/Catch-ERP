@@ -1,5 +1,5 @@
 package com.cherp.app.acct.mapper;
 
-public interface accountMapper {
+public interface AccountMapper {
 
 }
