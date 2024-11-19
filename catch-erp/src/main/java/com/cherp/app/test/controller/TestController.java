@@ -17,7 +17,8 @@ public class TestController {
 	public String testViewAc() {
 		//return "human/attendanceInput";
 		//return "account/invoice";
-		return "account/contractInsert";
+		//return "account/contract";
+		return "account/salesSlip";
 	}
 	// NKW TEST
 	@GetMapping("testStack")
