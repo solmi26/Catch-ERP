@@ -203,87 +203,129 @@
 	          </form>
 	        </div>
 	      </div>
+	      </div>
 				<!--  세부 검색 구역 끝!!!! -->
 			<div class="row mb-4 ">
-				<!-- 스크롤 적용 (위 스타일시트 참고 )-->
-				<div class="scroll-bar">				
-					<div class="scroll-table">
-					<!-- 테이블 생성 -->
-					<table class="table border-4 table-head g-1 ">
-					  <thead>
-					    <tr>
-					      <th scope="col"><input type="checkbox"></th>
-					      <th >사원번호</th>
-					      <th >성명</th>
-					      <th >날짜</th>
-					      <th >근태유형</th>
-					      <th >출근시간</th>
-					      <th >퇴근시간</th>
-					      <th >총근로시간</th>
-					      <th >연장근로</th>
-					      <th >야간근로</th>
-					      <th >주말근로</th>
-					      
-					    </tr>
-					  </thead>
-					  <tbody class="table-group-divider">
-					  	<tr>
-					  		<td><input type="checkbox"></td>
-					  		<td class="modalevent">24-0001</td>
-					  		<td>유석진2호</td>
-					  		<td>2024.11.16</td>
-					  		<td>정상출근</td>
-					  		<td>08:54</td>
-					  		<td>18:34</td>
-					  		<td>08:34</td>
-					  		<td>0:34</td>
-					  		<td>0:00</td>
-					  		<td>0:00</td>
-					  	</tr>
-					  	<tr>
-					  		<td><input type="checkbox"></td>
-					  		<td><span class="modalevent">24-0001</span></td>
-					  		<td>유석진</td>
-					  		<td>2024.11.16</td>
-					  		<td>정상출근</td>
-					  		<td>08:51</td>
-					  		<td>18:00</td>
-					  		<td>08:00</td>
-					  		<td>0:00</td>
-					  		<td>0:00</td>
-					  		<td>0:00</td>
-					  	</tr>
-					  	<tr>
-					  		<td><input type="checkbox"></td>
-					  		<td class="modalevent">24-0003</td>
-					  		<td>유석진3호</td>
-					  		<td>2024.11.16</td>
-					  		<td>결근</td>
-					  		<td></td>
-					  		<td></td>
-					  		<td></td>
-					  		<td></td>
-					  		<td></td>
-					  		<td></td>
-					  	</tr>
-					  </tbody>
-					</table>
-					</div>
+				<div class="col">
+					<div id="grid"></div>
 				</div>
 			</div> <!-- table row -->
 			<!-- 버튼용 로우 -->
 			<div class="row">
 				<div class="col">
 					<button type="button" class="btn btn-sm btn-success">신규</button>
-					<button type="button" class="btn btn-sm btn-danger">삭제</button>
+					<button type="button" class="btn btn-sm btn-danger deleteRowBtn">삭제</button>
 					<button type="button" class="btn btn-sm btn-secondary">Excel</button>
 					<button type="button" class="btn btn-sm btn-secondary">인쇄</button>
-					
 				</div>
 			</div>
-		</div> <!-- col-12 -->
-				
-		</div>
-	</div>
+	</div> <!-- end container -->
+	
+<!-- 근태수정 모달 -->
+    <div class="modal fade" id="atModifyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">근태수정</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>근태수정</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--근태테이블-->
+                        <div class="row">
+                            <div id="atModifyGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+<!-- 근태 수정 모달 -->	
+
+		<script th:src='@{/js/common/deleteRowBtn.js}'></script>
+		<script th:src='@{/js/common/appendRowBtn.js}'></script>
+
+	<script th:src="@{/js/human/toastsetting.js}"></script>
+	<script>
+	const Grid = tui.Grid;
+    const grid = new Grid({
+      el: document.getElementById('grid'),
+      scrollX: false,
+      scrollY: false,
+      rowHeaders: [
+          {
+            type: 'checkbox',
+            header: `
+              <span class="custom-input">
+              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+          	</span>
+          `,
+            renderer: {
+              type: gridCheckbox
+            }
+          }
+        ],
+      columns: [
+        {
+          header: '사원번호',
+          name: 'employeeCode'
+        },
+        {
+          header: '성명',
+          name: 'employeeName'
+        },
+        {
+          header: '날짜',
+          name: 'attendanceDate'
+        },
+        {
+          header: '근태유형',
+          name: 'attName'
+        },
+        {
+          header: '출근시간',
+          name: 'attendanceTime'
+        },
+        {
+          header: '퇴근시간',
+          name: 'leaveTime'
+        }
+      ],
+      data: [
+    	  {
+    		employeeCode:'2024-01',
+    		employeeName:'유석진',
+    		attendanceDate:'2024.11.19',
+    		attName:'정상출근',
+    		attendanceTime:'08:59',
+    		leaveTime:'18:01'
+    	  },
+    	  ]
+    });
+  
+	
+	</script>
+	<script th:src="@{/js/human/atModifyModal.js}"></script>
+	
+	
+	<script th:src="@{/js/human/attendanceList.js}"></script>
+	
 </body>
 </html>

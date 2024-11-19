@@ -29,6 +29,25 @@
             border:0;
             box-shadow:none; 
         }
+        .hidden-input{
+		    display: none;
+	    }
+	    .selectCheck{
+	      	width:15px;
+	     	height:15px;
+	      	background-color: white;
+	      	border:2px solid black;
+	      	padding:1px;
+	      	line-height:15px;
+	      	border-radius:5px;
+	    }
+	    .hidden-input:checked + label {
+	    	background-color: #2bd62b;
+	    }
+        .gridbox {
+        	overflow:auto;
+        }
+        
 	</style>
 </head>
 <body>
@@ -54,32 +73,90 @@
 				</div>
 			</div>
 		</div>
+		<div class="row justify-content-between">
+					<div class="col-auto">
+						<div class="row">
+							<div class="col-auto"> 
+								<button class="btn btn-danger btn-sm deleteBtn">삭제</button>
+							</div>
+							<div class="col-auto">
+								<button class="btn btn-primary btn-sm addRowBtn">신규</button>						
+							</div>
+						</div>
+					</div>
+					<div class="col-auto">
+						<div class="row">
+							<div class="col-auto ps-0">
+								<button class="btn btn-primary btn-sm">Excel</button>
+							</div>
+							<div class="col-auto">
+								<button class="btn btn-primary btn-sm">저장</button>
+							</div>
+						</div>
+					</div>
+				</div>
 		<div class="row mb-2 mt-2">
-			<div class="col">
+			<div class="col gridbox">
 				<div id="grid"></div>
 			</div>
 		</div>
-		<div class="row justify-content-between px-3">
-			<div class="col">
-				<div class="row">
-					<div class="col-auto">
-						<button class="btn btn-primary btn-sm">저장</button>
-					</div>
-					<div class="col-auto ps-0">
-						<button class="btn btn-primary btn-sm">Excel</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-auto">
-				<div class="row justify-content-end">
-					<div class="col-auto">
-						<button class="btn btn-primary btn-sm addRowBtn">신규</button>						
-					</div>
-				</div>
-			</div>
-		</div>	
 	</div>
 	<script>
+	//숫자있는 체크박스
+
+      class CheckboxRenderer {
+        constructor(props) {
+          const { grid, rowKey } = props;
+		  
+          const label = document.createElement('label');
+          label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
+          label.setAttribute('for', 'selectCheck'+String(rowKey));
+	      label.innerText = `${grid.getIndexOfRow(rowKey)+1}`;
+	      console.log(props)
+          const hiddenInput = document.createElement('input');
+          hiddenInput.className = 'hidden-input';
+          hiddenInput.id = 'selectCheck'+String(rowKey);
+		
+          
+          const customInput = document.createElement('span');
+          customInput.className = 'custom-input';
+
+          customInput.appendChild(hiddenInput);
+          customInput.appendChild(label);
+
+          hiddenInput.type = 'checkbox';
+          label.addEventListener('click', (ev) => {
+            ev.preventDefault();
+
+            if (ev.shiftKey) {
+              grid[!hiddenInput.checked ? 'checkBetween' : 'uncheckBetween'](rowKey);
+              return;
+            }
+
+            grid[!hiddenInput.checked ? 'check' : 'uncheck'](rowKey);
+          });
+
+          this.el = customInput;
+
+          this.render(props);
+        }
+
+        getElement() {
+          return this.el;
+        }
+
+        render(props) {
+          const hiddenInput = this.el.querySelector('.hidden-input');
+          const checked = Boolean(props.value);
+
+          hiddenInput.checked = checked;
+        }
+      }
+	
+      
+	
+	
+	
     //토스트 컬럼 타입 정의(시간)
     class gridTime {
     constructor(props) {
@@ -132,7 +209,23 @@
     el: document.getElementById('grid'), // Container element
     scrollX: true,
     scrollY: true,
+    width:1600,
     bodyHeight: 500,
+    rowHeaders: [
+        {
+          type: 'checkbox',
+          header: `
+            <span class="custom-input">
+            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+          	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+        	</span>
+        `,
+          renderer: {
+            type: CheckboxRenderer
+          }
+        }
+      ],
+
     columns: [
         {
         header: '기준일자',
@@ -145,6 +238,9 @@
         {
         header: '발령일자',
         name: 'ehDate',
+        editor: {
+        	type:gridDate
+        }
         },
         {
         header: '사원코드',
@@ -193,6 +289,7 @@
     		
     	},
     ],
+    showDummyRows: true
     });
 
     instance.resetData(newData); // Call API of instance's public method
