@@ -6,79 +6,90 @@
   <head>
     <meta charset="UTF-8" />
     <title>매출전표</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
     <style>
-      .header {
-        background-color: #aacb73;
-        color: white;
-        padding: 0.5rem 1rem;
-      }
-
+    
+	  /* 전체 컨테이너*/    
       .content {
         background-color: #fff;
         padding: 1rem;
       }
 
+	  /* 그리드 전 form 관련 높이, 글자크기 */
       .form-control,
       .form-select,
       .input-group-text {
         height: 48px;
-        font-size: 1rem;
+        font-size: 1rem !important;
       }
-
+      
+	/* 그리드 전 form 제목 길이 지정 */
       .input-group-text {
         width: 130px;
       }
 
-      .table {
-        font-size: 1rem;
-      }
+       /* 버튼 그룹 기본 설정 */
+	  .btn-group {
+	    display: flex;
+	    gap: 5px; /* 버튼 간 간격 */
+	    font-size: 18px;
+	    margin-bottom: 10px;
+	  }
+	
+	  /* 버튼 그룹 왼쪽 */
+	  .btn-group.left {
+	    justify-content: flex-start; /* 왼쪽 정렬 */
+	  }
+	
+	  /* 버튼 그룹 오른쪽 */
+	  .btn-group.right {
+	    justify-content: flex-end; /* 오른쪽 정렬 */
+	  }
+	
+	  /* 그리드 위 영역 */
+	  .grid-controls {
+	    display: flex;
+	    justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
+	    align-items: center;
+	    margin-top:50px;
+	  }
+	  
+	 /* 그리드 합계 부분 오른쪽 정렬 */
+  	.tui-grid-summary-area .tui-grid-cell, tui-grid-cell-content {
+    	text-align: right;
+		}
 
-      .table th {
-        background-color: #f8f9fa;
-        font-weight: normal;
-      }
-
-      .table td {
-        padding: 0.5rem;
-        vertical-align: middle;
-      }
-
-      .bottom-buttons {
-        border-top: 1px solid #dee2e6;
-        padding: 1rem;
-        background-color: #f8f9fa;
-      }
     </style>
+    
   </head>
+  
   <body>
+  
+  <!-- 전체 컨테이너 -->
     <div class="content">
       <form>
-        <!-- 일자 및 회계전표No -->
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
+      
+        <!-- 전표일자 및 전표No -->
+        <div class="row mb-3">
+        <!-- 전표일자 -->
+          <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표일자</span>
               <input type="date" class="form-control" />
-              <button class="btn btn-outline-secondary" type="button">
-                Fn
-              </button>
             </div>
           </div>
-          <div class="col-md-6">
+          <!-- 전표No -->
+          <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표 No.</span>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" readonly="readonly"/>
             </div>
           </div>
         </div>
 
         <!-- 연결전표 및 거래처 -->
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
+        <div class="row mb-3">
+        <!-- 연결전표 -->
+          <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">연결전표</span>
               <input
@@ -91,7 +102,8 @@
               </button>
             </div>
           </div>
-          <div class="col-md-6">
+          <!-- 거래처 -->
+          <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">거래처</span>
               <input
@@ -107,8 +119,9 @@
         </div>
 
         <!-- 부가세 유형 및 세금계산서 구분 -->
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
+        <div class="row mb-3">
+        <!-- 부가세 유형 -->
+          <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">부가세 유형</span>
               <select class="form-select">
@@ -117,7 +130,8 @@
               </select>
             </div>
           </div>
-          <div class="col-md-6">
+          <!-- 세금계산서 구분 -->
+          <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">세금계산서 구분</span>
               <input
@@ -130,199 +144,164 @@
         </div>
 
         <!-- 적요 -->
-                 <!-- 부가세 유형 및 세금계산서 구분 -->
-        <div class="row g-3 mb-3">
-          <div class="col-md-12">
+        <div class="row mb-3">
+          <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text">적요</span>
               <input type="text" class="form-control" />
             </div>
           </div>
-        
           </div>
-        </div>
-        <div class="table-responsive">
-          <div class="d-flex justify-content-end mb-2">
-            <button type="button" class="btn btn-success btn-sm me-2" id="add-row">+추가</button>
-            <button type="button" class="btn btn-danger btn-sm" id="delete-selected">선택삭제</button>
-          </div>
-        <!-- 테이블 -->
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th><input type="checkbox" id="select-all" /></th> <!-- 선택삭제 전체선택 체크박스 -->
-                <th>계정명</th>
-                <th>공급가액</th>
-                <th>부가세</th>
-                <th>적요</th>
-              </tr>
-            </thead>
-            <tbody id="table-body">
-              <tr>
-                <td><input type="checkbox" class="select-row" /></td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="외상매출금"
-                  />
-                </td>
-                <td>
-                  
-                  <input
-                    type="number"
-                    class="form-control text-end"
-                    placeholder="4,400,000"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    class="form-control text-end"
-                    placeholder="440,000"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="최신스마트폰"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="select-row" /></td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="외상매출금"
-                  />
-                </td>
-                <td>
-                  
-                  <input
-                    type="number"
-                    class="form-control text-end"
-                    placeholder="4,400,000"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    class="form-control text-end"
-                    placeholder="440,000"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="최신스마트폰"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" class="select-row" /></td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="외상매출금"
-                  />
-                </td>
-                <td>
-                  
-                  <input
-                    type="number"
-                    class="form-control text-end"
-                    placeholder="4,400,000"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    class="form-control text-end"
-                    placeholder="440,000"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="최신스마트폰"
-                  />
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td class="text-end"  colspan="2">합계</td>
-                <td class="text-end">4,400,000</td>
-                <td class="text-end">440,000</td>
-                <td></td>
-              </tr>
-        
-            </tfoot>
-          </table>
-        </div>
-      </form>
-    </div>
-
-    <div class="bottom-buttons">
-      <div class="d-flex justify-content-between">
-        <div>
-          <button type="button" class="btn btn-success">저장(F8)</button>
-          <button type="button" class="btn btn-secondary ms-2">
-            저장/인쇄(F7)
-          </button>
-          <button type="button" class="btn btn-secondary ms-2">복사</button>
-          <button type="button" class="btn btn-secondary ms-2">삭제</button>
-          <button type="button" class="btn btn-secondary ms-2">보내기</button>
-          <button type="button" class="btn btn-secondary ms-2">H</button>
-        </div>
+		
+	<!-- 버튼 구역 -->
+    <div class="grid-controls">
+		<!-- 버튼 그룹 (그리드 위 왼쪽) -->
+      <div class="btn-group left">
+        <button type="button" class="btn btn-success" id="add-item-btn">+ 항목 추가</button>
+        <button type="button" class="btn btn-danger" id="delete-item-btn">- 선택 삭제</button>
       </div>
-    </div>
+       
+       <!-- 버튼 그룹 (그리드 위 오른쪽) -->
+      <div class="btn-group rigth">
+        <button type="button" class="btn btn-success" id="save-btn">저장</button>
+        <button type="button" class="btn btn-secondary">다시 작성</button>
+        <!-- 리스트로 이동하는 버튼 -->
+        <button type="button" class="btn btn-secondary">전표관리</button>
+      </div>
+  </div>
+  
+	<!-- 그리드 -->
+	<div id="grid"></div>
+          
+    </form>
+    
+   </div> <!-- 전체 컨테이너 끝 -->
+
+
+        
+    <!-- 토스트 공통 js -->
+	<script th:src='@{/js/index/toast.js}'></script>
     <script>
-      // 전체선택 체크박스 기능
-      document.getElementById("select-all").addEventListener("change", function() {
-        const checkboxes = document.querySelectorAll(".select-row");
-        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-      });
-    
-      // 선택삭제 버튼 클릭 시 선택된 행 삭제
-      document.getElementById("delete-selected").addEventListener("click", function() {
-        const selectedRows = document.querySelectorAll(".select-row:checked");
-        selectedRows.forEach(row => row.closest("tr").remove());
-      });
-    
-  // +추가 버튼 클릭 시 새 행 추가
-  document.getElementById("add-row").addEventListener("click", function() {
-    const tableBody = document.getElementById("table-body");
-    const newRow = document.createElement("tr");
+      document.addEventListener("DOMContentLoaded", function () {
+    	  
+    	  // 그리드 데이터
+    	  const gridData = [
+    		  {
+    		    itemName: '',        // 품목
+    		    unitPrice: 0,        // 단가
+    		    supplyAmount: 0,     // 공급가액
+    		    vat: 0,              // 부가세
+    		    totalAmount: 0,      // 총 금액
+    		  },
+    		  {
+      		    itemName: '',        // 품목
+      		    unitPrice: 0,        // 단가
+      		    supplyAmount: 0,     // 공급가액
+      		    vat: 0,              // 부가세
+      		    totalAmount: 0,      // 총 금액
+      		  },
+    		  {
+      		    itemName: '',        // 품목
+      		    unitPrice: 0,        // 단가
+      		    supplyAmount: 0,     // 공급가액
+      		    vat: 0,              // 부가세
+      		    totalAmount: 0,      // 총 금액
+      		  },
+    		];
+    	  
 
-    newRow.innerHTML = `
-      <td><input type="checkbox" class="select-row" /></td>
-      <td>
-        <input type="text" class="form-control" placeholder="외상매출금" />
-      </td>
-      <td>
-        <input type="number" class="form-control text-end" placeholder="4,400,000" />
-      </td>
-      <td>
-        <input type="number" class="form-control text-end" placeholder="440,000" />
-      </td>
-      <td>
-        <input type="text" class="form-control" placeholder="최신스마트폰" />
-      </td>
-    `;
+		 
+    	  // 그리드 초기화
+    	  const grid = new tui.Grid({
+    	    el: document.querySelector('#grid'),  // 그리드 표시 위치
+    	    data: gridData,  // 초기 데이터
+    	    scrollX: true,   // 가로 스크롤 사용
+    	    scrollY: true,   // 세로 스크롤 사용
+    	    columns : [
+    	    	  {
+    	    	    header: "계정명", // 계정명
+    	    	    name: "accountName",
+    	    	    editor: "text",         // 텍스트 입력 가능
+    	    	    align: "left",
+    	    	  },
+    	    	  {
+    	    	    header: "공급가액", // 공급가액
+    	    	    name: "supplyAmount",
+    	    	    editor: {
+        	        	type:gridNumber
+        	        },
+    	    	    align: "right",
+    	    	  },
+    	    	  {
+    	    	    header: "부가세",          // 부가세
+    	    	    name: "vat",
+    	    	    editor: {
+        	        	type:gridNumber
+        	        },
+    	    	    align: "right",
+    	    	  },
+    	    	  {
+    	    	    header: "적요",  // 적요
+    	    	    name: "description",
+    	    	    editor: "text",          // 텍스트 입력 가능
+    	    	    align: "left",
+    	    	  },
+    	    	],
+    	    summary: {
+    	        height: 40,
+    	        position: 'bottom', // or 'top'
+    	        columnContent: {
+    	        	unitPrice: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          supplyAmount: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+  	        	vat: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          totalAmount: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          accountName: {
+      	            template: function(valueMap) {
+      	              return `합계`;
+      	            }
+      	          },
+    	          
+    	        }
+    	      },
+    	
+    	    rowHeaders: ['rowNum', 'checkbox'], // 행 번호와 체크박스 표시
+    	  });
 
-    tableBody.appendChild(newRow);
-  });
-      
+
+    	  // 그리드 클릭 이벤트 -> 추후 내가 필요한대로 수정
+    	  grid.on('click', (event) => {
+    	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
+    	      console.log('클릭이벤트 발생');
+    	      console.log(event.rowKey);  // 클릭한 행의 키 값 출력
+    	    }
+    	  });
+
+        // 모달 띄우기 -> 추후 수정
+        document.querySelectorAll(".select-modal").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const modalId = btn.getAttribute("data-bs-target").substring(1);
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+          });
+        });
+      });
     </script>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
