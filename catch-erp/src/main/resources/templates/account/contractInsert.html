@@ -7,35 +7,76 @@
     <meta charset="UTF-8" />
     <title>계약등록</title>
 	<style>
- /* 버튼 그룹 기본 설정 */
-  .btn-group {
-    display: flex;
-    gap: 5px; /* 버튼 간 간격 */
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  /* 버튼 그룹 왼쪽 */
-  .btn-group.left {
-    justify-content: flex-start; /* 왼쪽 정렬 */
-  }
-
-  /* 버튼 그룹 오른쪽 */
-  .btn-group.right {
-    justify-content: flex-end; /* 오른쪽 정렬 */
-  }
-
-  /* 그리드 위 영역 */
-  .grid-controls {
-    display: flex;
-    justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
-    align-items: center;
-    margin-top:50px;
-    
-  }
-  .tui-grid-summary-area .tui-grid-cell, tui-grid-cell-content {
-    text-align: right;
-}
+	
+	  /* 그리드 전 form 관련 높이, 글자크기 */
+      .form-control,
+      .form-select,
+      .input-group-text {
+        height: 48px;
+        font-size: 1rem !important;
+      }
+      
+      /* 그리드 전 form 제목 길이 지정 */
+      .input-group-text {
+        width: 120px;
+      }
+	
+	 /* 버튼 그룹 기본 설정 */
+	  .btn-group {
+	    display: flex;
+	    gap: 5px; /* 버튼 간 간격 */
+	    font-size: 18px;
+	    margin-bottom: 10px;
+	  }
+	
+	  /* 버튼 그룹 왼쪽 */
+	  .btn-group.left {
+	    justify-content: flex-start; /* 왼쪽 정렬 */
+	  }
+	
+	  /* 버튼 그룹 오른쪽 */
+	  .btn-group.right {
+	    justify-content: flex-end; /* 오른쪽 정렬 */
+	  }
+	
+	  /* 그리드 위 영역 */
+	  .grid-controls {
+	    display: flex;
+	    justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
+	    align-items: center;
+	    margin-top:50px;
+	    
+	  }
+	  
+	  /* 그리드 합계 부분 오른쪽 정렬 */
+  	  .tui-grid-summary-area .tui-grid-cell, tui-grid-cell-content {
+    	text-align: right;
+		}
+		
+		/* 파일 선택 버튼 크기 조정 */
+	  .file-input-large::-webkit-file-upload-button {
+	    font-size: 1rem;
+	    padding: 0.9rem 1rem;
+	    background-color: #e8e8e8;
+	    border: none;
+	    border-radius: 0.25rem;
+	    cursor: pointer;
+	  }
+	
+	  .file-input-large::-webkit-file-upload-button:hover {
+	    background-color: #0056b3;
+	  }
+	
+	  .file-input-large::-ms-browse {
+	    font-size: 1rem;
+	    padding: 0.5rem 1rem;
+	    background-color: #007bff;
+	    color: white;
+	    border: none;
+	    border-radius: 0.25rem;
+	    cursor: pointer;
+	  }
+	  
 	</style>
   </head>
   <body>
@@ -44,149 +85,133 @@
       <form>
       
       <!-- 계약일자, 거래처 -->
-        <div class="row mb-3">
-        <!-- 계약일자 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="contract-date">계약일자</label>
-              <input type="date" class="form-control" id="contract-date" />
-            </div>
-          </div>
-          <!-- 거래처 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="client">거래처</label>
-              <div class="input-group">
-                <!-- 거래처 입력 필드-->
-                <input type="text" class="form-control" id="client" placeholder="거래처" readonly />
-                <!-- 거래처 선택 모달 호출 버튼 -->
-                <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#client-modal">
-                  <i class="lucide-search h-4 w-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+	<div class="row mb-3">
+	  <!-- 계약일자 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약일자</span>
+	      <input type="date" class="form-control" id="contract-date" />
+	    </div>
+	  </div>
+	  <!-- 거래처 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">거래처</span>
+	      <input type="text" class="form-control" id="client" placeholder="거래처" readonly />
+	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#client-modal">
+	        <i class="lucide-search h-4 w-4"></i>
+	      </button>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 계약코드, 계약명 -->
+	<div class="row mb-3">
+	  <!-- 계약코드 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약코드</span>
+	      <input type="text" class="form-control" id="contract-code" value="00005" readonly />
+	    </div>
+	  </div>
+	  <!-- 계약명 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약명</span>
+	      <input type="text" class="form-control" id="contract-name" placeholder="계약명" />
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 계약시작일, 계약종료일 -->
+	<div class="row mb-3">
+	  <!-- 계약시작일 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약시작일</span>
+	      <input type="date" class="form-control" id="billing-start-date" />
+	    </div>
+	  </div>
+	  <!-- 계약종료일 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약종료일</span>
+	      <input type="date" class="form-control" id="billing-end-date" />
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 부가세유형, 계약상태 -->
+	<div class="row mb-3">
+	  <!-- 부가세 유형 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">부가세유형</span>
+	      <select class="form-select" id="vat-type">
+	        <option>세금계산서</option>
+	      </select>
+	    </div>
+	  </div>
+	  <!-- 계약 상태 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약상태</span>
+	      <select class="form-select" id="status">
+	        <option>진행</option>
+	        <option>종료</option>
+	        <option>보류</option>
+	      </select>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 담당자, 부서 -->
+	<div class="row mb-3">
+	  <!-- 담당자 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">담당자</span>
+	      <input type="text" class="form-control" id="manager" placeholder="담당자" readonly />
+	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#manager-modal">
+	        <i class="lucide-search h-4 w-4"></i>
+	      </button>
+	    </div>
+	  </div>
+	  <!-- 부서 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">부서</span>
+	      <input type="text" class="form-control" id="department" placeholder="부서" readonly />
+	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#department-modal">
+	        <i class="lucide-search h-4 w-4"></i>
+	      </button>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 적요 -->
+	<div class="row mb-3">
+	  <div class="col-md-8">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">적요</span>
+	      <input type="text" class="form-control" id="description" placeholder="적요" />
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 첨부 -->
+	<div class="row mb-3">
+	  <div class="col-md-8">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">첨부</span>
+	      <input type="file" id="attachment-file" class="form-control file-input-large" />
+	    </div>
+	  </div>
+	</div>
+      
         
-		<!-- 계약코드, 계약명 -->
-        <div class="row mb-3">
-        <!-- 계약코드 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="contract-code">계약코드</label>
-              <!-- 자동 생성된 계약 코드 표시, 읽기 전용 -->
-              <input type="text" class="form-control" id="contract-code" value="00005" readonly />
-            </div>
-          </div>
-          <!-- 계약명 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="contract-name">계약명</label>
-              <input type="text" class="form-control" id="contract-name" placeholder="계약명" />
-            </div>
-          </div>
-        </div>
-        
-		<!-- 계약시작일, 계약종료일 -->
-        <div class="row mb-3">
-        <!-- 계약시작일 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="billing-start-date">계약시작일</label>
-              <input type="date" class="form-control" id="billing-start-date" />
-            </div>
-          </div>
-          <!-- 계약종료일 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="billing-end-date">계약종료일</label>
-              <input type="date" class="form-control" id="billing-end-date" />
-            </div>
-          </div>
-        </div>
-        
-		<!-- 부가세유형, 계약상태 -->
-        <div class="row mb-3">
-        <!-- 부가세 유형 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="vat-type">부가세유형</label>
-              <select class="form-select" id="vat-type">
-                <option>세금계산서</option>
-              </select>
-            </div>
-          </div>
-          <!-- 계약 상태 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="status">계약상태</label>
-               <!-- 계약 상태 선택 -->
-              <select class="form-select" id="status">
-                <option>진행</option>
-                <option>종료</option>
-                <option>보류</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-		<!-- 담당자, 부서 -->
-        <div class="row mb-3">
-        <!-- 담당자 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="manager">담당자</label>
-              <div class="input-group">
-               <!-- 담당자 필드-->
-                <input type="text" class="form-control" id="manager" placeholder="담당자" readonly />
-                <!-- 담당자 선택 모달 호출 버튼 -->
-                <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#manager-modal">
-                  <i class="lucide-search h-4 w-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- 부서 -->
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="department">부서</label>
-              <div class="input-group">
-              <!-- 부서 필드-->
-                <input type="text" class="form-control" id="department" placeholder="부서" readonly />
-                <!-- 부서 선택 모달 호출 버튼 -->
-                <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#department-modal">
-                  <i class="lucide-search h-4 w-4"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-		
-		<!-- 적요 -->
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <div class="form-group">
-              <label for="description">적요</label>
-              <!-- 적요 입력 필드 -->
-              <input type="text" class="form-control" id="description" placeholder="적요" />
-            </div>
-          </div>
-        </div>
-
-		<!-- 첨부 -->
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <div class="form-group">
-              <label for="attachment">첨부</label>
-              <div class="input-group">
-              <!-- 첨부파일 업로드 -->
-                <input type="file" id="attachment-file" class="form-control" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- 버튼 구역 -->
         <div class="grid-controls">
-        
 		<!-- 버튼 그룹 (그리드 위 왼쪽) -->
       <div class="btn-group left">
         <button type="button" class="btn btn-success" id="add-item-btn">+ 항목 추가</button>
@@ -201,16 +226,14 @@
         <!-- 리스트로 이동하는 버튼 -->
         <button type="button" class="btn btn-secondary">리스트</button>
       </div>
-
-
   </div>
+  
   	<!-- 그리드 -->
 	<div id="grid"></div>
-        
     
-        
         </form>
-        </div> <!-- 페이지 컨테이너 끝 -->
+        
+    </div> <!-- 페이지 컨테이너 끝 -->
       
       
 
@@ -268,6 +291,7 @@
       </div>
     </div>
 	
+	<!-- 토스트 공통 js -->
 	<script th:src='@{/js/index/toast.js}'></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -407,6 +431,7 @@
           document.getElementById("attachment").value = event.target.files[0].name;
         });
       });
+      
     </script>
   </body>
 </html>
