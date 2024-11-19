@@ -1,36 +1,51 @@
-//열추가하기 버튼
-//열을 추가하는 이벤트
-document.querySelector('.appendRowBtn').addEventListener('click',function(){
-	grid.appendRow();
-})
-//열을 삭제하는 이벤트
- 
-document.querySelector('.deleteRowBtn').addEventListener('click',  function () {
-	 grid.removeCheckedRows();
-	 
-	refreshRowNum();		
-	
-})
+/** 
+ * 에디터 타입 
+ * gridNumber : 숫자
+ * gridTime : 시간
+ * gridDate : 날짜
+ * gridCheckbox : 체크박스(로우넘)
+ * 
+ * 
+ * 
+*/
 
 
-function refreshRowNum () {
-	 window.setTimeout(function () {
-	let checkList = document.querySelectorAll('.countCheck')
-	let num = 1;
-	checkList.forEach(items => {
-		items.innerText = num;
-		num += 1;
-	})
-		
-	 }, 50)
+
+
+
+
+
+//숫자타입 인풋
+class gridNumber {
+  constructor(props) {
+    const el = document.createElement('input');
+
+    el.type = 'number';
+    el.value = String(props.value);
+	el.className = 'form-control form-control-sm'
+    this.el = el;
+  }
+
+  getElement() {
+    return this.el;
+  }
+
+  getValue() {
+    return this.el.value;
+  }
+
+  mounted() {
+    this.el.select();
+  }
 }
 
 
+
 //숫자있는 체크박스
-  class CheckboxRenderer {
+  class gridCheckbox {
     constructor(props) {
       const { grid, rowKey } = props;
-	  
+	
       const label = document.createElement('label');
       label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
       label.setAttribute('for', 'selectCheck'+String(rowKey));
@@ -125,3 +140,5 @@ mounted() {
     this.el.select();
 }
 }
+
+
