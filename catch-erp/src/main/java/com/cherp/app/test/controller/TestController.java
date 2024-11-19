@@ -15,7 +15,10 @@ public class TestController {
 	// JSM TEST
 	@GetMapping("testac")
 	public String testViewAc() {
-		return "account/invoice";
+		//return "human/attendanceInput";
+		//return "account/invoice";
+		return "account/contract";
+		//return "account/purchaseSlip";
 	}
 	// NKW TEST
 	@GetMapping("testStack")
@@ -27,4 +30,7 @@ public class TestController {
 	public String testView2() {
 		return "account/regBondReduction";
 	}
+	// GHT TEST
+	@GetMapping("testPurchase")
+	public String testPurchase() { return "purchase/purchasePage"; }
 }

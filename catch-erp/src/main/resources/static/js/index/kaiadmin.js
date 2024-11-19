@@ -1,7 +1,6 @@
 "use strict";
 
 
-console.log("gd")
 var logoHeaderContent = $('.sidebar .logo-header').html();
 $('.main-header .logo-header').html(logoHeaderContent);
 
@@ -415,5 +414,3 @@ $('.form-floating-label .form-control').keyup(function(){
 		$(this).removeClass('filled');
 	}
 })
-
-console.log("gd")
