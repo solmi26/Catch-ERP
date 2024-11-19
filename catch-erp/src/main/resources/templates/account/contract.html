@@ -7,40 +7,7 @@
     <meta charset="UTF-8" />
   <title>계약조회</title>
     <style>
-      body {
-        font-size: 13px;
-      }
 
-      /* 스크롤 가능한 테이블 컨테이너 */
-      .scrollable-table-container {
-        max-height: 400px; /* 세로 최대 높이 설정 */
-        overflow-y: auto; /* 세로 스크롤 활성화 */
-        overflow-x: auto; /* 가로 스크롤 활성화 */
-        margin-bottom: 10px; /* 버튼과 테이블 사이 간격 */
-        width: 100%; /* 화면 크기에 따라 너비를 조정 */
-      }
-
-      /* 테이블의 폭을 고정하지 않고, 내용에 맞게 너비가 줄어들도록 설정 */
-      .table {
-        min-width: 1000px; /* 테이블의 최소 너비 설정 */
-        width: 100%;
-        white-space: nowrap; /* 자동 줄바꿈 방지 */
-      }
-       .table thead th{
-    	font-size: 1rem; 
-  }
-
-      .btn {
-        font-size: 13px;
-        padding: 4px 8px;
-      }
-  #grid {
-    margin-bottom: 20px; /* 버튼 그룹과의 간격 */
-  }
-    .tui-pagination {
-    position: relative;
-    margin-top: 10px; /* 여유 공간 추가 */
-  }
       /* 버튼들이 고정된 위치에 나타나도록 합니다. */
       .button-group {
         display: flex;
@@ -50,109 +17,32 @@
         justify-content: flex-end; /* 버튼을 왼쪽에 정렬 */
       }
 
-      .search-bar {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-
-      .status-count {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-
-      .status-item {
-        border: 1px solid #dee2e6;
-        padding: 8px 15px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .status-number {
-        font-weight: bold;
-        color: #0d6efd;
-      }
-
-      .progress-dots {
-        display: flex;
-        gap: 3px;
-      }
-
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #dee2e6;
-      }
-
-      .dot.active {
-        background-color: #0d6efd;
-      }
-
-      .table th {
-        background-color: #f8f9fa;
-        font-weight: 500;
-      }
-
-      .action-link {
-        color: #0d6efd;
-        text-decoration: none;
-      }
-
-      .action-link:hover {
-        text-decoration: underline;
-      }
-
-      .status-box {
-        text-align: center;
-        padding: 8px;
-        border-right: 1px solid #dee2e6;
-      }
-
-      .status-box:last-child {
-        border-right: none;
-      }
-
-      .status-number {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #0d6efd;
-      }
-
-      .status-label {
-        font-size: 0.9rem;
-        color: #6c757d;
-      }
     </style>
   </head>
   <body>
-<div class="container-fluid p-4">
+  	
+  	<!-- 전체 컨테이너 -->
+	<div class="container-fluid p-4">
 
-  <!-- Search Bar -->
-  <!--  
-  <div class="search-bar d-flex justify-content-end">
-    <input type="text" class="form-control" style="width: 200px" placeholder="검색어 입력" />
-    <button class="btn btn-success">Search(F3)</button>
-    <button class="btn btn-secondary">Option</button>
-  </div>
-  -->
-  
-  <!-- 버튼 그룹을 페이징 위로 이동 -->
+  <!-- 버튼 그룹-->
   <div class="button-group">
     <button class="btn btn-success">신규 등록</button>
     <button class="btn btn-secondary">인쇄</button>
     <button class="btn btn-secondary">Excel</button>
   </div>
+  
+  <!-- 그리드 -->
   <div id="grid"></div>
+  
+  <!-- 페이지네이션 -->
   <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
-</div>
+  
+</div> <!-- 전체 컨테이너 끝. -->
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+    	
+    	// 그리드 기초 데이터
     	const gridData = [
     		  {
     		    contractNumber: "CN-2024-001",
@@ -178,6 +68,7 @@
     		  },
     		];
 
+    	 // 그리드 초기화
     	  const grid = new tui.Grid({
     	    el: document.querySelector('#grid'),
     	    data: gridData,
@@ -201,43 +92,15 @@
     	    rowHeaders: ['rowNum', 'checkbox'],
     	  });
 
+    	 // 그리드 클릭 이벤트 -> 추후 수정
     	  grid.on('click', (event) => {
     	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
     	      console.log('클릭이벤트 발생');
     	      console.log(event.rowKey);
     	    }
     	  });
-    	  
- 
-
-    	  // Search functionality
-    	  const searchInput = document.querySelector('input[type="text"]');
-    	  const searchButton = document.querySelector('.btn-primary');
-
-    	  searchButton.addEventListener('click', function() {
-    	    performSearch(searchInput.value);
-    	  });
-
-    	  document.addEventListener('keydown', function(e) {
-    	    if (e.key === 'F3') {
-    	      e.preventDefault();
-    	      performSearch(searchInput.value);
-    	    }
-    	  });
-
-    	  function performSearch(query) {
-    	    console.log('Searching for:', query);
-    	  }
-
-    	  // Format numbers
-    	  document.querySelectorAll('.text-end').forEach((cell) => {
-    	    const value = cell.textContent;
-    	    if (value && !isNaN(value.replace(/,/g, ''))) {
-    	      cell.textContent = Number(value.replace(/,/g, '')).toLocaleString('ko-KR');
-    	    }
-    	  });
-    	});
-
+    });
+    
     </script>
   </body>
 </html>
