@@ -133,9 +133,9 @@
       hiddenInput.checked = checked;
     }
   }
-/*==========================================
+/*================================================================
 		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
-============================================*/
+==================================================================*/
 document.addEventListener("DOMContentLoaded", function () {
     
     //모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용.
@@ -167,20 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
                      lessThanOrEqualTo: '이전(포함)'
 		}
 	}
-	Grid.setLanguage('ko', {
-                 Filter: {
-                    
-                 },
-                 DatePicker: {
-                     titles: {
-                         today: '오늘',
-                         clear: '지우기'
-                     },
-                     monthsLong: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                     monthsShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                     dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-                     dayNamesShort: ['일', '월', '화', '수', '목', '금', '토']
-                 }
+	
     });*/
     
 	Grid.applyTheme('default',  {
@@ -405,16 +392,13 @@ document.addEventListener("DOMContentLoaded", function () {
     ==============================*/
     
     // 모달 관련 JavaScript
-        const clientModal = document.getElementById('clientModal');
+        //const clientModal = document.getElementById('clientModal');
 
         //모달실행 시 grid refresh를 위한 코드
         document.getElementById('openClientModal').addEventListener('click', function() {
             window.setTimeout(function(){
                 grid3.refreshLayout();
             }, 200) 
-            window.setTimeout(function(){
-                grid4.refreshLayout();
-            }, 200)
         });
 
         let grid3; //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
@@ -657,8 +641,17 @@ document.addEventListener("DOMContentLoaded", function () {
 		            }
 		        },
 		        {
-		            header: '품목명',
+		            header: '품목코드',
 		            name: 'c4',
+		            align: "center",
+		            width: 100,
+		            whiteSpace: 'normal',
+		            className:'border'
+		        }
+		        ,
+		        {
+		            header: '품목명',
+		            name: 'c5',
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
@@ -666,7 +659,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        },
 		        {
 		            header: '거래처명',
-		            name: 'c5',
+		            name: 'c6',
 		            align: "center",
 		            width: 140,
 		            whiteSpace: 'normal',
@@ -674,15 +667,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		        },
 		        {
 		            header: '수량',
-		            name: 'c6',
+		            name: 'c7',
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
 		            className:'border'
 		        },
 		        {
-		            header: '단가',
-		            name: 'c7',
+		            header: '입고단가',
+		            name: 'c8',
 		            align: "center",
 		            width: 200,
 		            whiteSpace: 'normal',
@@ -703,51 +696,24 @@ document.addEventListener("DOMContentLoaded", function () {
 	// 샘플 데이터
 	const sampleData6 = [
 	    {
-        c1: 'A0000045',
-        c2: 'A0000045-1',
-        c3: '2023.01.01',
-        c4: '컵홀더',
-        c5: '12000',
-        c6: '5',
-        c7: '0'
-        
+	        c1: 'A0000045',
+	        c2: 'A0000045-1',
+	        c3: '2023.01.01',
+	        c4: 'z0001',
+	        c5: '컵홀더',
+	        c6: '태호물산',
+	        c7: '0',
+	        c8: '100'
 	    },
 	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-2',
-	        c3: '2023.01.02',
-	        c4: '포장용기',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '0'
-	       
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-3',
-	        c3: '2023.01.03',
-	        c4: '빨대',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '20000'
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-4',
-	        c3: '2023.01.04',
-	        c4: '컵(소형)',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '100000'
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-5',
-	        c3: '2023.01.05',
-	        c4: '컵(대형)',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '4000000'
+		    c1: 'A0000045',
+		    c2: 'A0000045-1',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '10000000'
 	    }
 	];
 	
