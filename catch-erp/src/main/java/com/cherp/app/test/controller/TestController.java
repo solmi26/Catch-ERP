@@ -23,6 +23,10 @@ public class TestController {
 	// NKW TEST
 	@GetMapping("testStack")
 	public String testViewStack() {
+		return "stack/stackAdjustment";
+	}
+	@GetMapping("testStack2")
+	public String testViewStack2() {
 		return "stack/stackInquery";
 	}
 	// SGW TEST

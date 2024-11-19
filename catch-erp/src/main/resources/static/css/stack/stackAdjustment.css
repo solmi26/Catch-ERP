@@ -1,4 +1,4 @@
-    /*============================
+	/*============================
     	StackInquery 본래 페이지 CSS
     ==============================*/
      .price-input {
@@ -92,10 +92,10 @@
         }
     
     /*============================
-    	StackInquery 창고검색 모달 CSS
+    	StackInquery 담당자검색 모달 CSS
     ==============================*/
     
-    /* !거래처 모달과 동일 CSS 적용! */
+    /* 추가필요 */
     
     
     
@@ -106,19 +106,90 @@
     
     /* !거래처 모달과 동일 CSS 적용! */
     
-    
     /*============================
-    	StackInquery 구매내역 모달 CSS
+    	StackInquery 재고조정 보고서 모달 CSS
     ==============================*/
     
-    /* !StackInquery 본래 페이지와 동일 CSS 적용! */
-    
-    
-    /*============================
-    	StackInquery 판매내역 모달 CSS
-    ==============================*/
-    
-    /* !StackInquery 본래 페이지와 동일 CSS 적용! */
-    
-    
-    
+    	.modal-header {
+            background-color: #AACB73;
+            color: #FFFFE8;
+        }
+        .report-form {
+            border: 2px solid #000;
+            margin: 1rem;
+            background: white;
+        }
+        .report-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 2rem 0;
+            letter-spacing: 0.5em;
+        }
+        .table-container {
+            max-height: 610px;
+            overflow-y: auto;
+        }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .report-table th,
+        .report-table td {
+            border: 1.5px solid #000;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            height: 30px;
+        }
+        .report-table thead th {
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            border-bottom: 2px solid #000;
+        }
+        .col-serial { width: 80px; }
+        .col-name { width: 200px; }
+        .col-type { width: 60px; }
+        .col-amount { width: 100px; }
+        .col-price { width: 120px; }
+        .col-reason { width: 200px; }
+        
+        .signature-section {
+            border-top: 2px solid #000;
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .signature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .signature-box {
+            text-align: left;
+        }
+        .signature-title {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .signature-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .signature-fields {
+            line-height: 2;
+            font-size: 12px;
+        }
+        .seal-space {
+            width: 60px;
+            height: 60px;
+            border: 1.5px solid #000;
+            margin-left: 10px;
+        }
+        .table-row-height {
+            height: 40px;
+        }

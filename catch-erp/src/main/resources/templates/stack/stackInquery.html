@@ -13,7 +13,7 @@
 	    <div class="container mt-4">
 	        <!-- Header -->
 	        <div class="d-flex justify-content-between align-items-center mb-3">
-	            <h4>재고</h4>
+	            <h4>재고조회</h4>
 	        </div>
 	        <!-- Form -->
 	        <div class="card">
@@ -49,7 +49,7 @@
 	                              </div>
 	                          </div>
 	                          <div class="col-md-3">
-	                            <label class="form-label">상품명</label>
+	                            <label class="form-label">품목명</label>
 	                            <div class="input-group">
 	                                <input type="text" class="form-control">
 	                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#purchaseOrderModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -89,46 +89,18 @@
 	                <button class="btn btn-primary">조회하기</button>
 	              </div>
 	          </form>
-	        </div>
-	
-	        <!-- Transaction History Select -->
-	        <div class="justify-content-center">
-	        	<div class="row g-3" >
-			        <div class="btn-group dropdown " >
-			          <button
-			            class="btn btn-primary dropdown-toggle"
-			            type="button"
-			            data-bs-toggle="dropdown"
-			            
-			          >
-			            거래내역보기
-			          </button>
-			          <ul class="dropdown-menu" role="menu">
-			            <li>
-			              <a class="dropdown-item" href="#">구매내역</a>
-			              <a class="dropdown-item" href="#">판매내역</a>
-			            </li>
-			          </ul>
-			        </div>
-			        
-		            <button class="btn btn-success">재고조정</button>
-		            <button class="btn btn-primary">선택취소</button>
-		            <button class="btn btn-warning">입력초기화</button>
-			    </div>
-	        </div>
+	        </div>	
+	        	        
 	        <!-- 재고조회 및 조정 페이지의 출력 될 Table -->
 	        <div class="table-responsive">
 	            <div id="wrap">
-	                <div id="adjustmentGrid">
+	                <div id="inqueryGrid">
 	        
 	                </div>
-	               <div id="inqueryGrid">
 	               
-	               </div>
 	            </div>
 	        </div>
-	
-	        
+		        
 	    </div>
 	    
 	    <!-- 거래처 검색 모달 HTML -->
@@ -138,9 +110,7 @@
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <h5 class="modal-title" id="modalLabel">거래처검색</h5>
-	                    <div>
-	                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	                    </div>
+	                   
 	                </div>               
 	                <div class="modal-body p-0">
 	                    <div id="clientGrid">
@@ -160,9 +130,7 @@
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <h5 class="modal-title" id="modalLabel">창고검색</h5>
-	                    <div>
-	                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	                    </div>
+	                    
 	                </div>
 	                <div class="modal-body p-0">
 	                    <div id="warehouseGrid">
@@ -182,7 +150,7 @@
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <h5 class="modal-title" id="modalLabel">품목 조회</h5>
-	                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                    
 	                </div>
 	                <div class="modal-body">                  
 	                    
@@ -190,14 +158,15 @@
 	                </div>
 	                <div class="modal-footer justify-content-between">
 	                   	<p><small>※품목코드를 클릭하여 입력하세요.</small></p>
-	                    <div>
-	                        <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">닫기</button>
-	                        <button type="button" class="btn btn-primary">확인</button>
+	                    <div>	                        
+	                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
 	                    </div>
 	                </div>
 	            </div>
 	        </div>
-	    </div>
-		<script th:src="@{/js/stack/stackInquery.js}"></script>
+	    </div>	    	   	  	    
+	    	    
+    <!-- 재고조회에 전체적용되는 JS -->
+	<script th:src="@{/js/stack/stackInquery.js}"></script>
 	</body>
 </html>
