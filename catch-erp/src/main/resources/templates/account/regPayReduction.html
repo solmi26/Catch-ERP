@@ -97,21 +97,15 @@
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
-	  fetch('TEST_DATA.json')
-	  .then(result=> result.json())
-	  .then((data) => {
-		  console.log(data)
-	  })
-	  
 	//JSON 로드
-	fetch('TEST_DATA.json')
+	fetch('http://localhost:8026/payList')
   	.then(result => result.json())
-  	.then((data) => {
+  	.then((result) => {
 	    //grid 설정하기
 	    //toast ui table 기본 틀 작성
 	    const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
 	      el: document.querySelector('#grid'),
-	      data: data, // toast ui table 에 입력할 데이터값
+	      data: result, // toast ui table 에 입력할 데이터값
 	      scrollX: true,
 	      scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
 	      pageOptions: {
@@ -119,58 +113,58 @@
 	        perPage: 5
 	      },
 	      columns: [
-	    	  {
-	              header: '채권번호',
-	              name: 'debentureNo',
-	              sortable: true,
-	              filter: 'select',
-	              editor: 'text',
-	              align: 'center'
-	          },
-	          {
-	              header: '발생일자',
-	              name: 'startDate',
-	              editor: 'text',
-	              sortable: true,
-	              align: 'left'
-	          },
-	          {
-	              header: '거래처코드',
-	              name: 'clientCode',
-	              editor: 'text',
-	              filter: 'select',
-	              sortable: true,
-	              align: 'left'
-	          },
-	          {
-	              header: '거래처명',
-	              name: 'clientName',
-	              editor: 'text',
-	              filter: 'select',
-	              sortable: true,
-	              align: 'left'
-	          },
-	          {
-	              header: '잔액',
-	              name: 'balance',
-	              editor: 'text',
-	              sortable: true,
-	              align: 'left'
-	          },
-	          {
-	              header: '입금금액',
-	              name: 'depositAmount',
-	              editor: 'text',
-	              sortable: true,
-	              align: 'left'
-	          },
-	          {
-	          	header: '채권상태',
-	          	name: 'bondStatus',
-	          	editor: 'text',
-	          	sortable: true,
-	          	align: 'left'
-	          }
+                  {
+                      header: '채권번호',
+                      name: 'recLogId',
+                      sortable: true,
+                      filter: 'select',
+                      editor: 'text',
+                      align: 'center'
+                  },
+                  {
+                      header: '발생일자',
+                      name: 'recDate',
+                      editor: 'text',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '거래처명',
+                      name: 'clientName',
+                      editor: 'text',
+                      filter: 'select',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '계좌코드',
+                      name: 'bacctCode',
+                      editor: 'text',
+                      filter: 'select',
+                      sortable: true,
+                      align: 'left'
+                  },      
+                  {
+                      header: '잔액',
+                      name: 'recBalance',
+                      editor: 'text',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '입금금액',
+                      name: 'decreasePrice',
+                      editor: 'text',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                    header: '채무상태',
+                    name: 'recStatus',
+                    editor: 'text',
+                    sortable: true,
+                    align: 'left'
+                  }
          ],
 	     rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
 	  });
