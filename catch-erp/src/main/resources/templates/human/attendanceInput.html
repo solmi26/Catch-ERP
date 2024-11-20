@@ -140,7 +140,7 @@
             </div>
         </div>
     </div>
-
+<!-- 사원검색모달끝 -->
 
 <!-- 근태항목검색 모달!!! -->    
     <div class="modal fade" id="aeSearchModal" tabindex="-1">
@@ -194,12 +194,10 @@
     
     <!-- 근태항목조회 모달끝!!! -->
 		
-		<script th:src='@{/js/human/empListModal.js}'></script>
-		<script th:src='@{/js/human/aeSearchModal.js}'></script>
 	<script th:src='@{/js/human/toastsetting.js}'></script>
 	<script>
-
-	    const grid = new tui.Grid({
+		const Grid = new tui.Grid
+	    const grid = new Grid({
 	      el: document.getElementById('grid'),
 	      bodyHeight:400,
 	      scrollX: false,
@@ -266,6 +264,9 @@
 	  
 	  
 	</script>
+	<script th:src='@{/js/human/modal/employeeListModal.js}'></script>
+	<script th:src='@{/js/human/modal/aeSearchModal.js}'></script>
+	
 </body>
 	<script th:src="@{js/human/attendanceInput.js}"></script>
 </html>

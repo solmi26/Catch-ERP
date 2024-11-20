@@ -77,10 +77,10 @@
 					<div class="col-auto">
 						<div class="row">
 							<div class="col-auto"> 
-								<button class="btn btn-danger btn-sm deleteBtn">삭제</button>
+								<button class="btn btn-danger btn-sm deleteRowBtn">삭제</button>
 							</div>
 							<div class="col-auto">
-								<button class="btn btn-primary btn-sm addRowBtn">신규</button>						
+								<button class="btn btn-primary btn-sm appendRowBtn">신규</button>						
 							</div>
 						</div>
 					</div>
@@ -101,109 +101,170 @@
 			</div>
 		</div>
 	</div>
+	
+	
+<!-- 사원검색 모달시작!! -->	
+    <div class="modal fade" id="empModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">사원검색</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>사원검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col input-group">
+                                            <span class="input-group-text p-0" style="min-width: 110px;">
+                                                <select class="form-select input-group-text "style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                    <option selected>성명</option>
+                                                    <option value="1">사원번호</option>
+                                                    <option value="2">부서명</option>
+                                                </select>                                          
+                                            </span>
+                                            <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                            <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="empGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 사원검색 모달끝!! -->
+
+<!-- 부서검색 모달시작!! -->
+    <div class="modal fade" id="dsModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">부서검색</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>부서검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col ">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text p-0" style="width: 100px;">
+                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                        <option selected style="width:80px;">부서명</option>
+                                                        <option value="1" style="width:80px;">부서코드</option>
+                                                    </select>                                          
+                                                </span>
+                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="dsGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 부서검색 모달끝!! -->
+
+<!-- 직위직급 검색 모달시작!!! -->
+    <div class="modal fade" id="empPositionModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">직위직급</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>직위직급</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col ">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text p-0" style="width: 100px;">
+                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                        <option selected style="width:80px;">직위/직급명</option>
+                                                        <option value="1" style="width:80px;">직위/직급코드</option>
+                                                    </select>                                          
+                                                </span>
+                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="empPositionGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 직위직급 모달 끝!!! -->
+
+	<script th:src='@{/js/common/appendRowBtn.js}'></script>
+	<script th:src='@{/js/common/deleteRowBtn.js}'></script>
+	
+	<script th:src='@{/js/common/toastsetting.js}'></script>
 	<script>
 	//숫자있는 체크박스
-
-      class CheckboxRenderer {
-        constructor(props) {
-          const { grid, rowKey } = props;
-		  
-          const label = document.createElement('label');
-          label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
-          label.setAttribute('for', 'selectCheck'+String(rowKey));
-	      label.innerText = `${grid.getIndexOfRow(rowKey)+1}`;
-	      console.log(props)
-          const hiddenInput = document.createElement('input');
-          hiddenInput.className = 'hidden-input';
-          hiddenInput.id = 'selectCheck'+String(rowKey);
-		
-          
-          const customInput = document.createElement('span');
-          customInput.className = 'custom-input';
-
-          customInput.appendChild(hiddenInput);
-          customInput.appendChild(label);
-
-          hiddenInput.type = 'checkbox';
-          label.addEventListener('click', (ev) => {
-            ev.preventDefault();
-
-            if (ev.shiftKey) {
-              grid[!hiddenInput.checked ? 'checkBetween' : 'uncheckBetween'](rowKey);
-              return;
-            }
-
-            grid[!hiddenInput.checked ? 'check' : 'uncheck'](rowKey);
-          });
-
-          this.el = customInput;
-
-          this.render(props);
-        }
-
-        getElement() {
-          return this.el;
-        }
-
-        render(props) {
-          const hiddenInput = this.el.querySelector('.hidden-input');
-          const checked = Boolean(props.value);
-
-          hiddenInput.checked = checked;
-        }
-      }
-	
-      
-	
-	
-	
-    //토스트 컬럼 타입 정의(시간)
-    class gridTime {
-    constructor(props) {
-        const el = document.createElement('input');
-
-        el.type = 'time';
-        el.value = String(props.value);
-        el.className = 'form-control from-control-sm'
-        this.el = el;
-    }
-
-    getElement() {
-        return this.el;
-    }
-
-    getValue() {
-        return this.el.value;
-    }
-
-    mounted() {
-        this.el.select();
-    }
-    }
-    //토스트 컬럼 타입 정의 (날짜)
-    class gridDate {
-    constructor(props) {
-        const el = document.createElement('input');
-
-        el.type = 'date';
-        el.value = String(props.value);
-        el.className = 'form-control from-control-sm'
-        this.el = el;
-    }
-
-    getElement() {
-        return this.el;
-    }
-
-    getValue() {
-        return this.el.value;
-    }
-
-    mounted() {
-        this.el.select();
-    }
-    }
-
     const Grid = tui.Grid;
     const grid = new Grid({
     el: document.getElementById('grid'), // Container element
@@ -221,7 +282,7 @@
         	</span>
         `,
           renderer: {
-            type: CheckboxRenderer
+            type: gridCheckbox
           }
         }
       ],
@@ -244,7 +305,7 @@
         },
         {
         header: '사원코드',
-        name: 'emoloyeeCode',
+        name: 'employeeCode',
         },
         {
         header: '성명',
@@ -298,6 +359,9 @@
 	
 
 	</script>
+	<script th:src="@{/js/human/modal/empPositionModal.js}"></script>
+	<script th:src="@{/js/human/modal/dsModal.js}"></script>
+	<script th:src="@{/js/human/modal/employeeListModal.js}"></script>
 	<script th:src="@{/js/human/employeeHistoryInput.js}"></script>
 </body>
 </html>
