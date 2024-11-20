@@ -24,7 +24,7 @@
    	
    	/* 체크박스 */
    	.hidden-input:checked + label {
-   		background-color: #ffad46;
+   		background-color: #cadcff;
    	}
 	
 	/* 모달 헤더 스타일 */
@@ -45,8 +45,7 @@
       	border:2px solid black;
       }
       
-
-      /* 모딜 하단 버튼 컨테이너 스타일 */
+      /* 모달 하단 버튼 컨테이너 스타일 */
       .bottom-buttons {
      	display: flex;
         border-top: 1px solid #dee2e6; /* 상단 경계선 */
@@ -54,4 +53,18 @@
         background-color: #f8f9fa; /* 배경색 */
         justify-content: flex-end; /* 오른쪽 끝에 배치*/
       }
+      
+     /* 그리드 합계 부분 오른쪽 정렬 */
+  	.tui-grid-summary-area .tui-grid-cell, tui-grid-cell-content {
+    	text-align: right;
+		}
      
+     /* 버튼 그룹 왼쪽 */
+	  .btn-group.left {
+	    justify-content: flex-start; /* 왼쪽 정렬 */
+	  }
+	
+	  /* 버튼 그룹 오른쪽 */
+	  .btn-group.right {
+	    justify-content: flex-end; /* 오른쪽 정렬 */
+	  }

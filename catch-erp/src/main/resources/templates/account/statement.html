@@ -9,16 +9,16 @@
  
 	<style>
 	
-
-  .sales {
-    background-color: #e0f7fa !important; /* 밝은 파랑색 */
-         
-  }
-
-  .purchase {
-    background-color: #ffebee !important; /* 밝은 빨강색 */
-  
-  }
+		/* 매출전표는 파랑색 */	
+	  .sales {
+	    background-color: #e0f7fa !important; /* 밝은 파랑색 */
+	  }
+	
+		/* 매입전표는 빨간색 */	
+	  .purchase {
+	    background-color: #ffebee !important; /* 밝은 빨강색 */
+	  
+	  }
 
 	  
 	</style>
@@ -124,7 +124,19 @@
     	    	    align: "center",
     	    	  },
     	    	],
-    	    rowHeaders: ['rowNum', 'checkbox'],	   
+      	      rowHeaders: [
+    	            {
+    	              type: 'checkbox',
+    	              header: 
+    	                `<span class="custom-input">
+    	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+    	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+    	                </span>`
+    	            ,
+    	              renderer: {
+    	                type: gridCheckbox
+    	              }
+    	            }],
     	  });
     	 
     	 
