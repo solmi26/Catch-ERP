@@ -16,7 +16,7 @@ let currentTarget = null;
 
 //인사발령입력 테이블의 이벤트
 grid.on('click',function (ev) {
-	console.log(ev.columnName)
+	console.log(ev)
 	
 	if (ev.columnName == 'employeeCode') {
 			currentTarget = ev;
