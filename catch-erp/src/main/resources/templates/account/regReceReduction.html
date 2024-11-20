@@ -16,10 +16,10 @@
 </style>
 </head>
 <body>
-  <div class="container my-5 p-4 bg-white shadow-sm rounded">
+  <div class="bg-white shadow-sm rounded" style="padding: 20px;">
     <!-- Search Section -->
     <div class="border-bottom pb-3 mb-4">
-      <h4 class="text-primary">채무감소등록</h4>
+      <h2>채무감소등록</h2>
     </div>
     <div class="gridWrapper">
       <div id="grid"></div>
@@ -92,125 +92,112 @@
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
-    const gridData = [
-      {
-        debentureNo: '11234578956',
-        startDate: '2024/11/10',
-        endDate: '2024/11/14',
-        debentureName: '외상매출금',
-        clientCode: '15631534',
-        clientName: '김치좋아',
-        balance: '98000',
-        depositAmount: '',
-      }
-    ];
-    //toast ui table 기본 틀 작성
-    const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
-      el: document.querySelector('#grid'),
-      data: gridData, // toast ui table 에 입력할 데이터값
-      scrollX: true,
-      scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
-      pageOptions: {
-        useClient: true,
-        perPage: 5
-      },
-      columns: [
-                {
-                    header: '채권번호',
-                    name: 'debentureNo',
-                    sortable: true,
-                    filter: 'select',
-                    editor: 'text',
-                    align: 'center'
-                },
-                {
-                    header: '발생일자',
-                    name: 'startDate',
-                    editor: 'text',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '만기일자',
-                    name: 'endDate',
-                    editor: 'text',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '채무계정명',
-                    name: 'debentureName',
-                    editor: 'text',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '거래처코드',
-                    name: 'clientCode',
-                    editor: 'text',
-                    filter: 'select',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '거래처명',
-                    name: 'clientName',
-                    editor: 'text',
-                    filter: 'select',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '잔액',
-                    name: 'balance',
+
+    fetch("http://localhost:8026/receList") // 추후 url수정되면 수정된 url으로 수정
+    .then(result => result.json())
+    .then(result => {
+      console.log(result);
+      //toast ui table 기본 틀 작성
+      const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
+        el: document.querySelector('#grid'),
+        data: result, // toast ui table 에 입력할 데이터값
+        scrollX: true,
+        scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
+        pageOptions: {
+          useClient: true,
+          perPage: 5
+        },
+        columns: [
+                  {
+                      header: '채권번호',
+                      name: 'logId',
+                      sortable: true,
+                      filter: 'select',
+                      editor: 'text',
+                      align: 'center'
+                  },
+                  {
+                      header: '발생일자',
+                      name: 'recDate',
+                      editor: 'text',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '거래처코드',
+                      name: 'bacctCode',
+                      editor: 'text',
+                      filter: 'select',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '거래처명',
+                      name: 'clientName',
+                      editor: 'text',
+                      filter: 'select',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '잔액',
+                      name: 'recBalance',
+                      editor: 'text',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '입금금액',
+                      name: 'decreasePrice',
+                      editor: 'text',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                    header: '채무상태',
+                    name: 'recStatus',
                     editor: 'text',
                     sortable: true,
                     align: 'left'
-                },
-                {
-                    header: '입금금액',
-                    name: 'depositAmount',
-                    editor: 'text',
-                    sortable: true,
-                    align: 'left'
-                }
-            ],
-      rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
-    });
-    
-    grid.on('click', (event) => { // grid 클릭이벤트 발생
-      if(event.columnName === 'debentureNo' && event.rowKey>=0) {
-        console.log("클릭이벤트 발생");
-        console.log(event.rowKey);
-      }
+                  }
+              ],
+        rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
+      });
+      
+      grid.on('click', (event) => { // grid 클릭이벤트 발생
+        if(event.columnName === 'debentureNo' && event.rowKey>=0) {
+          console.log("클릭이벤트 발생");
+          console.log(event.rowKey);
+        }
+      })
+      // 계좌 목록 조회 모달
+      let accountList = [
+        {accCode:"123124",accName:"예담담"},
+      ];
+      //Build Tabulator
+      let accList = new Tabulator("#example-table", {
+          layout:"fitColumns",
+          pagination:"local",
+          data: accountList,
+          paginationSize:6,
+          paginationSizeSelector:[3, 6, 8, 10],
+          movableColumns:true,
+          paginationCounter:"rows",
+          columns:[
+              {title:"계좌코드", field:"accCode", width:320, sorter:"string", headerFilter:"input"},
+              {title:"계좌명", field:"accName", width:440, sorter:"string", headerFilter:"input"},
+          ],
+      });
+      accList.on("rowClick", function(event) {
+        alert("계좌 상세 이동 기능 구현");
+      })
+      // 신규 계좌 생성 모달
+      // 저장 버튼 클릭 이벤트
+      saveButton.addEventListener('click', function() {
+          // 여기에 저장 로직 추가
+          alert('저장 기능 구현중.');
+      });
     })
-    // 계좌 목록 조회 모달
-    let accountList = [
-      {accCode:"123124",accName:"예담담"},
-    ];
-    //Build Tabulator
-    let accList = new Tabulator("#example-table", {
-        layout:"fitColumns",
-        pagination:"local",
-        data: accountList,
-        paginationSize:6,
-        paginationSizeSelector:[3, 6, 8, 10],
-        movableColumns:true,
-        paginationCounter:"rows",
-        columns:[
-            {title:"계좌코드", field:"accCode", width:320, sorter:"string", headerFilter:"input"},
-            {title:"계좌명", field:"accName", width:440, sorter:"string", headerFilter:"input"},
-        ],
-    });
-    accList.on("rowClick", function(event) {
-      alert("계좌 상세 이동 기능 구현");
-    })
-    // 신규 계좌 생성 모달
-    // 저장 버튼 클릭 이벤트
-    saveButton.addEventListener('click', function() {
-        // 여기에 저장 로직 추가
-        alert('저장 기능 구현중.');
-    });
   })
     
   </script>

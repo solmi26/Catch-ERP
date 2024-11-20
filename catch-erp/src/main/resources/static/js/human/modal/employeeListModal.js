@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-        const Grid = tui.Grid;
+    
         const empGrid = new Grid({
         el: document.getElementById('empGrid'), // Container element
         scrollX: false,
@@ -72,6 +72,4 @@ document.addEventListener('DOMContentLoaded', function () {
         showDummyRows: true
         });
 
-        instance.resetData(newData); // Call API of instance's public method
 
-        Grid.applyTheme('striped'); // Call API of static method

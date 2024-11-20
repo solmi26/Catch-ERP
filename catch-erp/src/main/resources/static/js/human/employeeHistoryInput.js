@@ -1,33 +1,60 @@
 /**
  * 
  */
+let currentTarget = null;
 
- console.log('zzz')
- document.querySelector('.addRowBtn').addEventListener('click',function () {
-	let standardDate =document.querySelector('.standard-date')
-	
-	grid.appendRow({name:standardDate.value})
-	
+//인사기록 토스트 그리드 이벤트
+grid.on('click', function (ev) {
+	console.log(ev)
+	if (ev.columnName == 'employeeCode' || ev.columnName == 'employeeName') {
+		currentTarget = ev;
+		window.setTimeout(function(){
+        empGrid.refreshLayout();
+        }, 200) 
+		empModal.show()
+	}
+	if (ev.columnName == 'assignedDepartment') {
+		currentTarget = ev
+		window.setTimeout(function(){
+        dsGrid.refreshLayout();
+        }, 200)
+        dsModal.show(); 
+	}
+	if (ev.columnName == 'assignedPosition') {
+		currentTarget = ev
+		window.setTimeout(function(){
+        empPositionGrid.refreshLayout();
+        }, 200)
+        empPositionModal.show()
 
- })
- 
-document.querySelector('.deleteBtn').addEventListener('click',  function () {
-	 grid.removeCheckedRows();
-	 
-	refreshRowNum();		
-	
+	}
 })
 
+//사원검색 모달창 이벤트
+empGrid.on('click',function (ev) {
+	if (ev.targetType == 'cell') {
+		let empName = empGrid.getFormattedValue(ev.rowKey,'employeeName');
+		grid.setValue(currentTarget.rowKey,'employeeName',empName)
+		empModal.hide()
+	}
+})
 
-function refreshRowNum () {
-	 window.setTimeout(function () {
-	let checkList = document.querySelectorAll('.countCheck')
-	console.log(checkList.length);
-	let num = 1;
-	checkList.forEach(items => {
-		items.innerText = num;
-		num += 1;
-	})
+//부서검색 모달창 이벤트
+dsGrid.on('click', function (ev) {
+	if (ev.targetType == 'cell') {
+		let deptName = dsGrid.getFormattedValue(ev.rowKey,'departmentName')
+		grid.setValue(currentTarget.rowKey,'assignedDepartment',deptName)
+		dsModal.hide()
+	}
+})
+ 
+//직급/직위검색 모달창 이벤트
+empPositionGrid.on('click',function (ev) {
+	if (ev.targetType == 'cell') {
+		let position = empPositionGrid.getFormattedValue(ev.rowKey,'name')
+		grid.setValue(currentTarget.rowKey,'assignedPosition',position)
+		empPositionModal.hide()
 		
-	 }, 50)
-}
+		
+	}
+})

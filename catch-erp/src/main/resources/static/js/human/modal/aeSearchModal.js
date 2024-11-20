@@ -1,7 +1,6 @@
 /**
  * 
  */
-console.log('불러옴?')
 //모달이벤트
 const aeSearchModal = new bootstrap.Modal(document.getElementById('aeSearchModal'))
 
