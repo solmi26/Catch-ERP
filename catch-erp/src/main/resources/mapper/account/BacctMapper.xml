@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cherp.app.acct.mapper.BacctMapper">
+	<select id="selectAllBacctList" resultType="com.cherp.app.acct.vo.BacctVO">
+		SELECT *
+		FROM   bacct
+	</select>
+	
+	<insert id="insertBacct" parameterType="com.cherp.app.acct.vo.BacctVO">
+		<selectKey keyProperty="bacctCode" order="BEFORE" resultType="int">
+			SELECT NVL(MAX(bacct_code),100) + 1
+			FROM bacct
+		</selectKey>
+		INSERT INTO bacct (
+                     bacct_code
+                    ,bacct_no
+                    ,bacct_name
+                    ,bank_name
+                    ,summary
+                    )
+		VALUES(
+		         #{bacctCode}
+		        ,#{bacctNo}
+		        ,#{bacctName}
+		        ,#{bankName}
+		        ,#{summary}
+		        )
+	</insert>
+	
+	
+</mapper>

@@ -66,7 +66,7 @@
 		    padding: 0px 0px 4px 4px !important;
 		    font-size:12px;
 		}
-
+		}
 </style>
 </head>
 <body>
@@ -277,6 +277,205 @@
 		
 		</div>	
 	</div>
+	
+
+<!-- 인사발령수정 모달창!!! -->
+
+    <div class="modal fade" id="ehModifyModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">인사발령수정</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>인사발령수정</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--근태테이블-->
+                        <div class="row" style="overflow:auto;">
+                            <div id="ehModifyGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 인사발령수정 모달창끝!!! -->	
+
+<!-- 사원검색 모달창!! -->
+    <div class="modal fade" id="empModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">사원검색</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>사원검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col input-group">
+                                            <span class="input-group-text p-0" style="min-width: 110px;">
+                                                <select class="form-select input-group-text "style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                    <option selected>성명</option>
+                                                    <option value="1">사원번호</option>
+                                                    <option value="2">부서명</option>
+                                                </select>                                          
+                                            </span>
+                                            <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                            <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="empGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 사원검색 모달창끝!! -->
+
+<!-- 부서검색 모달창 시작!! -->
+    <div class="modal fade" id="dsModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">부서검색</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>부서검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col ">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text p-0" style="width: 100px;">
+                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                        <option selected style="width:80px;">부서명</option>
+                                                        <option value="1" style="width:80px;">부서코드</option>
+                                                    </select>                                          
+                                                </span>
+                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="dsGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 부서검색 모달창 끝!! -->
+
+
+<!-- 직위직책 모달창 시작!! -->
+    <div class="modal fade" id="empPositionModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">직위직급</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
+                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>직위직급</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col ">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text p-0" style="width: 100px;">
+                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                        <option selected style="width:80px;">직위/직급명</option>
+                                                        <option value="1" style="width:80px;">직위/직급코드</option>
+                                                    </select>                                          
+                                                </span>
+                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="empPositionGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- 직위직책 모달창 끝!! -->
+
+	<script th:src="@{/js/common/toastsetting.js}"></script>
 	<script>
         const Grid = tui.Grid;
         const grid = new Grid({
@@ -345,10 +544,16 @@
         ],
         });
 
-        instance.resetData(newData); // Call API of instance's public method
-
-        Grid.applyTheme('striped'); // Call API of static method
-		
+				
 	</script>
+	
+	<script th:src="@{/js/human/modal/empPositionModal.js}"></script>
+	<script th:src="@{/js/human/modal/employeeListModal.js}"></script>
+	<script th:src="@{/js/human/modal/dsModal.js}"></script>
+	<script th:src="@{/js/human/modal/ehModifyModal.js}"></script>
+	<script th:src="@{/js/human/employeeHistory.js}"></script>
+	
 </body>
 </html>
+
+

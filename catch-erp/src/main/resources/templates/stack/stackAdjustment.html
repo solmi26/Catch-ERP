@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/stack_layout}"
+      layout:fragment="Content">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>재고조정</title>	    	    
+	    <link rel="stylesheet" th:href="@{/css/stack/stackAdjustment.css}" />
+	</head>
+	<body>
+	    <div class="container mt-4">
+	        <!-- Header -->
+	        <div class="d-flex justify-content-between align-items-center mb-3">
+	            <h4>재고조정</h4>
+	        </div>
+	        <!-- Form -->
+	        <div class="card">
+	          <form class="bg-light p-4 rounded card-body">
+	              <div class="row g-3">
+	                  <div class="col-md-12">
+	                      <div class="row g-3">
+	                          <div class="col-md-2">
+	                              <label class="form-label">조회시작일자</label>
+	                              <input type="date" class="form-control">
+	                          </div>
+	                          <div class="col-md-2">
+	                            <label class="form-label">조회종료일자</label>
+	                            <input type="date" class="form-control">
+	                        </div>
+	                          <div class="col-md-3">
+	                              <label class="form-label">거래처</label>
+	                              <div class="input-group">
+	                                  <input type="text" class="form-control" id="clientInput">
+	                                  <!-- 거래처 모달 트리거 버튼 -->
+	                                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+	                                  </svg></button>
+	                              </div>
+	                          </div>
+	                          <div class="col-md-2">
+	                              <label class="form-label">담당자</label>
+	                              <div class="input-group">
+	                                  <input type="text" class="form-control" id="humanInput">
+	                                  <!-- 사원검색 모달 트리거 버튼 -->
+	                                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#humanModal" id="humanInqueryModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+	                                  </svg></button>
+	                              </div>
+	                          </div>
+	                          <div class="col-md-3">
+	                            <label class="form-label">품목명</label>
+	                            <div class="input-group">
+	                                <input type="text" class="form-control" id="itemInput">
+	                                <!-- 품목검색 모달 트리거 버튼 -->
+	                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#purchaseOrderModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+	                                  </svg></button>
+	                            </div>
+	                        </div>
+	                      </div>
+	                  </div>
+	           
+	              </div>
+	              <div style="margin-top: 10px;">
+	                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseOrderModal2" id="purchaseOrderBtn">구매현황 조회</button>
+	                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesOrderModal" id="salesOrderBtn">출하지시내역 조회</button>
+	              </div>
+	          </form>
+	        </div>
+	
+	        <div class="justify-content-center">
+	        	<div class="row g-3" >			        
+			        <div class="col" style="padding-bottom: 10px;" >
+			            <button class="btn btn-success" style="margin-right: 0px" data-bs-toggle="modal" data-bs-target="#reportModal">재고조정</button>
+			            <button class="btn btn-primary" style="margin-right: 0px">선택취소</button>
+			            <button class="btn btn-warning" style="margin-right: 0px">입력초기화</button>
+		            </div>
+			    </div>
+	        </div>
+	        <!-- 재고조회 및 조정 페이지의 출력 될 Table -->
+	        <div class="table-responsive">
+	            <div id="wrap">
+	                <div id="adjustmentGrid">
+	        
+	                </div>
+	               <div id="inqueryGrid">
+	               
+	               </div>
+	            </div>
+	        </div>
+	
+	        
+	    </div>
+	    
+	    <!-- 거래처 검색 모달 HTML -->
+	    
+	    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-lg">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">거래처검색</h5>
+	                   
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="clientGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p><small>※거래처명을 클릭하여 입력하세요.</small></p>
+	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	   
+	    
+	   	<!-- 품목 검색 모달 HTML -->
+	    <div class="modal fade" id="purchaseOrderModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">품목 조회</h5>
+	                    
+	                </div>
+	                <div class="modal-body">                  
+	                    
+	                    <div id="itemGrid"></div>
+	                </div>
+	                <div class="modal-footer justify-content-between">
+	                   	<p><small>※품목코드를 클릭하여 입력하세요.</small></p>
+	                    <div>	                        
+	                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <!-- 담당자 검색 모달 HTML -->
+	    <div class="modal fade" id="humanModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">사원 조회</h5>
+	                    
+	                </div>
+	                <div class="modal-body">                  
+	                    
+	                    <div id="humanGrid"></div>
+	                </div>
+	                <div class="modal-footer justify-content-between">
+	                   	<p><small>※사원코드를 클릭하여 입력하세요.</small></p>
+	                    <div>	                        
+	                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	 <!-- 구매현황(재고) 모달 HTML -->
+	<div class="modal fade" id="purchaseOrderModal2" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">구매현황 (재고)</h5>
+                    
+                </div>
+                <div class="modal-body">
+                   
+                    <div class="d-flex justify-content-left mb-3">
+                        
+                        <div>
+                            <button class="btn btn-success">엑셀양식 다운로드</button>
+                        </div>
+                    </div>
+                    
+                    <div id="purchaseGrid"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div><small>
+                        <p style="color: gray;">※재고를 조정할 전표No. / 내역No. 버튼을 클릭후 선택버튼을 클릭하세요.</p></small>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary">선택</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	    
+	    
+	    <!-- 출하지시서 모달 HTML -->
+	    <div class="modal fade" id="salesOrderModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">출하지시내역 (재고)</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">                      
+                   
+                    <div class="d-flex justify-content-left mb-3">
+                        <div>
+                            <button class="btn btn-success">엑셀양식 다운로드</button>
+                        </div>
+                    </div>
+                    
+                    <div id="salesGrid"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div><small>
+                        <p style="color: gray;">※재고를 조정할 전표No. / 내역No. 버튼을 클릭후 선택버튼을 클릭하세요.</p></small>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary">선택</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+	    
+	<!-- 재고조정보고서 모달 HTML -->
+	<div class="modal fade" id="reportModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header justify-content-between">
+                    <h5 class="modal-title">재고조정보고서</h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="reportContent" class="report-form">
+                        <div class="report-title">재고조정보고서</div>
+                        <div class="container-fluid p-4">
+                            <div class="table-container">
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3">재고조정번호</th>
+                                            <th colspan="3">담당자</th>
+                                            <th>작성일자</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"></td>
+                                            <td colspan="3"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th>일련번호</th>
+                                            <th>자재식별번호</th>
+                                            <th colspan="2">품명 및 규격</th>
+                                            <th>현재수량</th>
+                                            <th>증감수량</th>
+                                            <th>재고조정사유</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>                           
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="signature-section">
+                                <div class="signature-grid">
+                                    <div class="signature-box">
+                                        <div class="signature-title">작성 ①</div>
+                                        <div class="signature-content">
+                                            <div class="signature-fields">
+                                                <div>일자: 2024-11-13</div>
+                                                <div>성명: 김기현</div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="signature-box">
+                                        <div class="signature-title">검토 ②</div>
+                                        <div class="signature-content">
+                                            <div class="signature-fields">
+                                                <div>일자: </div>
+                                                <div>성명: </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="signature-box">
+                                        <div class="signature-title">확인 ③</div>
+                                        <div class="signature-content">
+                                            <div class="signature-fields">
+                                                <div>일자: </div>
+                                                <div>성명: </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="signature-box">
+                                        <div class="signature-title">수인</div>
+                                        <div class="signature-content">
+                                            <div class="signature-fields">
+                                                <div>일자: </div>
+                                                <div>성명: </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="pdfButton">PDF 저장</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+	    
+	<!-- pdf 파일 다운을 위한 JS -->    
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>    
+    <!-- 재고조회조정에 전체적용되는 JS -->
+	<script th:src="@{/js/stack/stackAdjustment.js}"></script>
+	</body>
+</html>

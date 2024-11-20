@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/account_layout}"
+      layout:fragment="Content">
+  <head>
+    <meta charset="UTF-8" />
+	<title>매출전표 모달</title>
+	
+    <style>
+    
+      /* 입력 폼과 드롭다운 기본 스타일 */
+      .form-control,
+      .form-select,
+      .input-group-text {
+        height: 48px; /* 높이 설정 */
+        font-size: 1rem !important; /* 글꼴 크기 */
+        border-radius: 0; /* 둥근 모서리 제거 */
+      }
+      
+      /* 그리드 전 form 제목 길이 지정 */
+      .input-group-text {
+        width: 120px;
+      }
+     
+    </style>
+    
+  </head>
+  
+  <body>
+  
+    <!-- 임시로 모달을 여는 버튼 -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesEntryModal" onclick="refreash()">매출전표 열기</button>
+
+    <!-- 모달 전체 컨테이너 -->
+    <div class="modal fade" id="salesEntryModal" tabindex="-1">
+      <!-- 모달 크기 설정 (XL: Extra Large) -->
+      <div class="modal-dialog modal-xl">
+        <!-- 모달 내용 컨테이너 -->
+        <div class="modal-content">
+          <!-- 모달 헤더 -->
+          <div class="modal-header">
+            <h4 class="modal-title">매출전표</h4>
+          </div>
+          <!-- 모달 본문 -->
+          <div class="modal-body">
+            <form>
+              <!-- 전표일자 및 전표No -->
+              <div class="row mb-3">
+                <!-- 전표일자 -->
+                <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">전표일자</span>
+                    <input type="date" class="form-control" readonly="readonly"/>
+                  </div>
+                </div>
+                <!-- 전표No -->
+                <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">전표 No.</span>
+                    <input type="text" class="form-control" readonly="readonly" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- 연결전표 및 거래처 -->
+              <div class="row mb-3">
+                <!-- 연결전표 -->
+                <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">연결전표</span>
+                    <input type="text" class="form-control" placeholder="재고전표내역보기"  readonly="readonly"/>
+                  </div>
+                </div>
+                <!-- 거래처 -->
+                <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">거래처</span>
+                    <input type="text" class="form-control" placeholder="거래처 선택" readonly="readonly"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 부가세 유형 및 세금계산서 구분 -->
+              <div class="row mb-3">
+                <!-- 부가세 유형 -->
+                <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">부가세 유형</span>
+       				<input type="text" readonly="readonly" class="form-control">
+                  </div>
+                </div>
+                <!-- 세금계산서 구분 -->
+                <div class="col-md-4">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">세금계산서 구분</span>
+                    <input type="text" class="form-control" placeholder="전자(세금)계산서-신규" readonly="readonly" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- 적요 -->
+              <div class="row mb-3">
+                <div class="col-md-8">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">적요</span>
+                    <input type="text" class="form-control" readonly="readonly"/>
+                  </div>
+                </div>
+              </div>
+              
+                <!-- 그리드 -->
+  				<div id="grid"></div>
+              
+            </form>
+            
+          </div> <!-- 모달 본문 끝. -->
+          
+          <!-- 하단 버튼 그룹 -->
+          <div class="bottom-buttons">
+            <div class="d-flex justify-content-between">
+              <div>
+                <button type="button" class="btn btn-sm btn-success ms-2">인쇄</button>
+                <button type="button" class="btn btn-sm btn-secondary ms-2">닫기</button>
+              </div>
+            </div>
+          </div> <!-- 하단 버튼 그룹 끝. -->
+          
+        </div>
+        <!-- 모달 내용 컨테이너 끝. -->
+      </div>
+      <!-- 모달 크기 설정 (XL: Extra Large) 끝. -->
+    </div>
+    <!-- 모달 전체 컨테이너 끝. -->
+
+
+    <script>
+    
+      document.addEventListener("DOMContentLoaded", function () {
+    	  // 그리드 데이터
+    	  const gridData = [
+    		  {
+  			    accountName: "현금", // 계정명
+  			    supplyAmount: 100000, // 공급가액
+  			    vat: 10000, // 부가세
+  			    description: "현금 입금", // 적요
+  			  },
+  			  {
+  			    accountName: "외상매출금",
+  			    supplyAmount: 500000,
+  			    vat: 50000,
+  			    description: "상품 판매",
+  			  },
+  			  {
+  			    accountName: "은행 예금",
+  			    supplyAmount: 200000,
+  			    vat: 20000,
+  			    description: "예금 이자",
+  			  },
+    		];
+    	  
+        // 그리드 초기화
+        const grid = new tui.Grid({
+          el: document.querySelector("#grid"), // 그리드 표시 위치
+          data: gridData, // 초기 데이터
+          scrollX: true, // 가로 스크롤 사용
+          scrollY: true, // 세로 스크롤 사용
+          columns: [
+            {
+              header: "계정명", // 계정명
+              name: "accountName",
+              align: "left",
+            },
+            {
+              header: "공급가액", // 공급가액
+              name: "supplyAmount",
+              align: "right",
+            },
+            {
+              header: "부가세", // 부가세
+              name: "vat",
+              align: "right",
+            },
+            {
+              header: "적요", // 적요
+              name: "description",
+              align: "left",
+            },
+          ],
+          summary: {
+            height: 40,
+            position: "bottom", // or 'top'
+            columnContent: {
+              unitPrice: {
+                template: function (valueMap) {
+                  return `${valueMap.sum}`;
+                },
+              },
+              supplyAmount: {
+                template: function (valueMap) {
+                  return `${valueMap.sum}`;
+                },
+              },
+              vat: {
+                template: function (valueMap) {
+                  return `${valueMap.sum}`;
+                },
+              },
+              totalAmount: {
+                template: function (valueMap) {
+                  return `${valueMap.sum}`;
+                },
+              },
+              accountName: {
+                template: function (valueMap) {
+                  return `합계`;
+                },
+              },
+            },
+          },
+	      rowHeaders: [
+	            {
+	              type: 'checkbox',
+	              header: 
+	                `<span class="custom-input">
+	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+	                </span>`
+	            ,
+	              renderer: {
+	                type: gridCheckbox
+	              }
+	            }
+	      ],
+        });
+        
+        // 모달이 완전히 열렸을 때 그리드 레이아웃을 리프레시
+        const modal = document.getElementById("salesEntryModal");
+        modal.addEventListener("shown.bs.modal", function () {
+          grid.refreshLayout();
+        });
+
+        
+        // 그리드 클릭 이벤트 -> 추후 내가 필요한대로 수정
+        grid.on("click", (event) => {
+          if (event.columnName === "debentureNo" && event.rowKey >= 0) {
+            console.log("클릭이벤트 발생");
+            console.log(event.rowKey); // 클릭한 행의 키 값 출력
+          }
+        });
+
+        // 모달 띄우기 -> 추후 수정
+        document.querySelectorAll(".select-modal").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const modalId = btn.getAttribute("data-bs-target").substring(1);
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+          });
+        });
+      });
+      
+    </script>
+    
+  </body>
+  
+</html>
