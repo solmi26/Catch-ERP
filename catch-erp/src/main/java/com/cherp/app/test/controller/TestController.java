@@ -11,7 +11,6 @@ public class TestController {
 	public String testView() {
 		return "human/test";
 	}
-	
 	// JSM TEST
 	@GetMapping("testac")
 	public String testViewAc() {
@@ -29,5 +28,12 @@ public class TestController {
 	}
 	// GHT TEST
 	@GetMapping("testPurchase")
-	public String testPurchase() { return "purchase/purchasePage"; }
+	public String testPurchase() {
+		return "purchase/purchasePage";
+	}
+	// GHT TEST
+	@GetMapping("testSalesChit")
+	public String testSalesChit() {
+		return "sales/salesChit";
+	}
 }

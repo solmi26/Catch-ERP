@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)file:///C:/Users/admin/Downloads/%EC%9E%AC%EA%B3%A0%EB%93%B1%EB%A1%9D%EC%A1%B0%ED%9A%8C%20(1).html -->
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/stack_layout}"
+      layout:fragment="Content">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매</title>
+    <link rel="stylesheet" th:href="@{/css/sales/salesChit.css}"/>
+</head>
+
+<body>
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>판매</h4>
+</div>
+
+<!-- Form -->
+<div class="card">
+    <form class="bg-light p-4 rounded card-body">
+        <div class="row g-3">
+            <div class="col-md-12">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">작성일자</label>
+                        <input type="date" class="form-control" id="currentDate" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">거래처</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputClient">
+                            <button type="button" class="bi bi-search border px-4 btn btn-success"
+                                    data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"></button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">담당자</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="empInput">
+                            <button type="button" class="bi bi-search border px-4 btn btn-success empBtn"
+                                    data-bs-toggle="modal" data-bs-target="#humanModal" id="humanInqueryModal"></button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">출하창고</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="warehouse">
+                            <button type="button" class="bi bi-search border px-4 btn btn-success"
+                                    data-bs-toggle="modal" data-bs-target="#warehouseModal"
+                                    id="openWarehouseModal"></button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">입금계좌</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="accountInput">
+                            <button type="button" class="bi bi-search border px-4 btn btn-success"
+                                    data-bs-toggle="modal" data-bs-target="#accountSearchModal"></button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">매출계정</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="accCodeInput">
+                            <button type="button" class="bi bi-search border px-4 btn btn-success modalBtn"
+                                    data-bs-toggle="modal" data-bs-target="#ledgerModal" id="openAccCodeModal"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Transaction History Select -->
+<button class="btn btn-success px-4" id="sumbit" type="button" data-bs-toggle="dropdown"
+        style="margin:10px 0px">
+    판매
+</button>
+<button class="btn btn-success px-2" id="addRowBtn" type="button" data-bs-toggle="dropdown"
+        style="margin:10px 0px">
+    추가
+</button>
+<div class="btn-group dropdown">
+    <button class="btn btn-primary dropdown-toggle btn btn-success" type="button" data-bs-toggle="dropdown"
+            style="margin:10px 0px">
+        거래내역보기(판매)
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a class="dropdown-item" href="">판매내역</a>
+            <a class="dropdown-item" href="">주문서</a>
+        </li>
+    </ul>
+</div>
+<button class="btn btn-success px-4" type="button" data-bs-toggle="dropdown" style="margin:10px 0px">
+    품목
+</button>
+<button class="btn btn-success px-5" type="button" data-bs-toggle="dropdown" style="margin:10px 0px">
+    거래명세서
+</button>
+
+<!-- Table -->
+<div id="wrap">
+    <div id="salesChit"> <!--gird html이 들어가는 div태그-->
+    </div>
+</div>
+
+<!-- Bottom Button -->
+
+<!-- 거래처 모달 -->
+<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >거래처검색</h5>
+            </div>
+            <div class="modal-body p-0">
+                <div id="clientGrid">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <p><small>※거래처명을 클릭하여 입력하세요.</small></p>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 출금계좌 모달 -->
+<div class="modal fade" id="accountSearchModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #aacb73;">
+                <h5 class="modal-title" id="accountSearchModalLabel">계좌검색</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="example-table"></div> <!-- modal tabulator 사용 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 출하창고 모달 -->
+<div class="modal fade" id="warehouseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">창고검색</h5>
+
+            </div>
+            <div class="modal-body p-0">
+                <div id="warehouseGrid">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <p><small>※창고명을 클릭하여 입력하세요.</small></p>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 담당자 모달 -->
+<div class="modal fade" id="humanModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">사원 조회</h5>
+            </div>
+            <div class="modal-body">
+
+                <div id="humanGrid"></div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <p><small>※사원코드를 클릭하여 입력하세요.</small></p>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                        닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 매출계정 모달 -->
+<div class="modal fade" id="ledgerModal" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">계정 검색</h5>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div id="accCodeGrid"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/sales/salesChit.js}"></script>
+
+</body>
+
+</html>
