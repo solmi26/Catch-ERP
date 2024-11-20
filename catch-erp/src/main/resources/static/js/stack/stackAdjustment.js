@@ -719,29 +719,56 @@ document.addEventListener("DOMContentLoaded", function () {
 		    c6: '태호물산',
 		    c7: '0',
 		    c8: '100000'
+	    },
+	    {
+		    c1: 'A0000046',
+		    c2: 'A0000046-1',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '100000'
+	    },
+	    {
+		    c1: 'A0000046',
+		    c2: 'A0000046-2',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '100000'
 	    }
 	];
 	
 	// 그리드에 데이터 넣기(출력)
 	createdGrid6.resetData(sampleData6);
 	
-	grid6.on('click',function(){
-		
-		const sample = [{
-			c1: 'A0000045',
-            c2: 'A2024',
-            c3: '컵홀더',
-            c4: '상품입고',
-            c5: '300',
-            c6: '0',
-            c7: '100',
-            c8: '10000'
-        }]
-        
-        if(grid.getRowCount() < 16){
-			grid.appendRows(sample);
-		} else {
-			alert('한 번에 16건을 처리할 수 있습니다.')
+	grid6.on('click',function(ev){	
+		//전표No. 클릭시 적용
+		selectInModal(ev);
+		if(ev.columnName == 'c1'){
+			const sample = [{
+				c1: 'A0000045',
+	            c2: 'A2024',
+	            c3: '컵홀더',
+	            c4: '상품입고',
+	            c5: '300',
+	            c6: '0',
+	            c7: '100',
+	            c8: '10000'
+	        }]
+	        
+	        if(grid.getRowCount() < 16){
+				grid.appendRows(sample);
+			} else {
+				alert('한 번에 16건을 처리할 수 있습니다.')
+			}
+		}
+		//내역No. 클릭시 적용
+		if(ev.columnName == 'c2'){
+			
 		}
 	})
 	
@@ -1051,31 +1078,57 @@ document.addEventListener("DOMContentLoaded", function () {
 		createdGrid.resetData(blank)
 	})
 	
-	//체크된 항목 row 삭제
+	//체크된 항목 row 삭제	
+	let deleteBtn = document.getElementById("rowDelete")
 	
-	
-		let deleteBtn = document.getElementById("rowDelete")
+	deleteBtn.addEventListener('click',  function () {
+		 grid.removeCheckedRows();
+		 
+		 refreshRowNum();		
 		
-		deleteBtn.addEventListener('click',  function () {
-			 grid.removeCheckedRows();
-			 
-			 refreshRowNum();		
-			
-		})
+	})
 				
+	
+	//열을 추가후 체크박스에 다시 숫자부여하는 코드
+	function refreshRowNum () {
+		 window.setTimeout(function () {
+			 let checkList = document.querySelectorAll('.countCheck')
+			 let num = 1;
+			 checkList.forEach(items => {
+				items.innerText = num;
+				num += 1;
+			 })
 		
+	     }, 50)
+	}
+    
+    /*===================================
+    	StackInquery 그 외 JS
+    =====================================*/
+    function selectInModal (ev){
+		let selectNoRowKey = ev.rowKey;
+		let selectNo = grid6.getRow(selectNoRowKey).c1;
+		let grid6Arr = grid6.getData() //모달그리드의 모든 rows를 가지는 배열
+		let targetArr = []; //클릭한 버튼의 내역에 해당하는 rows를 가지는 배열
 		
-		//열을 추가후 체크박스에 다시 숫자부여하는 코드
-		function refreshRowNum () {
-			 window.setTimeout(function () {
-				 let checkList = document.querySelectorAll('.countCheck')
-				 let num = 1;
-				 checkList.forEach(items => {
-					items.innerText = num;
-					num += 1;
-				 })
-			
-		     }, 50)
+		grid6Arr.forEach(ele=>{
+			if(ele.c1 == selectNo){
+				targetArr.push(ele.rowKey);
+			}
+		})
+		
+		let purchaseGrid = document.getElementById('purchaseGrid')
+		let arr = []
+		for(let i=0; i<targetArr.length; i++){
+			let target = purchaseGrid.querySelector(`[data-row-key="${i}"]`)
+			arr.push(target);
 		}
+		console.log(arr); 
+		arr.forEach(ele=>{
+			ele.style.backgroundColor = "#9EED7C";
+		})
+		
+	}
+    
     
 }); //End Point
