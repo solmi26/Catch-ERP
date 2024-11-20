@@ -133,9 +133,9 @@
       hiddenInput.checked = checked;
     }
   }
-/*==========================================
+/*================================================================
 		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
-============================================*/
+==================================================================*/
 document.addEventListener("DOMContentLoaded", function () {
     
     //모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용.
@@ -167,20 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
                      lessThanOrEqualTo: '이전(포함)'
 		}
 	}
-	Grid.setLanguage('ko', {
-                 Filter: {
-                    
-                 },
-                 DatePicker: {
-                     titles: {
-                         today: '오늘',
-                         clear: '지우기'
-                     },
-                     monthsLong: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                     monthsShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                     dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-                     dayNamesShort: ['일', '월', '화', '수', '목', '금', '토']
-                 }
+	
     });*/
     
 	Grid.applyTheme('default',  {
@@ -212,85 +199,138 @@ document.addEventListener("DOMContentLoaded", function () {
         // 그리드 객체
 
     const grid = new Grid({
-        
-        el: document.getElementById('inqueryGrid'),
-	        scrollX: true,
-	        scrollY: true,
-	        header: { height: 40 },
-	        bodyHeight: 450,
-	        rowHeight: 40,
-	        width: 'auto',
-	        contextMenu: null,
-	       rowHeaders: [{
-	                type: 'rowNum',
-	                header: "No.",
-	                width: 50,
-	                className:'border'
-	        }],
-	        columns: [
-	            {
-	                header: '품목코드',
-	                name: 'd1',
-	                align: "center",
-	                width: 200,
-	                whiteSpace: 'normal',
-	                className:'border'
-	                
-	            },
-	            {
-	                header: '품목명',
-	                name: 'd2',
-	                align: "center",
-	                width: 240,
-	                whiteSpace: 'normal',
-	                filter: 'select'
-	            },
-	            {
-	                header: '거래처',
-	                name: 'd3',
-	                align: "center",
-	                width: 200,
-	                whiteSpace: 'normal',
-	                className:'border',
-	                filter: 'select'
-	            },
-	            {
-	                header: '입고단가',
-	                name: 'd4',
-	                align: "center",
-	                width: 100,
-	                whiteSpace: 'normal',
-	                sortable: true,
-	                sortingType: 'desc',
-	                className:'border'
-	            },
-	            {
-	                header: '출고단가',
-	                name: 'd5',
-	                align: "center",
-	                width: 100,
-	                whiteSpace: 'normal',
-	                sortable: true,
-	                sortingType: 'desc',
-	                className:'border'
-	            },
-	            {
-	                header: '재고현황',
-	                name: 'd6',
-	                align: "center",
-	                width: 200,
-	                whiteSpace: 'normal',
-	                className:'border'
-	            },
-	            {
-	                header: '창고명',
-	                name: 'd7',
-	                align: "center",
-	                width: 200,
-	                whiteSpace: 'normal',
-	                className:'border',
-	                filter: 'select'
+        el: document.getElementById('adjustmentGrid'),
+        scrollX: true,
+        scrollY: true,
+        rowHeaders: [
+	          {
+	            type: 'checkbox',
+	            header: `
+	              <span class="custom-input">
+	              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+	            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+	          	</span>
+	          `,
+	            renderer: {
+	              type: gridCheckbox
 	            }
+	          }
+	    ],
+        header: { height: 40 },
+        bodyHeight: 500,
+        rowHeight: 102,
+        width: 'auto',
+        contextMenu: null,
+        /*rowHeaders: [{
+                type: 'checkbox',
+                header: "No.",
+                width: 50,
+                className:'border'
+        }],*/
+        columns: [
+            {
+                header: '품목코드',
+                name: 'c1',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className:'border'
+                
+            },
+            {
+                header: '품목명',
+                name: 'c2',
+                align: "center",
+                width: 130,
+                whiteSpace: 'normal'
+            },
+            {
+                header: '규격',
+                name: 'c3',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className:'border'
+            },
+            {
+                header: '입고단가',
+                name: 'c4',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className:'border',
+                validation: {
+                    dataType: 'number'
+                }
+            },
+            {
+                header: '출고단가',
+                name: 'c5',
+                align: "center",
+                width: 90,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className:'border',
+                validation: {
+                    dataType: 'number'
+                }
+            },
+            {
+                header: '출하수량',
+                name: 'c6',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                editor: 'text',
+                validation: {
+                    dataType: 'number'
+                },
+                className:'border'
+            },
+            {
+                header: '입고수량',
+                name: 'c7',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                editor: 'text',
+                validation: {
+                    dataType: 'number',
+                    min: 1,
+                    max: 100
+                },
+                className:'border'
+            },
+            {
+                header: '재고수량',
+                name: 'c8',
+                align: "center",
+                width: 135,
+                whiteSpace: 'normal',
+                className:'border'
+            },
+            {
+                header: '이미지',
+                name: 'c9',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className:'border',
+                renderer: {
+                    type: ImageRenderer
+                }
+            },
+            {
+                header: '재고조정사유',
+                name: 'c10',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className:'border'              
+            }
         ]
     	});
 
@@ -303,13 +343,40 @@ document.addEventListener("DOMContentLoaded", function () {
     // 샘플 데이터
     const sampleData = [
         {
-			d1: 'A0000045',
-            d2: '컵홀더',
-            d3: '태호물산',
-            d4: '100',
-            d5: '120',
-            d6: '10000',
-            d7: '천안아산'
+			c1: 'A0000045',
+            c2: '컵홀더',
+            c3: '2023.01.01',
+            c4: '컵홀더',
+            c5: '12000',
+            c6: '5',
+            c7: '0',
+            c8: '0',
+            c9: '0',
+            c10: '상품 출하'
+        },
+        {
+			c1: 'A0000045',
+            c2: '컵홀더',
+            c3: '2023.01.01',
+            c4: '컵홀더',
+            c5: '12000',
+            c6: '5',
+            c7: '0',
+            c8: '0',
+            c9: '0',
+            c10: '상품 출하'
+        },
+        {
+			c1: 'A0000045',
+            c2: '컵홀더',
+            c3: '2023.01.01',
+            c4: '컵홀더',
+            c5: '12000',
+            c6: '5',
+            c7: '0',
+            c8: '0',
+            c9: '0',
+            c10: '상품 출하'
         }
         
     ];
@@ -325,16 +392,13 @@ document.addEventListener("DOMContentLoaded", function () {
     ==============================*/
     
     // 모달 관련 JavaScript
-        const clientModal = document.getElementById('clientModal');
+        //const clientModal = document.getElementById('clientModal');
 
         //모달실행 시 grid refresh를 위한 코드
         document.getElementById('openClientModal').addEventListener('click', function() {
             window.setTimeout(function(){
                 grid3.refreshLayout();
             }, 200) 
-            window.setTimeout(function(){
-                grid4.refreshLayout();
-            }, 200)
         });
 
         let grid3; //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
@@ -436,104 +500,12 @@ document.addEventListener("DOMContentLoaded", function () {
     createdGrid3.resetData(sampleData3);
     
     /*============================
-    	StackInquery 창고 모달 JS
-    ==============================*/
-    // 모달 관련 JavaScript
-    const warehouseModal = document.getElementById('warehouseModal')
-
-    //모달실행 시 grid refresh를 위한 코드
-    document.getElementById('openWarehouseModal').addEventListener('click', function() {
-        window.setTimeout(function(){
-            grid4.refreshLayout();
-        }, 200) 
-    });
-    
-    let grid4;
-    const initGrid4 = () => {
-		grid4 = new Grid({
-            el: document.getElementById('warehouseGrid'),
-            scrollX: true,
-            scrollY: true,
-            header: { height: 40 },
-            bodyHeight: 500,
-            width: 'auto',
-            contextMenu: null,
-            rowHeaders: [{
-                    type: 'rowNum',
-                    header: "No.",
-                    width: 50,
-                    className:'border'
-            }],
-            columns: [
-                {
-                    header: '창고명',
-                    name: 'c1',
-                    align: "center",
-                    width: 183,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    renderer: {
-                        type: ButtonRenderer
-                    },
-                    filter: 'select'
-                    
-                },
-                {
-                    header: '창고코드',
-                    name: 'c2',
-                    align: "center",
-                    width: 183,
-                    whiteSpace: 'normal',
-                    className:'border'
-                },
-                {
-                    header: '위치',
-                    name: 'c3',
-                    align: "center",
-                    width: 184,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
-                },
-                {
-                    header: '구분',
-                    name: 'c4',
-                    align: "center",
-                    width: 184,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
-                }
-            ]
-        });
-
-        return grid4;
-		
-	}
-    
-    const createdGrid4 = initGrid4();
-
-	// 샘플 데이터
-	const sampleData4 = [
-	    {
-	        c1: '물류창고',
-	        c2: 'A0000045',
-	        c3: '천안아산',
-	        c4: '소요량높음'
-	    }
-	];
-	
-	// 그리드에 데이터 넣기(출력)
-	createdGrid4.resetData(sampleData4);
-    
-    /*============================
     	StackInquery 품목조회 모달 JS
     ==============================*/
     // 모달 관련 JavaScript
     var purchaseOrderModal = document.getElementById('purchaseOrderModal')
     purchaseOrderModal.addEventListener('show.bs.modal', function (event) {
         // 모달이 표시되기 전에 실행할 코드
-        console.log('모달이 열립니다');
         window.setTimeout(function(){
             grid5.refreshLayout();
         }, 200) 
@@ -541,7 +513,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     purchaseOrderModal.addEventListener('hidden.bs.modal', function (event) {
         // 모달이 완전히 숨겨진 후 실행할 코드
-        console.log('모달이 닫혔습니다');
     })
     let grid5;
     const initGrid5 = () => {
@@ -610,7 +581,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	purchaseOrderModal.addEventListener('show.bs.modal', function (event) {
 	    // 모달이 표시되기 전에 실행할 코드
-	    console.log('모달이 열립니다');
 	    window.setTimeout(function(){
 	        grid6.refreshLayout();
 	    }, 200) 
@@ -671,8 +641,17 @@ document.addEventListener("DOMContentLoaded", function () {
 		            }
 		        },
 		        {
-		            header: '품목명',
+		            header: '품목코드',
 		            name: 'c4',
+		            align: "center",
+		            width: 100,
+		            whiteSpace: 'normal',
+		            className:'border'
+		        }
+		        ,
+		        {
+		            header: '품목명',
+		            name: 'c5',
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
@@ -680,7 +659,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        },
 		        {
 		            header: '거래처명',
-		            name: 'c5',
+		            name: 'c6',
 		            align: "center",
 		            width: 140,
 		            whiteSpace: 'normal',
@@ -688,15 +667,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		        },
 		        {
 		            header: '수량',
-		            name: 'c6',
+		            name: 'c7',
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
 		            className:'border'
 		        },
 		        {
-		            header: '단가',
-		            name: 'c7',
+		            header: '입고단가',
+		            name: 'c8',
 		            align: "center",
 		            width: 200,
 		            whiteSpace: 'normal',
@@ -717,65 +696,37 @@ document.addEventListener("DOMContentLoaded", function () {
 	// 샘플 데이터
 	const sampleData6 = [
 	    {
-        c1: 'A0000045',
-        c2: 'A0000045-1',
-        c3: '2023.01.01',
-        c4: '컵홀더',
-        c5: '12000',
-        c6: '5',
-        c7: '0'
-        
+	        c1: 'A0000045',
+	        c2: 'A0000045-1',
+	        c3: '2023.01.01',
+	        c4: 'z0001',
+	        c5: '컵홀더',
+	        c6: '태호물산',
+	        c7: '0',
+	        c8: '100'
 	    },
 	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-2',
-	        c3: '2023.01.02',
-	        c4: '포장용기',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '0'
-	       
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-3',
-	        c3: '2023.01.03',
-	        c4: '빨대',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '20000'
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-4',
-	        c3: '2023.01.04',
-	        c4: '컵(소형)',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '100000'
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-5',
-	        c3: '2023.01.05',
-	        c4: '컵(대형)',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '4000000'
+		    c1: 'A0000045',
+		    c2: 'A0000045-1',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '10000000'
 	    }
 	];
 	
 	// 그리드에 데이터 넣기(출력)
 	createdGrid6.resetData(sampleData6);
     /*============================
-    	StackInquery 판매내역 모달 JS
+    	StackInquery 출하지시내역 모달 JS
     ==============================*/
     
     var salesOrderModal = document.getElementById('salesOrderModal')
 
 	salesOrderModal.addEventListener('show.bs.modal', function (event) {
 	    // 모달이 표시되기 전에 실행할 코드
-	    console.log('모달이 열립니다');
 	    window.setTimeout(function(){
 	        grid7.refreshLayout();
 	    }, 200) 
@@ -940,7 +891,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
+    });  
 
     document.getElementById('pdfButton').addEventListener('click', function() {
         const element = document.getElementById('reportContent');
@@ -955,6 +906,88 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
        
+    /*============================
+    	StackInquery 사원조회 모달 JS
+    ==============================*/
+    // 모달 관련 JavaScript
+    let humanModalBtn = document.getElementById('humanModal')
+    humanModalBtn.addEventListener('show.bs.modal', function () {
+        // 모달이 표시되기 전에 실행할 코드
+        window.setTimeout(function(){
+            grid8.refreshLayout();
+        }, 200) 
+    })
+
+    humanModalBtn.addEventListener('hidden.bs.modal', function () {
+        // 모달이 완전히 숨겨진 후 실행할 코드
+    })
+    let grid8;
+    const initGrid8 = () => {
+		grid8 = new Grid({
+            el: document.getElementById('humanGrid'),
+            scrollX: true,
+            scrollY: true,
+            header: { height: 40 },
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                    type: 'rowNum',
+                    header: "No.",
+                    width: 50,
+                    className:'border'
+            }],
+            columns: [
+                {
+                    header: '사원 코드',
+                    name: 'c1',
+                    align: "center",
+                    width: 135,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    renderer: {
+                        type: ButtonRenderer
+                    },
+                    filter: 'select'
+                    
+                },
+                {
+                    header: '성명',
+                    name: 'c2',
+                    align: "center",
+                    width: 135,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '부서명',
+                    name: 'c3',
+                    align: "center",
+                    width: 135,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                }
+            ]
+        });
+
+        return grid8;
+		
+	}
+    
+    const createdGrid8 = initGrid8();
+
+	// 샘플 데이터
+	const sampleData8 = [
+	    {
+	        c1: 'A20241205-1',
+	        c2: '김기현',
+	        c3: '개발팀'
+	    }
+	];	
+	// 그리드에 데이터 넣기(출력)
+	createdGrid8.resetData(sampleData8);
        
        
 }); //End Point

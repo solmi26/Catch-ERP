@@ -4,7 +4,7 @@
       layout:decorate="~{common/layouts/account_layout}"
       layout:fragment="Content">
 <head>
-  <link rel="tableStyle.css" />
+  <!-- <link rel="tableStyle.css" /> -->
   <style>
     .modal-header {
         background-color: #AACB73;
@@ -16,210 +16,209 @@
   </style>
 </head>
 <body>
-  <div class="container my-5 p-4 bg-white shadow-sm rounded">
-    <!-- Search Section -->
-    <div class="border-bottom pb-3 mb-4">
-      <h4 class="text-primary">계좌 리스트</h4>
-    </div>
-    <div class="gridWrapper">
-      <div id="grid"></div>
-      <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
-    </div>
-    <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountAddModal">신규(F2)</button>
-    <!-- 통장계좌등록 모달 -->
-    <div class="modal fade" id="accountAddModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌등록</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <form>
-                      <div class="mb-3">
-                          <label for="accountCode" class="form-label">계좌코드</label>
-                          <input type="text" class="form-control" id="accountCode" placeholder="계좌코드">
-                      </div>
-                      <div class="mb-3">
-                          <label for="accountName" class="form-label">계좌명</label>
-                          <input type="text" class="form-control" id="accountName" placeholder="계좌명">
-                      </div>
-                      <div class="mb-3">
-                          <label for="accountType" class="form-label">계정</label>
-                          <select class="form-select" id="accountType">
-                              <option selected>1039 보통예금</option>
-                              <!-- Add more options as needed -->
-                          </select>
-                      </div>
-                      <div class="mb-3">
-                          <label for="transactionDetails" class="form-label">거래처내용</label>
-                          <input type="text" class="form-control" id="transactionDetails" placeholder="거래처내용">
-                      </div>
-                      <div class="mb-3">
-                          <label for="remarks" class="form-label">적요</label>
-                          <textarea class="form-control" id="remarks" rows="3" placeholder="적요"></textarea>
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-success" id="saveButton">저장(F8)</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-              </div>
-          </div>
-      </div>
-    </div>
-    <!-- 통장계좌수정(상세) 모달 -->
-    <div class="modal fade" id="accountDetailModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌상세</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <!-- 추후 db에서 값 불러와서 자동입력 구현하기 -->
-              <div class="modal-body">
-                  <form>
-                      <div class="mb-3">
-                          <label for="accountCode" class="form-label">계좌코드</label>
-                          <input type="text" class="form-control" id="accountCode" placeholder="계좌코드">
-                      </div>
-                      <div class="mb-3">
-                          <label for="accountName" class="form-label">계좌명</label>
-                          <input type="text" class="form-control" id="accountName" placeholder="계좌명">
-                      </div>
-                      <div class="mb-3">
-                          <label for="accountType" class="form-label">계정</label>
-                          <select class="form-select" id="accountType">
-                              <option selected>1039 보통예금</option>
-                              <!-- Add more options as needed -->
-                          </select>
-                      </div>
-                      <div class="mb-3">
-                          <label for="transactionDetails" class="form-label">거래처내용</label>
-                          <input type="text" class="form-control" id="transactionDetails" placeholder="거래처내용">
-                      </div>
-                      <div class="mb-3">
-                          <label for="remarks" class="form-label">적요</label>
-                          <textarea class="form-control" id="remarks" rows="3" placeholder="적요"></textarea>
-                      </div>
-                      <div class="mb-3">
-                        <label for="useable" class="form-label">계좌사용여부</label>
-                          <select class="form-select" id="usingType">
-                              <option selected>사용중</option>
-                              <option selected>사용중지</option>
-                              <!-- Add more options as needed -->
-                          </select>
-                    </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-success" id="saveButton">저장(F8)</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-              </div>
-          </div>
-      </div>
+  <!-- Search Section -->
+  <div class="border-bottom pb-3 mb-4">
+    <h2>계좌 리스트</h2>
+  </div>
+  <div class="gridWrapper">
+    <div id="grid"></div>
+    <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
+  </div>
+  <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountAddModal">신규(F2)</button>
+  <!-- 통장계좌등록 모달 -->
+  <div class="modal fade" id="accountAddModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">
+                <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- 추후 db에서 값 불러와서 자동입력 구현하기 -->
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="accountCode" class="form-label">계좌번호</label>
+                    <input type="text" class="form-control" id="bacctNo" placeholder="계좌번호" readonly="readonly">
+                </div>
+                <div class="mb-3">
+                    <label for="accountName" class="form-label">계좌명</label>
+                    <input type="text" class="form-control" id="bacctName" placeholder="계좌명">
+                </div>
+                <div class="mb-3">
+                  <label for="bankName" class="form-label">은행명</label>
+                  <input type="text" class="form-control" id="bankName" placeholder="은행명">
+                </div>
+                <div class="mb-3">
+                    <label for="remarks" class="form-label">적요</label>
+                    <textarea class="form-control" id="summary" rows="3" placeholder="적요"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="useable" class="form-label">계좌사용여부</label>
+                    <select class="form-select" id="useable">
+                        <option selected>사용중</option>
+                        <option selected>사용중지</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="saveButton">저장(F8)</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+          </form>
+        </div>
     </div>
   </div>
-  
-  
+  <!-- 통장계좌수정(상세) 모달 -->
+  <div class="modal fade" id="accountDetailModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">
+                <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌상세</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- 추후 db에서 값 불러와서 자동입력 구현하기 -->
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="accountCode" class="form-label">계좌번호</label>
+                    <input type="text" class="form-control" id="bacctNo" placeholder="계좌번호" readonly="readonly">
+                </div>
+                <div class="mb-3">
+                    <label for="accountName" class="form-label">계좌명</label>
+                    <input type="text" class="form-control" id="bacctName" placeholder="계좌명">
+                </div>
+                <div class="mb-3">
+                  <label for="bankName" class="form-label">은행명</label>
+                  <input type="text" class="form-control" id="bankName" placeholder="은행명">
+                </div>
+                <div class="mb-3">
+                    <label for="remarks" class="form-label">적요</label>
+                    <textarea class="form-control" id="summary" rows="3" placeholder="적요"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="useable" class="form-label">계좌사용여부</label>
+                    <select class="form-select" id="useable">
+                        <option selected>사용중</option>
+                        <option selected>사용중지</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="saveButton">저장(F8)</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+          </form>
+        </div>
+    </div>
+  </div>
+ 
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
-    const gridData = [
-      {
-        accountCode: '11234578956',
-        accountName: '기업은행-1122',
-        accountTitle: '보통예금(1039)',
-        searchContent: '국내거래통장',
-        description: '외화거래',
-        useable: '사용중'
-      }
-    ];
-    //toast ui table 기본 틀 작성
-    const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
-      el: document.querySelector('#grid'),
-      data: gridData, // toast ui table 에 입력할 데이터값
-      scrollX: true,
-      scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
-      pageOptions: {
-        useClient: true,
-        perPage: 5
-      },
-      columns: [
-                {
-                    header: '계좌코드',
-                    name: 'accountCode',
-                    sortable: true,
-                    align: 'center'
-                },
-                {
-                    header: '계좌명',
-                    name: 'accountName',
-                    sortable: true,
-                    filter: 'select',
-                    align: 'left'
-                },
-                {
-                    header: '계정명(계정코드)',
-                    name: 'accountTitle',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '검색창 내용',
-                    name: 'searchContent',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '적요',
-                    name: 'description',
-                    sortable: true,
-                    align: 'left'
-                },
-                {
-                    header: '사용여부',
-                    name: 'useable',
-                    //formatter: 'listItemText',
-                    editor: {
-                      type: 'select',
-                      options: {
-                        listItems: [
-                          { text: '사용중', value: '사용중'},
-                          { text: '사용중지', value: '사용중지'}
-                        ]
+    // const gridData = [
+    //   {
+    //     accountCode: '11234578956',
+    //     accountName: '기업은행-1122',
+    //     bankName: '신한은행',
+    //     description: '외화거래',
+    //     useable: '사용중'
+    //   }
+    // ];
+    fetch('http://localhost:8026/bacctList')
+    .then(result => result.json())
+    .then(result => {
+      //toast ui table 기본 틀 작성
+      const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
+        el: document.querySelector('#grid'),
+        data: result, // toast ui table 에 입력할 데이터값
+        scrollX: true,
+        scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
+        pageOptions: {
+          useClient: true,
+          perPage: 5
+        },
+        columns: [
+                  {
+                      header: '계좌번호',
+                      name: 'bacctNo',
+                      sortable: true,
+                      align: 'center'
+                  },
+                  {
+                      header: '계좌명',
+                      name: 'bacctName',
+                      sortable: true,
+                      filter: 'select',
+                      align: 'left'
+                  },
+                  {
+                      header: '은행명',
+                      name: 'bankName',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '적요',
+                      name: 'summary',
+                      sortable: true,
+                      align: 'left'
+                  },
+                  {
+                      header: '사용여부',
+                      name: 'useable',
+                      //formatter: 'listItemText',
+                      editor: {
+                        type: 'select',
+                        options: {
+                          listItems: [
+                            { text: '사용중', value: '사용중'},
+                            { text: '사용중지', value: '사용중지'}
+                          ]
+                        }
                       }
-                    }
-                }
-            ],
-      rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
-    });
-    // js로 모달창을 열어야 할 경우 모달을 변수에 등록하여 show(), hide()를 활용해 열/닫기 구현
-    const addAccountModal = new bootstrap.Modal(document.querySelector('#accountDetailModal')); // 상품 상세(수정) 모달
-    // 단축키 등록
-    document.addEventListener('keydown', (event) => {
-      
-      if(event.key === 'F2') {
-        event.preventDefault();
-        document.querySelector('#newAcc').click();
-      }
-    });
-    document.querySelector('#newAcc').addEventListener('click', function () {
-      addAccountModal.focus();
-    }); 
-    grid.on('click', (event) => { // grid 클릭이벤트 발생
-      if(event.columnName === 'accountCode' && event.rowKey>=0) {
-        console.log("클릭이벤트 발생");
-        console.log(event.rowKey);
+                  }
+              ],
+        rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
+      });
+      // js로 모달창을 열어야 할 경우 모달을 변수에 등록하여 show(), hide()를 활용해 열/닫기 구현
+      const addAccountModal = new bootstrap.Modal(document.querySelector('#accountAddModal')); // 상품 상세(수정) 모달
+      const detailAccountModal = new bootstrap.Modal(document.querySelector('#accountDetailModal')); // 상품 상세(수정) 모달
+      // 단축키 등록
+      document.addEventListener('keydown', (event) => {
+        
+        if(event.key === 'F2') {
+          event.preventDefault();
+          document.querySelector('#newAcc').click();
+        }
+      });
+      document.querySelector('#newAcc').addEventListener('click', function () { // 신규생성모달 초기화
+        document.querySelector('#bacctNo').value = '';
+        document.querySelector('#bacctName').value = '';
+        document.querySelector('#bankName').value = '';
+        document.querySelector('#summary').value = '';
         addAccountModal.show();
-      }
+      }); 
+      grid.on('click', (event) => { // grid 클릭이벤트 발생 -> 계좌수정모달
+        if(event.columnName === 'bacctNo' && event.rowKey>=0) {
+          console.log("클릭이벤트 발생");
+          //console.log(event.rowKey);
+          //console.log(grid.getValue(event.rowKey,"bacctCode"));
+          document.querySelector('#bacctNo').value = grid.getValue(event.rowKey,"bacctNo");
+          document.querySelector('#bacctName').value = grid.getValue(event.rowKey,"bacctName");
+          document.querySelector('#bankName').value = grid.getValue(event.rowKey,"bankName");
+          document.querySelector('#summary').value = grid.getValue(event.rowKey,"summary");
+          addAccountModal.show();
+        }
+      })
+      // 신규 계좌 생성 모달
+      // 저장 버튼 클릭 이벤트
+      saveButton.addEventListener('click', function() {
+          // 여기에 저장 로직 추가
+          alert('저장 기능 구현중.');
+      });
     })
-    // 신규 계좌 생성 모달
-    // 저장 버튼 클릭 이벤트
-    saveButton.addEventListener('click', function() {
-        // 여기에 저장 로직 추가
-        alert('저장 기능 구현중.');
-    });
   })
     
   </script>
