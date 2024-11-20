@@ -29,40 +29,40 @@
   <div class="modal fade" id="accountAddModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-          <form>
+          <form th:action="@{/insertBacct}" method="post" name="insertForm">
             <div class="modal-header">
                 <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌등록</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- 추후 db에서 값 불러와서 자동입력 구현하기 -->
             <div class="modal-body">
+            	<div class="mb-3">
+                  <label for="bankName" class="form-label">은행명</label>
+                  <select class="form-select" id="bankName" name="bankName">
+                        <!-- 은행 목록 fetch 동적 추가 -->
+                  </select>
+                </div>
                 <div class="mb-3">
                     <label for="accountCode" class="form-label">계좌번호</label>
-                    <input type="text" class="form-control" id="bacctNo" placeholder="계좌번호" readonly="readonly">
+                    <input type="text" class="form-control" id="bacctNo" name="bacctNo" placeholder="계좌번호">
                 </div>
                 <div class="mb-3">
                     <label for="accountName" class="form-label">계좌명</label>
-                    <input type="text" class="form-control" id="bacctName" placeholder="계좌명">
-                </div>
-                <div class="mb-3">
-                  <label for="bankName" class="form-label">은행명</label>
-                  <input type="text" class="form-control" id="bankName" placeholder="은행명">
+                    <input type="text" class="form-control" id="bacctName" name="bacctName" placeholder="계좌명">
                 </div>
                 <div class="mb-3">
                     <label for="remarks" class="form-label">적요</label>
-                    <textarea class="form-control" id="summary" rows="3" placeholder="적요"></textarea>
+                    <textarea class="form-control" id="summary" name="summary" rows="3" placeholder="적요"></textarea>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <label for="useable" class="form-label">계좌사용여부</label>
                     <select class="form-select" id="useable">
                         <option selected>사용중</option>
                         <option selected>사용중지</option>
-                        <!-- Add more options as needed -->
                     </select>
-                </div>
+                </div> -->
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success" id="saveButton">저장(F8)</button>
+                <button type="button" class="btn btn-success" id="saveButton">저장(F8)</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
           </form>
@@ -73,40 +73,38 @@
   <div class="modal fade" id="accountDetailModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-          <form>
+          <form th:action="@{/updateBacct}" method="post" name="updateForm">
             <div class="modal-header">
                 <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌상세</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- 추후 db에서 값 불러와서 자동입력 구현하기 -->
             <div class="modal-body">
+            	<div class="mb-3">
+                  <input type="text" class="form-control" id="bankName" name="bankName" placeholder="은행명" readonly="readonly">
+                </div>
                 <div class="mb-3">
                     <label for="accountCode" class="form-label">계좌번호</label>
-                    <input type="text" class="form-control" id="bacctNo" placeholder="계좌번호" readonly="readonly">
+                    <input type="text" class="form-control" id="bacctNo" name="bacctNo" placeholder="계좌번호" readonly="readonly">
                 </div>
                 <div class="mb-3">
                     <label for="accountName" class="form-label">계좌명</label>
-                    <input type="text" class="form-control" id="bacctName" placeholder="계좌명">
-                </div>
-                <div class="mb-3">
-                  <label for="bankName" class="form-label">은행명</label>
-                  <input type="text" class="form-control" id="bankName" placeholder="은행명">
+                    <input type="text" class="form-control" id="bacctName" name="bacctName" placeholder="계좌명">
                 </div>
                 <div class="mb-3">
                     <label for="remarks" class="form-label">적요</label>
-                    <textarea class="form-control" id="summary" rows="3" placeholder="적요"></textarea>
+                    <textarea class="form-control" id="summary" name="summary" rows="3" placeholder="적요"></textarea>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <label for="useable" class="form-label">계좌사용여부</label>
                     <select class="form-select" id="useable">
                         <option selected>사용중</option>
                         <option selected>사용중지</option>
-                        <!-- Add more options as needed -->
                     </select>
-                </div>
+                </div> -->
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success" id="saveButton">저장(F8)</button>
+                <button type="submit" class="btn btn-success" id="updateButton">저장(F8)</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
           </form>
@@ -117,15 +115,6 @@
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
-    // const gridData = [
-    //   {
-    //     accountCode: '11234578956',
-    //     accountName: '기업은행-1122',
-    //     bankName: '신한은행',
-    //     description: '외화거래',
-    //     useable: '사용중'
-    //   }
-    // ];
     fetch('http://localhost:8026/bacctList')
     .then(result => result.json())
     .then(result => {
@@ -193,6 +182,7 @@
           document.querySelector('#newAcc').click();
         }
       });
+
       document.querySelector('#newAcc').addEventListener('click', function () { // 신규생성모달 초기화
         document.querySelector('#bacctNo').value = '';
         document.querySelector('#bacctName').value = '';
@@ -200,23 +190,61 @@
         document.querySelector('#summary').value = '';
         addAccountModal.show();
       }); 
+
       grid.on('click', (event) => { // grid 클릭이벤트 발생 -> 계좌수정모달
         if(event.columnName === 'bacctNo' && event.rowKey>=0) {
           console.log("클릭이벤트 발생");
           //console.log(event.rowKey);
           //console.log(grid.getValue(event.rowKey,"bacctCode"));
-          document.querySelector('#bacctNo').value = grid.getValue(event.rowKey,"bacctNo");
-          document.querySelector('#bacctName').value = grid.getValue(event.rowKey,"bacctName");
-          document.querySelector('#bankName').value = grid.getValue(event.rowKey,"bankName");
-          document.querySelector('#summary').value = grid.getValue(event.rowKey,"summary");
-          addAccountModal.show();
+          document.updateForm.querySelector('#bacctNo').value = grid.getValue(event.rowKey,"bacctNo");
+          document.updateForm.querySelector('#bacctName').value = grid.getValue(event.rowKey,"bacctName");
+          document.updateForm.querySelector('#bankName').value = grid.getValue(event.rowKey,"bankName");
+          document.updateForm.querySelector('#summary').value = grid.getValue(event.rowKey,"summary");
+          detailAccountModal.show();
         }
       })
       // 신규 계좌 생성 모달
       // 저장 버튼 클릭 이벤트
       saveButton.addEventListener('click', function() {
+        console.log('계좌 등록 시작');
+        //event.preventDefault(); // 이벤트 일시 정지
           // 여기에 저장 로직 추가
-          alert('저장 기능 구현중.');
+          //alert('저장 기능 구현중.');
+          let bankName = document.insertForm.querySelector('#bankName');
+          if(bankName.value == '') {
+            alert('은행을 선택해주세요.');
+            bankName.focus();
+            return;
+          }
+          let bacctNo = document.insertForm.querySelector('#bacctNo');
+          if(bacctNo.value == '') {
+            alert('계좌번호를 입력하세요.');
+            bacctNo.focus();
+            return;
+          }
+          let bacctName = document.insertForm.querySelector('#bacctName');
+          if(bacctName.value == '') {
+            alert('계좌명을 입력하세요.');
+            bacctName.focus();
+            return;
+          }
+
+          document.insertForm.submit();
+      });
+   	  // 계좌 수정 모달
+      updateButton.addEventListener('click', function() {
+          alert('계좌 수정이 완료되었습니다.');
+      });
+    })
+
+    fetch('http://localhost:8026/bankList')
+    .then(result => result.json())
+    .then(result=> {
+      let selectBank = insertForm.querySelector('#bankName');
+      let layout = '';
+      result.forEach(bank => {
+        layout = `<option value=${bank.codeRule}>${bank.commonName}</option>`;
+        selectBank.insertAdjacentHTML('beforeend', layout);
       });
     })
   })
