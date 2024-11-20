@@ -45,8 +45,7 @@
       	border:2px solid black;
       }
       
-
-      /* 모딜 하단 버튼 컨테이너 스타일 */
+      /* 모달 하단 버튼 컨테이너 스타일 */
       .bottom-buttons {
      	display: flex;
         border-top: 1px solid #dee2e6; /* 상단 경계선 */
