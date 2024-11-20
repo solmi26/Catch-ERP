@@ -170,17 +170,25 @@
   
   <body>
   
+  	<!-- 모달을 여는 버튼 -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taxInvoiceModal">세금계산서 열기</button>
-
+	
+	 <!-- 세금계산서 모달 -->
     <div class="modal fade" id="taxInvoiceModal" tabindex="-1">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
+        
+        <!-- 모달 헤더 -->
           <div class="modal-header">
             <h5 class="modal-title">전자세금계산서</h5>
           </div>
+          
+          <!-- 모달 본문 -->
           <div class="modal-body">
-            <!-- 빨간 부분/공급자용-->
+          
+            <!-- 빨간 부분(공급자용)-->
             <div class="invoice-form">
+            
               <div class="invoice-header">
                 <div style="color: #ff0000; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
                 <div>승인번호</div>
@@ -189,6 +197,7 @@
 
               <!-- 공급자 / 공급받는 자 섹션 -->
               <div class="company-section">
+              
                 <!-- 공급자 정보 -->
                 <div>
                   <div style="text-align: center; color: #ff0000; font-weight: bold">공급자</div>
@@ -248,7 +257,7 @@
                 </div>
               </div>
 
-              <!-- 품목 테이블 -->
+              <!-- 거래 상세 내용 테이블 -->
               <table class="table">
                 <thead>
                   <tr>
@@ -295,20 +304,23 @@
                   </tr>
                 </tfoot>
               </table>
-            </div>
+            </div> <!-- 빨간 부분 끝. -->
 
+			 <!-- 구분선 -->
             <hr style="border-width: 3px 0 0 0; border-style: dotted; border-color: #b4b4b4" />
 
             <!-- 파란 부분/공급받는자 용-->
             <div class="invoice-form blue-theme">
+            
               <div class="invoice-header">
-                <div style="color: blue; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
+                <div style="color: blue; font-weight: bold">미전송전자세금계산서 (공급받는자용)</div>
                 <div>승인번호</div>
                 <div>인증서미첨부</div>
               </div>
 
               <!-- 공급자 / 공급받는 자 섹션 -->
               <div class="company-section">
+              
                 <!-- 공급자 정보 -->
                 <div>
                   <div style="text-align: center; color: blue; font-weight: bold">공급자</div>
@@ -368,7 +380,7 @@
                 </div>
               </div>
 
-              <!-- 품목 테이블 -->
+              <!-- 거래 상세 내용 테이블 -->
               <table class="table">
                 <thead>
                   <tr>
@@ -416,14 +428,17 @@
                 </tfoot>
               </table>
             </div>
-          </div>
+          </div> <!-- 모달 본문 끝. -->
+          
+            <!-- 모달 푸터 -->
           <div class="modal-footer">
             <button type="button" class="btn btn-success">인쇄</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
           </div>
+          
         </div>
       </div>
-    </div>
+    </div>  <!-- 세금계산서 모달 끝. -->
 
   </body>
 </html>
