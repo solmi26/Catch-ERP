@@ -5,4 +5,27 @@
 		SELECT *
 		FROM   bacct
 	</select>
+	
+	<insert id="insertBacct" parameterType="com.cherp.app.acct.vo.BacctVO">
+		<selectKey keyProperty="bacctCode" order="BEFORE" resultType="int">
+			SELECT NVL(MAX(bacct_code),100) + 1
+			FROM bacct
+		</selectKey>
+		INSERT INTO bacct (
+                     bacct_code
+                    ,bacct_no
+                    ,bacct_name
+                    ,bank_name
+                    ,summary
+                    )
+		VALUES(
+		         #{bacctCode}
+		        ,#{bacctNo}
+		        ,#{bacctName}
+		        ,#{bankName}
+		        ,#{summary}
+		        )
+	</insert>
+	
+	
 </mapper>
