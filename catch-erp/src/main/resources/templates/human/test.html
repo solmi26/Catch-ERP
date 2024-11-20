@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/human_layout}"
+      layout:fragment="Content">
+<head>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id='grid'></div>
+	<script>
+	let list = []
+	fetch('/test200')
+	.then(result => 
+		result.json()
+	)
+	.catch (data => {
+		console.log('ㅋㅋ');
+	})
+	.then(result => {
+		console.log(result)
+
+		window.setTimeout(function () {
+			list.push(result)
+		},200)		
+	})
+	
+	const Grid = tui.Grid;
+	const instance = new Grid({
+		  el: document.getElementById('grid'), // Container element
+		  data:list,
+		  columns: [
+		    {
+		      header: 'Name',
+		      name: 'employeeCode'
+		    },
+		    {
+		      header: 'Artist',
+		      name: 'employeeName'
+		    }
+
+		  ],
+		  data: [
+		    {
+		      name: 'Beautiful Lies',
+		      artist: 'Birdy',
+		      release: '2016.03.26',
+		      genre: 'Pop'
+		    }
+		  ]
+		});
+
+	instance.readData('/test200')
+	</script>
+</body>
+</html>

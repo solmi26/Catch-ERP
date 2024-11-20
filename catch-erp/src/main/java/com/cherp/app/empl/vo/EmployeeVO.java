@@ -2,6 +2,14 @@ package com.cherp.app.empl.vo;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+@NoArgsConstructor // 기본생성자
+@Getter
+@Setter
+@ToString
 public class EmployeeVO {
 //인사기본정보
 	private String employeeCode;
