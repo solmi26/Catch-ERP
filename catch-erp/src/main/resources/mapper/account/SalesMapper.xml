@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cherp.app.acct.mapper.SalesMapper">
+	<!-- 채권(receivable) 전체 조회 -->
+	<select id="receivablesList" resultType="com.cherp.app.acct.vo.SalesVO">
+		SELECT log_id, sales_chit_no, rec_date, decrease_price, bacct_code
+		FROM receivables_log
+	</select>
+	
+	<select id="payablesList" resultType="com.cherp.app.acct.vo.SalesVO">
+		SELECT  p.rec_log_id
+        ,p.sales_chit_no
+        ,p.rec_date
+        ,p.bacct_code
+        ,p.client
+        ,(SELECT client_name
+          FROM   client
+          WHERE  client_code = p.client) as client_name
+        ,s.rec_balance as rec_balance
+        ,s.rec_status as rec_status
+		FROM    payables_log p JOIN sales s
+        ON p.sales_chit_no = s.sales_chit_no
+	</select>
+</mapper>

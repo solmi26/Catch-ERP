@@ -1,5 +1,5 @@
 package com.cherp.app.buss.vo;
 
-public class businessVO {
+public class BusinessVO {
 
 }
