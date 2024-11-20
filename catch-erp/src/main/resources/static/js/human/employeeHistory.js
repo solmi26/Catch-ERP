@@ -16,6 +16,9 @@ grid.on('click',function (ev) {
 })
 
 
+
+
+
 //인사발령수정 모달창 이벤트
 ehModifyGrid.on('click',function (ev){
 	//사원검색모달창 띄우기
@@ -25,7 +28,6 @@ ehModifyGrid.on('click',function (ev){
 		window.setTimeout(function () {
 		empGrid.refreshLayout();
 		},200)
-		ehModifyModal.hide();
 		empModal.show();
 	}
 	//부서검색 모달창

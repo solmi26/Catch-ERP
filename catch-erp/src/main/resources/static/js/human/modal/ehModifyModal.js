@@ -5,7 +5,12 @@
 
 
 
-const ehModifyModal = new bootstrap.Modal(document.getElementById('ehModifyModal'))
+const ehModifyModal = new bootstrap.Modal(document.getElementById('ehModifyModal'),
+{
+	backdrop:false,
+	keyboard:false,
+	focus:false
+})
 
 
  const ehModifyGrid = new Grid({

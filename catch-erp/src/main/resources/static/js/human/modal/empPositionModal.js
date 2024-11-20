@@ -2,7 +2,8 @@
  * 
  */
 
- const empPositionModal = new bootstrap.Modal(document.getElementById('empPositionModal'))
+ const empPositionModal = new bootstrap.Modal(document.getElementById('empPositionModal'),{
+})
 
  const empPositionGrid = new Grid({
 el: document.getElementById('empPositionGrid'), // Container element
