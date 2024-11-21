@@ -191,6 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
             el: document.getElementById("clientGrid"),
             scrollX: true,
             scrollY: true,
+            data: clientData,
             header: {height: 40},
             bodyHeight: 500,
             width: 'auto',
@@ -200,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }],
             columns: [{
                 header: '거래처명',
-                name: 'c1',
+                name: 'clientName',
                 align: "center",
                 width: 183,
                 whiteSpace: 'normal',
@@ -211,17 +212,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 filter: 'select'
             }, {
                 header: '대표자명',
-                name: 'c2',
+                name: 'ceoName',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
                 className: 'border',
                 filter: 'select'
             }, {
-                header: '회사 연락처', name: 'c3', align: "center", width: 120, whiteSpace: 'normal', className: 'border'
+                header: '회사 연락처',
+                name: 'companyTel',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border'
             }, {
                 header: '담당자명',
-                name: 'c4',
+                name: 'employeeName',
                 align: "center",
                 width: 110,
                 whiteSpace: 'normal',
@@ -229,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 filter: 'select'
             }, {
                 header: '담당자 연락처',
-                name: 'c5',
+                name: 'employeeTel',
                 align: "center",
                 width: 120,
                 whiteSpace: 'normal',
@@ -237,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 filter: 'select'
             }, {
                 header: '종목',
-                name: 'c6',
+                name: 'event',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -385,15 +391,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const warehouseData = [{
         c1: '물류창고', c2: 'A0000045', c3: '천안아산', c4: '소요량높음'
     }];
-
-    const clientData = [
-        {
-            c1: '태호물산', c2: '김태호', c3: '02-1234-5678', c4: '김영준', c5: '010-1234-1234', c6: '식기류 제조업',
-         },
-        {
-            c1: '강철물산', c2: '김강철', c3: '02-1234-5678', c4: '신수준', c5: '010-1234-1234', c6: '식기류 제조업',
-        }
-    ];
 
     /*============================
             매출계정 모달 JS
@@ -552,7 +549,7 @@ document.addEventListener("DOMContentLoaded", function () {
     createdAccCodeGrid.resetData(accCodeData);
 
     // 그리드에 데이터 넣기(출력)
-    createdClientGrid.resetData(clientData);
+    // createdClientGrid.resetData(clientData);
 
     // 그리드 클릭 시 input 입력
 
@@ -564,9 +561,9 @@ document.addEventListener("DOMContentLoaded", function () {
     clientGrid.on("click", (ev) => {
         const columnName = ev.columnName;
 
-        if (columnName === 'c1') {
+        if (columnName === 'clientName') {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = clientGrid.getValue(ev.rowKey, 'c1');
+            const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
             document.getElementById('inputClient').value = columnValue
 
         }

@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class SalesController {
+
 	private final SalesService salesService;
 	
 	// 채권 전체 조회

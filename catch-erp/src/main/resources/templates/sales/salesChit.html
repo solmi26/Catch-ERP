@@ -211,7 +211,11 @@
 </div>
 
 <script th:src="@{/js/sales/salesChit.js}"></script>
-
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const clientData = [[${client}]]
+    /*]]>*/
+</script>
 </body>
 
 </html>

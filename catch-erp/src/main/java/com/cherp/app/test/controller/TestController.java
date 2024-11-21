@@ -48,14 +48,5 @@ public class TestController {
 		return "account/regBondReduction"; // 채권감소
 		//return "account/contract";
 	}
-	// GHT TEST
-	@GetMapping("testPurchase")
-	public String testPurchase() {
-		return "purchase/purchasePage";
-	}
-	// GHT TEST
-	@GetMapping("testSalesChit")
-	public String testSalesChit() {
-		return "sales/salesChit";
-	}
+
 }
