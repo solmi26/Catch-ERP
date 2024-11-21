@@ -9,16 +9,16 @@
  
 	<style>
 	
-
-  .transaction-type-sale {
-    background-color: #e0f7fa !important; /* 밝은 파랑색 */
-    color: #00796b !important;           /* 글자 색 */
-  }
-
-  .transaction-type-purchase {
-    background-color: #ffebee !important; /* 밝은 빨강색 */
-    color: #c62828 !important;            /* 글자 색 */
-  }
+		/* 매출전표는 파랑색 */	
+	  .sales {
+	    background-color: #e0f7fa !important; /* 밝은 파랑색 */
+	  }
+	
+		/* 매입전표는 빨간색 */	
+	  .purchase {
+	    background-color: #ffebee !important; /* 밝은 빨강색 */
+	  
+	  }
 
 	  
 	</style>
@@ -69,11 +69,6 @@
 		    clientName: "구로조영유통",          // 거래처명
 		    description: "구매이력조회 판매분",    // 적요
 		    eTaxInvoice: "전송중",            // 전자세금계산서
-		    _attributes: {
-		        className: {
-		          row: ['transaction-type-sale'] // 행 전체에 스타일 적용
-		        }
-		    }
 		    
 		  },  {
 		        voucherNumber: "24/11/30-2",
@@ -82,11 +77,6 @@
 		        clientName: "서울상사",
 		        description: "물품 구매",
 		        eTaxInvoice: "전송",
-		        _attributes: {
-		            className: {
-		              row: ['transaction-type-purchase'] // 행 전체에 스타일 적용
-		            }
-		          }
 		      },
 	];
 
@@ -134,18 +124,31 @@
     	    	    align: "center",
     	    	  },
     	    	],
-    	    rowHeaders: ['rowNum', 'checkbox'],
-    	    rowClass: (row) => {
-    	    	console.log(row.transactionType); 
-    	        // 거래유형에 따라 클래스 변경(행 색깔 변경 위함)
-    	        if (row.transactionType === "매출전표") {
-    	          return "transaction-type-sale";
-    	        } else if (row.transactionType === "매입전표") {
-    	          return "transaction-type-purchase";
-    	        }
-    	        return "";
-    	      },
+      	      rowHeaders: [
+    	            {
+    	              type: 'checkbox',
+    	              header: 
+    	                `<span class="custom-input">
+    	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+    	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+    	                </span>`
+    	            ,
+    	              renderer: {
+    	                type: gridCheckbox
+    	              }
+    	            }],
     	  });
+    	 
+    	 
+    	 grid.getData().forEach(row => {
+    		 console.log(row.transactionType === "매출전표");
+    		 let check = row.transactionType === "매출전표";
+    		 if(check){ 
+    			 grid.addRowClassName(row.rowKey, "sales")
+    		 } else{
+    			 	grid.addRowClassName(row.rowKey, "purchase")
+    		 }
+    	 });
 
     	 // 그리드 클릭 이벤트 -> 추후 수정
     	  grid.on('click', (event) => {

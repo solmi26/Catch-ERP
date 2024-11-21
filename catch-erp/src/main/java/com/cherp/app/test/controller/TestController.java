@@ -16,10 +16,14 @@ public class TestController {
 	@GetMapping("testac")
 	public String testViewAc() {
 		//return "human/attendanceInput";
-		// return "account/invoice";
-		//return "account/contract";
+		//return "account/invoice";
+		//return "account/contractInsert";
 		//return "account/purchaseSlip";
-		return "account/statement";
+		//return "account/salesSlip";
+		// return "account/statement";
+	    //return "account/modal/salesSlipModal";
+		//return "account/modal/invoicePrintModal";
+		return "account/modal";
 	}
 	// NKW TEST
 	@GetMapping("testStack")

@@ -1,5 +1,6 @@
 package com.cherp.app.empl.vo;
 
+
 import java.util.Date;
 
 import lombok.Getter;

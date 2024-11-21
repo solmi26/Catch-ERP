@@ -61,78 +61,9 @@
             }
     }
     
-    //숫자타입 인풋 렌더러 (석진제작)
-    class gridNumber {
-		  constructor(props) {
-		    const el = document.createElement('input');
-		
-		    el.type = 'number';
-		    el.value = String(props.value);
-			el.className = 'form-control from-control-sm'
-		    this.el = el;
-		  }
-		
-		  getElement() {
-		    return this.el;
-		  }
-		
-		  getValue() {
-		    return this.el.value;
-		  }
-		
-		  mounted() {
-		    this.el.select();
-		  }
-	}
-	
-  //숫자있는 체크박스 (석진제작)
-  class gridCheckbox {
-    constructor(props) {
-      const { grid, rowKey } = props;
-	  
-      const label = document.createElement('label');
-      label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
-      label.setAttribute('for', 'selectCheck'+String(rowKey));
-      label.innerText = `${grid.getIndexOfRow(rowKey)+1}`;
-      const hiddenInput = document.createElement('input');
-      hiddenInput.className = 'hidden-input';
-      hiddenInput.id = 'selectCheck'+String(rowKey);
-	
-      
-      const customInput = document.createElement('span');
-      customInput.className = 'custom-input';
-
-      customInput.appendChild(hiddenInput);
-      customInput.appendChild(label);
-
-      hiddenInput.type = 'checkbox';
-      label.addEventListener('click', (ev) => {
-        ev.preventDefault();
-
-        if (ev.shiftKey) {
-          grid[!hiddenInput.checked ? 'checkBetween' : 'uncheckBetween'](rowKey);
-          return;
-        }
-
-        grid[!hiddenInput.checked ? 'check' : 'uncheck'](rowKey);
-      });
-
-      this.el = customInput;
-
-      this.render(props);
-    }
-
-    getElement() {
-      return this.el;
-    }
-
-    render(props) {
-      const hiddenInput = this.el.querySelector('.hidden-input');
-      const checked = Boolean(props.value);
-
-      hiddenInput.checked = checked;
-    }
-  }
+    //숫자타입 인풋 렌더러 (석진제작)   -> 템플릿 공통코드로 병합 
+  	//숫자있는 체크박스 (석진제작)	    -> 템플릿 공통코드로 병합
+  
 /*==========================================
 		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
 ============================================*/
@@ -166,22 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
                      lessThan: '이전',
                      lessThanOrEqualTo: '이전(포함)'
 		}
-	}
-	Grid.setLanguage('ko', {
-                 Filter: {
-                    
-                 },
-                 DatePicker: {
-                     titles: {
-                         today: '오늘',
-                         clear: '지우기'
-                     },
-                     monthsLong: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                     monthsShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                     dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-                     dayNamesShort: ['일', '월', '화', '수', '목', '금', '토']
-                 }
-    });*/
+	}*/
     
 	Grid.applyTheme('default',  {
             outline:{

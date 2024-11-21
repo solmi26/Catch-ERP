@@ -1,95 +1,22 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/account_layout}"
+      layout:fragment="Content">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>전자세금계산서</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-      .modal-header {
-        background-color: #aacb73;
-        color: white;
-        padding: 0.5rem 1rem;
-      }
-
-      .action-buttons {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-      }
-
-      .action-buttons button {
-        padding: 0.25rem;
-        margin-left: 0.25rem;
-        font-size: 1.2rem;
-        line-height: 1;
-      }
-
-      .modal-body {
-        background-color: #fff;
-        padding: 1rem;
-      }
-
-      .invoice-form {
+  
+  	.modal-body{
+  		font-size: 16px;
+  	}
+  	
+  	/* 빨간색 테마 부분 */	
+ 	.invoice-form {
         border: 1px solid #ff0000;
         margin: 1rem;
         padding: 0.5rem;
-      }
-
-      /* 파란색 테마 부분 */
-      .invoice-form.blue-theme {
-        border: 1px solid blue;
-        padding: 0.5rem;
-      }
-
-      .invoice-form.blue-theme .invoice-header {
-        border: 1px solid blue; /* 헤더도 파란색으로 변경 */
-        color: blue;
-      }
-
-      .invoice-form.blue-theme .company-section {
-        border: 1px solid blue; /* 회사 정보 부분의 테두리도 파란색으로 변경 */
-      }
-
-      .invoice-form.blue-theme .company-info .info-label {
-        color: blue;
-        border: 1px solid blue;
-      }
-
-      .invoice-form.blue-theme .company-info .info-value {
-        border: 1px solid blue;
-      }
-
-      .invoice-form.blue-theme .table {
-        border: 1px solid blue;
-        color: blue;
-      }
-
-      .invoice-form.blue-theme .table th,
-      .invoice-form.blue-theme .table td {
-        border: 1px solid blue;
-        padding: 0.5rem;
-        text-align: center;
-      }
-
-      .invoice-form.blue-theme .amount-cell {
-        text-align: right;
-      }
-
-      .invoice-form.blue-theme .total-row {
-        border-top: 2px solid blue;
-      }
-
-      .invoice-form.blue-theme .info-label {
-        color: blue;
-        border: 1px solid blue;
-        padding: 0.25rem;
-        text-align: center;
-      }
-
-      .invoice-form.blue-theme .info-value {
-        border: 1px solid blue;
-        padding: 0.25rem;
       }
 
       .invoice-header {
@@ -178,27 +105,90 @@
       .total-row {
         border-top: 2px solid #ff0000;
       }
-    </style>
-  </head>
-  <body>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taxInvoiceModal">세금계산서 열기</button>
+      /* 빨간색 테마 부분 끝. */	
+      
+      /* 파란색 테마 부분 */
+      .invoice-form.blue-theme {
+        border: 1px solid blue;
+        padding: 0.5rem;
+      }
 
+      .invoice-form.blue-theme .invoice-header {
+        border: 1px solid blue; /* 헤더도 파란색으로 변경 */
+        color: blue;
+      }
+
+      .invoice-form.blue-theme .company-section {
+        border: 1px solid blue; /* 회사 정보 부분의 테두리도 파란색으로 변경 */
+      }
+
+      .invoice-form.blue-theme .company-info .info-label {
+        color: blue;
+        border: 1px solid blue;
+      }
+
+      .invoice-form.blue-theme .company-info .info-value {
+        border: 1px solid blue;
+      }
+
+      .invoice-form.blue-theme .table {
+        border: 1px solid blue;
+        color: blue;
+      }
+
+      .invoice-form.blue-theme .table th,
+      .invoice-form.blue-theme .table td {
+        border: 1px solid blue !important;
+        padding: 0.5rem !important;
+        text-align: center !important;
+      }
+
+      .invoice-form.blue-theme .amount-cell {
+        text-align: right;
+      }
+
+      .invoice-form.blue-theme .total-row {
+        border-top: 2px solid blue;
+      }
+
+      .invoice-form.blue-theme .info-label {
+        color: blue;
+        border: 1px solid blue;
+        padding: 0.25rem;
+        text-align: center;
+      }
+
+      .invoice-form.blue-theme .info-value {
+        border: 1px solid blue;
+        padding: 0.25rem;
+      }
+      /* 파란색 테마 부분 끝. */
+
+    </style>
+    
+  </head>
+  
+  <body>
+  
+  	<!-- 모달을 여는 버튼 -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taxInvoiceModal">세금계산서 열기</button>
+	
+	 <!-- 세금계산서 모달 -->
     <div class="modal fade" id="taxInvoiceModal" tabindex="-1">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
+        
+        <!-- 모달 헤더 -->
           <div class="modal-header">
             <h5 class="modal-title">전자세금계산서</h5>
-            <div class="action-buttons">
-              <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
-              <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
-              <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
-              <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
           </div>
+          
+          <!-- 모달 본문 -->
           <div class="modal-body">
-            <!-- 빨간 부분/공급자용-->
+          
+            <!-- 빨간 부분(공급자용)-->
             <div class="invoice-form">
+            
               <div class="invoice-header">
                 <div style="color: #ff0000; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
                 <div>승인번호</div>
@@ -207,6 +197,7 @@
 
               <!-- 공급자 / 공급받는 자 섹션 -->
               <div class="company-section">
+              
                 <!-- 공급자 정보 -->
                 <div>
                   <div style="text-align: center; color: #ff0000; font-weight: bold">공급자</div>
@@ -266,7 +257,7 @@
                 </div>
               </div>
 
-              <!-- 품목 테이블 -->
+              <!-- 거래 상세 내용 테이블 -->
               <table class="table">
                 <thead>
                   <tr>
@@ -313,20 +304,23 @@
                   </tr>
                 </tfoot>
               </table>
-            </div>
+            </div> <!-- 빨간 부분 끝. -->
 
+			 <!-- 구분선 -->
             <hr style="border-width: 3px 0 0 0; border-style: dotted; border-color: #b4b4b4" />
 
             <!-- 파란 부분/공급받는자 용-->
             <div class="invoice-form blue-theme">
+            
               <div class="invoice-header">
-                <div style="color: blue; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
+                <div style="color: blue; font-weight: bold">미전송전자세금계산서 (공급받는자용)</div>
                 <div>승인번호</div>
                 <div>인증서미첨부</div>
               </div>
 
               <!-- 공급자 / 공급받는 자 섹션 -->
               <div class="company-section">
+              
                 <!-- 공급자 정보 -->
                 <div>
                   <div style="text-align: center; color: blue; font-weight: bold">공급자</div>
@@ -386,7 +380,7 @@
                 </div>
               </div>
 
-              <!-- 품목 테이블 -->
+              <!-- 거래 상세 내용 테이블 -->
               <table class="table">
                 <thead>
                   <tr>
@@ -434,18 +428,17 @@
                 </tfoot>
               </table>
             </div>
-          </div>
+          </div> <!-- 모달 본문 끝. -->
+          
+            <!-- 모달 푸터 -->
           <div class="modal-footer">
             <button type="button" class="btn btn-success">인쇄</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
           </div>
+          
         </div>
       </div>
-    </div>
+    </div>  <!-- 세금계산서 모달 끝. -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- 모달창 아이콘 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
   </body>
 </html>
