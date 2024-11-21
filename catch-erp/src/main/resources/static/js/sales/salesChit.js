@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("rowData:", rowData.accName);
         const modalToggle = document.getElementById('accountSearchModal');
         myModal.hide(modalToggle);
-
     });
 
 
