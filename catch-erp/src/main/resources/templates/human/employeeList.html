@@ -21,7 +21,10 @@
 		    font-size:12px;
 			}
 		}	
-		
+		.employee-list{
+			overflow-y:auto;
+			max-height:500px;
+		}
     </style>
     <div class="container-fluid p-4">
         <!--  세부 검색 구역 -->
@@ -347,7 +350,7 @@
                                             <input type="number" class="form-control form-control-sm">
                                         </div>
                                         <div class="col=12">
-                                        <div id="grid"></div>
+                                        <div id="allowanceGrid"></div>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">은행</label>
@@ -380,40 +383,7 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="employee-list">
-                            <table class="table border table-sm">
-                                <thead >
-                                    <tr>
-                                        <th class="w-5 p-0 m-0" ><input type="checkbox" class="form-check-input"></th>
-                                        <th class="w-25 p-0 m-0">사원번호</th>
-                                        <th class="w-15">성명</th>
-                                        <th class="w-30">부서명</th>
-                                        <th class="w-25">직위/직급명</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td ><input type="checkbox" class="form-check-input"></td>
-                                        <td>2024-003</td>
-                                        <td>홍길동</td>
-                                        <td>경영지원본부</td>
-                                        <td>과장</td>
-                                    </tr>
-                                    <tr>
-                                        <td ><input type="checkbox" class="form-check-input"></td>
-                                        <td>2024-001</td>
-                                        <td>전우치</td>
-                                        <td>기획팀</td>
-                                        <td>대리</td>
-                                    </tr>
-                                    <tr>
-                                        <td ><input type="checkbox" class="form-check-input"></td>
-                                        <td>2024-002</td>
-                                        <td>김길순</td>
-                                        <td>인사팀</td>
-                                        <td>이사</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        	<div id="grid"></div>
                         </div>
                     </div>
                 </div>
@@ -435,9 +405,13 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src='@{/js/common/toastsetting.js}'></script>
+    
     <script>
+    
         document.addEventListener('DOMContentLoaded', function() {
             // Photo upload preview
+        /*
             document.getElementById('photoUpload').addEventListener('change', function(e) {
                 if (e.target.files && e.target.files[0]) {
                     const reader = new FileReader();
@@ -469,7 +443,7 @@
                 document.getElementById('salaryForm').reset();
                 document.getElementById('employeePhoto').src = '/placeholder.svg?height=100&width=100';
             });
-
+            */
             // Row selection in employee list
             const tableRows = document.querySelectorAll('.employee-list tbody tr');
             tableRows.forEach(row => {
@@ -482,37 +456,65 @@
         });
     </script>
     <script>
-    document.getElementById('salary-tab').addEventListener('click', function() {
-        window.setTimeout(function(){
-            grid.refreshLayout();
-        }, 200) 
-    });
-    class NumberFormat {
-    	  constructor(props) {
-    	    const el = document.createElement('input');
-
-    	    el.type = 'number';
-    	    el.value = Number(props.value);
-
-    	    this.el = el;
-    	  }
-
-    	  getElement() {
-    	    return this.el;
-    	  }
-
-    	  getValue() {
-    	    return this.el.value;
-    	  }
-
-    	  mounted() {
-    	    this.el.select();
-    	  }
-    	}
-    
     const Grid = tui.Grid;
+
     const grid = new Grid({
-    	  el: document.getElementById('grid'), // Container element
+  	  el: document.getElementById('grid'), // Container element
+  	  rowHeight:10,
+  	  minRowHeight:25,
+  	  bodyHeight:800,
+      rowHeaders: [
+          {
+            type: 'checkbox',
+            header: `
+              <span class="custom-input">
+              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+          	</span>
+          `,
+            renderer: {
+              type: gridCheckbox
+            }
+          }
+        ],
+  	  columns: [
+    	    {
+    	      header: '사원번호',
+    	      name: 'employeeId'
+    	    },
+    	    {
+    	      header: '성명',
+    	      name: 'name'
+    	    },
+    	    {
+    	      header: '부서명',
+    	      name: 'departmentName',
+    	    },
+    	    {
+      	      header: '직위/직급명',
+      	      name: 'statusType',
+      	    }
+    	  ],
+  	  
+  	  data:[]
+  	});
+
+  document.addEventListener('DOMContentLoaded', function() {
+      fetch("/test200")
+      .then(result => result.json())
+      .then(datas =>{grid.resetData(datas)})
+	})    
+	 
+  document.getElementById('salary-tab').addEventListener('click', function() {
+      window.setTimeout(function(){
+          grid.refreshLayout();
+      }, 200) 
+  });
+
+ 
+    
+    const allowanceGrid = new Grid({
+    	  el: document.getElementById('allowanceGrid'), // Container element
     	  
     	  columns: [
     	    {
@@ -527,7 +529,7 @@
     	      header: '수당액',
     	      name: 'release',
               editor: {
-                  type: NumberFormat
+                  type: gridNumber
                 }
     	    },
     	    {
