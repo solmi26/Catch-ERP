@@ -22,7 +22,7 @@ class gridNumber {
 
     el.type = 'number';
     el.value = String(props.value);
-	el.className = 'form-control form-control-sm'
+    el.style = 'width : 100%; border:0;'; 
     this.el = el;
   }
 

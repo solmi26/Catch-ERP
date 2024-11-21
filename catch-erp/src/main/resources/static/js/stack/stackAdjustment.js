@@ -44,6 +44,7 @@
         }
     }
 	
+	//구매현황, 출하지시서 모달 외의 모달에서 사용되는 버튼 렌더러
 	class ButtonRenderer {
             constructor(props) {
                 this.el = document.createElement('button');
@@ -51,88 +52,62 @@
                 this.el.style.border = '1px solid gray';
                 this.el.style.borderRadius ='3px';
                 this.el.style.backgroundColor = 'white';
-                this.el.onclick = () => {
-                alert(`데이터이동 함수 필요`);
-                };
+                this.el.classList.add('gridBtn')
+                /*this.el.onclick = () => {
+                	console.log(this.el.innerText);             
+                };*/
+                this.el.setAttribute("data-bs-dismiss", "modal");              
             }
-
             getElement() {
                 return this.el;
             }
     }
-    
-    //숫자타입 인풋 렌더러 (석진제작)
-    class gridNumber {
-		  constructor(props) {
-		    const el = document.createElement('input');
-		
-		    el.type = 'number';
-		    el.value = String(props.value);
-			el.className = 'form-control from-control-sm'
-		    this.el = el;
-		  }
-		
-		  getElement() {
-		    return this.el;
-		  }
-		
-		  getValue() {
-		    return this.el.value;
-		  }
-		
-		  mounted() {
-		    this.el.select();
-		  }
-	}
-	
-  //숫자있는 체크박스 (석진제작)
-  class gridCheckbox {
-    constructor(props) {
-      const { grid, rowKey } = props;
-	  
-      const label = document.createElement('label');
-      label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
-      label.setAttribute('for', 'selectCheck'+String(rowKey));
-      label.innerText = `${grid.getIndexOfRow(rowKey)+1}`;
-      const hiddenInput = document.createElement('input');
-      hiddenInput.className = 'hidden-input';
-      hiddenInput.id = 'selectCheck'+String(rowKey);
-	
-      
-      const customInput = document.createElement('span');
-      customInput.className = 'custom-input';
-
-      customInput.appendChild(hiddenInput);
-      customInput.appendChild(label);
-
-      hiddenInput.type = 'checkbox';
-      label.addEventListener('click', (ev) => {
-        ev.preventDefault();
-
-        if (ev.shiftKey) {
-          grid[!hiddenInput.checked ? 'checkBetween' : 'uncheckBetween'](rowKey);
-          return;
-        }
-
-        grid[!hiddenInput.checked ? 'check' : 'uncheck'](rowKey);
-      });
-
-      this.el = customInput;
-
-      this.render(props);
+    //구매현황, 출하지시서 모달에 사용되는 버튼 렌더러
+    class BtnForOrder {
+            constructor(props) {
+				
+                this.el = document.createElement('button');
+                this.el.innerText = props.value;
+                this.el.style.border = '1px solid gray';
+                this.el.style.borderRadius ='3px';
+                this.el.style.backgroundColor = 'white';
+                this.el.classList.add('gridBtn')
+                
+                /*
+          		this.el.onclick = () => {
+					 				
+					const tr = this.el.closest('tr'); 
+					tr.classList.add("selected");
+					
+					if(tr.classList.contains("selected") == false){ 						          	
+	                	tr.classList.add("selected")
+	                	const tds = tr.children;
+	                	const tdsArr = Array.from(tds);
+	                	tdsArr.forEach((ele)=>{
+							ele.style.backgroundColor = "#e5fad0";	
+						})                			
+					}					
+					if(tr.classList.contains("selected") == true){						
+						tr.classList.remove("selected")
+	                	const tds = tr.children;
+	                	const tdsArr = Array.from(tds);
+	                	tdsArr.forEach((ele)=>{
+							ele.style.backgroundColor = "white";	
+						}) 
+					}	
+								
+                }*/	
+                /*this.el.onclick = () => {
+                	console.log(this.el.innerText);             
+                };*/                        
+            }
+            getElement() {
+                return this.el;
+            }
     }
-
-    getElement() {
-      return this.el;
-    }
-
-    render(props) {
-      const hiddenInput = this.el.querySelector('.hidden-input');
-      const checked = Boolean(props.value);
-
-      hiddenInput.checked = checked;
-    }
-  }
+  //숫자타입 인풋 렌더러 (석진제작) => 공통코드파일에 병합
+  //숫자있는 체크박스 (석진제작) => 공통코드파일에 병합
+  
 /*================================================================
 		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
 ==================================================================*/
@@ -194,11 +169,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-    
+    let grid
     const initGrid = () => {
         // 그리드 객체
-
-    const grid = new Grid({
+	
+     	grid = new Grid({
         el: document.getElementById('adjustmentGrid'),
         scrollX: true,
         scrollY: true,
@@ -218,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	    ],
         header: { height: 40 },
         bodyHeight: 500,
-        rowHeight: 102,
+        rowHeight: 40,
         width: 'auto',
         contextMenu: null,
         /*rowHeaders: [{
@@ -229,72 +204,61 @@ document.addEventListener("DOMContentLoaded", function () {
         }],*/
         columns: [
             {
-                header: '품목코드',
+                header: '구매/판매내역 No.',
                 name: 'c1',
                 align: "center",
-                width: 150,
+                width: 220,
                 whiteSpace: 'normal',
-                className:'border'
-                
+                className:'border'               
+            },
+            {
+                header: '품목코드',
+                name: 'c2',
+                align: "center",
+                width: 220,
+                whiteSpace: 'normal',
+                className:'border'              
             },
             {
                 header: '품목명',
-                name: 'c2',
+                name: 'c3',
                 align: "center",
-                width: 130,
+                width: 200,
                 whiteSpace: 'normal'
             },
             {
-                header: '규격',
-                name: 'c3',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className:'border'
-            },
-            {
-                header: '입고단가',
+                header: '재고조정사유',
                 name: 'c4',
                 align: "center",
-                width: 100,
+                width: 200,
                 whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className:'border',
-                validation: {
-                    dataType: 'number'
-                }
-            },
+                className:'border'              
+            },           
             {
-                header: '출고단가',
+                header: '지시수량',
                 name: 'c5',
                 align: "center",
-                width: 90,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className:'border',
-                validation: {
-                    dataType: 'number'
-                }
+                width: 100,
+                whiteSpace: 'normal',                
+                className:'border'
             },
             {
                 header: '출하수량',
                 name: 'c6',
                 align: "center",
-                width: 120,
+                width: 100,
                 whiteSpace: 'normal',
                 editor: 'text',
                 validation: {
                     dataType: 'number'
-                },
+                },                         
                 className:'border'
             },
             {
                 header: '입고수량',
                 name: 'c7',
                 align: "center",
-                width: 120,
+                width: 100,
                 whiteSpace: 'normal',
                 editor: 'text',
                 validation: {
@@ -308,29 +272,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '재고수량',
                 name: 'c8',
                 align: "center",
-                width: 135,
+                width: 100,
                 whiteSpace: 'normal',
                 className:'border'
-            },
-            {
-                header: '이미지',
-                name: 'c9',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                className:'border',
-                renderer: {
-                    type: ImageRenderer
-                }
-            },
-            {
-                header: '재고조정사유',
-                name: 'c10',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                className:'border'              
-            }
+            }           
         ]
     	});
 
@@ -344,40 +289,37 @@ document.addEventListener("DOMContentLoaded", function () {
     const sampleData = [
         {
 			c1: 'A0000045',
-            c2: '컵홀더',
-            c3: '2023.01.01',
-            c4: '컵홀더',
-            c5: '12000',
+            c2: 'A2024',
+            c3: '컵홀더',
+            c4: '상품 출하',
+            c5: '1400',
             c6: '5',
             c7: '0',
-            c8: '0',
-            c9: '0',
-            c10: '상품 출하'
+            c8: '1000',
+            c8: '1200',
         },
         {
 			c1: 'A0000045',
-            c2: '컵홀더',
-            c3: '2023.01.01',
-            c4: '컵홀더',
-            c5: '12000',
+            c2: 'A2024',
+            c3: '컵홀더',
+            c4: '상품 출하',
+            c5: '1400',
             c6: '5',
             c7: '0',
-            c8: '0',
-            c9: '0',
-            c10: '상품 출하'
+            c8: '1000',
+            c8: '1200',
         },
         {
 			c1: 'A0000045',
-            c2: '컵홀더',
-            c3: '2023.01.01',
-            c4: '컵홀더',
-            c5: '12000',
+            c2: 'A2024',
+            c3: '컵홀더',
+            c4: '상품 출하',
+            c5: '1400',
             c6: '5',
             c7: '0',
-            c8: '0',
-            c9: '0',
-            c10: '상품 출하'
-        }
+            c8: '1000',
+            c8: '1200',
+        },
         
     ];
 
@@ -493,12 +435,33 @@ document.addEventListener("DOMContentLoaded", function () {
             c4: '김영준',
             c5: '010-1234-1234',
             c6: '식기류 제조업',
+        },
+        {
+            c1: '김천물산',
+            c2: '김태호',
+            c3: '02-1234-5678',
+            c4: '김영준',
+            c5: '010-1234-1234',
+            c6: '식기류 제조업',
         }
     ];
 
     // 그리드에 데이터 넣기(출력)
     createdGrid3.resetData(sampleData3);
     
+    grid3.on('click',function(ev){
+		let rowKeyNum;
+		if (ev.columnName == 'c1'){
+			rowKeyNum = ev.rowKey;		
+			let inputTag = document.getElementById('clientInput');
+			inputTag.value = '';		
+			inputTag.value = grid3.getValue(rowKeyNum, 'c1');
+									
+			console.log(inputTag.value);
+			
+		}
+	})   
+	
     /*============================
     	StackInquery 품목조회 모달 JS
     ==============================*/
@@ -574,11 +537,23 @@ document.addEventListener("DOMContentLoaded", function () {
 	createdGrid5.resetData(sampleData5);
     
     
+    grid5.on('click',function(ev){
+		let rowKeyNum;
+		if (ev.columnName == 'c1'){
+			rowKeyNum = ev.rowKey;		
+			let inputTag = document.getElementById('itemInput');
+			inputTag.value = '';			
+			inputTag.value = grid5.getValue(rowKeyNum, 'c1');							
+			console.log(inputTag.value);			
+		}
+	})   
+	
+    
     /*============================
     	StackInquery 구매내역 모달 JS
     ==============================*/
     var purchaseOrderModal = document.getElementById('purchaseOrderModal2')
-
+	
 	purchaseOrderModal.addEventListener('show.bs.modal', function (event) {
 	    // 모달이 표시되기 전에 실행할 코드
 	    window.setTimeout(function(){
@@ -611,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            whiteSpace: 'normal',
 		            className:'border',
 		            renderer: {
-		                type: ButtonRenderer
+		                type: BtnForOrder
 		            }
 		            
 		        },
@@ -622,7 +597,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            width: 120,
 		            whiteSpace: 'normal',
 		            renderer: {
-		                type: ButtonRenderer
+		                type: BtnForOrder
 		            }
 		        },
 		        {
@@ -707,18 +682,96 @@ document.addEventListener("DOMContentLoaded", function () {
 	    },
 	    {
 		    c1: 'A0000045',
-		    c2: 'A0000045-1',
+		    c2: 'A0000045-2',
 		    c3: '2023.01.01',
 		    c4: 'z0001',
 		    c5: '컵홀더',
 		    c6: '태호물산',
 		    c7: '0',
-		    c8: '10000000'
+		    c8: '200'
+	    },
+	    {
+		    c1: 'A0000045',
+		    c2: 'A0000045-3',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '1000000'
+	    },
+	    {
+		    c1: 'A0000045',
+		    c2: 'A0000045-4',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '10000'
+	    },
+	    {
+		    c1: 'A0000045',
+		    c2: 'A0000045-5',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '100000'
+	    },
+	    {
+		    c1: 'A0000046',
+		    c2: 'A0000046-1',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '100000'
+	    },
+	    {
+		    c1: 'A0000046',
+		    c2: 'A0000046-2',
+		    c3: '2023.01.01',
+		    c4: 'z0001',
+		    c5: '컵홀더',
+		    c6: '태호물산',
+		    c7: '0',
+		    c8: '100000'
 	    }
 	];
 	
 	// 그리드에 데이터 넣기(출력)
 	createdGrid6.resetData(sampleData6);
+	
+	grid6.on('click',function(ev){	
+		//전표No. 클릭시 적용
+		selectInModal(ev);
+		if(ev.columnName == 'c1'){
+			const sample = [{
+				c1: 'A0000045',
+	            c2: 'A2024',
+	            c3: '컵홀더',
+	            c4: '상품입고',
+	            c5: '300',
+	            c6: '0',
+	            c7: '100',
+	            c8: '10000'
+	        }]
+	        
+	        if(grid.getRowCount() < 16){
+				grid.appendRows(sample);
+			} else {
+				alert('한 번에 16건을 처리할 수 있습니다.')
+			}
+		}
+		//내역No. 클릭시 적용
+		if(ev.columnName == 'c2'){
+			
+		}
+	})
+	
     /*============================
     	StackInquery 출하지시내역 모달 JS
     ==============================*/
@@ -757,7 +810,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            whiteSpace: 'normal',
 		            className:'border',
 		            renderer: {
-		                type: ButtonRenderer
+		                type: BtnForOrder
 		            }
 		            
 		        },
@@ -768,7 +821,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            width: 120,
 		            whiteSpace: 'normal',
 		            renderer: {
-		                type: ButtonRenderer
+		                type: BtnForOrder
 		            }
 		        },
 		        {
@@ -787,8 +840,17 @@ document.addEventListener("DOMContentLoaded", function () {
 		            }
 		        },
 		        {
-		            header: '품목명',
+		            header: '품목코드',
 		            name: 'c4',
+		            align: "center",
+		            width: 100,
+		            whiteSpace: 'normal',
+		            className:'border'
+		        }
+		        ,
+		        {
+		            header: '품목명',
+		            name: 'c5',
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
@@ -796,7 +858,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        },
 		        {
 		            header: '거래처명',
-		            name: 'c5',
+		            name: 'c6',
 		            align: "center",
 		            width: 140,
 		            whiteSpace: 'normal',
@@ -804,15 +866,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		        },
 		        {
 		            header: '수량',
-		            name: 'c6',
+		            name: 'c7',
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
 		            className:'border'
 		        },
 		        {
-		            header: '단가',
-		            name: 'c7',
+		            header: '출고단가',
+		            name: 'c8',
 		            align: "center",
 		            width: 200,
 		            whiteSpace: 'normal',
@@ -839,50 +901,54 @@ document.addEventListener("DOMContentLoaded", function () {
 	        c4: '컵홀더',
 	        c5: '12000',
 	        c6: '5',
-	        c7: '0'       
+	        c7: '0',
+	        c8: '0'       
 	    },
 	    {
 	        c1: 'A0000045',
-	        c2: 'A0000045-2',
-	        c3: '2023.01.02',
-	        c4: '포장용기',
+	        c2: 'A0000045-1',
+	        c3: '2023.01.01',
+	        c4: '컵홀더',
 	        c5: '12000',
 	        c6: '5',
-	        c7: '0'
-	       
+	        c7: '0',
+	        c8: '0'       
 	    },
 	    {
 	        c1: 'A0000045',
-	        c2: 'A0000045-3',
-	        c3: '2023.01.03',
-	        c4: '빨대',
+	        c2: 'A0000045-1',
+	        c3: '2023.01.01',
+	        c4: '컵홀더',
 	        c5: '12000',
 	        c6: '5',
-	        c7: '20000'
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-4',
-	        c3: '2023.01.04',
-	        c4: '컵(소형)',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '100000'
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-5',
-	        c3: '2023.01.05',
-	        c4: '컵(대형)',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '4000000'
+	        c7: '0',
+	        c8: '0',
+	        c9: '0',
+	        c10: '상품 입고'     
 	    }
 	];
 	
 	// 그리드에 데이터 넣기(출력)
 	createdGrid7.resetData(sampleData7);
     
+    grid7.on('click',function(){
+		const sample = [{
+			c1: 'A0000045',
+            c2: 'A2024',
+            c3: '컵홀더',
+            c4: '상품출고',
+            c5: '300',
+            c6: '0',
+            c7: '100',
+            c8: '10000'
+        }]
+        
+        if(grid.getRowCount() < 16){
+			grid.appendRows(sample);
+		} else {
+			alert('한 번에 16건을 처리할 수 있습니다.')
+		}
+	})
     
     /*================================
     	StackInquery 재고조정보고서 모달 JS
@@ -989,5 +1055,80 @@ document.addEventListener("DOMContentLoaded", function () {
 	// 그리드에 데이터 넣기(출력)
 	createdGrid8.resetData(sampleData8);
        
-       
+    grid8.on('click',function(ev){
+		let rowKeyNum;
+		if (ev.columnName == 'c1'){
+			rowKeyNum = ev.rowKey;		
+			let inputTag = document.getElementById('humanInput');
+			inputTag.value = '';		
+			inputTag.value = grid8.getValue(rowKeyNum, 'c1');					
+			console.log(inputTag.value);
+			
+		}
+	})   
+	
+    /*===================================
+    	StackInquery 선택취소, 입력초기화 JS
+    =====================================*/ 
+    
+    //입력값 초기화버튼 이벤트
+    let initBtn = document.getElementById("inputInitial");
+    initBtn.addEventListener('click',function(){
+		let blank = [];
+		createdGrid.resetData(blank)
+	})
+	
+	//체크된 항목 row 삭제	
+	let deleteBtn = document.getElementById("rowDelete")
+	
+	deleteBtn.addEventListener('click',  function () {
+		 grid.removeCheckedRows();
+		 
+		 refreshRowNum();		
+		
+	})
+				
+	
+	//열을 추가후 체크박스에 다시 숫자부여하는 코드
+	function refreshRowNum () {
+		 window.setTimeout(function () {
+			 let checkList = document.querySelectorAll('.countCheck')
+			 let num = 1;
+			 checkList.forEach(items => {
+				items.innerText = num;
+				num += 1;
+			 })
+		
+	     }, 50)
+	}
+    
+    /*===================================
+    	StackInquery 그 외 JS
+    =====================================*/
+    function selectInModal (ev){
+		let selectNoRowKey = ev.rowKey;
+		let selectNo = grid6.getRow(selectNoRowKey).c1;
+		let grid6Arr = grid6.getData() //모달그리드의 모든 rows를 가지는 배열
+		let targetArr = []; //클릭한 버튼의 내역에 해당하는 rows를 가지는 배열
+		
+		grid6Arr.forEach(ele=>{
+			if(ele.c1 == selectNo){
+				targetArr.push(ele.rowKey);
+			}
+		})
+		
+		let purchaseGrid = document.getElementById('purchaseGrid')
+		let arr = []
+		for(let i=0; i<targetArr.length; i++){
+			let target = purchaseGrid.querySelector(`[data-row-key="${i}"]`)
+			arr.push(target);
+		}
+		console.log(arr); 
+		arr.forEach(ele=>{
+			ele.style.backgroundColor = "#9EED7C";
+		})
+		
+	}
+    
+    
 }); //End Point

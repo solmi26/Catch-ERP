@@ -82,17 +82,30 @@
     	      perPage: 5,
     	    },
     	    columns: [
-    	    	  { header: "계약번호", name: "contractNumber" }, // 계약번호
-    	    	  { header: "계약명", name: "contractName" },     // 계약명
-    	    	  { header: "거래처", name: "client" },                 // 거래처
-    	    	  { header: "계약일", name: "contractDate" },    // 계약일
-    	    	  { header: "계약시작일", name: "startDate" },          // 계약시작일
-    	    	  { header: "계약종료일", name: "endDate" },              // 계약종료일
+    	    	  { header: "계약번호", name: "contractNumber", align: 'center'}, // 계약번호
+    	    	  { header: "계약명", name: "contractName" , align: 'center'},     // 계약명
+    	    	  { header: "거래처", name: "client" , align: 'center'},                 // 거래처
+    	    	  { header: "계약일", name: "contractDate" , align: 'center'},    // 계약일
+    	    	  { header: "계약시작일", name: "startDate" , align: 'center'},          // 계약시작일
+    	    	  { header: "계약종료일", name: "endDate" , align: 'center'},              // 계약종료일
     	    	  { header: "총 계약 금액", name: "totalAmount", align: "right" }, // 총 계약 금액
-    	    	  { header: "계약상태", name: "status" },                 // 계약상태
+    	    	  { header: "계약상태", name: "status" , align: 'center'},                 // 계약상태
     	    	
     	    	],
-    	    rowHeaders: ['rowNum', 'checkbox'],
+    	    	 rowHeaders: [
+    	             {
+    	               type: 'checkbox',
+    	               header: 
+    	                 `<span class="custom-input">
+    	                 <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+    	                   <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+    	                 </span>`
+    	             ,
+    	               renderer: {
+    	                 type: gridCheckbox
+    	               }
+    	             }
+    	       ],
     	  });
 
     	 // 그리드 클릭 이벤트 -> 추후 수정

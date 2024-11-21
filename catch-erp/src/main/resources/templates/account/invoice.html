@@ -127,28 +127,25 @@
 	          header: '거래처명',
 	          name: 'clientName',
 	          sortable: true,
-	          align: 'left',
+	          align: 'center'
 	        },
 	        {
 	          header: '공급가액',
 	          name: 'supplyAmount',
 	          sortable: true,
 	          align: 'right',
-	          formatter: 'number', // 숫자 형식으로 표시
 	        },
 	        {
 	          header: '부가세',
 	          name: 'vat',
 	          sortable: true,
 	          align: 'right',
-	          formatter: 'number',
 	        },
 	        {
 	          header: '합계금액',
 	          name: 'totalAmount',
 	          sortable: true,
 	          align: 'right',
-	          formatter: 'number',
 	        },
 	        {
 	          header: '전자세금계산서 진행단계',
@@ -156,7 +153,20 @@
 	          sortable: true,
 	          align: 'center',
 	        },],
-	    rowHeaders: ['rowNum', 'checkbox'], // 왼쪽에 번호 및 체크박스를 표시
+	    rowHeaders: [
+            {
+              type: 'checkbox',
+              header: 
+                `<span class="custom-input">
+                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+                </span>`
+            ,
+              renderer: {
+                type: gridCheckbox
+              }
+            }
+      ],
 	  });
 
       // 그리드 내 클릭이벤트 -> 추후 내가 필요할 때 수정해서 사용

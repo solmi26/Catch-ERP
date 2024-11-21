@@ -30,16 +30,6 @@
 	    margin-bottom: 10px;
 	  }
 	
-	  /* 버튼 그룹 왼쪽 */
-	  .btn-group.left {
-	    justify-content: flex-start; /* 왼쪽 정렬 */
-	  }
-	
-	  /* 버튼 그룹 오른쪽 */
-	  .btn-group.right {
-	    justify-content: flex-end; /* 오른쪽 정렬 */
-	  }
-	
 	  /* 그리드 위 영역 */
 	  .grid-controls {
 	    display: flex;
@@ -48,13 +38,8 @@
 	    margin-top:50px;
 	    
 	  }
-	  
-	  /* 그리드 합계 부분 오른쪽 정렬 */
-  	  .tui-grid-summary-area .tui-grid-cell, tui-grid-cell-content {
-    	text-align: right;
-		}
-		
-		/* 파일 선택 버튼 크기 조정 */
+	  		
+	 /* 파일 선택 버튼 크기 조정 */
 	  .file-input-large::-webkit-file-upload-button {
 	    font-size: 1rem;
 	    padding: 0.9rem 1rem;
@@ -85,8 +70,8 @@
   <body>
    <!-- 페이지 컨테이너 -->
     <div class="container-fluid p-4">
-      <form>
-      
+    
+      <form>  
       <!-- 계약일자, 거래처 -->
 	<div class="row mb-3">
 	  <!-- 계약일자 -->
@@ -294,29 +279,27 @@
       </div>
     </div>
 	
-	<!-- 토스트 공통 js -->
-	<script th:src='@{/js/index/toast.js}'></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
     	  
     	  // 그리드 데이터
     	  const gridData = [
     		  {
-    		    itemName: '',        // 품목
+    		    itemName: '플라스틱 컵',        // 품목
     		    unitPrice: 0,        // 단가
     		    supplyAmount: 0,     // 공급가액
     		    vat: 0,              // 부가세
     		    totalAmount: 0,      // 총 금액
     		  },
     		  {
-      		    itemName: '',        // 품목
+      		    itemName: '에티오피아 원두',        // 품목
       		    unitPrice: 0,        // 단가
       		    supplyAmount: 0,     // 공급가액
       		    vat: 0,              // 부가세
       		    totalAmount: 0,      // 총 금액
       		  },
     		  {
-      		    itemName: '',        // 품목
+      		    itemName: '빨대',        // 품목
       		    unitPrice: 0,        // 단가
       		    supplyAmount: 0,     // 공급가액
       		    vat: 0,              // 부가세
@@ -408,7 +391,20 @@
     	        }
     	      },
     	
-    	    rowHeaders: ['rowNum', 'checkbox'], // 행 번호와 체크박스 표시
+    	      rowHeaders: [
+    	            {
+    	              type: 'checkbox',
+    	              header: 
+    	                `<span class="custom-input">
+    	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+    	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+    	                </span>`
+    	            ,
+    	              renderer: {
+    	                type: gridCheckbox
+    	              }
+    	            }
+    	      ],
     	  });
 
 
