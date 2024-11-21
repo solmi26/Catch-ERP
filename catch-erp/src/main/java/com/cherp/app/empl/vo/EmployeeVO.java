@@ -1,5 +1,5 @@
 package com.cherp.app.empl.vo;
 
-public class EmployeeVO {
+public class EmployeeVO { // 사원VO
 
 }

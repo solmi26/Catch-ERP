@@ -5,6 +5,7 @@
       layout:fragment="Content">
 <head>
   <!-- <link rel="tableStyle.css" /> -->
+  <title>CatchERP</title>
   <style>
     .modal-header {
         background-color: #AACB73;
@@ -17,14 +18,16 @@
 </head>
 <body>
   <!-- Search Section -->
+ <div class="bg-white shadow-sm rounded" style="padding: 20px;">
   <div class="border-bottom pb-3 mb-4">
     <h2>계좌 리스트</h2>
   </div>
+  <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountAddModal" style="margin-bottom: 10px;">신규(F2)</button>
   <div class="gridWrapper">
     <div id="grid"></div>
     <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
   </div>
-  <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountAddModal">신규(F2)</button>
+  
   <!-- 통장계좌등록 모달 -->
   <div class="modal fade" id="accountAddModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -111,7 +114,7 @@
         </div>
     </div>
   </div>
- 
+ </div>
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {

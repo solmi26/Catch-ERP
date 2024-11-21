@@ -1,5 +1,5 @@
 package com.cherp.app.stck.vo;
 
-public class StockVO {
+public class StockVO { // 재고VO
 
 }
