@@ -901,7 +901,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	
     let salesOrderBtn = document.getElementById('salesOrderBtn');
 	salesOrderBtn.addEventListener("click", function(){
-		let salesFilteredData = exceptExitingRows(sampleData6);
+		let salesFilteredData = exceptExitingRows(sampleData7);
 		createdGrid7.resetData(salesFilteredData);
 	})
     
@@ -1227,15 +1227,31 @@ document.addEventListener("DOMContentLoaded", function () {
 			})	
 		})
 		let noArr = Array.from(dataSet);
-		let resultArr = [];
+		let resultObj = [];
 		data.forEach(ele=>{
 			noArr.forEach(ele2 =>{
 				if(ele.c2 == ele2){
-					resultArr.push(ele);
+					resultObj.push(ele);
 				}	
 			})
 		})
-				
+		let resultArr = [];
+		let resultObjArr = Array.from(resultObj)
+		resultObjArr.forEach(ele=>{
+			let row ={}; 
+			row.c1 = ele.c1;
+			row.c2 = ele.c2;
+			row.c3 = ele.c3;
+			row.c4 = ele.c4;
+			row.c5 = ele.c5;
+			row.c6 = ele.c6;
+			row.c7 = ele.c7;
+			row.c8 = ele.c8;
+			console.log(ele.c8);
+			console.log(row);
+			resultArr.push(row);
+		})
+		console.log(resultArr)
 		return resultArr
 	}
 }); //End Point
