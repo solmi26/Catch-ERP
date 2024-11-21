@@ -21,9 +21,8 @@
 		    font-size:12px;
 			}
 		}	
-		.employee-list{
-			overflow-y:auto;
-			max-height:500px;
+		.content-box, .content-box .card-body{
+			height:100%;		
 		}
     </style>
     <div class="container-fluid p-4">
@@ -158,7 +157,7 @@
 
             <!-- 직원 세부 정보-->
             <div class="col-lg-8 pe-0">
-                <div class="card">
+                <div class="card content-box">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="employeeTabs" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -379,14 +378,10 @@
 			<!-- 세부 정보 끝!!! -->
 			
             <!-- 직원리스트 테이블 -->
-            <div class="col-lg-4 ps-0">
-                <div class="card">
-                    <div class="card-body p-0">
-                        <div class="employee-list">
+            <div class="col-lg-4 ps-0 list-box">
+               
                         	<div id="grid"></div>
-                        </div>
-                    </div>
-                </div>
+                    
             </div>
         </div>
 
@@ -462,7 +457,8 @@
   	  el: document.getElementById('grid'), // Container element
   	  rowHeight:10,
   	  minRowHeight:25,
-  	  bodyHeight:800,
+  	  bodyHeight:'fitToParent',
+  	  minBodyHeight:'fitToParent',
       rowHeaders: [
           {
             type: 'checkbox',
@@ -578,6 +574,6 @@
 
 //    	Grid.applyTheme('striped'); // Call API of static method
     </script>
-
+	<script th:src="@{/js/human/employeeList.js}"></script>
 </html>
 

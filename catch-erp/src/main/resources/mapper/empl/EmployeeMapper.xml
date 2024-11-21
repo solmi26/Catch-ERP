@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.empl.mapper.EmployeeMapper">
-	<select id="selectAllemployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO">
+	<select id="selectAllEmployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO">
 		SELECT 	em.employee_code,
-				em.employee_id,
+				em.employee_no,
 				em.name,
 				em.hire_date,
 				em.password,
@@ -17,7 +17,43 @@
 		JOIN    department dp
         ON      em.department_code = dp.department_code
 	</select>
-
+	
+	
+	<select id="seleectEmployee" parameterType="EmployeeVO" resultType="EmployeeVO">
+		SELECT 	em.employee_code,
+		        em.employee_no,
+		        em.name,
+		        em.hire_date,
+		        em.password,
+		        em.employee_position,
+		        em.status_type,
+		        em.resignation_date,
+		        em.hire_type,
+		        em.department_code,
+		        dp.department_name,
+		        ed.eng_name,
+		        ed.identity_no,
+		        ed.head_check,
+		        ed.duty,
+		        ed.tel,
+		        ed.phone,
+		        ed.email,
+		        ed.emp_status,
+		        ed.zipcode,
+		        ed.address,
+		        ed.detail_address,
+		        ed.bacct,
+		        ed.depositor,
+		        ed.employee_image,
+		        ed.bank
+		FROM    employees em
+		JOIN    department dp
+		ON      em.department_code = dp.department_code
+		JOIN    employees_detail ed
+		ON      em.employee_code = ed.employee_code
+		WHERE   em.employee_code = #{employeeCode}
+	
+	</select>
 
 
 </mapper>

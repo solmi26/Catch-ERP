@@ -14,7 +14,7 @@ import lombok.ToString;
 public class EmployeeVO {
 //인사기본정보
 	private String employeeCode;
-	private String employeeId;
+	private String employeeNo;
 	private String name;
 	private Date hireDate;
 	private String password;
