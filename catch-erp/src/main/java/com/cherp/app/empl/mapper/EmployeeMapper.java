@@ -7,5 +7,6 @@ import com.cherp.app.empl.vo.EmployeeVO;
 
 
 public interface EmployeeMapper {
-	public List<EmployeeVO> selectAllemployeeList();
+	public List<EmployeeVO> selectAllEmployeeList();
+	public EmployeeVO seleectEmployee(EmployeeVO employee);
 }

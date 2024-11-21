@@ -19,7 +19,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public List<EmployeeVO> employeeList() {
-		return employeemapper.selectAllemployeeList();
+		return employeemapper.selectAllEmployeeList();
+	}
+	
+	@Override
+	public EmployeeVO employeeInfo(EmployeeVO employee) {
+		return employeemapper.seleectEmployee(employee);
 	}
 	
 }
