@@ -205,7 +205,7 @@
                                                     <label class="form-label">주민등록번호</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm" name="identityNumber">
+                                                    <input type="text" class="form-control form-control-sm" name="identityNo">
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
@@ -221,7 +221,7 @@
                                                     <label class="form-label">세대주여부</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm" name="headHousehold">
+                                                    <input type="text" class="form-control form-control-sm" name="headCheck">
                                                 </div>
                                             </div>
                                             
@@ -243,7 +243,7 @@
                                             		<label class="col-form-label-sm">직책</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm" name="jobtitle">
+                                            		<input type="text" class="form-control form-control-sm" name="duty">
                                             	</div>
                                         	</div>
                                         </div>
@@ -331,9 +331,9 @@
                                         	
                                         <div class="col-12">
                                             <label class="form-label">주소</label>
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="우편번호" name="zipCode">
+                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="우편번호" name="zipcode">
                                             <input type="text" class="form-control form-control-sm mb-2" placeholder="기본주소" name="address">
-                                            <input type="text" class="form-control form-control-sm" placeholder="상세주소" name="detailAddr">
+                                            <input type="text" class="form-control form-control-sm" placeholder="상세주소" name="detailAddress">
                                         </div>
                                     </div>
                                 </form>
@@ -471,9 +471,14 @@
           }
         ],
   	  columns: [
+  		  	{
+  		  	  header:'사원코드',
+  		  	  name:'employeeCode',
+  		  	  hidden:true,
+  		  	},
     	    {
     	      header: '사원번호',
-    	      name: 'employeeId'
+    	      name: 'employeeNo'
     	    },
     	    {
     	      header: '성명',
@@ -485,7 +490,7 @@
     	    },
     	    {
       	      header: '직위/직급명',
-      	      name: 'statusType',
+      	      name: 'employeePosition',
       	    }
     	  ],
   	  
@@ -493,7 +498,7 @@
   	});
 
   document.addEventListener('DOMContentLoaded', function() {
-      fetch("/test200")
+      fetch("/emps")
       .then(result => result.json())
       .then(datas =>{grid.resetData(datas)})
 	})    

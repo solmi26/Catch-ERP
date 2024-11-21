@@ -3,14 +3,10 @@ package com.cherp.app.empl.vo;
 
 import java.util.Date;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 @NoArgsConstructor // 기본생성자
-@Getter
-@Setter
-@ToString
+@Data
 public class EmployeeVO {
 //인사기본정보
 	private String employeeCode;
@@ -23,29 +19,15 @@ public class EmployeeVO {
 	private Date resignationDate;
 	private String hireType;
 	private String departmentCode;
-
-//인사세부정보
-	private String engName;
-	private String identityNumber;
-	private String headHousehold;
-	private String jobtitle;
-	private String tel;
-	private String phone;
-	private String email;
-	private String empStatus;
-	private Number zipCode;
-	private String address;
-	private String detailAddr;
-	private String accoount;
-	private String depositor;
-	private String employeeImage;
-	private String bank;
 	
+//인사세부정보
+	private EmployeeDetailVO employeeDetailVO;
 	
 //인사급여정보
 	
+	private EmployeeSalaryVO employeeSalaryVO;
+//  조인으로 추가할 컬럼들
 	
-//  부서명
 	private String departmentName;
 	
 	
