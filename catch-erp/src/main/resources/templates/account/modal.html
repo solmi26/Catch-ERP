@@ -5,458 +5,289 @@
       layout:fragment="Content">
   <head>
     <meta charset="UTF-8" />
-    <title>계약 상세보기 및 수정 모달</title>
+    <title>매출전표 출력 모달</title>
     
-	<style>
-	/*커밋테스트*/
-	  /* 그리드 전 form 관련 높이, 글자크기 */
-      .form-control,
-      .form-select,
-      .input-group-text {
-        height: 48px;
-        font-size: 1rem !important;
+    <style>
+  
+      .draggable-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 800px;
+        resize: both;
+        overflow: auto;
+        z-index: 1050;
       }
       
-      /* 그리드 전 form 제목 길이 지정 */
-      .input-group-text {
-        width: 120px;
+      .modal-header {
+        cursor: move;
+        padding: 0.5rem 1rem;
+        background-color: #aacb73;
+        border-bottom: 1px solid #dee2e6;
       }
-	
-	 /* 버튼 그룹 기본 설정 */
-	  .btn-group {
-	    display: flex;
-	    gap: 5px; /* 버튼 간 간격 */
-	    font-size: 18px;
-	    margin-bottom: 10px;
-	  }
-	
-	  /* 그리드 위 영역 */
-	  .grid-controls {
-	    display: flex;
-	    justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
-	    align-items: center;
-	    margin-top:50px;
-	    
-	  }
-	  		
-	 /* 파일 선택 버튼 크기 조정 */
-	  .file-input-large::-webkit-file-upload-button {
-	    font-size: 1rem;
-	    padding: 0.9rem 1rem;
-	    background-color: #e8e8e8;
-	    border: none;
-	    border-radius: 0.25rem;
-	    cursor: pointer;
-	  }
-	
-	  .file-input-large::-webkit-file-upload-button:hover {
-	    background-color: #0056b3;
-	  }
-	
-	  .file-input-large::-ms-browse {
-	    font-size: 1rem;
-	    padding: 0.5rem 1rem;
-	    background-color: #007bff;
-	    color: white;
-	    border: none;
-	    border-radius: 0.25rem;
-	    cursor: pointer;
-	  }
-	  
-	</style>
-	
+      
+      .modal-body {
+        padding: 1rem;
+      }
+
+      #bname {
+        margin: 30px;
+        text-align: center;
+      }
+      
+      .table {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+      }
+      
+      .table th,
+      .table td {
+        padding: 0.5rem;
+        border: 1px solid #dee2e6;
+      }
+      
+      .table th {
+        background-color: #f8f9fa;
+        font-weight: normal;
+        text-align: center;
+      }
+      
+      .info-row {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .amount-cell {
+        text-align: right;
+      }
+      
+      .btn-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+      }
+      
+      .resize-handle {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 15px;
+        height: 15px;
+        cursor: se-resize;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+      }
+      
+      .top-right-info {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.8rem;
+      }
+      
+    </style>
+    
   </head>
   
   <body>
   
-    <!-- 모달을 여는 버튼 -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contractModal">계약 수정 열기</button>
+    <button id="openModalBtn" class="btn btn-primary mt-3 ms-3">전표 열기</button>
 
-    <!-- 계약 등록 모달 -->
-    <div class="modal fade" id="contractModal" tabindex="-1">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-        
-          <div class="modal-header">
-            <h5 class="modal-title">계약 수정</h5>
-          </div>
-          
-          <div class="modal-body">
-          
-      <form>  
-      <!-- 계약일자, 거래처 -->
-	<div class="row mb-3">
-	  <!-- 계약일자 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약일자</span>
-	      <input type="date" class="form-control" id="contract-date" />
-	    </div>
-	  </div>
-	  <!-- 거래처 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">거래처</span>
-	      <input type="text" class="form-control" id="client" placeholder="거래처" readonly />
-	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#client-modal">
-	        <i class="lucide-search h-4 w-4"></i>
-	      </button>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 계약코드, 계약명 -->
-	<div class="row mb-3">
-	  <!-- 계약코드 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약코드</span>
-	      <input type="text" class="form-control" id="contract-code" value="00005" readonly />
-	    </div>
-	  </div>
-	  <!-- 계약명 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약명</span>
-	      <input type="text" class="form-control" id="contract-name" placeholder="계약명" />
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 계약시작일, 계약종료일 -->
-	<div class="row mb-3">
-	  <!-- 계약시작일 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약시작일</span>
-	      <input type="date" class="form-control" id="billing-start-date" />
-	    </div>
-	  </div>
-	  <!-- 계약종료일 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약종료일</span>
-	      <input type="date" class="form-control" id="billing-end-date" />
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 부가세유형, 계약상태 -->
-	<div class="row mb-3">
-	  <!-- 부가세 유형 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">부가세유형</span>
-	      <select class="form-select" id="vat-type">
-	        <option>세금계산서</option>
-	      </select>
-	    </div>
-	  </div>
-	  <!-- 계약 상태 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약상태</span>
-	      <select class="form-select" id="status">
-	        <option>진행</option>
-	        <option>종료</option>
-	        <option>보류</option>
-	      </select>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 담당자, 부서 -->
-	<div class="row mb-3">
-	  <!-- 담당자 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">담당자</span>
-	      <input type="text" class="form-control" id="manager" placeholder="담당자" readonly />
-	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#manager-modal">
-	        <i class="lucide-search h-4 w-4"></i>
-	      </button>
-	    </div>
-	  </div>
-	  <!-- 부서 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">부서</span>
-	      <input type="text" class="form-control" id="department" placeholder="부서" readonly />
-	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#department-modal">
-	        <i class="lucide-search h-4 w-4"></i>
-	      </button>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 적요 -->
-	<div class="row mb-3">
-	  <div class="col-md-8">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">적요</span>
-	      <input type="text" class="form-control" id="description" placeholder="적요" />
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 첨부 -->
-	<div class="row mb-3">
-	  <div class="col-md-8">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">첨부</span>
-	      <input type="file" id="attachment-file" class="form-control file-input-large" />
-	    </div>
-	  </div>
-	</div>
+    <div id="slipModal" class="draggable-modal">
+    
+      <div class="modal-header">
+        <h5 class="modal-title">전표</h5>
+      </div>
       
-        
-        <!-- 버튼 구역 -->
-        <div class="grid-controls">
-		<!-- 버튼 그룹 (그리드 위 왼쪽) -->
-      <div class="btn-group left">
-        <button type="button" class="btn btn-success" id="add-item-btn">+ 항목 추가</button>
-        <button type="button" class="btn btn-danger" id="delete-item-btn">- 선택 삭제</button>
-      </div>
-       
-       
-       <!-- 버튼 그룹 (그리드 위 오른쪽) -->
-      <div class="btn-group rigth">
-        <button type="button" class="btn btn-success" id="save-btn">저장</button>
-        <button type="button" class="btn btn-secondary">다시 작성</button>
-        <!-- 리스트로 이동하는 버튼 -->
-        <button type="button" class="btn btn-secondary">리스트</button>
-      </div>
-  </div>
-  
-  	<!-- 그리드 -->
-	<div id="grid"></div>
-    
-        </form>
-          </div>
-          
-          <div class="bottom-buttons">
-            <div class="d-flex justify-content-between">
-              <div>
-                <button type="button" class="btn btn-sm btn-success">저장</button>
-                <button type="button" class="btn btn-sm btn-danger ms-2">계약 삭제</button>
-                <button type="button" class="btn btn-sm btn-secondary ms-2">리스트</button>
-                <button type="button" class="btn btn-sm btn-secondary ms-2">닫기</button>
-              </div>
-
-              <!-- 모달 - 거래처 -->
-              <div class="modal fade" id="client-modal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="clientModalLabel">거래처 선택</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <ul>
-                        <li><button class="btn btn-link" onclick="setClientValue('거래처1')">거래처1</button></li>
-                        <li><button class="btn btn-link" onclick="setClientValue('거래처2')">거래처2</button></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 모달 - 담당자 -->
-              <div class="modal fade" id="manager-modal" tabindex="-1" aria-labelledby="managerModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="managerModalLabel">담당자 선택</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <ul>
-                        <li><button class="btn btn-link" onclick="setManagerValue('담당자1')">담당자1</button></li>
-                        <li><button class="btn btn-link" onclick="setManagerValue('담당자2')">담당자2</button></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 모달 - 부서 -->
-              <div class="modal fade" id="department-modal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="departmentModalLabel">부서 선택</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <ul>
-                        <li><button class="btn btn-link" onclick="setDepartmentValue('부서1')">부서1</button></li>
-                        <li><button class="btn btn-link" onclick="setDepartmentValue('부서2')">부서2</button></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
+      <h1 id="bname">전표</h1>
+      
+      <div class="modal-body">
+      
+        <div class="info-row d-flex justify-content-between">
+          <div>회사명: (주)가상B2B시스템ERP</div>
+          <div>작성자: guest</div>
+          <div>전표번호: 2024/11/30-1</div>
         </div>
+
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th>계정명</th>
+              <th>적요</th>
+              <th style="width: 15%">차변</th>
+              <th style="width: 15%">대변</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>외상매출금</td>
+              <td>
+                구로조영유통<br />
+                구매이력조회 판매분
+              </td>
+              <td class="amount-cell">132,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>제품매출</td>
+              <td>
+                구로조영유통<br />
+                구매이력조회 판매분
+              </td>
+              <td></td>
+              <td class="amount-cell">120,000</td>
+            </tr>
+            <tr>
+              <td>부가세예수금</td>
+              <td>
+                구로조영유통<br />
+                구매이력조회 판매분
+              </td>
+              <td></td>
+              <td class="amount-cell">12,000</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>합계</td>
+              <td></td>
+              <td class="amount-cell">132,000</td>
+              <td class="amount-cell">132,000</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="text-end mt-2">
+          <small class="ms-3">2024/11/15 오전 11:48:27</small>
+        </div>
+
+        <div class="mt-3">
+          <button class="btn btn-primary btn-sm">인쇄</button>
+          <button class="btn btn-outline-secondary btn-sm">Excel</button>
+          <button class="btn btn-outline-secondary btn-sm">청구서</button>
+          <button class="btn btn-outline-secondary btn-sm">전자(세금)계산서</button>
+          <button class="btn btn-outline-secondary btn-sm">거래명세서</button>
+          <button class="btn btn-outline-secondary btn-sm" onclick="closeModal()">닫기</button>
+        </div>
+        
       </div>
+      
+      <div class="resize-handle"></div>
+      
     </div>
-    
-    
+
     <script>
+    
       document.addEventListener("DOMContentLoaded", function () {
-    	  
-    	  // 그리드 데이터
-    	  const gridData = [
-    		  {
-    		    itemName: '플라스틱 컵',        // 품목
-    		    unitPrice: 0,        // 단가
-    		    supplyAmount: 0,     // 공급가액
-    		    vat: 0,              // 부가세
-    		    totalAmount: 0,      // 총 금액
-    		  },
-    		  {
-      		    itemName: '에티오피아 원두',        // 품목
-      		    unitPrice: 0,        // 단가
-      		    supplyAmount: 0,     // 공급가액
-      		    vat: 0,              // 부가세
-      		    totalAmount: 0,      // 총 금액
-      		  },
-    		  {
-      		    itemName: '빨대',        // 품목
-      		    unitPrice: 0,        // 단가
-      		    supplyAmount: 0,     // 공급가액
-      		    vat: 0,              // 부가세
-      		    totalAmount: 0,      // 총 금액
-      		  },
-    		];
-    	  
+        const modal = document.getElementById("slipModal");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const header = modal.querySelector(".modal-header");
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
 
-		 
-    	  // 그리드 초기화
-    	  const grid = new tui.Grid({
-    	    el: document.querySelector('#grid'),  // 그리드 표시 위치
-    	    data: gridData,  // 초기 데이터
-    	    scrollX: true,   // 가로 스크롤 사용
-    	    scrollY: true,   // 세로 스크롤 사용
-    	    columns: [
-    	      {
-    	        header: '품목',
-    	        name: 'itemName',
-    	        editor: 'text',
-    	        align: 'left',
-    	      },
-    	      {
-    	        header: '단가',
-    	        name: 'unitPrice',
-    	        editor: {
-    	        	type:gridNumber
-    	        },
-    	        align: 'right',
-    	      },
-    	      {
-    	        header: '공급가액',
-    	        name: 'supplyAmount',
-    	        editor: {
-    	        	type:gridNumber
-    	        },
-    	        align: 'right',
- 
-    	      },
-    	      {
-    	        header: '부가세',
-    	        name: 'vat',
-    	        editor: {
-    	        	type:gridNumber
-    	        },
-    	        align: 'right',
-
-    	      },
-    	      {
-    	        header: '총 금액',
-    	        name: 'totalAmount',
-    	        editor: {
-    	        	type:gridNumber
-    	        },
-    	        align: 'right',
- 
-    	      },
-    	    ], 
-    	    summary: {
-    	        height: 40,
-    	        position: 'bottom', // or 'top'
-    	        columnContent: {
-    	        	unitPrice: {
-    	            template: function(valueMap) {
-    	              return `${valueMap.sum}`;
-    	            }
-    	          },
-    	          supplyAmount: {
-    	            template: function(valueMap) {
-    	              return `${valueMap.sum}`;
-    	            }
-    	          },
-  	        	vat: {
-    	            template: function(valueMap) {
-    	              return `${valueMap.sum}`;
-    	            }
-    	          },
-    	          totalAmount: {
-    	            template: function(valueMap) {
-    	              return `${valueMap.sum}`;
-    	            }
-    	          },
-    	          itemName: {
-      	            template: function(valueMap) {
-      	              return `합계`;
-      	            }
-      	          },
-    	          
-    	        }
-    	      },
-    	
-    	      rowHeaders: [
-    	            {
-    	              type: 'checkbox',
-    	              header: 
-    	                `<span class="custom-input">
-    	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-    	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-    	                </span>`
-    	            ,
-    	              renderer: {
-    	                type: gridCheckbox
-    	              }
-    	            }
-    	      ],
-    	  });
-
-
-    	  // 그리드 클릭 이벤트 -> 추후 내가 필요한대로 수정
-    	  grid.on('click', (event) => {
-    	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
-    	      console.log('클릭이벤트 발생');
-    	      console.log(event.rowKey);  // 클릭한 행의 키 값 출력
-    	    }
-    	  });
-
-        // 모달 띄우기
-        document.querySelectorAll(".select-modal").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            const modalId = btn.getAttribute("data-bs-target").substring(1);
-            const modal = new bootstrap.Modal(document.getElementById(modalId));
-            modal.show();
-          });
+        openModalBtn.addEventListener("click", function () {
+          modal.style.display = "block";
         });
 
-        // 첨부파일 처리(파일 선택 시 이름 표시)
-        document.getElementById("attachment-file").addEventListener("change", function (event) {
-          document.getElementById("attachment").value = event.target.files[0].name;
-        });
+        // Dragging functionality
+        header.addEventListener("mousedown", dragStart);
+        document.addEventListener("mousemove", drag);
+        document.addEventListener("mouseup", dragEnd);
+
+        function dragStart(e) {
+          initialX = e.clientX - xOffset;
+          initialY = e.clientY - yOffset;
+
+          if (e.target === header) {
+            isDragging = true;
+          }
+        }
+
+        function drag(e) {
+          if (isDragging) {
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+
+            xOffset = currentX;
+            yOffset = currentY;
+
+            setTranslate(currentX, currentY, modal);
+          }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+          el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+        }
+
+        function dragEnd(e) {
+          initialX = currentX;
+          initialY = currentY;
+          isDragging = false;
+        }
+
+        // Resizing functionality
+        const resizeHandle = modal.querySelector(".resize-handle");
+        let isResizing = false;
+        let originalWidth;
+        let originalHeight;
+        let originalX;
+        let originalY;
+
+        resizeHandle.addEventListener("mousedown", resizeStart);
+        document.addEventListener("mousemove", resize);
+        document.addEventListener("mouseup", resizeEnd);
+
+        function resizeStart(e) {
+          isResizing = true;
+          originalWidth = modal.offsetWidth;
+          originalHeight = modal.offsetHeight;
+          originalX = e.clientX;
+          originalY = e.clientY;
+        }
+
+        function resize(e) {
+          if (isResizing) {
+            const width = originalWidth + (e.clientX - originalX);
+            const height = originalHeight + (e.clientY - originalY);
+
+            if (width > 400) {
+              modal.style.width = width + "px";
+            }
+            if (height > 300) {
+              modal.style.height = height + "px";
+            }
+          }
+        }
+
+        function resizeEnd() {
+          isResizing = false;
+        }
+      });
+
+      function closeModal() {
+        document.getElementById("slipModal").style.display = "none";
+      }
+
+      // Format numbers
+      document.querySelectorAll(".amount-cell").forEach((cell) => {
+        const value = cell.textContent;
+        if (value && !isNaN(value.replace(/,/g, ""))) {
+          cell.textContent = Number(value.replace(/,/g, "")).toLocaleString("ko-KR");
+        }
       });
       
     </script>
-
+    
   </body>
+  
 </html>
