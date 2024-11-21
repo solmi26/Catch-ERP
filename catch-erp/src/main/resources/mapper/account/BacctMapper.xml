@@ -6,6 +6,16 @@
 		FROM   bacct
 	</select>
 	
+	<!-- 은행 공통코드 전체 조회 -->
+	<select id="selectAllCommonBankList" resultType="com.cherp.app.common.vo.CommonCodeVO">
+		SELECT  code_rule
+		        ,common_name
+		        ,update_date
+		        ,common_code
+		FROM    common_code
+		WHERE   common_code = 'BK'
+	</select>
+	
 	<insert id="insertBacct" parameterType="com.cherp.app.acct.vo.BacctVO">
 		<selectKey keyProperty="bacctCode" order="BEFORE" resultType="int">
 			SELECT NVL(MAX(bacct_code),100) + 1
@@ -27,5 +37,10 @@
 		        )
 	</insert>
 	
-	
+	<update id="updateBacct" parameterType="com.cherp.app.acct.vo.BacctVO" >
+		UPDATE bacct
+		SET  bacct_name = #{bacctName}
+			,summary = #{summary}
+		
+	</update>
 </mapper>

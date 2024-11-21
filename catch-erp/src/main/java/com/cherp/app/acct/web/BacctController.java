@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cherp.app.acct.service.BacctService;
 import com.cherp.app.acct.vo.BacctVO;
@@ -28,11 +26,18 @@ public class BacctController {
 		return "account/viewBankAccount";
 	}
 	
-	// 계좌 등록
+	// 신규 계좌 저장
 	@PostMapping("insertBacct")
-	@ResponseBody
-	public String insertBacct(BacctVO bacct) {
-		bacctService.bacctInsert(bacct);
+	//@ResponseBody
+	public String insertBacct(BacctVO bacctVO) {
+		bacctService.bacctInsert(bacctVO);
+		return "account/viewBankAccount";
+	}
+	
+	// 계좌 수정
+	@PostMapping("updateBacct")
+	public String updateBacct(BacctVO bacctVO) {
+		bacctService.bacctUpdate(bacctVO);
 		return "account/viewBankAccount";
 	}
 }
