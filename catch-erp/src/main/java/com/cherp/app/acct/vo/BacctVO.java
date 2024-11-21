@@ -9,7 +9,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BacctVO { 			// 계좌 테이블
+/**
+ * 계좌 테이블
+ */
+public class BacctVO { 			
 	private Integer bacctCode;		// 계좌 코드
 	private String bacctNo;			// 계좌 번호
 	private String bacctName;		// 계좌 명

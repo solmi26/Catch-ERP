@@ -9,6 +9,9 @@ import com.cherp.app.acct.service.BacctService;
 import com.cherp.app.acct.vo.BacctVO;
 import com.cherp.app.common.vo.CommonCodeVO;
 
+/**
+ * 은행 계좌 ServiceImpl
+ */
 @Service
 public class BacctServiceImpl implements BacctService{
 	private BacctMapper bacctMapper;

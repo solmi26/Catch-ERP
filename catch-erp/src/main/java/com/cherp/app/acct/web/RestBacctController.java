@@ -12,6 +12,9 @@ import com.cherp.app.common.vo.CommonCodeVO;
 
 @RestController
 @CrossOrigin
+/**
+ * RestBacct 컨트롤러
+ */
 public class RestBacctController {
 	private final BacctService bacctService;
 	
