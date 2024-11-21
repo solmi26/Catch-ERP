@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cherp.app.empl.mapper.EmployeeMapper">
+	<select id="selectAllemployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO">
+		SELECT 	em.employee_code,
+				em.employee_id,
+				em.name,
+				em.hire_date,
+				em.password,
+				em.employee_position,
+				em.status_type,
+				em.resignation_date,
+				em.hire_type,
+				em.department_code,
+                dp.department_name
+		FROM    employees em
+		JOIN    department dp
+        ON      em.department_code = dp.department_code
+	</select>
+
+
+
+</mapper>

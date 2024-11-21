@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.acct.service.BacctService;
 import com.cherp.app.acct.vo.BacctVO;
+import com.cherp.app.common.vo.CommonCodeVO;
 
 @RestController
 @CrossOrigin
@@ -22,5 +23,11 @@ public class RestBacctController {
 	@GetMapping("bacctList")
 	public List<BacctVO> bacctList() {
 		return bacctService.bacctList();
+	}
+	
+	// JSON 은행목록 데이터
+	@GetMapping("bankList")
+	public List<CommonCodeVO> bankList() {
+		return bacctService.commonBankList();
 	}
 }
