@@ -5,6 +5,9 @@ import java.util.List;
 import com.cherp.app.acct.vo.BacctVO;
 import com.cherp.app.common.vo.CommonCodeVO;
 
+/**
+ * 은행 계좌 Service
+ */
 public interface BacctService {
 	public List<BacctVO> bacctList();		// 계좌 전체 조회
 	public BacctVO bacctInfo(BacctVO bacctVO); // 계좌 단건 조회

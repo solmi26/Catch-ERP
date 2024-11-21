@@ -1,5 +1,8 @@
 package com.cherp.app.acct.web;
 
-public class AccountController { // account 컨트롤러
+/**
+ * account 컨트롤러
+ */
+public class AccountController {
 
 }
