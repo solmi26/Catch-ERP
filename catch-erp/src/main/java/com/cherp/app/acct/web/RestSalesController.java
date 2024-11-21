@@ -12,6 +12,9 @@ import com.cherp.app.acct.vo.SalesVO;
 
 @RestController
 @CrossOrigin
+/**
+ * RestSales 컨트롤러
+ */
 public class RestSalesController {
 	private final SalesService salesService;
 	

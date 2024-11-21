@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/account_layout}"
+      layout:fragment="Content">
+  <head>
+    <meta charset="UTF-8" />
+    <title>전표 출력 모달</title>
+    
+   <style>
+   
+   	 /* 제목 스타일 */
+      #bname {
+        margin: 30px; /* 외부 여백 */
+        text-align: center; /* 가운데 정렬 */
+      }
+
+      /* 테이블 스타일 */
+      .table {
+        font-size: 0.9rem; /* 글자 크기 */
+      }
+      
+      .table th,
+      .table td {
+        padding: 0.5rem; /* 셀 내부 여백 */
+        border: 1px solid #dee2e6; /* 셀 테두리 */
+      }
+
+      .table th {
+        background-color: #f8f9fa; /* 헤더 배경색 */
+        font-weight: normal; /* 기본 폰트 두께 */
+        text-align: center; /* 가운데 정렬 */
+      }
+
+      /* 상단 정보 줄 스타일 */
+      .info-row {
+        font-size: 1rem; /* 글자 크기 */
+        margin-bottom: 0.5rem; /* 하단 여백 */
+      }
+
+      /* 금액 셀 스타일 */
+      .amount-cell {
+        text-align: right; /* 오른쪽 정렬 */
+      }
+
+   </style>
+    
+  </head>
+  
+  <body>
+  
+    <!-- 모달 열기 버튼 -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesEntryModal">매출전표 열기</button>
+
+    <!-- 모달 -->
+    <div class="modal fade" id="salesEntryModal" tabindex="-1">
+    <!-- 모달 크기 lg -->
+      <div class="modal-dialog modal-lg">
+      
+        <div class="modal-content">
+        
+          <!-- 모달 헤더 -->
+          <div class="modal-header">
+            <h4 class="modal-title">전표</h4>
+          </div>
+
+         <!-- 모달 제목 -->
+      	<h1 id="bname">전표</h1>
+      
+      <!-- 모달 본문 -->
+      <div class="modal-body">
+      
+        <!-- 정보 줄 -->
+        <div class="info-row d-flex justify-content-between">
+          <div>회사명: (주)가상B2B시스템ERP</div>
+          <div>작성자: guest</div>
+          <div>전표번호: 2024/11/30-1</div>
+        </div>
+
+        <!-- 테이블 -->
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th>계정명</th>
+              <th>적요</th>
+              <th style="width: 15%">차변</th>
+              <th style="width: 15%">대변</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 데이터 행 -->
+            <tr>
+              <td>외상매출금</td>
+              <td>
+                구로조영유통<br />
+                구매이력조회 판매분
+              </td>
+              <td class="amount-cell">132,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>제품매출</td>
+              <td>
+                구로조영유통<br />
+                구매이력조회 판매분
+              </td>
+              <td></td>
+              <td class="amount-cell">120,000</td>
+            </tr>
+            <tr>
+              <td>부가세예수금</td>
+              <td>
+                구로조영유통<br />
+                구매이력조회 판매분
+              </td>
+              <td></td>
+              <td class="amount-cell">12,000</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <!-- 합계 행 -->
+            <tr>
+              <td>합계</td>
+              <td></td>
+              <td class="amount-cell">132,000</td>
+              <td class="amount-cell">132,000</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- 작성 시간 -->
+        <div class="text-end mt-2 info-row">
+          <p class="ms-3">2024/11/15 오전 11:48:27</p>
+        </div>
+        
+        </div> <!-- 모달 본문 끝. -->
+        
+          <!-- 모달 하단 버튼 -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-success">인쇄</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+  </body>
+  
+</html>

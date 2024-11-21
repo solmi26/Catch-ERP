@@ -9,9 +9,8 @@ public class TestController {
 	//YSJ TEST
 	@GetMapping("test")
 	public String testView() {
-		return "human/employeeHistoryInput";
+		return "human/test";
 	}
-	
 	// JSM TEST
 	@GetMapping("testac")
 	public String testViewAc() {
@@ -19,11 +18,11 @@ public class TestController {
 		//return "account/invoice";
 		//return "account/contractInsert";
 		//return "account/purchaseSlip";
-		//return "account/salesSlip";
+		return "account/salesSlip";
 		// return "account/statement";
 	    //return "account/modal/salesSlipModal";
 		//return "account/modal/invoicePrintModal";
-		return "account/modal";
+		//return "account/modal/slipPrintModal";
 	}
 	// NKW TEST
 	@GetMapping("testStack")
@@ -49,7 +48,5 @@ public class TestController {
 		return "account/regBondReduction"; // 채권감소
 		//return "account/contract";
 	}
-	// GHT TEST
-	@GetMapping("testPurchase")
-	public String testPurchase() { return "purchase/purchasePage"; }
+
 }
