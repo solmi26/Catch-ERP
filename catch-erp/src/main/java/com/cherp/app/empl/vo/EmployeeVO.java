@@ -32,7 +32,7 @@ public class EmployeeVO {
 	private String tel;
 	private String phone;
 	private String email;
-	private String emp_status;
+	private String empStatus;
 	private Number zipCode;
 	private String address;
 	private String detailAddr;
@@ -40,6 +40,10 @@ public class EmployeeVO {
 	private String depositor;
 	private String employeeImage;
 	private String bank;
+	
+	
+//인사급여정보
+	
 	
 //  부서명
 	private String departmentName;
