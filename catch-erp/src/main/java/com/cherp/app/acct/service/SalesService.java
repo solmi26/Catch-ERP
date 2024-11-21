@@ -4,7 +4,10 @@ import java.util.List;
 
 import com.cherp.app.acct.vo.SalesVO;
 
-public interface SalesService { // 매출, 채권, 채무, 전자세금계산서 Service
+/**
+ * 매출, 채권, 채무, 전자세금계산서 Service
+ */
+public interface SalesService {
 	// 전체 조회
 	public List<SalesVO> salesList(); 				// 매출 조회
 	public List<SalesVO> payablesList(); 			// 채무거래 내역 전체 조회

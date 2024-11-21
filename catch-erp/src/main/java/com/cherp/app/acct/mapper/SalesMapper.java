@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.cherp.app.acct.vo.SalesVO;
 
+/**
+ * 매출 Mapper
+ */
 public interface SalesMapper {
 	// 전체 조회
 	public List<SalesVO> selectAllSalesList(); 				// 매출 조회

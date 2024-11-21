@@ -8,6 +8,9 @@ import com.cherp.app.acct.mapper.SalesMapper;
 import com.cherp.app.acct.service.SalesService;
 import com.cherp.app.acct.vo.SalesVO;
 
+/**
+ * 매출 ServiceImpl
+ */
 @Service
 public class SalesServiceImpl implements SalesService{
 	private SalesMapper salesMapper;
