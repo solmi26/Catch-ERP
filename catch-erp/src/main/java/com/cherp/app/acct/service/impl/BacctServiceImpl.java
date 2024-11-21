@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.cherp.app.acct.mapper.BacctMapper;
 import com.cherp.app.acct.service.BacctService;
 import com.cherp.app.acct.vo.BacctVO;
+import com.cherp.app.common.vo.CommonCodeVO;
 
 @Service
 public class BacctServiceImpl implements BacctService{
@@ -39,6 +40,11 @@ public class BacctServiceImpl implements BacctService{
 	@Override
 	public int bacctDelete(int bacct) {
 		return bacctMapper.deleteBacct(bacct);
+	}
+
+	@Override
+	public List<CommonCodeVO> commonBankList() {
+		return bacctMapper.selectAllCommonBankList();
 	}
 
 }

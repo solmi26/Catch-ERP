@@ -5,425 +5,458 @@
       layout:fragment="Content">
   <head>
     <meta charset="UTF-8" />
-    <title>전자세금계산서</title>
-    <style>
-  
-  	.modal-body{
-  		font-size: 16px;
-  	}
-  	
-  	/* 빨간색 테마 부분 */	
- 	.invoice-form {
-        border: 1px solid #ff0000;
-        margin: 1rem;
-        padding: 0.5rem;
-      }
-
-      .invoice-header {
-        border: 1px solid #ff0000;
-        color: #ff0000;
-        padding: 0.5rem;
-        margin-bottom: 1rem;
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
-      }
-
-      .registration-grid {
-        display: grid;
-        grid-template-columns: repeat(11, 1fr);
-        gap: 1px;
-        border: 1px solid #ff0000;
-        margin-bottom: 1rem;
-      }
-
-      .grid-cell {
-        border: 1px solid #ff0000;
-        padding: 0.25rem;
-        text-align: center;
-        height: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .company-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin-bottom: 1rem;
-        border: 1px solid #ff0000; /* 기본 테두리는 빨간색 */
-        padding: 0.5rem;
-      }
-
-      .company-info {
-        display: grid;
-        gap: 0.5rem;
-      }
-
-      .info-row {
-        display: grid;
-        grid-template-columns: 100px 1fr;
-        gap: 4px;
-      }
-
-      .info-label {
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        padding: 0.25rem;
-        text-align: center;
-      }
-
-      .info-value {
-        border: 1px solid #ff0000;
-        padding: 0.25rem;
-      }
-
-      .date-grid {
-        display: grid;
-        grid-template-columns: repeat(20, 1fr);
-        gap: 1px;
-        border: 1px solid #ff0000;
-        margin-bottom: 1rem;
-      }
-
-      .table {
-        border: 1px solid #ff0000;
-        color: #ff0000;
-      }
-
-      .table th,
-      .table td {
-        border: 1px solid #ff0000;
-        padding: 0.5rem;
-        text-align: center;
-      }
-
-      .amount-cell {
-        text-align: right;
-      }
-
-      .total-row {
-        border-top: 2px solid #ff0000;
-      }
-      /* 빨간색 테마 부분 끝. */	
-      
-      /* 파란색 테마 부분 */
-      .invoice-form.blue-theme {
-        border: 1px solid blue;
-        padding: 0.5rem;
-      }
-
-      .invoice-form.blue-theme .invoice-header {
-        border: 1px solid blue; /* 헤더도 파란색으로 변경 */
-        color: blue;
-      }
-
-      .invoice-form.blue-theme .company-section {
-        border: 1px solid blue; /* 회사 정보 부분의 테두리도 파란색으로 변경 */
-      }
-
-      .invoice-form.blue-theme .company-info .info-label {
-        color: blue;
-        border: 1px solid blue;
-      }
-
-      .invoice-form.blue-theme .company-info .info-value {
-        border: 1px solid blue;
-      }
-
-      .invoice-form.blue-theme .table {
-        border: 1px solid blue;
-        color: blue;
-      }
-
-      .invoice-form.blue-theme .table th,
-      .invoice-form.blue-theme .table td {
-        border: 1px solid blue !important;
-        padding: 0.5rem !important;
-        text-align: center !important;
-      }
-
-      .invoice-form.blue-theme .amount-cell {
-        text-align: right;
-      }
-
-      .invoice-form.blue-theme .total-row {
-        border-top: 2px solid blue;
-      }
-
-      .invoice-form.blue-theme .info-label {
-        color: blue;
-        border: 1px solid blue;
-        padding: 0.25rem;
-        text-align: center;
-      }
-
-      .invoice-form.blue-theme .info-value {
-        border: 1px solid blue;
-        padding: 0.25rem;
-      }
-      /* 파란색 테마 부분 끝. */
-
-    </style>
+    <title>계약 상세보기 및 수정 모달</title>
     
+	<style>
+	/*커밋테스트*/
+	  /* 그리드 전 form 관련 높이, 글자크기 */
+      .form-control,
+      .form-select,
+      .input-group-text {
+        height: 48px;
+        font-size: 1rem !important;
+      }
+      
+      /* 그리드 전 form 제목 길이 지정 */
+      .input-group-text {
+        width: 120px;
+      }
+	
+	 /* 버튼 그룹 기본 설정 */
+	  .btn-group {
+	    display: flex;
+	    gap: 5px; /* 버튼 간 간격 */
+	    font-size: 18px;
+	    margin-bottom: 10px;
+	  }
+	
+	  /* 그리드 위 영역 */
+	  .grid-controls {
+	    display: flex;
+	    justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
+	    align-items: center;
+	    margin-top:50px;
+	    
+	  }
+	  		
+	 /* 파일 선택 버튼 크기 조정 */
+	  .file-input-large::-webkit-file-upload-button {
+	    font-size: 1rem;
+	    padding: 0.9rem 1rem;
+	    background-color: #e8e8e8;
+	    border: none;
+	    border-radius: 0.25rem;
+	    cursor: pointer;
+	  }
+	
+	  .file-input-large::-webkit-file-upload-button:hover {
+	    background-color: #0056b3;
+	  }
+	
+	  .file-input-large::-ms-browse {
+	    font-size: 1rem;
+	    padding: 0.5rem 1rem;
+	    background-color: #007bff;
+	    color: white;
+	    border: none;
+	    border-radius: 0.25rem;
+	    cursor: pointer;
+	  }
+	  
+	</style>
+	
   </head>
   
   <body>
   
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taxInvoiceModal">세금계산서 열기</button>
+    <!-- 모달을 여는 버튼 -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contractModal">계약 수정 열기</button>
 
-    <div class="modal fade" id="taxInvoiceModal" tabindex="-1">
+    <!-- 계약 등록 모달 -->
+    <div class="modal fade" id="contractModal" tabindex="-1">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
+        
           <div class="modal-header">
-            <h5 class="modal-title">전자세금계산서</h5>
+            <h5 class="modal-title">계약 수정</h5>
           </div>
+          
           <div class="modal-body">
-            <!-- 빨간 부분/공급자용-->
-            <div class="invoice-form">
-              <div class="invoice-header">
-                <div style="color: #ff0000; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
-                <div>승인번호</div>
-                <div>인증서미첨부</div>
-              </div>
-
-              <!-- 공급자 / 공급받는 자 섹션 -->
-              <div class="company-section">
-                <!-- 공급자 정보 -->
-                <div>
-                  <div style="text-align: center; color: #ff0000; font-weight: bold">공급자</div>
-                  <div class="info-row">
-                    <div class="info-label">등록번호</div>
-                    <div class="info-value">220-12-34567</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">상호(법인명)</div>
-                    <div class="info-value">(주)카운팅ERP</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">성명(대표자)</div>
-                    <div class="info-value">김신래</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">사업장주소</div>
-                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">업태</div>
-                    <div class="info-value">제조, 유통, 서비스</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">Email</div>
-                    <div class="info-value">ben8725@ecounterp.co.kr</div>
-                  </div>
-                </div>
-
-                <!-- 공급받는 자 정보 -->
-                <div>
-                  <div style="text-align: center; color: #ff0000; font-weight: bold">공급받는자</div>
-                  <div class="info-row">
-                    <div class="info-label">등록번호</div>
-                    <div class="info-value">220-81-65848</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">상호(법인명)</div>
-                    <div class="info-value">이카운트</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">성명(대표자)</div>
-                    <div class="info-value">김신래</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">사업장주소</div>
-                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">업태</div>
-                    <div class="info-value">제조, 유통, 서비스</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">Email</div>
-                    <div class="info-value">ben8725@ecounterp.co.kr</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 품목 테이블 -->
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>년</th>
-                    <th>월</th>
-                    <th>일</th>
-                    <th>품목</th>
-                    <th>규격</th>
-                    <th>수량</th>
-                    <th>단가</th>
-                    <th>공급가액</th>
-                    <th>세액</th>
-                    <th>비고</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>2024</td>
-                    <td>02</td>
-                    <td>28</td>
-                    <td>최신스마트폰</td>
-                    <td></td>
-                    <td class="amount-cell">8</td>
-                    <td class="amount-cell">500,000</td>
-                    <td class="amount-cell">4,000,000</td>
-                    <td class="amount-cell">400,000</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr class="total-row">
-                    <td colspan="3">합계금액</td>
-                    <td colspan="2">현금</td>
-                    <td colspan="2">수표</td>
-                    <td colspan="2">어음</td>
-                    <td>외상</td>
-                  </tr>
-                  <tr>
-                    <td colspan="3" class="amount-cell">4,400,000</td>
-                    <td colspan="2"></td>
-                    <td colspan="2"></td>
-                    <td colspan="2"></td>
-                    <td class="amount-cell">4,400,000</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-
-            <hr style="border-width: 3px 0 0 0; border-style: dotted; border-color: #b4b4b4" />
-
-            <!-- 파란 부분/공급받는자 용-->
-            <div class="invoice-form blue-theme">
-              <div class="invoice-header">
-                <div style="color: blue; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
-                <div>승인번호</div>
-                <div>인증서미첨부</div>
-              </div>
-
-              <!-- 공급자 / 공급받는 자 섹션 -->
-              <div class="company-section">
-                <!-- 공급자 정보 -->
-                <div>
-                  <div style="text-align: center; color: blue; font-weight: bold">공급자</div>
-                  <div class="info-row">
-                    <div class="info-label">등록번호</div>
-                    <div class="info-value">220-12-34567</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">상호(법인명)</div>
-                    <div class="info-value">(주)카운팅ERP</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">성명(대표자)</div>
-                    <div class="info-value">김신래</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">사업장주소</div>
-                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">업태</div>
-                    <div class="info-value">제조, 유통, 서비스</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">Email</div>
-                    <div class="info-value">ben8725@ecounterp.co.kr</div>
-                  </div>
-                </div>
-
-                <!-- 공급받는 자 정보 -->
-                <div>
-                  <div style="text-align: center; color: blue; font-weight: bold">공급받는자</div>
-                  <div class="info-row">
-                    <div class="info-label">등록번호</div>
-                    <div class="info-value">220-81-65848</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">상호(법인명)</div>
-                    <div class="info-value">이카운트</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">성명(대표자)</div>
-                    <div class="info-value">김신래</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">사업장주소</div>
-                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">업태</div>
-                    <div class="info-value">제조, 유통, 서비스</div>
-                  </div>
-                  <div class="info-row">
-                    <div class="info-label">Email</div>
-                    <div class="info-value">ben8725@ecounterp.co.kr</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 품목 테이블 -->
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>년</th>
-                    <th>월</th>
-                    <th>일</th>
-                    <th>품목</th>
-                    <th>규격</th>
-                    <th>수량</th>
-                    <th>단가</th>
-                    <th>공급가액</th>
-                    <th>세액</th>
-                    <th>비고</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>2024</td>
-                    <td>02</td>
-                    <td>28</td>
-                    <td>최신스마트폰</td>
-                    <td></td>
-                    <td class="amount-cell">8</td>
-                    <td class="amount-cell">500,000</td>
-                    <td class="amount-cell">4,000,000</td>
-                    <td class="amount-cell">400,000</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr class="total-row">
-                    <td colspan="3">합계금액</td>
-                    <td colspan="2">현금</td>
-                    <td colspan="2">수표</td>
-                    <td colspan="2">어음</td>
-                    <td>외상</td>
-                  </tr>
-                  <tr>
-                    <td colspan="3" class="amount-cell">4,400,000</td>
-                    <td colspan="2"></td>
-                    <td colspan="2"></td>
-                    <td colspan="2"></td>
-                    <td class="amount-cell">4,400,000</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+          
+      <form>  
+      <!-- 계약일자, 거래처 -->
+	<div class="row mb-3">
+	  <!-- 계약일자 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약일자</span>
+	      <input type="date" class="form-control" id="contract-date" />
+	    </div>
+	  </div>
+	  <!-- 거래처 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">거래처</span>
+	      <input type="text" class="form-control" id="client" placeholder="거래처" readonly />
+	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#client-modal">
+	        <i class="lucide-search h-4 w-4"></i>
+	      </button>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 계약코드, 계약명 -->
+	<div class="row mb-3">
+	  <!-- 계약코드 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약코드</span>
+	      <input type="text" class="form-control" id="contract-code" value="00005" readonly />
+	    </div>
+	  </div>
+	  <!-- 계약명 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약명</span>
+	      <input type="text" class="form-control" id="contract-name" placeholder="계약명" />
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 계약시작일, 계약종료일 -->
+	<div class="row mb-3">
+	  <!-- 계약시작일 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약시작일</span>
+	      <input type="date" class="form-control" id="billing-start-date" />
+	    </div>
+	  </div>
+	  <!-- 계약종료일 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약종료일</span>
+	      <input type="date" class="form-control" id="billing-end-date" />
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 부가세유형, 계약상태 -->
+	<div class="row mb-3">
+	  <!-- 부가세 유형 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">부가세유형</span>
+	      <select class="form-select" id="vat-type">
+	        <option>세금계산서</option>
+	      </select>
+	    </div>
+	  </div>
+	  <!-- 계약 상태 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">계약상태</span>
+	      <select class="form-select" id="status">
+	        <option>진행</option>
+	        <option>종료</option>
+	        <option>보류</option>
+	      </select>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 담당자, 부서 -->
+	<div class="row mb-3">
+	  <!-- 담당자 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">담당자</span>
+	      <input type="text" class="form-control" id="manager" placeholder="담당자" readonly />
+	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#manager-modal">
+	        <i class="lucide-search h-4 w-4"></i>
+	      </button>
+	    </div>
+	  </div>
+	  <!-- 부서 -->
+	  <div class="col-md-4">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">부서</span>
+	      <input type="text" class="form-control" id="department" placeholder="부서" readonly />
+	      <button type="button" class="btn btn-outline-secondary select-modal" data-bs-target="#department-modal">
+	        <i class="lucide-search h-4 w-4"></i>
+	      </button>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 적요 -->
+	<div class="row mb-3">
+	  <div class="col-md-8">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">적요</span>
+	      <input type="text" class="form-control" id="description" placeholder="적요" />
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 첨부 -->
+	<div class="row mb-3">
+	  <div class="col-md-8">
+	    <div class="input-group input-group-sm">
+	      <span class="input-group-text">첨부</span>
+	      <input type="file" id="attachment-file" class="form-control file-input-large" />
+	    </div>
+	  </div>
+	</div>
+      
+        
+        <!-- 버튼 구역 -->
+        <div class="grid-controls">
+		<!-- 버튼 그룹 (그리드 위 왼쪽) -->
+      <div class="btn-group left">
+        <button type="button" class="btn btn-success" id="add-item-btn">+ 항목 추가</button>
+        <button type="button" class="btn btn-danger" id="delete-item-btn">- 선택 삭제</button>
+      </div>
+       
+       
+       <!-- 버튼 그룹 (그리드 위 오른쪽) -->
+      <div class="btn-group rigth">
+        <button type="button" class="btn btn-success" id="save-btn">저장</button>
+        <button type="button" class="btn btn-secondary">다시 작성</button>
+        <!-- 리스트로 이동하는 버튼 -->
+        <button type="button" class="btn btn-secondary">리스트</button>
+      </div>
+  </div>
+  
+  	<!-- 그리드 -->
+	<div id="grid"></div>
+    
+        </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-success">인쇄</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          
+          <div class="bottom-buttons">
+            <div class="d-flex justify-content-between">
+              <div>
+                <button type="button" class="btn btn-sm btn-success">저장</button>
+                <button type="button" class="btn btn-sm btn-danger ms-2">계약 삭제</button>
+                <button type="button" class="btn btn-sm btn-secondary ms-2">리스트</button>
+                <button type="button" class="btn btn-sm btn-secondary ms-2">닫기</button>
+              </div>
+
+              <!-- 모달 - 거래처 -->
+              <div class="modal fade" id="client-modal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="clientModalLabel">거래처 선택</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <ul>
+                        <li><button class="btn btn-link" onclick="setClientValue('거래처1')">거래처1</button></li>
+                        <li><button class="btn btn-link" onclick="setClientValue('거래처2')">거래처2</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 모달 - 담당자 -->
+              <div class="modal fade" id="manager-modal" tabindex="-1" aria-labelledby="managerModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="managerModalLabel">담당자 선택</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <ul>
+                        <li><button class="btn btn-link" onclick="setManagerValue('담당자1')">담당자1</button></li>
+                        <li><button class="btn btn-link" onclick="setManagerValue('담당자2')">담당자2</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 모달 - 부서 -->
+              <div class="modal fade" id="department-modal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="departmentModalLabel">부서 선택</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <ul>
+                        <li><button class="btn btn-link" onclick="setDepartmentValue('부서1')">부서1</button></li>
+                        <li><button class="btn btn-link" onclick="setDepartmentValue('부서2')">부서2</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
+    
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    	  
+    	  // 그리드 데이터
+    	  const gridData = [
+    		  {
+    		    itemName: '플라스틱 컵',        // 품목
+    		    unitPrice: 0,        // 단가
+    		    supplyAmount: 0,     // 공급가액
+    		    vat: 0,              // 부가세
+    		    totalAmount: 0,      // 총 금액
+    		  },
+    		  {
+      		    itemName: '에티오피아 원두',        // 품목
+      		    unitPrice: 0,        // 단가
+      		    supplyAmount: 0,     // 공급가액
+      		    vat: 0,              // 부가세
+      		    totalAmount: 0,      // 총 금액
+      		  },
+    		  {
+      		    itemName: '빨대',        // 품목
+      		    unitPrice: 0,        // 단가
+      		    supplyAmount: 0,     // 공급가액
+      		    vat: 0,              // 부가세
+      		    totalAmount: 0,      // 총 금액
+      		  },
+    		];
+    	  
+
+		 
+    	  // 그리드 초기화
+    	  const grid = new tui.Grid({
+    	    el: document.querySelector('#grid'),  // 그리드 표시 위치
+    	    data: gridData,  // 초기 데이터
+    	    scrollX: true,   // 가로 스크롤 사용
+    	    scrollY: true,   // 세로 스크롤 사용
+    	    columns: [
+    	      {
+    	        header: '품목',
+    	        name: 'itemName',
+    	        editor: 'text',
+    	        align: 'left',
+    	      },
+    	      {
+    	        header: '단가',
+    	        name: 'unitPrice',
+    	        editor: {
+    	        	type:gridNumber
+    	        },
+    	        align: 'right',
+    	      },
+    	      {
+    	        header: '공급가액',
+    	        name: 'supplyAmount',
+    	        editor: {
+    	        	type:gridNumber
+    	        },
+    	        align: 'right',
+ 
+    	      },
+    	      {
+    	        header: '부가세',
+    	        name: 'vat',
+    	        editor: {
+    	        	type:gridNumber
+    	        },
+    	        align: 'right',
+
+    	      },
+    	      {
+    	        header: '총 금액',
+    	        name: 'totalAmount',
+    	        editor: {
+    	        	type:gridNumber
+    	        },
+    	        align: 'right',
+ 
+    	      },
+    	    ], 
+    	    summary: {
+    	        height: 40,
+    	        position: 'bottom', // or 'top'
+    	        columnContent: {
+    	        	unitPrice: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          supplyAmount: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+  	        	vat: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          totalAmount: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          itemName: {
+      	            template: function(valueMap) {
+      	              return `합계`;
+      	            }
+      	          },
+    	          
+    	        }
+    	      },
+    	
+    	      rowHeaders: [
+    	            {
+    	              type: 'checkbox',
+    	              header: 
+    	                `<span class="custom-input">
+    	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+    	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+    	                </span>`
+    	            ,
+    	              renderer: {
+    	                type: gridCheckbox
+    	              }
+    	            }
+    	      ],
+    	  });
+
+
+    	  // 그리드 클릭 이벤트 -> 추후 내가 필요한대로 수정
+    	  grid.on('click', (event) => {
+    	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
+    	      console.log('클릭이벤트 발생');
+    	      console.log(event.rowKey);  // 클릭한 행의 키 값 출력
+    	    }
+    	  });
+
+        // 모달 띄우기
+        document.querySelectorAll(".select-modal").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const modalId = btn.getAttribute("data-bs-target").substring(1);
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+          });
+        });
+
+        // 첨부파일 처리(파일 선택 시 이름 표시)
+        document.getElementById("attachment-file").addEventListener("change", function (event) {
+          document.getElementById("attachment").value = event.target.files[0].name;
+        });
+      });
+      
+    </script>
 
   </body>
 </html>
