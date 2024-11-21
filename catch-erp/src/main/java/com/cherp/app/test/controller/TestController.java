@@ -11,7 +11,6 @@ public class TestController {
 	public String testView() {
 		return "human/test";
 	}
-	
 	// JSM TEST
 	@GetMapping("testac")
 	public String testViewAc() {
@@ -49,7 +48,5 @@ public class TestController {
 		return "account/regBondReduction"; // 채권감소
 		//return "account/contract";
 	}
-	// GHT TEST
-	@GetMapping("testPurchase")
-	public String testPurchase() { return "purchase/purchasePage"; }
+
 }
