@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.empl.mapper.EmployeeMapper">
-	<select id="selectAllemployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO">
+	<select id="selectAllemployeeList" resultType="EmployeeVO">
 		SELECT 	em.employee_code,
 				em.employee_id,
 				em.name,
