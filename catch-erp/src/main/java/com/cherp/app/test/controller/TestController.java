@@ -23,7 +23,7 @@ public class TestController {
 		// return "account/statement";
 	    //return "account/modal/salesSlipModal";
 		//return "account/modal/invoicePrintModal";
-		return "account/modal";
+		return "account/modal/slipPrintModal";
 	}
 	// NKW TEST
 	@GetMapping("testStack")
