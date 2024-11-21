@@ -7,8 +7,6 @@
   <meta charset="UTF-8" >
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>채권감소등록</title>
-  
-  
   <link rel="tableStyle.css" />
   <style>
     .modal-header {
@@ -19,6 +17,7 @@
         max-width: 800px;
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <div class="bg-white shadow-sm rounded" style="padding: 20px;">
@@ -44,53 +43,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#accountAddModal">신규(F2)</button>
             </div>
         </div>
       </div>
     </div>
-    <!-- 통장계좌등록 모달 -->
-    <div class="modal fade" id="accountAddModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌등록</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <form>
-                      <div class="mb-3">
-                          <label for="accountCode" class="form-label">계좌코드</label>
-                          <input type="text" class="form-control" id="accountCode" placeholder="계좌코드">
-                      </div>
-                      <div class="mb-3">
-                          <label for="accountName" class="form-label">계좌명</label>
-                          <input type="text" class="form-control" id="accountName" placeholder="계좌명">
-                      </div>
-                      <div class="mb-3">
-                          <label for="accountType" class="form-label">계정</label>
-                          <select class="form-select" id="accountType">
-                              <option selected>1039 보통예금</option>
-                              <!-- Add more options as needed -->
-                          </select>
-                      </div>
-                      <div class="mb-3">
-                          <label for="transactionDetails" class="form-label">거래처내용</label>
-                          <input type="text" class="form-control" id="transactionDetails" placeholder="거래처내용">
-                      </div>
-                      <div class="mb-3">
-                          <label for="remarks" class="form-label">적요</label>
-                          <textarea class="form-control" id="remarks" rows="3" placeholder="적요"></textarea>
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="saveButton">저장(F8)</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-              </div>
-          </div>
-      </div>
-    </div>
+    
   </div>
   
   
@@ -118,20 +75,17 @@
                       name: 'recLogId',
                       sortable: true,
                       filter: 'select',
-                      editor: 'text',
                       align: 'center'
                   },
                   {
                       header: '발생일자',
                       name: 'recDate',
-                      editor: 'text',
                       sortable: true,
                       align: 'left'
                   },
                   {
                       header: '거래처명',
                       name: 'clientName',
-                      editor: 'text',
                       filter: 'select',
                       sortable: true,
                       align: 'left'
@@ -139,7 +93,6 @@
                   {
                       header: '계좌코드',
                       name: 'bacctCode',
-                      editor: 'text',
                       filter: 'select',
                       sortable: true,
                       align: 'left'
@@ -147,7 +100,6 @@
                   {
                       header: '잔액',
                       name: 'recBalance',
-                      editor: 'text',
                       sortable: true,
                       align: 'left'
                   },
@@ -161,7 +113,6 @@
                   {
                     header: '채무상태',
                     name: 'recStatus',
-                    editor: 'text',
                     sortable: true,
                     align: 'left'
                   }
@@ -175,37 +126,76 @@
         	}
       })
       // 계좌 목록 조회 모달
-      fetch('')
-
-      let accountList = [
-        {accCode:"123124",accName:"예담담"},
-      ];
-      //Build Tabulator
-      let accList = new Tabulator("#example-table", {
-          layout:"fitColumns",
-          pagination:"local",
-          data: accountList,
-          paginationSize:6,
-          paginationSizeSelector:[3, 6, 8, 10],
-          movableColumns:true,
-          paginationCounter:"rows",
-          columns:[
-              {title:"계좌코드", field:"accCode", width:320, sorter:"string", headerFilter:"input"},
-              {title:"계좌명", field:"accName", width:440, sorter:"string", headerFilter:"input"},
-          ],
-      });
-      accList.on("rowClick", function(event) {
-        alert("계좌 상세 이동 기능 구현");
+      fetch('http://localhost:8026/bacctList')
+      .then(result => result.json())
+      .then(accountList => {
+        //Build Tabulator
+        let accList = new Tabulator("#example-table", {
+            layout:"fitColumns",
+            pagination:"local",
+            data: accountList,
+            paginationSize:8,
+            //paginationSizeSelector:[3, 6, 8, 10],
+            movableColumns:true,
+            paginationCounter:"rows",
+            paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+                return "";
+            },
+            langs:{
+                "default":{
+                    "pagination":{
+                        "first":"처음",
+                        "first_title":"처음으로",
+                        "last":"끝",
+                        "last_title":"마지막으로",
+                        "prev":"이전",
+                        "prev_title":"이전으로",
+                        "next":"다음",
+                        "next_title":"다음으로",
+                        "all":"전체",
+                    }
+                }
+            },
+            columns:[
+                {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
+                {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
+                {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
+            ],
+        });
+        accList.on("rowClick", function(event, row) {
+          //alert("계좌 선택 이후 거래내역에 해당 계좌로 데이터 추가");
+          //console.log(row.getData().bacctNo);
+          Swal.fire({
+            title: "결제하시겠습니까?",
+            text: `계좌번호 : ${row.getData().bacctNo} 은행명: ${row.getData().bankName}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "결제",
+            cancelButtonText: "취소"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "결제되었습니다",
+                text: `계좌번호 : ${row.getData().bacctNo} 결제완료`,
+                icon: "success",
+                confirmButtonText: "완료"
+              }).then((result => {
+                if(result.isConfirmed) {
+                  // 여기서 DB업데이트가 실행되어야함
+                  // 채무거래 테이블
+                  location.reload(true);
+                }
+              }))
+            }
+          });
+        })
       })
-      // 신규 계좌 생성 모달
-      // 저장 버튼 클릭 이벤트
-      saveButton.addEventListener('click', function() {
-          // 여기에 저장 로직 추가
-          alert('저장 기능 구현중.');
-      });
   })
   .catch((error) => console.error("Error loading JSON:", error));
 
+  
   })
     
   </script>
