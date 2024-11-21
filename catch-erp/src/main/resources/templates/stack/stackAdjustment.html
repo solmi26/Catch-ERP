@@ -73,7 +73,7 @@
 	        <div class="justify-content-center">
 	        	<div class="row g-3" >			        
 			        <div class="col" style="padding-bottom: 10px;" >
-			            <button class="btn btn-success" style="margin-right: 0px" data-bs-toggle="modal" data-bs-target="#reportModal">재고조정</button>
+			            <button class="btn btn-success" style="margin-right: 0px" data-bs-toggle="modal" data-bs-target="#reportModal" id="reportBtn">재고조정</button>
 			            <button class="btn btn-primary" style="margin-right: 0px" id="rowDelete">선택취소</button>
 			            <button class="btn btn-warning" style="margin-right: 0px" id="inputInitial">입력초기화</button>
 		            </div>
@@ -185,7 +185,7 @@
                     </div>
                     <div>
                         <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-primary">선택</button>
+                        <button type="button" class="btn btn-primary" id="purchaseOrderInputBtn" data-bs-dismiss="modal">선택</button>
                     </div>
                 </div>
             </div>
@@ -218,7 +218,7 @@
                     </div>
                     <div>
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-primary">선택</button>
+                        <button type="button" class="btn btn-primary" id="salesOrderInputBtn" data-bs-dismiss="modal">선택</button>
                     </div>
                 </div>
             </div>
@@ -242,16 +242,16 @@
                         <div class="container-fluid p-4">
                             <div class="table-container">
                                 <table class="report-table">
-                                    <thead>
+                                    <thead> 
                                         <tr>
-                                            <th colspan="3">재고조정번호</th>
-                                            <th colspan="3">담당자</th>
-                                            <th>작성일자</th>
+                                            <th colspan="3" >재고조정번호</th>
+                                            <th colspan="3" >담당자</th>
+                                            <th >작성일자</th>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
-                                            <td colspan="3"></td>
-                                            <td></td>
+                                            <td colspan="3" id="adjustNo"></td>
+                                            <td colspan="3" id="writer"></td>
+                                            <td id='inputDate'></td>
                                         </tr>
                                         <tr>
                                             <th>일련번호</th>
@@ -262,8 +262,7 @@
                                             <th>재고조정사유</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        
+                                    <tbody id="adjustTbody">                                      
                                         <tr>
                                             <td></td>
                                             <td></td>
