@@ -9,17 +9,29 @@ public class TestController {
 	//YSJ TEST
 	@GetMapping("test")
 	public String testView() {
-		return "human/test";
+		return "human/employeeHistoryInput";
 	}
 	
 	// JSM TEST
 	@GetMapping("testac")
 	public String testViewAc() {
-		return "account/invoice";
+		//return "human/attendanceInput";
+		//return "account/invoice";
+		//return "account/contractInsert";
+		//return "account/purchaseSlip";
+		//return "account/salesSlip";
+		// return "account/statement";
+	    //return "account/modal/salesSlipModal";
+		//return "account/modal/invoicePrintModal";
+		return "account/modal";
 	}
 	// NKW TEST
 	@GetMapping("testStack")
 	public String testViewStack() {
+		return "stack/stackAdjustment";
+	}
+	@GetMapping("testStack2")
+	public String testViewStack2() {
 		return "stack/stackInquery";
 	}
 	// SGW TEST
@@ -37,4 +49,7 @@ public class TestController {
 		return "account/regBondReduction"; // 채권감소
 		//return "account/contract";
 	}
+	// GHT TEST
+	@GetMapping("testPurchase")
+	public String testPurchase() { return "purchase/purchasePage"; }
 }

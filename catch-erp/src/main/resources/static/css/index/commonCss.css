@@ -1,6 +1,70 @@
 @charset "UTF-8";
 
-.btn {
-   font-size: 1.15rem;
-   padding: 4px 8px;
+	/* 버튼 스타일 */
+	.btn {
+  	 font-size: 1.15rem;
+  	 padding: 4px 8px;
     }
+    
+    /* 체크박스 버튼 안보이게 처리 */
+    .hidden-input{
+    	display: none;
+	}
+	
+	/* 체크박스 */
+    .selectCheck{
+     	width:15px;
+    	height:15px;
+     	background-color: white;
+     	border:1px solid black;
+     	padding:1px !important;
+     	line-height:15px;
+     	border-radius:5px;
+   	}
+   	
+   	/* 체크박스 */
+   	.hidden-input:checked + label {
+   		background-color: #cadcff;
+   	}
+	
+	/* 모달 헤더 스타일 */
+      .modal-header {
+        background-color: #AACB73; /* 헤더 배경색 */
+        color: white; /* 텍스트 색상 */
+        padding: 1.2rem 1rem; /* 내부 여백 */
+      }
+
+      /* 모달 본문 스타일 */
+      .modal-body {
+        background-color: #fff; /* 배경색 */
+        padding: 1rem; /* 내부 여백 */
+      }
+      
+      /* 모달 컨테이너 */
+      .modal-content{
+      	border:2px solid black;
+      }
+      
+      /* 모달 하단 버튼 컨테이너 스타일 */
+      .bottom-buttons {
+     	display: flex;
+        border-top: 1px solid #dee2e6; /* 상단 경계선 */
+        padding: 0.5rem; /* 내부 여백 */
+        background-color: #f8f9fa; /* 배경색 */
+        justify-content: flex-end; /* 오른쪽 끝에 배치*/
+      }
+      
+     /* 그리드 합계 부분 오른쪽 정렬 */
+  	.tui-grid-summary-area .tui-grid-cell, tui-grid-cell-content {
+    	text-align: right;
+		}
+     
+     /* 버튼 그룹 왼쪽 */
+	  .btn-group.left {
+	    justify-content: flex-start; /* 왼쪽 정렬 */
+	  }
+	
+	  /* 버튼 그룹 오른쪽 */
+	  .btn-group.right {
+	    justify-content: flex-end; /* 오른쪽 정렬 */
+	  }
