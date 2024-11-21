@@ -19,11 +19,11 @@ public class TestController {
 		//return "account/invoice";
 		//return "account/contractInsert";
 		//return "account/purchaseSlip";
-		//return "account/salesSlip";
+		return "account/salesSlip";
 		// return "account/statement";
 	    //return "account/modal/salesSlipModal";
 		//return "account/modal/invoicePrintModal";
-		return "account/modal";
+		//return "account/modal/slipPrintModal";
 	}
 	// NKW TEST
 	@GetMapping("testStack")

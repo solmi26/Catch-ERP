@@ -8,7 +8,7 @@
     <title>계약 상세보기 및 수정 모달</title>
     
 	<style>
-	/*커밋테스트*/
+
 	  /* 그리드 전 form 관련 높이, 글자크기 */
       .form-control,
       .form-select,
@@ -37,6 +37,16 @@
 	    align-items: center;
 	    margin-top:50px;
 	    
+	  }
+	  
+	  /* 그리드 아래 버튼들 */
+	  .bottom-btns{
+	  	display: flex;
+	  	justify-content: flex-end; /* 끝으로 버튼 그룹 배치 */
+	    align-items: center;
+	    margin-top:10px;
+	    padding-left: 10px;
+	    padding-right: 10px;
 	  }
 	  		
 	 /* 파일 선택 버튼 크기 조정 */
@@ -74,16 +84,17 @@
 
     <!-- 계약 등록 모달 -->
     <div class="modal fade" id="contractModal" tabindex="-1">
+    <!-- 모달크기 XL -->
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
-        
+          
           <div class="modal-header">
             <h5 class="modal-title">계약 수정</h5>
           </div>
-          
+                 
           <div class="modal-body">
-          
       <form>  
+      
       <!-- 계약일자, 거래처 -->
 	<div class="row mb-3">
 	  <!-- 계약일자 -->
@@ -209,23 +220,21 @@
 	  </div>
 	</div>
       
-        
         <!-- 버튼 구역 -->
         <div class="grid-controls">
+        
 		<!-- 버튼 그룹 (그리드 위 왼쪽) -->
       <div class="btn-group left">
         <button type="button" class="btn btn-success" id="add-item-btn">+ 항목 추가</button>
         <button type="button" class="btn btn-danger" id="delete-item-btn">- 선택 삭제</button>
+        <button type="button" class="btn btn-secondary">다시 작성</button>
       </div>
-       
        
        <!-- 버튼 그룹 (그리드 위 오른쪽) -->
       <div class="btn-group rigth">
-        <button type="button" class="btn btn-success" id="save-btn">저장</button>
-        <button type="button" class="btn btn-secondary">다시 작성</button>
-        <!-- 리스트로 이동하는 버튼 -->
-        <button type="button" class="btn btn-secondary">리스트</button>
+         <button type="button" class="btn btn-danger">계약 삭제</button>
       </div>
+      
   </div>
   
   	<!-- 그리드 -->
@@ -234,14 +243,18 @@
         </form>
           </div>
           
-          <div class="bottom-buttons">
-            <div class="d-flex justify-content-between">
-              <div>
-                <button type="button" class="btn btn-sm btn-success">저장</button>
-                <button type="button" class="btn btn-sm btn-danger ms-2">계약 삭제</button>
-                <button type="button" class="btn btn-sm btn-secondary ms-2">리스트</button>
-                <button type="button" class="btn btn-sm btn-secondary ms-2">닫기</button>
+          <!-- 하단 버튼 그룹 -->
+          <div class="bottom-btns">
+              
+              <!-- 오른쪽 정렬 -->
+              <div class="btn-group right">
+              <button type="button" class="btn btn-success">저장</button>
+              	<button type="button" class="btn btn btn-secondary">리스트</button>
+                <button type="button" class="btn btn btn-secondary">닫기</button>
               </div>
+              
+              </div>
+			
 
               <!-- 모달 - 거래처 -->
               <div class="modal fade" id="client-modal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
@@ -300,11 +313,11 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+   
     
     
     <script>
+    
       document.addEventListener("DOMContentLoaded", function () {
     	  
     	  // 그리드 데이터
@@ -432,7 +445,12 @@
     	      ],
     	  });
 
-
+          // 모달이 완전히 열렸을 때 그리드 레이아웃을 리프레시
+          const modal = document.getElementById("contractModal");
+          modal.addEventListener("shown.bs.modal", function () {
+            grid.refreshLayout();
+          });
+          
     	  // 그리드 클릭 이벤트 -> 추후 내가 필요한대로 수정
     	  grid.on('click', (event) => {
     	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
@@ -459,4 +477,5 @@
     </script>
 
   </body>
+  
 </html>

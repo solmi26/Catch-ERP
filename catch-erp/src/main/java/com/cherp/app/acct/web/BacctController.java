@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+/**
+ * 계좌 컨트롤러
+ */
 public class BacctController {
 	private final BacctService bacctService;
 

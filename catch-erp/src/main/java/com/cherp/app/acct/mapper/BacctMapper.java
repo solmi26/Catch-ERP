@@ -5,6 +5,9 @@ import java.util.List;
 import com.cherp.app.acct.vo.BacctVO;
 import com.cherp.app.common.vo.CommonCodeVO;
 
+/**
+ * 은행 계좌 Mapper
+ */
 public interface BacctMapper {
 	public List<BacctVO> selectAllBacctList();		// 계좌 전체 조회
 	public BacctVO selectBacct(BacctVO bacctVO); // 계좌 단건 조회
