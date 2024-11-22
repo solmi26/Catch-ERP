@@ -16,4 +16,4 @@ public interface BacctMapper {
 	public int deleteBacct(int bacct); // 계좌 삭제
 	
 	public List<CommonCodeVO> selectAllCommonBankList(); // 공통코드 등록된 은행목록 조회
-}
+}	
