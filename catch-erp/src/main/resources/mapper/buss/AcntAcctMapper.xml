@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cherp.app.buss.mapper.AcntAcctMapper">
+
+	<select id="selectAcntList" resultType="com.cherp.app.buss.vo.AcntAcctVO">
+		SELECT acct_code
+		,acct_name
+		FROM acnt_acct
+	</select>
+</mapper>
