@@ -2,6 +2,7 @@ package com.cherp.app.acct.mapper;
 
 import java.util.List;
 
+import com.cherp.app.acct.vo.ClientPsVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
@@ -14,7 +15,8 @@ public interface SalesMapper {
 	public List<PayablesVO> payablesList(); 		// 채무거래 내역 전체 조회
 	public List<SalesVO> receivablesList(); 		// 채권거래 내역 전체 조회
 	public List<SalesVO> invoiceList();				// 세금계산서 내역 전체 조회
-	
+	public List<ClientPsVO> SelectAllClientPayableList();	// 채무 거래처 전체 조회
+	public List<ClientPsVO> SelectAllClientReceivableList();// 채권 거래처 전체 조회
 	//단건 조회
 	public SalesVO selectSaleInfo(SalesVO salesVO);			// 매출 단건 조회
 	public SalesVO selectPayableInfo(PayablesVO payablesVO);// 채무거래 단건 조회

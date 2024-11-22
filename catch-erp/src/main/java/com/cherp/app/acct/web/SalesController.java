@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.cherp.app.acct.service.SalesService;
-import com.cherp.app.acct.vo.PayablesVO;
+import com.cherp.app.acct.vo.ClientPsVO;
 import com.cherp.app.acct.vo.SalesVO;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class SalesController {
 	// 채무 전체 조회
 	@GetMapping("payablesList")
 	public String payablesList(Model model) {
-		List<PayablesVO> payList = salesService.payablesList();
+		List<ClientPsVO> payList = salesService.ClientPayableList();
 		model.addAttribute("pay",payList);
 		return "account/regPayReduction";
 	}

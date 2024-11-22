@@ -51,6 +51,11 @@
 		         payables_log p
 		    JOIN purchase s ON p.purchase_chit_no = s.purchase_chit_no
 	</select>
+	
+	<select id="SelectAllClientPayableList" parameterType="com.cherp.app.acct.vo.ClientPsVO">
+		SELECT *
+		FROM   client
+	</select>
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSales" parameterType="com.cherp.app.acct.vo.SalesVO">
 	<selectKey keyProperty="salesChitNo" order="BEFORE" resultType="string">
