@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.cherp.app.acct.service.SalesService;
+import com.cherp.app.acct.vo.BacctVO;
 import com.cherp.app.acct.vo.SalesVO;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 /**
- * 매출 컨트롤러
+ * 채권, 채무, 세금계산서, 매출 컨트롤러
  */
 public class SalesController {
 
@@ -35,5 +37,22 @@ public class SalesController {
 		model.addAttribute("pay",payList);
 		return "account/regPayReduction";
 	}
+	
+	// 매출 전표 등록(화면)
+	@GetMapping("insertSales")
+	public String insertSales(SalesVO salesVO) {
+		return "account/salesSlip";
+	}
+	
+	
+	// 매출 전표 등록(기능)
+	@PostMapping("insertSales")
+	//@ResponseBody
+	public String insertSalesFun(SalesVO salesVO) {
+		//salesService
+		//bacctService.bacctInsert(bacctVO);
+		return "account/salesSlip";
+	}
+	
 	
 }
