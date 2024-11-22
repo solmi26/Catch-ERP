@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.acct.service.SalesService;
+import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
 
@@ -29,7 +30,7 @@ public class RestSalesController {
 	}
 	// JSON 채무 데이터
 	@GetMapping("payList")
-	public List<SalesVO> payList() {
+	public List<PayablesVO> payList() {
 		return salesService.payablesList();
 	}
 	

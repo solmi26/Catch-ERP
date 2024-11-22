@@ -21,6 +21,7 @@ public class ClientServiceImpl implements ClientService {
     // 거래처 전체 조회
     @Override
     public List<ClientVO> clientList() {
+
         return clientMapper.selectClientList();
     }
 }

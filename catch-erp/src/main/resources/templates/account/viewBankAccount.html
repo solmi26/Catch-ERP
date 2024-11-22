@@ -131,6 +131,20 @@
           useClient: true,
           perPage: 5
         },
+        rowHeaders: [
+	          {
+	            type: 'checkbox',
+	            header: `
+	              <span class="custom-input">
+	              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+	            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+	          	</span>
+	          `,
+	            renderer: {
+	              type: gridCheckbox
+	            }
+	          }
+	    ],
         columns: [
                   {
                       header: '계좌번호',
@@ -171,8 +185,7 @@
                         }
                       }
                   }
-              ],
-        rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
+              ]
       });
       // js로 모달창을 열어야 할 경우 모달을 변수에 등록하여 show(), hide()를 활용해 열/닫기 구현
       const addAccountModal = new bootstrap.Modal(document.querySelector('#accountAddModal')); // 상품 상세(수정) 모달

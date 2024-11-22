@@ -16,6 +16,46 @@
     .modal-dialog {
         max-width: 800px;
     }
+    .ledger-form {
+        border: 2px solid #FF0000;
+        margin: 1rem;
+    }
+    .ledger-title {
+        background-color: #FFF;
+        color: #FF0000;
+        border: 1px solid #FF0000;
+        padding: 0.5rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    .ledger-table {
+        font-size: 0.9rem;
+    }
+    .ledger-table th {
+        background-color: #f8f9fa;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .ledger-table td {
+        vertical-align: middle;
+    }
+    .number-column {
+        text-align: right;
+        font-family: monospace;
+    }
+    .subtotal-row {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+    .ledger-date-column {
+        width: 90px;
+    }
+    .ledger-description-column {
+        width: 120px;
+    }
+    .ledger-amount-column {
+        width: 120px;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -36,7 +76,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background-color: #aacb73;">
                 <h5 class="modal-title" id="accountSearchModalLabel">계좌검색</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div id="example-table"></div> <!-- modal tabulator 사용 -->
@@ -47,7 +86,70 @@
         </div>
       </div>
     </div>
-    
+    <!-- 거래처 원장 모달 -->
+    <div class="modal fade" id="ledgerModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="width: 1200px;">
+                <div class="modal-header">
+                    <h5 class="modal-title">거래처원장</h5>                    
+                </div>
+                <div class="modal-body">
+                    <div id="reportContent" class="ledger-form">
+                        <div class="container-fluid p-4">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <strong>거래처:</strong> 
+                                </div>
+                                <div class="col text-end">
+                                    <strong>Page #</strong> 1
+                                </div>
+                            </div>
+                            <table class="table table-bordered ledger-table">
+                                <thead>
+                                    <tr>
+                                        <th class="ledger-date-column">일자</th>
+                                        <th class="ledger-description-column">계정</th>
+                                        <th>적요</th>
+                                        <th class="ledger-amount-column">증감</th>
+                                        <th class="ledger-amount-column">감소</th>
+                                        <th class="ledger-amount-column">잔고</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>01-14</td>
+                                        <td>미수금</td>
+                                        <td>외화표-ESI 컴퍼니(302호)</td>
+                                        <td class="number-column">950,000</td>
+                                        <td class="number-column">0</td>
+                                        <td class="number-column">-9,378,469</td>
+                                    </tr>
+                                    <tr>
+                                        <td>01-21</td>
+                                        <td>매수금(환거래)</td>
+                                        <td>19년01월달 환거래금-개포3동</td>
+                                        <td class="number-column">35,427</td>
+                                        <td class="number-column"></td>
+                                        <td class="number-column">-9,413,896</td>
+                                    </tr>
+                                    <tr class="subtotal-row">
+                                        <td colspan="3">(누계)</td>
+                                        <td class="number-column">-9,261,172</td>
+                                        <td class="number-column">704,034</td>
+                                        <td class="number-column"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="pdfButton">PDF 저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
   
   
@@ -69,19 +171,27 @@
 	        useClient: true,
 	        perPage: 5
 	      },
+	      rowHeaders: [
+	          {
+	            type: 'checkbox',
+	            header: `
+	              <span class="custom-input">
+	              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+	            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+	          	</span>
+	          `,
+	            renderer: {
+	              type: gridCheckbox
+	            }
+	          }
+	    ],
 	      columns: [
                   {
-                      header: '채권번호',
-                      name: 'recLogId',
+                      header: '거래처코드',
+                      name: 'clientCode',
                       sortable: true,
                       filter: 'select',
                       align: 'center'
-                  },
-                  {
-                      header: '발생일자',
-                      name: 'recDate',
-                      sortable: true,
-                      align: 'left'
                   },
                   {
                       header: '거래처명',
@@ -91,15 +201,15 @@
                       align: 'left'
                   },
                   {
-                      header: '계좌코드',
-                      name: 'bacctCode',
+                      header: '거래처 계좌',
+                      name: 'clientBacct',
                       filter: 'select',
                       sortable: true,
                       align: 'left'
                   },      
                   {
                       header: '잔액',
-                      name: 'recBalance',
+                      name: 'balancek',
                       sortable: true,
                       align: 'left'
                   },
@@ -112,17 +222,18 @@
                   },
                   {
                     header: '채무상태',
-                    name: 'recStatus',
+                    name: 'state',
                     sortable: true,
                     align: 'left'
                   }
-         ],
-	     rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
+         ]
 	  });
       grid.on('click', (event) => { // grid 클릭이벤트 발생
-	        if(event.columnName === 'debentureNo' && event.rowKey>=0) {
+	        if(event.columnName === 'recLogId' && event.rowKey>=0) {
 	          console.log("클릭이벤트 발생");
 	          console.log(event.rowKey);
+	          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
+              ledgeModal.show();
         	}
       })
       // 계좌 목록 조회 모달
@@ -195,7 +306,33 @@
   })
   .catch((error) => console.error("Error loading JSON:", error));
 
-  
+	 // 툴팁 초기화
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // 숫자 포맷팅
+    document.querySelectorAll('.number-column').forEach(function (element) {
+        const value = element.textContent;
+        if (value && !isNaN(value.replace(/,/g, ''))) {
+            element.textContent = Number(value.replace(/,/g, '')).toLocaleString('ko-KR');
+        }
+    });
+
+    // PDF 저장 기능
+    document.getElementById('pdfButton').addEventListener('click', function() {
+        const element = document.getElementById('reportContent');
+        html2canvas(element).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jspdf.jsPDF();
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('거래처원장.pdf');
+        });
+    });
   })
     
   </script>
