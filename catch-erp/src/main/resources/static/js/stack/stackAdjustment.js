@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 샘플 데이터
     const sampleData = [
         {
-			c1: 'A0000045',
+			c1: 'A0000045-1',
             c2: 'A2024',
             c3: '컵홀더',
             c4: '상품 출하',
@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
             c8: '1200',
         },
         {
-			c1: 'A0000045',
+			c1: 'A0000045-2',
             c2: 'A2024',
             c3: '컵홀더',
             c4: '상품 출하',
@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
             c8: '1200',
         },
         {
-			c1: 'A0000045',
+			c1: 'A0000045-4',
             c2: 'A2024',
             c3: '컵홀더',
             c4: '상품 출하',
@@ -423,6 +423,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         return grid3;
     }
+    
+		
 
     // 그리드 설정
     const createdGrid3 = initGrid3();
@@ -544,7 +546,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			let inputTag = document.getElementById('itemInput');
 			inputTag.value = '';			
 			inputTag.value = grid5.getValue(rowKeyNum, 'c1');							
-			console.log(inputTag.value);			
+		
 		}
 	})   
 	
@@ -554,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ==============================*/
     var purchaseOrderModal = document.getElementById('purchaseOrderModal2')
 	
-	purchaseOrderModal.addEventListener('show.bs.modal', function (event) {
+	purchaseOrderModal.addEventListener('show.bs.modal', function () {
 	    // 모달이 표시되기 전에 실행할 코드
 	    window.setTimeout(function(){
 	        grid6.refreshLayout();
@@ -572,7 +574,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		    width: 'auto',
 		    contextMenu: null,
 		    rowHeaders: [{
-		            type: 'rowNum',
+		            type: 'checkBox',
 		            header: "No.",
 		            width: 50,
 		            className:'border'
@@ -584,10 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 120,
 		            whiteSpace: 'normal',
-		            className:'border',
-		            renderer: {
-		                type: BtnForOrder
-		            }
+		            className:'border',		            
 		            
 		        },
 		        {
@@ -595,10 +594,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            name: 'c2',
 		            align: "center",
 		            width: 120,
-		            whiteSpace: 'normal',
-		            renderer: {
-		                type: BtnForOrder
-		            }
+		            whiteSpace: 'normal',		            
 		        },
 		        {
 		            header: '일자',
@@ -743,35 +739,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	];
 	
 	// 그리드에 데이터 넣기(출력)
-	createdGrid6.resetData(sampleData6);
 	
-	grid6.on('click',function(ev){	
-		//전표No. 클릭시 적용
-		selectInModal(ev);
-		if(ev.columnName == 'c1'){
-			const sample = [{
-				c1: 'A0000045',
-	            c2: 'A2024',
-	            c3: '컵홀더',
-	            c4: '상품입고',
-	            c5: '300',
-	            c6: '0',
-	            c7: '100',
-	            c8: '10000'
-	        }]
-	        
-	        if(grid.getRowCount() < 16){
-				grid.appendRows(sample);
-			} else {
-				alert('한 번에 16건을 처리할 수 있습니다.')
-			}
-		}
-		//내역No. 클릭시 적용
-		if(ev.columnName == 'c2'){
-			
-		}
+	let purchaseOrderBtn = document.getElementById('purchaseOrderBtn');
+	purchaseOrderBtn.addEventListener("click", function(){
+		let purchaseFilteredData = exceptExitingRows(sampleData6);
+		createdGrid6.resetData(purchaseFilteredData);	
 	})
-	
+			
+
     /*============================
     	StackInquery 출하지시내역 모달 JS
     ==============================*/
@@ -796,7 +771,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		    width: 'auto',
 		    contextMenu: null,
 		    rowHeaders: [{
-		            type: 'rowNum',
+		            type: 'checkBox',
 		            header: "No.",
 		            width: 50,
 		            className:'border'
@@ -808,21 +783,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 120,
 		            whiteSpace: 'normal',
-		            className:'border',
-		            renderer: {
-		                type: BtnForOrder
-		            }
-		            
+		            className:'border'		            
 		        },
 		        {
 		            header: '판매내역 No.',
 		            name: 'c2',
 		            align: "center",
 		            width: 120,
-		            whiteSpace: 'normal',
-		            renderer: {
-		                type: BtnForOrder
-		            }
+		            whiteSpace: 'normal',		            
 		        },
 		        {
 		            header: '일자',
@@ -928,27 +896,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	    }
 	];
 	
-	// 그리드에 데이터 넣기(출력)
-	createdGrid7.resetData(sampleData7);
-    
-    grid7.on('click',function(){
-		const sample = [{
-			c1: 'A0000045',
-            c2: 'A2024',
-            c3: '컵홀더',
-            c4: '상품출고',
-            c5: '300',
-            c6: '0',
-            c7: '100',
-            c8: '10000'
-        }]
-        
-        if(grid.getRowCount() < 16){
-			grid.appendRows(sample);
-		} else {
-			alert('한 번에 16건을 처리할 수 있습니다.')
-		}
+	
+	// 그리드에 데이터 넣기(출력)	 
+	
+    let salesOrderBtn = document.getElementById('salesOrderBtn');
+	salesOrderBtn.addEventListener("click", function(){
+		let salesFilteredData = exceptExitingRows(sampleData7);
+		createdGrid7.resetData(salesFilteredData);
 	})
+    
+    
     
     /*================================
     	StackInquery 재고조정보고서 모달 JS
@@ -971,6 +928,29 @@ document.addEventListener("DOMContentLoaded", function () {
             pdf.save('재고조정보고서.pdf');
         });
     });
+       
+       
+    //재고조정 버튼 이벤트함수
+    let reportBtn = document.getElementById("reportBtn");
+    reportBtn.addEventListener("click", function(){
+		let today = new Date();   	
+		let inputDate = today.toLocaleDateString(); //작성일자		
+		let gridData = grid.getData(); 
+		let dataArr = [];
+		gridData.forEach(ele=>{
+			let data = {};
+			data.a1 = ele.c1;
+			data.a2 = ele.c2;
+			data.a3 = ele.c3;
+			data.a4 = ele.c8;
+			console.log("체킹" + typeof(ele.c7)); //숫자도 전부 String임
+			if(ele.c7.typeOf == int){
+				data.a5 = ele.c7; //입고c7 / 출하 c6
+			}
+			data.a6 = ele.c4; 
+		})
+		//재고조정번호,담당자에 들어갈 값은 DB에서 조회해서 가져와야함.
+	}) 
        
     /*============================
     	StackInquery 사원조회 모달 JS
@@ -1105,30 +1085,173 @@ document.addEventListener("DOMContentLoaded", function () {
     /*===================================
     	StackInquery 그 외 JS
     =====================================*/
+    /*
+    let selectedRow = new Set();  //선택된 Row를 판별하기위함,모달창 닫을때초기화
+    
+    //구매내역모달 내의 선택처리를 위한 함수
     function selectInModal (ev){
-		let selectNoRowKey = ev.rowKey;
-		let selectNo = grid6.getRow(selectNoRowKey).c1;
-		let grid6Arr = grid6.getData() //모달그리드의 모든 rows를 가지는 배열
-		let targetArr = []; //클릭한 버튼의 내역에 해당하는 rows를 가지는 배열
+		//전표No.버튼 클릭시 처리
+		let selectNoRowKey = ev.rowKey; //전표No.을 찾기위한 버튼의 rowkey
+		let selectNo = grid6.getRow(selectNoRowKey).c1; //클릭된 row의 전표No.
+		let grid6Arr = grid6.getData() //모달그리드의 모든 rows를 가지는 배열				
 		
-		grid6Arr.forEach(ele=>{
-			if(ele.c1 == selectNo){
-				targetArr.push(ele.rowKey);
-			}
-		})
+		//전표No.을 클릭한 경우 모달 그리드를 순회해서 클릭한 전표No.에 해당하는 row의 rowKey를 담음
+		let exceptedTarget = new Set();
+		let unselected = new Set();
+		grid6Arr.forEach(ele=>{						
+			if(ele.c1 == selectNo && selectedRow.has(ele.rowKey) == false){				
+				exceptedTarget.add(ele.rowKey);	
+				selectedRow.add(ele.rowKey);							
+			}															
+		})	
 		
-		let purchaseGrid = document.getElementById('purchaseGrid')
-		let arr = []
-		for(let i=0; i<targetArr.length; i++){
-			let target = purchaseGrid.querySelector(`[data-row-key="${i}"]`)
+		//방금 선택된 row는 재선택대상에서 제외
+		exceptedTarget.forEach(ele=>{
+			let selectedRowArr = Array.from(selectedRow);
+			selectedRow2 = new Set(selectedRowArr);
+			selectedRow2.delete(ele);			
+			unselected = selectedRow2;
+			console.log(unselected)
+		})					
+		console.log(unselected)
+		
+			
+		let purchaseGrid = document.getElementById('purchaseGrid') //구매내역모달
+		let arr = []; // 클릭된 전표No.과 동일한 td태그를 담음		
+		let arr2 = [];
+		
+		//filter함수 적용고려(교수님)
+		for(let i=0; i<selectedRow.size; i++){
+			let selectedArr = Array.from(selectedRow);
+			let target = purchaseGrid.querySelector(`[data-row-key="${selectedArr[i]}"]`);			
 			arr.push(target);
-		}
-		console.log(arr); 
+		} 
+		
 		arr.forEach(ele=>{
-			ele.style.backgroundColor = "#9EED7C";
+			ele.style.backgroundColor = "#9EED7C";		
 		})
 		
+		for(let i=0; i<unselected.size; i++){
+			let unselectedArr = Array.from(unselected);
+			let target = purchaseGrid.querySelector(`[data-row-key="${unselectedArr[i]}"]`);			
+			arr2.push(target);
+		}		
+		
+		
+		arr2.forEach(ele=>{
+			ele.style.backgroundColor = "white";			
+		})
 	}
-    
-    
+    */
+   
+   
+    //구매내역모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
+          
+    let purchaseOrderInputBtn = document.getElementById('purchaseOrderInputBtn');
+    purchaseOrderInputBtn.addEventListener("click",function(){
+		let arr = grid6.getCheckedRows();		
+		let dataArr = [];
+		
+		//c8에 넣을 데이터를 위한 fetch함수 필요
+		arr.forEach(ele=>{
+			let data = {};
+			data.c1 = ele.c2;
+			data.c2 = ele.c4;
+			data.c3 = ele.c5;
+			data.c4 = '상품 입고'
+			data.c5 = ele.c7;
+			data.c6 = 'X'
+			data.c7 = '1';
+			data.c8 = 'fetch필요'
+			dataArr.push(data)
+		})		
+		let selectedCtn = arr.length;
+		let exitedRowsInPage = grid.getRowCount()
+		let checkingMaxRows = selectedCtn + exitedRowsInPage;
+		if(checkingMaxRows < 17){
+			grid.appendRows(dataArr);
+		} else {
+			alert('한 번에 16건만을 처리할 수 있습니다.')
+		}
+		
+		
+	})
+	
+	//출하지시내역 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
+	let salesOrderInputBtn = document.getElementById('salesOrderInputBtn');
+    salesOrderInputBtn.addEventListener("click",function(){
+		let arr = grid7.getCheckedRows();
+		let dataArr = [];
+		
+		//c8에 넣을 데이터를 위한 fetch함수 필요
+		arr.forEach(ele=>{
+			let data = {};
+			data.c1 = ele.c2;
+			data.c2 = ele.c4;
+			data.c3 = ele.c5;
+			data.c4 = '상품 출고'
+			data.c5 = ele.c7;
+			data.c6 = '1'
+			data.c7 = 'X';
+			data.c8 = 'fetch필요(출하)'
+			dataArr.push(data)
+		})
+		let selectedCtn = arr.length;
+		let exitedRowsInPage = grid.getRowCount()
+		let checkingMaxRows = selectedCtn + exitedRowsInPage;
+		if(checkingMaxRows < 16){
+					grid.appendRows(dataArr);
+		} else {
+			alert('한 번에 16건을 처리할 수 있습니다.')
+		}
+	})		
+			
+	//내역,출하모달 띄울 때 조정페이지 grid에 이미 있는 rows들을 거르고 data 배열을 반환시킬 함수
+	function exceptExitingRows(data){
+		//페이지 grid에 존재하는 내역No.
+		let gridData = grid.getData(); 
+		let exitedNo = [];
+		gridData.forEach(ele=>{
+			exitedNo.push(ele.c1);
+		})
+		let exitedNoSet = new Set(exitedNo);
+		
+		//제외 된 후 최종적으로 출력될 row의 c2컬럼 값
+		let dataSet = new Set();
+		data.forEach((ele)=>{
+			dataSet.add(ele.c2)		
+			exitedNoSet.forEach(ele2=>{
+				if(ele.c2 == ele2){
+					dataSet.delete(ele2)				
+				}
+			})	
+		})
+		let noArr = Array.from(dataSet);
+		let resultObj = [];
+		data.forEach(ele=>{
+			noArr.forEach(ele2 =>{
+				if(ele.c2 == ele2){
+					resultObj.push(ele);
+				}	
+			})
+		})
+		let resultArr = [];
+		let resultObjArr = Array.from(resultObj)
+		resultObjArr.forEach(ele=>{
+			let row ={}; 
+			row.c1 = ele.c1;
+			row.c2 = ele.c2;
+			row.c3 = ele.c3;
+			row.c4 = ele.c4;
+			row.c5 = ele.c5;
+			row.c6 = ele.c6;
+			row.c7 = ele.c7;
+			row.c8 = ele.c8;
+			console.log(ele.c8);
+			console.log(row);
+			resultArr.push(row);
+		})
+		console.log(resultArr)
+		return resultArr
+	}
 }); //End Point
