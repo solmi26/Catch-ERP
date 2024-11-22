@@ -9,33 +9,47 @@
 	</select>-->
 	
 	<select id="receivablesList" resultType="com.cherp.app.acct.vo.SalesVO">
-		SELECT  p.log_id
-        ,p.sales_chit_no
-        ,p.rec_date
-        ,p.bacct_code
-        ,p.client
-        ,(SELECT client_name
-          FROM   client
-          WHERE  client_code = p.client) as client_name
-        ,s.rec_balance as rec_balance
-        ,s.rec_status as rec_status
-		FROM    receivables_log p JOIN sales s
-        ON p.sales_chit_no = s.sales_chit_no
+		SELECT
+		    p.log_id,
+		    p.sales_chit_no,
+		    p.rec_date,
+		    p.bacct_code,
+		    p.client,
+		    (
+		        SELECT
+		            client_name
+		        FROM
+		            client
+		        WHERE
+		            client_code = p.client
+		    )             AS client_name,
+		    s.rec_balance AS rec_balance,
+		    s.rec_status  AS rec_status
+		FROM
+		         receivables_log p
+		    JOIN sales s ON p.sales_chit_no = s.sales_chit_no
 	</select>
 	
 	<select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
-		SELECT  p.rec_log_id
-        ,p.purchase_chit_no
-        ,p.rec_date
-        ,p.bacct_code
-        ,p.client
-        ,(SELECT client_name
-          FROM   client
-          WHERE  client_code = p.client) as client_name
-        ,s.decrease_balance as decrease_balance
-        ,s.decrease_status as decrease_status
-		FROM    payables_log p JOIN purchase s
-        ON p.purchase_chit_no = s.purchase_chit_no
+		SELECT
+		    p.rec_log_id,
+		    p.purchase_chit_no,
+		    p.rec_date,
+		    p.bacct_code,
+		    p.client,
+		    (
+		        SELECT
+		            client_name
+		        FROM
+		            client
+		        WHERE
+		            client_code = p.client
+		    )                  AS client_name,
+		    s.decrease_balance AS decrease_balance,
+		    s.decrease_status  AS decrease_status
+		FROM
+		         payables_log p
+		    JOIN purchase s ON p.purchase_chit_no = s.purchase_chit_no
 	</select>
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSale" parameterType="com.cherp.app.acct.vo.SalesVO">
