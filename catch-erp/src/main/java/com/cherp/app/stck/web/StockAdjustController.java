@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import com.cherp.app.acct.service.BacctService;
 import com.cherp.app.acct.service.SalesService;
 import com.cherp.app.buss.web.BussController;
-import com.cherp.app.stck.service.StackService;
+import com.cherp.app.stck.service.StockService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class StackAdjustController {
+public class StockAdjustController {
 	
-	private final StackService stackAdjustService;
+	private final StockService stockAdjustService;
 	
 	
 }
