@@ -12,14 +12,14 @@ import com.cherp.app.empl.vo.EmployeeVO;
 
 @Controller
 
-public class EmployeesController {
+public class EmployeeController {
 	
 	@Autowired
 	EmployeeService employeeService;
 	
 	
 	@GetMapping("employee")
-	public String employeeList(Model model) {
+	public String employeeList() {
 		return "human/employeeList";
 	}
 	

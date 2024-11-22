@@ -41,6 +41,12 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
+	// 매출전표 등록
+	public int insertSale(SalesVO salesVO) {
+		return salesMapper.insertSale(salesVO);
+	}
+	
+	@Override
 	public SalesVO saleInfo(SalesVO salesVO) {
 		return null;
 	}
@@ -60,10 +66,6 @@ public class SalesServiceImpl implements SalesService{
 		return null;
 	}
 
-	@Override
-	public int insertSale(SalesVO salesVO) {
-		return 0;
-	}
 
 	@Override
 	public int insertPayable(PayablesVO payablesVO) {
