@@ -5,7 +5,7 @@
 
 	<resultMap type="com.cherp.app.empl.vo.EmployeeVO" id="Employee">
 		<id column="employee_code" property="employeeCode"/>
-		<result column="employee_no" property="employeeNo"/>
+		<result column="employee_id" property="employeeId"/>
 		<result column="name" property="name"/>
 		<result column="hire_date" property="hireDate"/>
 		<result column="password" property="password"/>
@@ -37,10 +37,10 @@
 		</association>
 		<!-- 리절트맵시 사용시 association넣고나서 다시 result를 삽입하지 말것 오류뜸.  -->
 	</resultMap>
-	
+	<!-- 인사정보 다건조회 -->
 	<select id="selectAllEmployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO">
 		SELECT 	em.employee_code,
-				em.employee_no,
+				em.employee_id,
 				em.name,
 				em.hire_date,
 				em.password,
@@ -55,10 +55,10 @@
         ON      em.department_code = dp.department_code
 	</select>
 	
-	
+	<!-- 인사정보 단건조회 -->
 	<select id="seleectEmployee" resultMap="Employee">
 		SELECT 	em.employee_code,
-		        em.employee_no,
+		        em.employee_id,
 		        em.name,
 		        em.hire_date,
 		        em.password,
@@ -89,8 +89,7 @@
 		JOIN    employees_detail ed
 		ON      em.employee_code = ed.employee_code
 		WHERE   em.employee_code = #{employeeCode}
-	
 	</select>
 
-
+	<!-- 인사정보 삽입 -->
 </mapper>
