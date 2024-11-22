@@ -19,7 +19,7 @@ import lombok.ToString;
  * 매출 테이블 , 채권거래 내역
  */
 public class SalesVO { 				
-	private Integer salesChitNo; 	// 매출전표번호 PK
+	private String salesChitNo; 	// 매출전표번호 PK
 	private String saleslipNo; 		// 판매전표번호 FK
 	private Integer invoiceNo; 		// 세금계산서번호 FK, 전자 세금 계산서 PK
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

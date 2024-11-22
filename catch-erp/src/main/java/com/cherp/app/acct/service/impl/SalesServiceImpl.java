@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cherp.app.acct.mapper.SalesMapper;
 import com.cherp.app.acct.service.SalesService;
+import com.cherp.app.acct.vo.ClientPsVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
@@ -120,6 +121,16 @@ public class SalesServiceImpl implements SalesService{
 	@Override
 	public int deleteInvoice(int invoiceNo) {
 		return 0;
+	}
+
+	@Override
+	public List<ClientPsVO> ClientPayableList() {
+		return salesMapper.SelectAllClientPayableList();
+	}
+
+	@Override
+	public List<ClientPsVO> ClientReceivableList() {
+		return salesMapper.SelectAllClientReceivableList();
 	}
 	
 }
