@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cherp.app.acct.mapper.SalesMapper;
 import com.cherp.app.acct.service.SalesService;
+import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
 /**
@@ -25,7 +26,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public List<SalesVO> payablesList() {
+	public List<PayablesVO> payablesList() {
 		return salesMapper.payablesList();
 	}
 
@@ -51,7 +52,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public SalesVO payableInfo(SalesVO salesVO) {
+	public SalesVO payableInfo(PayablesVO payablesVO) {
 		return null;
 	}
 
@@ -65,8 +66,9 @@ public class SalesServiceImpl implements SalesService{
 		return null;
 	}
 
+
 	@Override
-	public int insertPayable(SalesVO salesVO) {
+	public int insertPayable(PayablesVO payablesVO) {
 		return 0;
 	}
 
@@ -86,7 +88,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public int updatePayable(SalesVO salesVO) {
+	public int updatePayable(PayablesVO payablesVO) {
 		return 0;
 	}
 
