@@ -15,6 +15,7 @@
 		<result column="hire_type" property="hireType"/>
 		<result column="department_code" property="departmentCode"/>
 		<result column="department_name" property="departmentName"/>		
+		<!-- 인사세부정보 -->
 		<association property="employeeDetailVO" javaType="EmployeeDetailVO">
 			<result column="eng_name" property="engName"/>
 			<result column="identity_no" property="identityNo"/>
@@ -32,9 +33,20 @@
 			<result column="employee_image" property="employeeImage"/>
 			<result column="bank" property="bank"/>
 		</association>
+		<!-- 기본급 -->
 		<association property="employeeSalaryVO" javaType="EmployeeSalaryVO">
 			<result column="monthly_salary" property="monthlySalary"/>
 		</association>
+		<!-- 고정수당 -->
+		<collection property="fixedVO"
+					javaType="java.lang.ArrayList"
+					ofType="FixedVO">
+			<id column="fixed_no" property="fixedNo"/>
+			<result column="allowance_price" property="allowancePrice"/>
+			<result column="allowance_code" property="allowanceCode"/>
+			<result column="allowance_name" property="allowanceName"/>
+			<result column="allowance_check" property="allowanceCheck"/>
+		</collection>
 		<!-- 리절트맵시 사용시 association넣고나서 다시 result를 삽입하지 말것 오류뜸.  -->
 	</resultMap>
 	<!-- 인사정보 다건조회 -->
