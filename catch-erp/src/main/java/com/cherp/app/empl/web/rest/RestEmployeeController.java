@@ -34,6 +34,4 @@ public class RestEmployeeController {
 		return employeeService.employeeInfo(emp);
 	}
 	
-	
-	
 }

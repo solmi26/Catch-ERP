@@ -269,6 +269,16 @@ document.addEventListener("DOMContentLoaded", function () {
     humanModalBtn.addEventListener('hidden.bs.modal', function () {
         // 모달이 완전히 숨겨진 후 실행할 코드
     })
+
+    fetch('emps')
+        .then(result => result.json())
+        .then(data => humanGrid.resetData(data))
+        .catch(error => alert("데이터를 조회하는데 실패"))
+
+    const empData = [{
+        c1: 'A20241205-1', c2: '김기현', c3: '개발팀'
+    }];
+
     let humanGrid;
     const inithumanGrid = () => {
         humanGrid = new Grid({
@@ -284,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }],
             columns: [{
                 header: '사원 코드',
-                name: 'c1',
+                name: 'employeeCode',
                 align: "center",
                 width: 135,
                 whiteSpace: 'normal',
@@ -296,7 +306,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }, {
                 header: '성명',
-                name: 'c2',
+                name: 'name',
                 align: "center",
                 width: 135,
                 whiteSpace: 'normal',
@@ -304,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 filter: 'select'
             }, {
                 header: '부서명',
-                name: 'c3',
+                name: 'departmentName',
                 align: "center",
                 width: 135,
                 whiteSpace: 'normal',
@@ -318,11 +328,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const createdhumanGrid = inithumanGrid();
-
-    // 샘플 데이터
-    const empData = [{
-        c1: 'A20241205-1', c2: '김기현', c3: '개발팀'
-    }];
 
     /*============================
             StackInquery 창고 모달 JS
