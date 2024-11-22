@@ -932,9 +932,22 @@ document.addEventListener("DOMContentLoaded", function () {
        
     //재고조정 버튼 이벤트함수
     let reportBtn = document.getElementById("reportBtn");
-    reportBtn.addEventListener("click", function(){
+    reportBtn.addEventListener("mouseover",function(){
+		if(grid.getRowCount()<1){		
+			reportBtn.removeAttribute("data-bs-toggle");	
+		}
+		if(grid.getRowCount()>0){
+			reportBtn.setAttribute("data-bs-toggle","modal")
+		}	
+	})   
+    
+    reportBtn.addEventListener("click", function(){		
+		if(grid.getRowCount()<1){						
+				alert('재고조정을 실시할 작업 건을 추가하세요.');						
+		}
+		
 		let today = new Date();   	
-		let inputDate = today.toLocaleDateString(); //작성일자		
+		let dateString = today.toLocaleDateString(); //작성일자	yyyy. MM. dd	
 		let gridData = grid.getData(); 
 		let dataArr = [];
 		gridData.forEach(ele=>{
@@ -943,14 +956,53 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.a2 = ele.c2;
 			data.a3 = ele.c3;
 			data.a4 = ele.c8;
-			console.log("체킹" + typeof(ele.c7)); //숫자도 전부 String임
-			if(ele.c7.typeOf == int){
-				data.a5 = ele.c7; //입고c7 / 출하 c6
+			if(ele.c4 == '상품 출고'){
+				data.a5 = ele.c6; //입고c7 / 출하 c6
+			} else {
+				data.a5 = ele.c7
 			}
-			data.a6 = ele.c4; 
+			data.a6 = ele.c4;
+			dataArr.push(data) 
 		})
+		
+		//보고서의 기존 cell값 제거
+		let cellArr = document.querySelector('.report-table').querySelectorAll('td');
+		cellArr.forEach(ele=>{
+			ele.innerHTML = "";
+		})
+		
+		//보고서 cell에 값 넣기
+		dataArr.forEach((ele,index)=>{
+			let tr = document.querySelector(`#adjustTbody tr:nth-child(${index+1})`)
+			for(let i=1; i<7; i++){
+				tr.querySelector(`td:nth-child(${i})`).innerHTML = ele[Object.keys(ele)[i-1]];
+			}
+		})
+		
+		let inputDate = document.querySelectorAll('.inputDate');
+		inputDate.forEach(ele=>{
+			if(ele.tagName == "DIV"){
+				ele.innerHTML = `일자: ${dateString}`;
+			} else{
+				ele.innerHTML = dateString;
+			}
+		})
+		
 		//재고조정번호,담당자에 들어갈 값은 DB에서 조회해서 가져와야함.
 	}) 
+       
+       let reportSubmit = document.getElementById('reportSubmit');
+       reportSubmit.addEventListener("click", function(){			
+			let flag = confirm("재고조정을 완료하시겠습니까?");
+			if(flag == false){
+				return;
+			} else {
+				//함수필요
+				alert('재고조정처리되었습니다.')
+				let data = [];
+				grid.resetData(data);
+			}
+       })
        
     /*============================
     	StackInquery 사원조회 모달 JS
@@ -1168,10 +1220,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		let selectedCtn = arr.length;
 		let exitedRowsInPage = grid.getRowCount()
 		let checkingMaxRows = selectedCtn + exitedRowsInPage;
-		if(checkingMaxRows < 17){
+		if(checkingMaxRows < 16){
 			grid.appendRows(dataArr);
 		} else {
-			alert('한 번에 16건만을 처리할 수 있습니다.')
+			alert('한 번에 15건만을 처리할 수 있습니다.')
 		}
 		
 		
@@ -1202,7 +1254,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		if(checkingMaxRows < 16){
 					grid.appendRows(dataArr);
 		} else {
-			alert('한 번에 16건을 처리할 수 있습니다.')
+			alert('한 번에 15건을 처리할 수 있습니다.')
 		}
 	})		
 			
@@ -1246,12 +1298,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			row.c5 = ele.c5;
 			row.c6 = ele.c6;
 			row.c7 = ele.c7;
-			row.c8 = ele.c8;
-			console.log(ele.c8);
-			console.log(row);
+			row.c8 = ele.c8;		
 			resultArr.push(row);
-		})
-		console.log(resultArr)
+		})		
 		return resultArr
 	}
 }); //End Point
