@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeVO {
 //인사기본정보
 	private String employeeCode;
-	private String employeeNo;
+	private String employeeId;
 	private String name;
 	private Date hireDate;
 	private String password;
