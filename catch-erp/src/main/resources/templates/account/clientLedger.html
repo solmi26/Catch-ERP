@@ -11,11 +11,11 @@
             background-color: #AACB73;
             color: #FFFFE8;
         }
-        .invoice-form {
+        .ledger-form {
             border: 2px solid #FF0000;
             margin: 1rem;
         }
-        .invoice-title {
+        .ledger-title {
             background-color: #FFF;
             color: #FF0000;
             border: 1px solid #FF0000;
@@ -42,13 +42,13 @@
             background-color: #f8f9fa;
             font-weight: bold;
         }
-        .date-column {
+        .ledger-date-column {
             width: 80px;
         }
-        .description-column {
+        .ledger-description-column {
             width: 120px;
         }
-        .amount-column {
+        .ledger-amount-column {
             width: 120px;
         }
     </style>
@@ -64,20 +64,14 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">거래처원장</h5>
-                    <div class="action-buttons">
-                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
-                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
-                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
-                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
-                    </div>
+                    <h5 class="modal-title">거래처원장</h5>                    
                 </div>
                 <div class="modal-body">
-                    <div id="reportContent" class="invoice-form">
+                    <div id="reportContent" class="ledger-form">
                         <div class="container-fluid p-4">
                             <div class="row mb-3">
                                 <div class="col">
-                                    <strong>처리기간:</strong> 2019-01-01 ~ 2019-12-31
+                                    <strong>거래처:</strong> 
                                 </div>
                                 <div class="col text-end">
                                     <strong>Page #</strong> 1
@@ -86,12 +80,12 @@
                             <table class="table table-bordered ledger-table">
                                 <thead>
                                     <tr>
-                                        <th class="date-column">월자</th>
-                                        <th class="description-column">계정</th>
+                                        <th class="ledger-date-column">일자</th>
+                                        <th class="ledger-description-column">계정</th>
                                         <th>적요</th>
-                                        <th class="amount-column">차변</th>
-                                        <th class="amount-column">부채</th>
-                                        <th class="amount-column">미수잔고</th>
+                                        <th class="ledger-amount-column">증감</th>
+                                        <th class="ledger-amount-column">감소</th>
+                                        <th class="ledger-amount-column">잔고</th>
                                     </tr>
                                 </thead>
                                 <tbody>
