@@ -1,5 +1,6 @@
 package com.cherp.app.stck.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.cherp.app.acct.service.BacctService;
@@ -14,10 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 public class StackAdjustController {
-	
-	private final StackService stackAdjustService;
-	
-	
+
 }
