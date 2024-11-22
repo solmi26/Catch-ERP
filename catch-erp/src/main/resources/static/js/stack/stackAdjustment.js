@@ -545,7 +545,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('itemInput');
 			inputTag.value = '';			
-			inputTag.value = grid5.getValue(rowKeyNum, 'c1');							
+			inputTag.value = grid5.getValue(rowKeyNum, 'c2');							
 		
 		}
 	})   
@@ -573,12 +573,20 @@ document.addEventListener("DOMContentLoaded", function () {
 		    bodyHeight: 500,
 		    width: 'auto',
 		    contextMenu: null,
-		    rowHeaders: [{
-		            type: 'checkBox',
-		            header: "No.",
-		            width: 50,
-		            className:'border'
-		    }],
+		     rowHeaders: [
+		          {
+		            type: 'checkbox',
+		            header: `
+		              <span class="custom-input">
+		              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+		            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+		          	</span>
+		          `,
+		            renderer: {
+		              type: gridCheckbox
+		            }
+		          }
+		    ],
 		    columns: [
 		        {
 		            header: '구매전표 No.',
@@ -770,12 +778,20 @@ document.addEventListener("DOMContentLoaded", function () {
 		    bodyHeight: 500,
 		    width: 'auto',
 		    contextMenu: null,
-		    rowHeaders: [{
-		            type: 'checkBox',
-		            header: "No.",
-		            width: 50,
-		            className:'border'
-		    }],
+		    rowHeaders: [
+		          {
+		            type: 'checkbox',
+		            header: `
+		              <span class="custom-input">
+		              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+		            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+		          	</span>
+		          `,
+		            renderer: {
+		              type: gridCheckbox
+		            }
+		          }
+		    ],
 		    columns: [
 		        {
 		            header: '판매전표 No.',
@@ -1093,7 +1109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('humanInput');
 			inputTag.value = '';		
-			inputTag.value = grid8.getValue(rowKeyNum, 'c1');					
+			inputTag.value = grid8.getValue(rowKeyNum, 'c2');					
 			console.log(inputTag.value);
 			
 		}
