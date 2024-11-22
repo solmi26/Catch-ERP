@@ -25,9 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('accountInput').value = rowData.accName;
         console.log("rowData:", rowData.accName);
         const modalToggle = document.getElementById('accountSearchModal');
-        myModal.hide(modalToggle);
+        modalToggle.hide(modalToggle);
     });
-
 
 
     class ImageRenderer {
@@ -275,9 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => humanGrid.resetData(data))
         .catch(error => alert("데이터를 조회하는데 실패"))
 
-    const empData = [{
-        c1: 'A20241205-1', c2: '김기현', c3: '개발팀'
-    }];
+    const empData = [{}];
 
     let humanGrid;
     const inithumanGrid = () => {
@@ -322,9 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 filter: 'select'
             }]
         });
-
         return humanGrid;
-
     }
 
     const createdhumanGrid = inithumanGrid();
@@ -342,6 +337,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 200)
     });
 
+    fetch('whList')
+        .then(result => result.json())
+        .then(data => warehouseGrid.resetData(data))
+        .catch(error => alert("데이터를 조회하는데 실패"))
+
+    // 샘플 데이터
+    const warehouseData = [{}];
+
     let warehouseGrid;
     const initWarehouseGrid = () => {
         warehouseGrid = new Grid({
@@ -357,7 +360,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }],
             columns: [{
                 header: '창고명',
-                name: 'c1',
+                name: 'whName',
                 align: "center",
                 width: 183,
                 whiteSpace: 'normal',
@@ -368,10 +371,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 filter: 'select'
 
             }, {
-                header: '창고코드', name: 'c2', align: "center", width: 183, whiteSpace: 'normal', className: 'border'
+                header: '창고코드', name: 'whCode', align: "center", width: 183, whiteSpace: 'normal', className: 'border'
             }, {
                 header: '위치',
-                name: 'c3',
+                name: 'whPlace',
                 align: "center",
                 width: 184,
                 whiteSpace: 'normal',
@@ -379,7 +382,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 filter: 'select'
             }, {
                 header: '구분',
-                name: 'c4',
+                name: 'whType',
                 align: "center",
                 width: 184,
                 whiteSpace: 'normal',
@@ -392,16 +395,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const createdWarehouseGrid = initWarehouseGrid();
 
-    // 샘플 데이터
-    const warehouseData = [{
-        c1: '물류창고', c2: 'A0000045', c3: '천안아산', c4: '소요량높음'
-    }];
-
     /*============================
             매출계정 모달 JS
     ==============================*/
     // 모달 관련 JavaScript
     const accCodeModal = document.getElementById('accCodeGrid')
+
+    fetch('acctList')
+        .then(result => result.json())
+        .then(data => accCodeGrid.resetData(data))
+        .catch(error => alert("데이터를 조회하는데 실패"))
 
     //모달실행 시 grid refresh를 위한 코드
     document.getElementById('openAccCodeModal').addEventListener('click', function () {
@@ -418,14 +421,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }],
 
             columns: [{
-                header: "계정 코드", name: "accode",
+                header: "계정 코드",
+                name: "acctCode",
                 align: "center",
                 renderer: {
                     type: ButtonRenderer
                 },
             },
                 {
-                    header: "계정명", name: "acname", sortingType: "asc", sortable: true, align: "center",
+                    header: "계정명",
+                    name: "acctName",
+                    sortingType: "asc",
+                    sortable: true,
+                    align: "center",
                 }],
             showDummyRows: true,
         });
@@ -433,13 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return accCodeGrid;
     }
 
-    const accCodeData = [{
-        accode: 10100, acname: "현금",
-    }, {
-        accode: 10200, acname: "당좌예금",
-    }, {
-        accode: 10300, acname: "보통예금",
-    }]
+    const accCodeData = [{}]
 
     const createdAccCodeGrid = initAccCodeGrid();
 
@@ -534,10 +536,45 @@ document.addEventListener("DOMContentLoaded", function () {
         return salesChit;
     }
 
+    // 그리드 추가
+    let appends = document.querySelectorAll('.appendRowBtn')
+    appends.forEach(btn => {
+
+        btn.addEventListener('click', function () {
+            salesChit.appendRow();
+        })
+
+    })
+
+    //열을 삭제하는 이벤트
+
+    let deletes = document.querySelectorAll('.deleteRowBtn')
+    deletes.forEach(btn => {
+        btn.addEventListener('click', function () {
+            salesChit.removeCheckedRows();
+
+            refreshRowNum();
+
+        })
+
+    })
+
+    //열을 추가후 체크박스에 다시 숫자부여하는 코드
+    function refreshRowNum() {
+        window.setTimeout(function () {
+            let checkList = document.querySelectorAll('.countCheck')
+            let num = 1;
+            checkList.forEach(items => {
+                items.innerText = num;
+                num += 1;
+            })
+
+        }, 50)
+    }
+
     const salesChitData = [{}];
 
     const createdSalesChitGrid = initSalesChitGrid();
-
 
     // 그리드 설정
     const createdClientGrid = initClientGrid();
@@ -579,9 +616,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const columnName = ev.columnName;
         const rowKey = ev.rowKey
 
-        if (columnName === 'c1') {
+        if (columnName === 'employeeCode') {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = humanGrid.getValue(rowKey, 'c2');
+            const columnValue = humanGrid.getValue(rowKey, 'name');
             document.getElementById('empInput').value = columnValue
 
         }
@@ -591,9 +628,9 @@ document.addEventListener("DOMContentLoaded", function () {
     warehouseGrid.on("click", (ev) => {
         const columnName = ev.columnName;
 
-        if (columnName === 'c1') {
+        if (columnName === 'whName') {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = warehouseGrid.getValue(ev.rowKey, 'c1');
+            const columnValue = warehouseGrid.getValue(ev.rowKey, 'whName');
             document.getElementById('warehouse').value = columnValue
 
         }
@@ -603,11 +640,10 @@ document.addEventListener("DOMContentLoaded", function () {
     accCodeGrid.on("click", (ev) => {
         const columnName = ev.columnName;
 
-        if (columnName === 'accode') {
+        if (columnName === 'acctCode') {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = accCodeGrid.getValue(ev.rowKey, 'acname');
+            const columnValue = accCodeGrid.getValue(ev.rowKey, 'acctName');
             document.getElementById('accCodeInput').value = columnValue
-
         }
     });
 
