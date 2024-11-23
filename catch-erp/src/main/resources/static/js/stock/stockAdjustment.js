@@ -425,7 +425,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
 		
-
     // 그리드 설정
     const createdGrid3 = initGrid3();
     // 샘플 데이터
@@ -463,6 +462,25 @@ document.addEventListener("DOMContentLoaded", function () {
 			
 		}
 	})   
+	
+	
+	fetch("/stocks/clientList")
+	.then(result => result.json())
+	.then(result => {
+		let dataArr = [];
+		result.forEach(ele=>{
+			let dataRow ={};
+			dataRow.c1 = ele.clientName;
+			dataRow.c2 = ele.ceoName;
+			dataRow.c3 = ele.companyTel;
+			dataRow.c4 = ele.employeeName;
+			dataRow.c5 = ele.employeeTel;
+			dataRow.c6 = ele.event;
+			dataArr.push(dataRow)
+		})
+		grid3.resetData(dataArr);
+		
+	})
 	
     /*============================
     	StackInquery 품목조회 모달 JS
