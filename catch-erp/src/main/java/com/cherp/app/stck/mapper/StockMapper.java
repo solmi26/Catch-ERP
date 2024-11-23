@@ -1,5 +1,9 @@
 package com.cherp.app.stck.mapper;
 
-public interface StockMapper {
+import java.util.List;
 
+import com.cherp.app.buss.vo.ClientVO;
+
+public interface StockMapper {
+	
 }
