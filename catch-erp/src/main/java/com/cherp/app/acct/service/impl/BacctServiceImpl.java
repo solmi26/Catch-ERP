@@ -2,6 +2,7 @@ package com.cherp.app.acct.service.impl;
 
 import java.util.List;
 
+import groovy.lang.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.cherp.app.acct.mapper.BacctMapper;
@@ -15,7 +16,7 @@ import com.cherp.app.common.vo.CommonCodeVO;
 @Service
 public class BacctServiceImpl implements BacctService{
 	private BacctMapper bacctMapper;
-	
+
 	public BacctServiceImpl(BacctMapper bacctMapper) { // 순환 참조 회피 방법 @Lazy : 필요한 시점에만 참조를 생성
 		this.bacctMapper = bacctMapper;
 	}
