@@ -41,7 +41,7 @@ public class SalesController {
 	// 매출 전표 등록(화면)
 	@GetMapping("insertSales")
 	public String insertSales(SalesVO salesVO) {
-		return "account/purchaseSlip";
+		return "account/salesSlip";
 	}
 	
 	
