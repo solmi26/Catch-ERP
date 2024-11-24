@@ -94,15 +94,15 @@
                   ,#{saleslipNo}
 		        )
 	</insert>
-	
-	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->
+	<!-- 
+	 RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) 
 	<insert id="insertReceivable">
 		INSERT INTO  receivables_log(
-	            log_id -- log 번호
-	            ,rec_date -- 발생날짜 == 매출전표
-	            ,increase_price -- 채권증가금액
-	            ,client -- 거래처코드
-	            ,sales_chit_no -- 매출전표번호
+	            log_id  log 번호
+	            ,rec_date  발생날짜 == 매출전표
+	            ,increase_price  채권증가금액
+	            ,client  거래처코드
+	            ,sales_chit_no  매출전표번호
 	        ) VALUES(
 	           #{}
 	           ,#{}
@@ -111,7 +111,7 @@
 	           ,#{}
 	</insert>
     
-    <!-- CLIENT(거래처) 테이블 BALANCEK(총 채권 잔액) 업데이트 -->
+     CLIENT(거래처) 테이블 BALANCEK(총 채권 잔액) 업데이트 
     <update id="updateClientBalancek"></update>
-	
+	 -->
 </mapper>
