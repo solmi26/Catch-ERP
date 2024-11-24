@@ -17,16 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-<<<<<<< HEAD:catch-erp/src/main/java/com/cherp/app/stck/web/StackAdjustController.java
-public class StackAdjustController {
-
-=======
 @RequiredArgsConstructor
 public class StockAdjustController {
-	
-	private final StockService stockAdjustService;
+
+//	private final StockService stockAdjustService;
 	private final ClientService clientServcie;
-	
-	
->>>>>>> N_KW:catch-erp/src/main/java/com/cherp/app/stck/web/StockAdjustController.java
+
 }

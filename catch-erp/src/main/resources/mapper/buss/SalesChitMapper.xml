@@ -8,7 +8,7 @@
 		</selectKey>
 		INSERT INTO sales_chit(saleslip_no, insert_date, client_code,
 		client_name, acc_code, dep_bacct, employee_name, employee_code)
-		VALUES (#{saleslipNo}, #{insertDate}, #{clientCode},
+		VALUES (#{saleslipNo}, sysdate, #{clientCode},
 		#{clientName}, #{accCode}, #{depBacct}, #{employeeName}, #{employeeCode})
 	</insert>
 </mapper>
