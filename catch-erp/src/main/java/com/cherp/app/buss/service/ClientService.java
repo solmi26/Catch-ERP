@@ -8,4 +8,5 @@ public interface ClientService {
 
     // 거래처 전체 조회
     public List<ClientVO> clientList();
+    public List<ClientVO> clientSearchList(String clientCode);
 }

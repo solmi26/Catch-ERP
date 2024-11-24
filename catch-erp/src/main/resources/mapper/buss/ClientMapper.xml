@@ -9,6 +9,14 @@
 		,employee_name
 		,employee_tel
 		,event
+		,client_code
 		FROM client
+	</select>
+	
+	<!-- 거래처 조건 조회 -->
+	<select id="selectClientSearchList" resultType="ClientVO">
+		SELECT client_code
+		FROM   client
+		WHERE  client_name = '#{clientName}'
 	</select>
 </mapper>

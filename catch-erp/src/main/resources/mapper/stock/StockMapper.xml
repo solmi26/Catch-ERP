@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.stck.mapper.StockMapper">
 	
+	<!-- 매입계약품목 전체조회 -->
+	<select id="selectAllItemList" resultType="ContractItemVO">
+		SELECT *
+		FROM   contract_item	
+	</select>
 </mapper>

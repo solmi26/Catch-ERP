@@ -94,19 +94,19 @@
                   ,#{saleslipNo}
 		        )
 	</insert>
-	
-	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->
+	<!-- 
+	 RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) 
 	<insert id="insertReceivable">
 	<selectKey keyProperty="logId" order="BEFORE" resultType="int">
 			SELECT NVL(MAX(log_id),0) + 1
 			FROM receivables_log
 	</selectKey>
 		INSERT INTO  receivables_log(
-	            log_id -- log 번호
-	            ,rec_date -- 발생날짜 == 매출전표
-	            ,increase_price -- 채권증가금액
-	            ,client -- 거래처코드
-	            ,sales_chit_no -- 매출전표번호
+	            log_id  log 번호
+	            ,rec_date  발생날짜 == 매출전표
+	            ,increase_price  채권증가금액
+	            ,client  거래처코드
+	            ,sales_chit_no  매출전표번호
 	        ) VALUES(
 	           #{logId}
 	           ,#{recDate}
@@ -121,5 +121,6 @@
 		SET balancek = #{balancek}
 		WHERE client_code = #{clientCode}
     </update>
-	
+
+
 </mapper>

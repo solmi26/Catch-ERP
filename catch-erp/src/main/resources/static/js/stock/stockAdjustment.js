@@ -343,12 +343,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 200) 
         });
 
-        let grid3; //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
-        
-        const initGrid3 = () => {
-            // 그리드 객체
-    
-        grid3 = new Grid({
+        //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.    
+        let grid3 = new Grid({
             el: document.getElementById("clientGrid"),
             scrollX: true,
             scrollY: true,
@@ -363,6 +359,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     className:'border'
             }],
             columns: [
+				{
+                    header: '거래처코드',
+                    name: 'c7',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select',
+                    renderer: {
+                        type: ButtonRenderer
+                    },
+                },
                 {
                     header: '거래처명',
                     name: 'c1',
@@ -370,11 +378,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     width: 183,
                     whiteSpace: 'normal',
                     className:'border',
-                    renderer: {
-                        type: ButtonRenderer
-                    },
                     filter: 'select'
                 },
+                
                 {
                     header: '대표자명',
                     name: 'c2',
@@ -421,49 +427,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             ]
         });
-        return grid3;
-    }
-    
-		
-    // 그리드 설정
-    const createdGrid3 = initGrid3();
-    // 샘플 데이터
-    const sampleData3 = [
-        {
-            c1: '태호물산',
-            c2: '김태호',
-            c3: '02-1234-5678',
-            c4: '김영준',
-            c5: '010-1234-1234',
-            c6: '식기류 제조업',
-        },
-        {
-            c1: '김천물산',
-            c2: '김태호',
-            c3: '02-1234-5678',
-            c4: '김영준',
-            c5: '010-1234-1234',
-            c6: '식기류 제조업',
-        }
-    ];
-
-    // 그리드에 데이터 넣기(출력)
-    createdGrid3.resetData(sampleData3);
-    
+       
     grid3.on('click',function(ev){
 		let rowKeyNum;
-		if (ev.columnName == 'c1'){
+		if (ev.columnName == 'c7'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('clientInput');
+			let inputTag2 = document.getElementById('clientInput2')
 			inputTag.value = '';		
 			inputTag.value = grid3.getValue(rowKeyNum, 'c1');
+			inputTag2.value = grid3.getValue(rowKeyNum, 'c7'); //거래처코드가 들어갈 hidden input
 									
 			console.log(inputTag.value);
 			
 		}
 	})   
 	
+	//거래처입력창에 수동으로 입력시 해당 거래처명과 동일한 거래처코드를 hidden input창에 자동입력, 없을 시 공백
+/*	let inputTag = document.getElementById('clientInput');
+	inputTag.addEventListener('change', function(){
+		let inputVal = inputTag.value;
+		fetch(`/stocks/clientSearchList/${inputVal}`)
+		.then(result=> result.json())
+		.then(result=>{ 
+			if(result.length == 0){
+				return;
+			} else {}
+			let inputTag2 = document.getElementById('clientInput2')
+			inputTag2.value = 
+		})
+	})*/
 	
+	// 거래처모달 그리드에 데이터 넣기(출력)
 	fetch("/stocks/clientList")
 	.then(result => result.json())
 	.then(result => {
@@ -476,11 +471,14 @@ document.addEventListener("DOMContentLoaded", function () {
 			dataRow.c4 = ele.employeeName;
 			dataRow.c5 = ele.employeeTel;
 			dataRow.c6 = ele.event;
+			dataRow.c7 = ele.clientCode;
 			dataArr.push(dataRow)
 		})
 		grid3.resetData(dataArr);
 		
 	})
+	
+	
 	
     /*============================
     	StackInquery 품목조회 모달 JS
@@ -496,10 +494,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     purchaseOrderModal.addEventListener('hidden.bs.modal', function (event) {
         // 모달이 완전히 숨겨진 후 실행할 코드
+        // 현재는없음
     })
-    let grid5;
-    const initGrid5 = () => {
-		grid5 = new Grid({
+
+	let	grid5 = new Grid({
             el: document.getElementById('itemGrid'),
             scrollX: true,
             scrollY: true,
@@ -539,35 +537,32 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         });
 
-        return grid5;
-		
-	}
-    
-    const createdGrid5 = initGrid5();
-
-	// 샘플 데이터
-	const sampleData5 = [
-	    {
-	        c1: 'A0000045',
-	        c2: '컵홀더'
-	    }
-	];
-	
-	// 그리드에 데이터 넣기(출력)
-	createdGrid5.resetData(sampleData5);
-    
     
     grid5.on('click',function(ev){
 		let rowKeyNum;
 		if (ev.columnName == 'c1'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('itemInput');
+			let inputTag2 = document.getElementById('itemInput2');
 			inputTag.value = '';			
-			inputTag.value = grid5.getValue(rowKeyNum, 'c2');							
-		
+			inputTag.value = grid5.getValue(rowKeyNum, 'c2');
+			inputTag2.value = grid5.getValue(rowKeyNum, 'c1'); //품목코드가 들어갈 hidden input									
 		}
 	})   
 	
+	// 품목조회 그리드에 데이터 넣기(출력)
+	fetch("/stocks/itemList")
+	.then(result=> result.json())
+	.then(result=>{
+		let dataArr = [];
+		result.forEach(ele=>{
+			let dataRow ={};
+			dataRow.c1 = ele.itemCode;
+			dataRow.c2 = ele.item;
+			dataArr.push(dataRow)
+		})
+		grid5.resetData(dataArr);
+	})
     
     /*============================
     	StackInquery 구매내역 모달 JS
@@ -657,6 +652,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '거래처명',
 		            name: 'c6',
+		            align: "center",
+		            width: 140,
+		            whiteSpace: 'normal',
+		            className:'border'
+		        },
+		        {
+		            header: '거래처 코드',
+		            name: 'c9',
 		            align: "center",
 		            width: 140,
 		            whiteSpace: 'normal',
@@ -766,6 +769,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 	// 그리드에 데이터 넣기(출력)
 	
+	
 	let purchaseOrderBtn = document.getElementById('purchaseOrderBtn');
 	purchaseOrderBtn.addEventListener("click", function(){
 		let purchaseFilteredData = exceptExitingRows(sampleData6);
@@ -773,6 +777,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 			
 
+	
     /*============================
     	StackInquery 출하지시내역 모달 JS
     ==============================*/
@@ -861,6 +866,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '거래처명',
 		            name: 'c6',
+		            align: "center",
+		            width: 140,
+		            whiteSpace: 'normal',
+		            className:'border'
+		        },
+		        {
+		            header: '거래처 코드',
+		            name: 'c9',
 		            align: "center",
 		            width: 140,
 		            whiteSpace: 'normal',
@@ -1052,10 +1065,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     humanModalBtn.addEventListener('hidden.bs.modal', function () {
         // 모달이 완전히 숨겨진 후 실행할 코드
+        // 현재없음
     })
-    let grid8;
-    const initGrid8 = () => {
-		grid8 = new Grid({
+	let	grid8 = new Grid({
             el: document.getElementById('humanGrid'),
             scrollX: true,
             scrollY: true,
@@ -1104,34 +1116,34 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         });
 
-        return grid8;
-		
-	}
-    
-    const createdGrid8 = initGrid8();
-
-	// 샘플 데이터
-	const sampleData8 = [
-	    {
-	        c1: 'A20241205-1',
-	        c2: '김기현',
-	        c3: '개발팀'
-	    }
-	];	
-	// 그리드에 데이터 넣기(출력)
-	createdGrid8.resetData(sampleData8);
-       
+	    
     grid8.on('click',function(ev){
 		let rowKeyNum;
 		if (ev.columnName == 'c1'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('humanInput');
+			let inputTag2 = document.getElementById('humanInput2');
 			inputTag.value = '';		
 			inputTag.value = grid8.getValue(rowKeyNum, 'c2');					
+			inputTag2.value = grid8.getValue(rowKeyNum, 'c1'); //사원코드가 들어갈 hidden input
 			console.log(inputTag.value);
-			
 		}
 	})   
+	
+	// 그리드에 데이터 넣기(출력) 
+	fetch('/emps')
+	.then(result => result.json())
+	.then(result => {
+		let dataArr = [];
+		result.forEach(ele=>{
+			let data = {};
+			data.c1 = ele.employeeCode;
+			data.c2 = ele.name;
+			data.c3 = ele.departmentName;
+			dataArr.push(data);
+		})
+		grid8.resetData(dataArr);
+	})
 	
     /*===================================
     	StackInquery 선택취소, 입력초기화 JS
