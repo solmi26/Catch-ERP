@@ -102,6 +102,100 @@
 		ON      em.employee_code = ed.employee_code
 		WHERE   em.employee_code = #{employeeCode}
 	</select>
-
+	
+	
+	<insert id="">
+		DECLARE
+			v_empcode employees.employee_code%ROWTYPE;
+			v_empid employees.employee_id%ROWTYPE;
+			v_ansal employees_salary.annual_salary%ROWTYPE;
+			v_tmsal employees_salary.time_salary%ROWTYPE;
+			v_income employees_salary.income_invoice%ROWTYPE;
+			v_leave employees_salary.leave_rate%ROWTYPE;
+			v_health employees_salary.health_insurance%ROWTYPE;
+			
+			
+		BEGIN
+			SELECT domain('employee_code')
+			INTO v_empcode
+			FROM dual;
+			
+			SELECT domain('employee_id')
+			INTO v_empid
+			FROM dual;
+		
+			INSERT INTO employees(employee_code,
+			                      employee_id,name,
+			                      hire_date,
+			                      password,
+			                      employee_position,
+			                      status_type,
+			                      resignation_date,
+			                      hire_type,
+			                      department_code)
+			values (
+			         v_empcode
+			        ,v_empid
+			        ,#{name}
+			        ,#{hireDate}
+			        <choose>
+			        	<when test="password == null and password.equals('')">
+			        	,SUBSTR(#{employeeDetailVO.identity},0,6)
+			        	</when>
+			        	<otherwise>
+			        	,#{password}
+			        	</otherwise>
+			        </choose> 
+			        ,#{employeePosition}
+			        ,#{statusType}
+			        ,#{resignationDate}
+			        ,#{hireType}
+			        ,#{departmentCode}
+			       );
+			       
+			INSERT INTO employees_detail(employee_code
+			                            ,eng_name
+			                            ,identity_no
+			                            ,head_check
+			                            ,duty
+			                            ,tel
+			                            ,phone
+			                            ,email
+			                            ,emp_status
+			                            ,zipcode
+			                            ,address
+			                            ,detail_address
+			                            ,bacct
+			                            ,depositor
+			                            ,employee_image
+			                            ,bank
+			                             )
+			VALUES (v_empcode
+			       ,#{endName}
+			       ,#{identityNo}
+			       ,#{headCheck}
+			       ,#{duty}
+			       ,#{tel}
+			       ,#{phone}
+			       ,#{email}
+			       ,#{empStatus}
+			       ,#{zipcode}
+			       ,#{address}
+			       ,#{detailAddress}
+			       ,#{bacct}
+			       ,#{depositor}
+			       ,#{employeeImage}
+			       ,#{bank}
+			        );
+			v_ansal := (TO_NUMBER(#{monthlySalary}))*12;
+			v_tmsal := (TO_NUMBER(#{monthlySalary}))/209
+			v_income :=
+			v_leave :=
+			v_health employees_salary.health_insurance%ROWTYPE;
+			 
+			                               
+		END;
+		/
+	</insert>
 	<!-- 인사정보 삽입 -->
 </mapper>

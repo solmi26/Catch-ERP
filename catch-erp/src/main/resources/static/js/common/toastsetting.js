@@ -48,13 +48,13 @@ class gridNumber {
 	
       const label = document.createElement('label');
       label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
-      label.setAttribute('for', 'selectCheck'+String(rowKey));
+      label.setAttribute('for', 'selectCheck'+grid.el.id+String(rowKey));
       label.innerText = `${grid.getIndexOfRow(rowKey)+1}`;
       const hiddenInput = document.createElement('input');
       hiddenInput.className = 'hidden-input';
-      hiddenInput.id = 'selectCheck'+String(rowKey);
+      hiddenInput.id = 'selectCheck'+grid.el.id+String(rowKey);
 	
-      
+      console.log(grid.el.id);
       const customInput = document.createElement('span');
       customInput.className = 'custom-input';
 
