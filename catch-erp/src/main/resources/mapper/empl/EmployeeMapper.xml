@@ -39,7 +39,7 @@
 		</association>
 		<!-- 고정수당 -->
 		<collection property="fixedVO"
-					javaType="java.lang.ArrayList"
+					javaType="java.util.ArrayList"
 					ofType="FixedVO">
 			<id column="fixed_no" property="fixedNo"/>
 			<result column="allowance_price" property="allowancePrice"/>
