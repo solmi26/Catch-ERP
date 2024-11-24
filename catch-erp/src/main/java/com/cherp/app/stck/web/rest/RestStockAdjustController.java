@@ -21,11 +21,4 @@ public class RestStockAdjustController {
 	private final StockService stockAdjustService;
 	private final ClientService clientServcie;
 	
-	@GetMapping("stocks/clientList")
-	public List<ClientVO> clientList(){
-		List<ClientVO> list = clientServcie.clientList();
-		
-		return list;
-	}
-	
 }

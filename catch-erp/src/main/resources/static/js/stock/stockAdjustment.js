@@ -463,8 +463,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	})   
 	
+	//Map<String, List<Map<String,String>>>
+	let modalInfoMap = /*[[${info}]]*/ {};
+	console.log("타임리프확인", modalInfoMap[clientList][0].get[c1]);
 	
-	fetch("/stocks/clientList")
+	/*info['group1'][0]['key1']
+	infoMap.put("clientList", clientsData);
+		infoMap.put("employeeList", employeesData);
+		infoMap.put("itemList", itemsData);*/
+		
+	/*fetch("/stocks/clientList")
 	.then(result => result.json())
 	.then(result => {
 		let dataArr = [];
@@ -480,7 +488,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		})
 		grid3.resetData(dataArr);
 		
-	})
+	})*/
 	
     /*============================
     	StackInquery 품목조회 모달 JS

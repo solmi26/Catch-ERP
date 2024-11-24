@@ -1,12 +1,12 @@
 package com.cherp.app.stck.web;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import java.util.Map;
 
-import com.cherp.app.acct.service.BacctService;
-import com.cherp.app.acct.service.SalesService;
-import com.cherp.app.buss.service.ClientService;
-import com.cherp.app.buss.web.BussController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import com.cherp.app.stck.service.StockService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 public class StockAdjustController {
 	
 	private final StockService stockAdjustService;
-	private final ClientService clientServcie;
 	
-	
+	@GetMapping("stocks/stockAdjustment")
+	public String stockAdjustment(Model model){
+		Map<String, List<Map<String,String>>> info = stockAdjustService.getModalInfo();
+		model.addAttribute("info", info);
+		
+		return "stock/stockAdjustment";
+	}
 }
