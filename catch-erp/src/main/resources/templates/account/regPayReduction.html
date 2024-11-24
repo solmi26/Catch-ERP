@@ -229,9 +229,7 @@
          ]
 	  });
       grid.on('click', (event) => { // grid 클릭이벤트 발생
-	        if(event.columnName === 'recLogId' && event.rowKey>=0) {
-	          console.log("클릭이벤트 발생");
-	          console.log(event.rowKey);
+	        if(event.columnName === 'clientCode' && event.rowKey>=0) {
 	          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
               ledgeModal.show();
         	}
@@ -246,7 +244,6 @@
             pagination:"local",
             data: accountList,
             paginationSize:8,
-            //paginationSizeSelector:[3, 6, 8, 10],
             movableColumns:true,
             paginationCounter:"rows",
             paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
@@ -274,8 +271,6 @@
             ],
         });
         accList.on("rowClick", function(event, row) {
-          //alert("계좌 선택 이후 거래내역에 해당 계좌로 데이터 추가");
-          //console.log(row.getData().bacctNo);
           Swal.fire({
             title: "결제하시겠습니까?",
             text: `계좌번호 : ${row.getData().bacctNo} 은행명: ${row.getData().bankName}`,

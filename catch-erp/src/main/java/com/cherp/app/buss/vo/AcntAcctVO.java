@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class AcntAcctVO {
-    private int acctCode;
+    private Integer acctCode;
     private String acctName;
     private String debitSide;
 }
