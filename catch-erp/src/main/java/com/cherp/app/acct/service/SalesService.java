@@ -26,7 +26,7 @@ public interface SalesService {
 	
 	//추가
 	// 매출전표 추가, 채권 내역 추가,거래처 채권 총 잔액 업데이트 
-	public int insertSale(SalesVO salesVO);			
+	public void insertSale(SalesVO salesVO);			
 	public int insertPayable(PayablesVO payablesVO);	// 채무거래 추가
 	public int insertReceivable(SalesVO salesVO);	// 채권거래 추가
 	public int insertInvoice(SalesVO salesVO);		// 세금 계산서 추가
