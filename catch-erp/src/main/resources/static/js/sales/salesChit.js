@@ -210,6 +210,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 filter: 'select'
             }, {
+                header: '거래처코드',
+                name: 'clientCode',
+                hidden : true,
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
                 header: '대표자명',
                 name: 'ceoName',
                 align: "center",
@@ -601,25 +610,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //거래처 input
     clientGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
+        const clientRowData = clientGrid.getRow(ev.rowKey);
 
-        if (columnName === 'clientName') {
+        if (clientRowData && clientRowData.clientName) {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
-            document.getElementById('inputClient').value = columnValue
+            // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
+            document.getElementById('inputClientName').value = clientRowData.clientName;
+            document.getElementById('inputClientCode').value = clientRowData.clientCode;
 
         }
     });
 
     //담당자 input
     humanGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
-        const rowKey = ev.rowKey
+        const empRowData = humanGrid.getRow(ev.rowKey);
 
-        if (columnName === 'employeeCode') {
+        if (empRowData && empRowData.employeeCode) {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = humanGrid.getValue(rowKey, 'name');
-            document.getElementById('empInput').value = columnValue
+            // const columnValue = humanGrid.getValue(rowKey, 'name');
+            console.log(empRowData);
+            document.getElementById('empNameInput').value = empRowData.name;
+            document.getElementById('empCodeInput').value = empRowData.employeeId;
 
         }
     });

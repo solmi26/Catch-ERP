@@ -4,6 +4,7 @@
 
 	<select id="selectClientList" resultType="com.cherp.app.buss.vo.ClientVO">
 		SELECT client_name
+		,client_code
 		,ceo_name
 		,company_tel
 		,employee_name
