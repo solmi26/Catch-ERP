@@ -4,7 +4,6 @@
 
 	<select id="selectClientList" resultType="com.cherp.app.buss.vo.ClientVO">
 		SELECT client_name
-		,client_code
 		,ceo_name
 		,company_tel
 		,employee_name
@@ -12,5 +11,12 @@
 		,event
 		,client_code
 		FROM client
+	</select>
+	
+	<!-- 거래처 조건 조회 -->
+	<select id="selectClientSearchList" resultType="ClientVO">
+		SELECT client_code
+		FROM   client
+		WHERE  client_name = '#{clientName}'
 	</select>
 </mapper>

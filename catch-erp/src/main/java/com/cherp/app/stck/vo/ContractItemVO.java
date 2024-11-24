@@ -15,6 +15,5 @@ public class ContractItemVO {
 	private String itemCode; 	// 품목코드
 	private int totalPrice; 	// 총금액
 	private String image; 		// 이미지
-	
-	
+
 }
