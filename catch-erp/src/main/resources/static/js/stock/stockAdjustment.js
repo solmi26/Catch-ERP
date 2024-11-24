@@ -444,10 +444,19 @@ document.addEventListener("DOMContentLoaded", function () {
 	})   
 	
 	//거래처입력창에 수동으로 입력시 해당 거래처명과 동일한 거래처코드를 hidden input창에 자동입력, 없을 시 공백
-	let inputTag = document.getElementById('clientInput');
+/*	let inputTag = document.getElementById('clientInput');
 	inputTag.addEventListener('change', function(){
-		//fetch('')
-	})
+		let inputVal = inputTag.value;
+		fetch(`/stocks/clientSearchList/${inputVal}`)
+		.then(result=> result.json())
+		.then(result=>{ 
+			if(result.length == 0){
+				return;
+			} else {}
+			let inputTag2 = document.getElementById('clientInput2')
+			inputTag2.value = 
+		})
+	})*/
 	
 	// 거래처모달 그리드에 데이터 넣기(출력)
 	fetch("/stocks/clientList")
@@ -528,22 +537,16 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         });
 
-	// 샘플 데이터
-	const sampleData5 = [
-	    {
-	        c1: 'A0000045',
-	        c2: '컵홀더'
-	    }
-	];
     
     grid5.on('click',function(ev){
 		let rowKeyNum;
 		if (ev.columnName == 'c1'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('itemInput');
+			let inputTag2 = document.getElementById('itemInput2');
 			inputTag.value = '';			
-			inputTag.value = grid5.getValue(rowKeyNum, 'c2');							
-		
+			inputTag.value = grid5.getValue(rowKeyNum, 'c2');
+			inputTag2.value = grid5.getValue(rowKeyNum, 'c1'); //품목코드가 들어갈 hidden input									
 		}
 	})   
 	
@@ -1119,8 +1122,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (ev.columnName == 'c1'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('humanInput');
+			let inputTag2 = document.getElementById('humanInput2');
 			inputTag.value = '';		
 			inputTag.value = grid8.getValue(rowKeyNum, 'c2');					
+			inputTag2.value = grid8.getValue(rowKeyNum, 'c1'); //사원코드가 들어갈 hidden input
 			console.log(inputTag.value);
 		}
 	})   

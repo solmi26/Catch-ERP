@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cherp.app.buss.mapper.ClientMapper;
 import com.cherp.app.empl.mapper.EmployeeMapper;
+
 import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
@@ -18,14 +19,19 @@ public class StockServiceImpl implements StockService{
 	
 	
 	private StockMapper stockMapper;
-	private EmployeeMapper employeeMapper;
-	private ClientMapper clientMapper;
 	
+
 //	public StockServiceImpl(StockMapper stockMapper, EmployeeMapper employeeMapper, ClientMapper clientMapper) { 
 //		this.stockMapper = stockMapper;
 //		this.employeeMapper = employeeMapper;
 //		this.clientMapper = clientMapper;
 //	}
+
+	
+	public StockServiceImpl(StockMapper stockMapper) { 
+		this.stockMapper = stockMapper;
+	}
+
 
 	@Override
 	public List<ContractItemVO> getItemList() {

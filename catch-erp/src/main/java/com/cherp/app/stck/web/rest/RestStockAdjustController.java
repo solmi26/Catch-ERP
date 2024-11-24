@@ -3,6 +3,7 @@ package com.cherp.app.stck.web.rest;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.buss.service.ClientService;
@@ -20,17 +21,21 @@ import lombok.extern.slf4j.Slf4j;
 public class RestStockAdjustController {
 	
 	private final StockService stockAdjustService;
-	private final ClientService clientServcie;
+	private final ClientService clientService;
 	
 	@GetMapping("stocks/clientList")
 	public List<ClientVO> getClientList() {  
-		return clientServcie.clientList();
+		return clientService.clientList();
+	}
+	
+	@GetMapping("stocks/clientSearchList/{clientCode}")
+	public List<ClientVO> getClientSearchList(@PathVariable String clientCode){
+		return clientService.clientSearchList(clientCode);
 	}
 	
 	@GetMapping("stocks/itemList")
 	public List<ContractItemVO> getItemList() {
 		return stockAdjustService.getItemList();
 	}
-	
 	
 }
