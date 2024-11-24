@@ -3,7 +3,7 @@
 <mapper namespace="com.cherp.app.stck.mapper.StockMapper">
 	
 	<!-- 매입계약품목 전체조회 -->
-	<select id="selectAllItemList" resultType="ContractItemVO">
+	<select id="selectAllItemList" resultType="com.cherp.app.stck.vo.ContractItemVO">
 		SELECT *
 		FROM   contract_item	
 	</select>

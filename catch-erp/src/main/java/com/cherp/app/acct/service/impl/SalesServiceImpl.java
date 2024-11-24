@@ -72,7 +72,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public SalesVO payableInfo(PayablesVO payablesVO) {
+	public PayablesVO payableInfo(PayablesVO payablesVO) {
 		return null;
 	}
 

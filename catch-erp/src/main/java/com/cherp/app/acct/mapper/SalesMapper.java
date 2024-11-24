@@ -2,7 +2,6 @@ package com.cherp.app.acct.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.cherp.app.acct.vo.ClientPsVO;
@@ -23,7 +22,7 @@ public interface SalesMapper {
 	
 	//단건 조회
 	public SalesVO selectSaleInfo(SalesVO salesVO);			// 매출 단건 조회
-	public SalesVO selectPayableInfo(PayablesVO payablesVO);// 채무거래 단건 조회
+	public PayablesVO selectPayableInfo(PayablesVO payablesVO);// 채무거래 단건 조회
 	public SalesVO selectReceivableInfo(SalesVO salesVO);	// 채권거래 단건 조회
 	public SalesVO selectInvoiceInfo(SalesVO salesVO);		// 세금계산서 내역 단건 조회
 	
