@@ -10,6 +10,7 @@
 		,employee_name
 		,employee_tel
 		,event
+		,client_code
 		FROM client
 	</select>
 </mapper>
