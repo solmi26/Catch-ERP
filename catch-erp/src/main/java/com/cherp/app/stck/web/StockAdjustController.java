@@ -22,10 +22,7 @@ public class StockAdjustController {
 	private final StockService stockAdjustService;
 	
 	@GetMapping("stocks/stockAdjustment")
-	public String stockAdjustment(Model model){
-		Map<String, List<Map<String,String>>> info = stockAdjustService.getModalInfo();
-		model.addAttribute("info", info);
-		
+	public String stockAdjustment(){
 		return "stock/stockAdjustment";
 	}
 }
