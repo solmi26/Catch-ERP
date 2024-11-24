@@ -6,10 +6,10 @@ import lombok.Data;
 public class EmployeeSalaryVO {
 	
 	//인사급여정보
-	private int annualSalary;
-	private int monthlySalary;
-	private int timeSalary;
-	private int incomeInvoice;
-	private int leaveLeave;
-	private int healthInsurance;
+	private int annualSalary; //연봉
+	private int monthlySalary; //월급
+	private int timeSalary; //시급
+	private int incomeInvoice; //소득세
+	private int leaveLeave;  //무급휴가비
+	private int healthInsurance;  //건상보험료
 }

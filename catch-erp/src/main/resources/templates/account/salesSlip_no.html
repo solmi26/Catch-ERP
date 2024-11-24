@@ -9,12 +9,6 @@
     
     <style>
     
-    h1{
-        margin-top: 20px;
-        margin-left:10px;
-        font-weight: bold;
-        }
-    
 	  /* 전체 컨테이너*/    
       .content {
         background-color: #fff;
@@ -45,30 +39,10 @@
 	  /* 그리드 위 영역 */
 	  .grid-controls {
 	    display: flex;
-	    justify-content: flex-end; /* 양쪽 끝으로 버튼 그룹 배치 */
+	    justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
 	    align-items: center;
 	    margin-top:50px;
 	  }
-	  
-	  .rigth{
-	  	padding-right: 540px;
-	  }
-	  
-	  .input-group-text{
-        font-weight: bold;
-        color: #5a5c69;
-        /*background-color: #f0f4ff;*/
-	  }
-	  
-	  .btn img {
-	    width: 20px;
-	    height: 20px;
-	  }
-	  
-	  .color{
-	  	background-color: #fff7e6;
-	  }
-	  
 
     </style>
     
@@ -77,7 +51,6 @@
   <body>
   
   <!-- 전체 컨테이너 -->
-    <h1>매출전표</h1>
     <div class="content">
       <form>
       
@@ -111,7 +84,7 @@
                 placeholder="재고전표내역보기"
               />
               <button class="btn btn-outline-secondary" type="button">
-                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+                Fn
               </button>
             </div>
           </div>
@@ -125,7 +98,7 @@
                 placeholder="거래처 선택"
               />
               <button class="btn btn-outline-secondary" type="button">
-                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+                Fn
               </button>
             </div>
           </div>
@@ -143,57 +116,18 @@
               </select>
             </div>
           </div>
-          <!-- 계정명 -->
+          <!-- 세금계산서 구분 -->
           <div class="col-md-4">
             <div class="input-group input-group-sm">
-              <span class="input-group-text">계정명</span>
+              <span class="input-group-text">세금계산서 구분</span>
               <input
                 type="text"
                 class="form-control"
-                placeholder="계정명 선택"
-              />
-              <button class="btn btn-outline-secondary" type="button">
-                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 공급가액/부가세 -->
-        <div class="row mb-3">
-        <!-- 공급가액 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text color">공급가액</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="공급가액"
-              />
-            </div>
-          </div>
-          <!-- 부가세 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text color">부가세</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="부가세"
+                placeholder="전자(세금)계산서-신규"
               />
             </div>
           </div>
         </div>
-        
-		<!-- 총 금액 -->
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text color">합계</span>
-              <input type="number" class="form-control" />
-            </div>
-          </div>
-          </div>
 
         <!-- 적요 -->
         <div class="row mb-3">
@@ -207,16 +141,23 @@
 		
 	<!-- 버튼 구역 -->
     <div class="grid-controls">
+		<!-- 버튼 그룹 (그리드 위 왼쪽) -->
+      <div class="btn-group left">
+        <button type="button" class="btn btn-success" id="add-item-btn">+ 항목 추가</button>
+        <button type="button" class="btn btn-danger" id="delete-item-btn">- 선택 삭제</button>
+      </div>
        
-       <!-- 버튼 그룹 오른쪽 -->
+       <!-- 버튼 그룹 (그리드 위 오른쪽) -->
       <div class="btn-group rigth">
-      	<button type="button" class="btn btn-secondary">다시 작성</button>
+        <button type="button" class="btn btn-success" id="save-btn">저장</button>
+        <button type="button" class="btn btn-secondary">다시 작성</button>
         <!-- 리스트로 이동하는 버튼 -->
         <button type="button" class="btn btn-secondary">전표관리</button>
-        <button type="button" class="btn btn-success" id="save-btn">저장</button>
       </div>
   </div>
-
+  
+	<!-- 그리드 -->
+	<div id="grid"></div>
           
     </form>
     
@@ -226,6 +167,125 @@
     
       document.addEventListener("DOMContentLoaded", function () {
     	  
+    	  // 그리드 데이터
+    	  const gridData = [
+    		  {
+    			    accountName: "현금", // 계정명
+    			    supplyAmount: 100000, // 공급가액
+    			    vat: 10000, // 부가세
+    			    description: "현금 입금", // 적요
+    			  },
+    			  {
+    			    accountName: "외상매출금",
+    			    supplyAmount: 500000,
+    			    vat: 50000,
+    			    description: "상품 판매",
+    			  },
+    			  {
+    			    accountName: "은행 예금",
+    			    supplyAmount: 200000,
+    			    vat: 20000,
+    			    description: "예금 이자",
+    			  },
+    		
+    		];
+    	  
+
+		 
+    	  // 그리드 초기화
+    	  const grid = new tui.Grid({
+    	    el: document.querySelector('#grid'),  // 그리드 표시 위치
+    	    data: gridData,  // 초기 데이터
+    	    scrollX: true,   // 가로 스크롤 사용
+    	    scrollY: true,   // 세로 스크롤 사용
+    	    columns : [
+    	    	  {
+    	    	    header: "계정명", // 계정명
+    	    	    name: "accountName",
+    	    	    editor: "text",         // 텍스트 입력 가능
+    	    	    align: "left",
+    	    	  },
+    	    	  {
+    	    	    header: "공급가액", // 공급가액
+    	    	    name: "supplyAmount",
+    	    	    editor: {
+        	        	type:gridNumber
+        	        },
+    	    	    align: "right",
+    	    	  },
+    	    	  {
+    	    	    header: "부가세",          // 부가세
+    	    	    name: "vat",
+    	    	    editor: {
+        	        	type:gridNumber
+        	        },
+    	    	    align: "right",
+    	    	  },
+    	    	  {
+    	    	    header: "적요",  // 적요
+    	    	    name: "description",
+    	    	    editor: "text",          // 텍스트 입력 가능
+    	    	    align: "left",
+    	    	  },
+    	    	],
+    	    summary: {
+    	        height: 40,
+    	        position: 'bottom', // or 'top'
+    	        columnContent: {
+    	        	unitPrice: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          supplyAmount: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+  	        	vat: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          totalAmount: {
+    	            template: function(valueMap) {
+    	              return `${valueMap.sum}`;
+    	            }
+    	          },
+    	          accountName: {
+      	            template: function(valueMap) {
+      	              return `합계`;
+      	            }
+      	          },
+    	          
+    	        }
+    	      },
+    	
+    	      rowHeaders: [
+    	            {
+    	              type: 'checkbox',
+    	              header: 
+    	                `<span class="custom-input">
+    	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+    	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+    	                </span>`
+    	            ,
+    	              renderer: {
+    	                type: gridCheckbox
+    	              }
+    	            }
+    	      ],
+    	  });
+
+
+    	  // 그리드 클릭 이벤트 -> 추후 내가 필요한대로 수정
+    	  grid.on('click', (event) => {
+    	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
+    	      console.log('클릭이벤트 발생');
+    	      console.log(event.rowKey);  // 클릭한 행의 키 값 출력
+    	    }
+    	  });
+
         // 모달 띄우기 -> 추후 수정
         document.querySelectorAll(".select-modal").forEach(function (btn) {
           btn.addEventListener("click", function () {
@@ -235,7 +295,6 @@
           });
         });
       });
-      
     </script>
     
   </body>

@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class PayablesVO { // 구매전표, 매입, 채무거래내역 VO
 	// PURCHASE TABLE
-	private Integer purchaseChitNo; // 구매전표번호 PK
+	private String purchaseChitNo; // 구매전표번호 PK
 	private String purcslipNo; 		// 구매전표번호 FK
 	private String invoiceCode; 	// 세금계산서코드 실 사용X
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

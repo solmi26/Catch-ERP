@@ -9,26 +9,30 @@ import lombok.NoArgsConstructor;
 @Data
 public class EmployeeVO {
 //인사기본정보
-	private String employeeCode;
-	private String employeeNo;
-	private String name;
-	private Date hireDate;
-	private String password;
-	private String employeePosition;
-	private String statusType;
-	private Date resignationDate;
-	private String hireType;
-	private String departmentCode;
+	private String employeeCode; //사원코드
+	private String employeeId; //사원아이디
+	private String name;  //사원명
+	private Date hireDate;  //입사일
+	private String password;  //비밀번호
+	private String employeePosition;  //직위,직급 ex)사장,대리,부장,과장
+	private String statusType; //재직 구분 ex) 재직 휴직 퇴직
+	private Date resignationDate; //퇴사일
+	private String hireType; //입사일
+	private String departmentCode;  //부서코드
 	
 //인사세부정보
-	private EmployeeDetailVO employeeDetailVO;
+	private EmployeeDetailVO employeeDetailVO; 
 	
 //인사급여정보
 	
 	private EmployeeSalaryVO employeeSalaryVO;
-//  조인으로 추가할 컬럼들
 	
-	private String departmentName;
+// 고정수당
+	
+	private FixedVO fixedVO;
+	
+//  조인으로 추가할 컬럼들
+	private String departmentName; //부서이름
 	
 	
 	
