@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cherp.app.acct.service.SalesService;
 import com.cherp.app.acct.vo.ClientPsVO;
@@ -40,18 +42,21 @@ public class SalesController {
 	
 	// 매출 전표 등록(화면)
 	@GetMapping("insertSales")
-	public String insertSales(SalesVO salesVO) {
+	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
 	
 	
 	// 매출 전표 등록(기능)
 	@PostMapping("insertSales")
-	//@ResponseBody
-	public String insertSalesFun(SalesVO salesVO) {
-		//salesService
-		//bacctService.bacctInsert(bacctVO);
-		return "account/salesSlip";
+	@ResponseBody
+	public String insertSales(@RequestBody SalesVO salesVO) {
+		try {
+			salesService.insertSale(salesVO);
+			return "저장 성공";
+		} catch (Exception e) {
+			return "저장 실패: " + e.getMessage();
+		}
 	}
 	
 	
