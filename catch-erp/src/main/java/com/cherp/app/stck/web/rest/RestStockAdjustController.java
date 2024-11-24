@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RestStockAdjustController {
 	
-//	private final StockService stockAdjustService;
+	private final StockService stockAdjustService;
 	private final ClientService clientServcie;
 	
 	@GetMapping("stocks/clientList")
@@ -31,4 +31,6 @@ public class RestStockAdjustController {
 	public List<ContractItemVO> getItemList() {
 		return stockAdjustService.getItemList();
 	}
+	
+	
 }
