@@ -56,10 +56,11 @@
 		SELECT *
 		FROM   client
 	</select>
+	
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSales" parameterType="com.cherp.app.acct.vo.SalesVO">
 	<selectKey keyProperty="salesChitNo" order="BEFORE" resultType="string">
-	    SELECT 's' || TO_CHAR(SYSDATE, 'YYYYMMDD') || 
+	    SELECT 'mk' || TO_CHAR(SYSDATE, 'YYYYMMDD') || 
 	           LPAD(NVL(MAX(TO_NUMBER(SUBSTR(sales_chit_no, 10))), 0) + 1, 3, '0')
 	    FROM sales
 	    WHERE SUBSTR(sales_chit_no, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
@@ -93,4 +94,9 @@
                   ,#{saleslipNo}
 		        )
 	</insert>
+	
+	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->
+    
+    <!-- CLIENT(거래처) 테이블 BALANCEK(총 채권 잔액) 업데이트 -->
+	
 </mapper>

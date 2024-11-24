@@ -25,13 +25,13 @@ public class TestController {
 		//return "account/modal/slipPrintModal";
 	}
 	// NKW TEST
-	@GetMapping("testStack")
-	public String testViewStack() {
-		return "stack/stackAdjustment";
+	@GetMapping("testStock")
+	public String testViewStock() {
+		return "stock/stockAdjustment";
 	}
-	@GetMapping("testStack2")
-	public String testViewStack2() {
-		return "stack/stackInquery";
+	@GetMapping("testStock2")
+	public String testViewStock2() {
+		return "stock/stockInquery";
 	}
 	// SGW TEST
 	@GetMapping("test1")
