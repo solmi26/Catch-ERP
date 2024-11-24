@@ -2,6 +2,7 @@ package com.cherp.app.acct.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.cherp.app.acct.vo.ClientPsVO;
