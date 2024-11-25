@@ -840,13 +840,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		fetch(`/stocks/chitNoList/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
 		.then(result => result.json())
 		.then(result => {
+			console.log(result);
 			let arr = [];
 			result.forEach(ele=>{
 				let data = {};
 				data.c1 = result.purcslipNo;
-				data.c2 = result.
+				data.c2;
 			})
 		})
+		
 		
 		//불러온 전표번호에 해당하는 구매내역을 불러오는데 품목을 조건으로 구매내역 리스트 불러옴
 				

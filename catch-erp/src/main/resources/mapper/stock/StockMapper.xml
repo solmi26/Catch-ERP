@@ -42,17 +42,17 @@
 	
 	<!-- 조건검색된 구매전표번호로 구매내역을 조회 -->
 	<select id ="selectPurcHistoryList" parameterType ="map" resultType="PurchaseHistoryVO">
-		SELECT pur_no
-			   ,wh_code
-			   ,wh_name
-			   ,item_code
-			   ,item_name
-			   ,quantity
-			   ,restocking_price
-			   ,restocking_status
-			   ,restocking_date
-			   ,purcslip_no
-			   ch.client_code AS client_no
+		SELECT  hi.pur_no AS pur_no
+		       ,hi.wh_code AS wh_code
+		       ,hi.wh_name AS wh_name
+		       ,hi.item_code AS item_code
+		       ,hi.item_name AS item_name
+		       ,hi.quantity AS quantity
+		       ,hi.restocking_price AS restocking_price
+		       ,hi.restocking_status AS restocking_status
+		       ,hi.restocking_date AS restocking_date
+		       ,hi.purcslip_no AS purcslip_no
+			   ,ch.client_code AS client_no
 		FROM   purchase_history hi JOIN purchase_chit ch 
 			ON (hi.purcslip_no = ch.purcslip_no)
 		WHERE purcslip_no IN
