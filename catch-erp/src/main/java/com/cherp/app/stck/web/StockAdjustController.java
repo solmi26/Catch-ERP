@@ -1,14 +1,11 @@
 package com.cherp.app.stck.web;
 
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.cherp.app.buss.service.ClientService;
+import com.cherp.app.stck.service.StockService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
