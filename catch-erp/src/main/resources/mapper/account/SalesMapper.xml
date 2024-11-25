@@ -84,16 +84,10 @@
 	
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSale" parameterType="com.cherp.app.acct.vo.SalesVO">
-	<selectKey keyProperty="salesChitNo" order="BEFORE" resultType="string">
-	    SELECT 'MK' || TO_CHAR(SYSDATE, 'YYYYMMDD') || 
-	           LPAD(NVL(MAX(TO_NUMBER(SUBSTR(sales_chit_no, 10))), 0) + 1, 3, '0')
-	    FROM sales
-	    WHERE SUBSTR(sales_chit_no, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
-	</selectKey>
 		INSERT INTO sales (
                      sales_chit_no <!-- 전표번호 -->
            			 ,chit_date <!-- 전표일자 -->
-           			 ,client <!-- 거래처 -->
+           			 ,client_code <!-- 거래처 -->
            			 ,acct_name <!-- 계정명 -->
        			     ,supply_price <!-- 공급가액 -->
             		 ,vat <!-- 부가세 -->
@@ -104,7 +98,7 @@
            			 ,saleslip_no <!-- 판매전표 번호 -->
                     )
 			  VALUES(
-		           #{salesChitNo}
+		           domain('sales_chit_no')
 		          ,#{chitDate}
 		          ,#{clientCode}
 		          ,#{acctName}
@@ -117,33 +111,47 @@
                   ,#{saleslipNo}
 		        )
 	</insert>
+	
+	<insert id="insertInvoice" parameterType="com.cherp.app.acct.vo.SalesVO">
+		INSERT INTO invoice(
+	            invoice_no <!-- 인보이스 번호 -->
+	            ,invoice_date <!-- 발행일 -->
+	            ,saleslip_no <!-- 판매전표 번호 -->
+	       )
+	       VALUES(
+	            domain('invoice_no')
+	            ,#{chitDate}
+	            ,#{saleslipNo}
+	       )
+	</insert>
 
 
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
-	<insert id="insertReceivable">
+	<insert id="insertReceivable" parameterType="com.cherp.app.acct.vo.SalesVO">
 	<selectKey keyProperty="logId" order="BEFORE" resultType="int">
 			SELECT NVL(MAX(log_id),0) + 1
 			FROM receivables_log
 	</selectKey>
 		INSERT INTO  receivables_log(
-	            log_id  log <!-- 번호 --> 
-	            ,rec_date  발생날짜 <!-- == 매출전표 --> 
+	            log_id <!-- 번호 --> 
+	            ,rec_date <!-- == 매출전표 --> 
 	            ,increase_price  <!-- 채권증가금액 --> 
-	            ,client  <!-- 거래처코드 --> 
+	            ,client_code  <!-- 거래처코드 --> 
 	            ,sales_chit_no <!-- 매출전표번호 --> 
 
 	        ) VALUES(
 	           #{logId}
-	           ,#{recDate}
-	           ,#{increasehkPrice}
+	           ,#{chitDate}
+	           ,#{increasePrice}
 	           ,#{clientCode}
 	           ,#{salesChitNo}
+	           )
 	</insert>
     
     <!-- CLIENT(거래처) 테이블 BALANCEK(총 채권 잔액) 업데이트 -->
     <update id="updateClientBalancek" >
     	UPDATE client
-		SET balancek = #{balancek}
+		SET balancek = balancek + #{balancek}
 		WHERE client_code = #{clientCode}
     </update>
 

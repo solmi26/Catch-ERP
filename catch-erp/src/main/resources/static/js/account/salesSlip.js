@@ -2,32 +2,61 @@
 
 // 페이지 로드 시 이벤트
 document.addEventListener("DOMContentLoaded", function () {
+  // 공급가액, 부가세, 합계 필드
+  let priceInput = document.querySelector("input[name='price']");
+  let vatInput = document.querySelector("input[name='vat']");
+  let totalInput = document.querySelector("input[name='amount']");
+  let vatTypeSelect = document.querySelector("select[class='form-select']");
+
+  // 부가세 계산 함수
+  function cacul() {
+    let price = parseInt(priceInput.value) || 0;
+    let vatType = vatTypeSelect.value;
+
+    if (vatType === "과세") {
+      vatInput.value = price * 0.1;
+    } else {
+      vatInput.value = 0;
+    }
+
+    let vat = parseInt(vatInput.value) || 0;
+    totalInput.value = price + vat;
+  }
+
+  // 값 입력시 합계 자동 계산
+  priceInput.addEventListener("input", cacul);
+  vatInput.addEventListener("input", cacul);
+
   // 저장 버튼 클릭 이벤트
   document.getElementById("save-btn").addEventListener("click", function (event) {
     // 폼에서 입력된 데이터를 가져옴
     let chitDate = document.querySelector("input[name='date']").value; // 전표일자
     let client = document.querySelector("input[name='client']").value; // 거래처 코드
-    let acct = document.querySelector("input[name='client']").value; // 계정명
-    let price = document.querySelector("input[name='client']").value; // 공급가액
-    let vat = document.querySelector("input[name='client']").value; // 부가세
-    let amount = document.querySelector("input[name='client']").value; // 합계
+    let acct = document.querySelector("input[name='acct']").value; // 계정명
+    let price = document.querySelector("input[name='price']").value; // 공급가액
+    let vat = document.querySelector("input[name='vat']").value; // 부가세
+    let amount = document.querySelector("input[name='amount']").value; // 합계
     let writer = "김도영"; // 작성자
-    let balance = price; // 해당 매출전표에 대한 채권 잔액
+    let balance = amount; // 해당 매출전표에 대한 채권 잔액
     let summary = document.querySelector("input[name='summary']").value; // 적요
-    let saleslip = document.querySelector("input[name='client']").value; // 판매전표 번호
+    let saleslip = document.querySelector("input[name='saleslip']").value; // 판매전표 번호
 
     let salesData = {
       chitDate: chitDate,
-      client: client,
-      acct: acct,
-      price: price,
+      clientCode: client,
+      acctName: acct,
+      supplyPrice: price,
       vat: vat,
-      amount: amount,
+      totalPrice: amount,
       writer: writer,
-      balance: balance,
+      recBalance: balance,
       summary: summary,
-      saleslip: saleslip,
+      saleslipNo: saleslip,
     };
+
+    for (const key in salesData) {
+      console.log(salesData[key]);
+    }
 
     fetch("/insertSales", {
       method: "POST",
