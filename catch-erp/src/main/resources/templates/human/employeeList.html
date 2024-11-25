@@ -40,10 +40,10 @@
             	      <label class="form-label me-1 mb-0 label-width">직위/직급</label>
                   	</div>
                   	<div class="col align-self-start ps-0">
-                  		<select class="form-select input-width-120">
+                  		<select class="form-select input-width-120 search-option">
                     		<option value="">전체</option>
-                    		<option value="사원">사원</option>
-		                    <option value="대리">대리</option>
+                    		<option value="m1">사원</option>
+		                    <option value="m2">대리</option>
 		                    <option value="과장">과장</option>
 		                    <option value="차장">차장</option>
 		                    <option value="부장">부장</option>
@@ -59,7 +59,7 @@
                   		<label class="form-label me-2 mb-0 label-width">사원</label>
                   	</div>
                   	<div class="col">
-                  		<input type="text" class="form-control input-width-120 me-2" placeholder="사원" />
+                  		<input type="text" class="form-control input-width-120 me-2 search-option" placeholder="사원" />
 					</div>
                 </div>
               </div>
@@ -74,7 +74,7 @@
                   			<label class="form-label me-2 mb-0 label-width">부서</label>
                   		</div>
                 		<div class="col">
-		                	<select class="form-select input-width-150">
+		                	<select class="form-select input-width-150 search-option">
 			                   <option value="">전체</option>
 			                   <option value="경영지원팀">경영지원팀</option>
 			                   <option value="인사팀">인사팀</option>
@@ -91,10 +91,10 @@
               		<!-- 라벨(재직구분)만 auto로 컨텐츠크기만 차지하게하고, 나머지 라디오버튼(라벨포함)에 대해서는 남는부분을 3등분 시켜 동일한 크기를 지니게함 -->
               		<div class="row align-items-center">
               			<div class="col-auto">
-                  			<label class="form-label me-2 mb-0 label-width">재직구분</label>
+                  			<label class="form-label me-2 mb-0 label-width ">재직구분</label>
                   		</div>
                   		<div class="col">
-                    		<input class="form-check-input" type="radio" name="status" id="status2" value="regular" />
+                    		<input class="form-check-input search-option1" type="radio" name="status" id="status2" value="regular" />
                     		<label  for="status2">재직</label>
                   		</div>
                   		<div class="col">
@@ -143,7 +143,7 @@
                 </div>
                 <div class="col-auto row justify-content-end">
                 	<div class="col">
-                        <button type="button" class="btn btn-primary">검색</button>
+                        <button type="button" class="btn btn-primary search-btn">검색</button>
                     </div>
                 </div>
             </div>
@@ -343,7 +343,7 @@
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">기본급</label>
-                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO" name="accoount">
+                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO" name="monthlySalary">
                                         </div>
                                         <div class="col=12">
                                         <div id="allowanceGrid"></div>
@@ -400,54 +400,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src='@{/js/common/toastsetting.js}'></script>
     
-    <script>
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            // Photo upload preview
-        /*
-            document.getElementById('photoUpload').addEventListener('change', function(e) {
-                if (e.target.files && e.target.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('employeePhoto').src = e.target.result;
-                    }
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-            });
-
-            // Form submission (prevent default for demonstration)
-            document.getElementById('searchForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('검색 기능이 실행되었습니다.');
-            });
-
-            // Button click handlers
-            document.getElementById('saveBtn').addEventListener('click', function() {
-                alert('저장 버튼이 클릭되었습니다.');
-            });
-
-            document.getElementById('resetBtn').addEventListener('click', function() {
-                document.getElementById('generalForm').reset();
-                document.getElementById('salaryForm').reset();
-            });
-
-            document.getElementById('newBtn').addEventListener('click', function() {
-                document.getElementById('generalForm').reset();
-                document.getElementById('salaryForm').reset();
-                document.getElementById('employeePhoto').src = '/placeholder.svg?height=100&width=100';
-            });
-            */
-            // Row selection in employee list
-            const tableRows = document.querySelectorAll('.employee-list tbody tr');
-            tableRows.forEach(row => {
-                row.addEventListener('click', function() {
-                    tableRows.forEach(r => r.classList.remove('table-active'));
-                    this.classList.add('table-active');
-                    // Here you would typically populate the form with the selected employee's data
-                });
-            });
-        });
-    </script>
     <script>
     const Grid = tui.Grid;
 
@@ -507,6 +459,7 @@
   document.getElementById('salary-tab').addEventListener('click', function() {
       window.setTimeout(function(){
           grid.refreshLayout();
+  		  allowanceGrid.refreshLayout();
       }, 200) 
   });
 
@@ -531,22 +484,22 @@
     	  columns: [
     	    {
     	      header: '수당코드',
-    	      name: 'name'
+    	      name: 'allowanceCode'
     	    },
     	    {
     	      header: '수당명',
-    	      name: 'artist'
+    	      name: 'allowanceName'
     	    },
     	    {
     	      header: '수당액',
-    	      name: 'release',
+    	      name: 'allowancePrice',
               editor: {
                   type: gridNumber
                 }
     	    },
     	    {
     	      header: '과세여부',
-    	      name: 'genre',
+    	      name: 'allowanceCheck',
     	          editor: {
     	              type: 'select',
     	              options: {
@@ -560,29 +513,12 @@
     	  ],
     	  data: [
     	    {
-    	      name: 'Beautiful Lies',
-    	      artist: 'Birdy',
-    	      release: '3000',
-    	      genre: '과세'
-    	    },
-    	    {
-      	      name: 'Beautiful Lies',
-      	      artist: 'Birdy',
-      	      release: '5000',
-      	      genre: '비과세'
-      	    },
-    	    {
-      	      name: 'Beautiful Lies',
-      	      artist: 'Birdy',
-      	      release: '6000',
-      	      genre: 'Pop'
-      	    },
-    	    {
-      	      name: 'Beautiful Lies',
-      	      artist: 'Birdy',
-      	      release: '16',
-      	      genre: 'Pop'
-      	    }
+    	      allowanceCode: 'Beautiful Lies',
+    	      allowanceName: 'Birdy',
+    	      allowancePrice: '3000',
+    	      allowanceCheck: '과세'
+    	    }
+
     	  ]
     	});
 		
