@@ -2,7 +2,6 @@ package com.cherp.app.acct.service;
 
 import java.util.List;
 
-import com.cherp.app.acct.vo.ClientPsVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
@@ -15,8 +14,8 @@ public interface SalesService {
 	public List<PayablesVO> payablesList(); 		// 채무거래 내역 전체 조회
 	public List<SalesVO> receivablesList(); 		// 채권거래 내역 전체 조회
 	public List<SalesVO> invoiceList();				// 세금계산서 내역 전체 조회
-	public List<ClientPsVO> ClientPayableList();	// 채무 거래처 전체 조회
-	public List<ClientPsVO> ClientReceivableList();	// 채권 거래처 전체 조회
+	public List<PayablesVO> ClientPayableList(String clientCode, String purchaseChitNo);	// 채무 거래처 전체 조회
+	public List<SalesVO> ClientReceivableList(String clientCode);	// 채권 거래처 전체 조회
 	
 	//단건 조회
 	public SalesVO saleInfo(SalesVO salesVO);		// 매출 단건 조회
@@ -25,7 +24,7 @@ public interface SalesService {
 	public SalesVO invoiceInfo(SalesVO salesVO);	// 세금계산서 내역 단건 조회
 	
 	//추가
-	// 매출전표 추가, 채권 내역 추가,거래처 채권 총 잔액 업데이트 
+	// 매출전표 추가, 채권 내역 추가, 거래처 채권 총 잔액 업데이트 
 	public void insertSale(SalesVO salesVO);			
 	public int insertPayable(PayablesVO payablesVO);	// 채무거래 추가
 	public int insertReceivable(SalesVO salesVO);	// 채권거래 추가

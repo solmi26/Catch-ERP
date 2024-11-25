@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cherp.app.acct.service.SalesService;
-import com.cherp.app.acct.vo.ClientPsVO;
+import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
 import lombok.RequiredArgsConstructor;
@@ -26,16 +26,16 @@ public class SalesController {
 	private final SalesService salesService;
 	
 	// 채권 전체 조회
-	@GetMapping("receivableList")
+	@GetMapping("receivable/receivableList")
 	public String receivableList(Model model) {
 		List<SalesVO> receList = salesService.receivablesList();
 		model.addAttribute("receive",receList);
 		return "account/regSalesSlipReduction";
 	}
 	// 채무 전체 조회
-	@GetMapping("payablesList")
+	@GetMapping("payable/payablesList")
 	public String payablesList(Model model) {
-		List<ClientPsVO> payList = salesService.ClientPayableList();
+		List<PayablesVO> payList = salesService.payablesList();
 		model.addAttribute("pay",payList);
 		return "account/regPayReduction";
 	}
@@ -43,6 +43,7 @@ public class SalesController {
 	// 매출 전표 등록(화면)
 	@GetMapping("insertSales")
 	public String insertSalesForm(Model model) {
+		
 		return "account/salesSlip";
 	}
 	

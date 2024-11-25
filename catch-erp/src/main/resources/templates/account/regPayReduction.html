@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8" >
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>채권감소등록</title>
+  <title>채무감소등록</title>
   <link rel="tableStyle.css" />
   <style>
     .modal-header {
@@ -48,7 +48,7 @@
         font-weight: bold;
     }
     .ledger-date-column {
-        width: 90px;
+        width: 140px;
     }
     .ledger-description-column {
         width: 120px;
@@ -63,7 +63,7 @@
   <div class="bg-white shadow-sm rounded" style="padding: 20px;">
     <!-- Search Section -->
     <div class="border-bottom pb-3 mb-4">
-      <h2>채권감소등록</h2>
+      <h2>채무감소등록</h2>
     </div>
     <div class="gridWrapper">
       <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountSearchModal" style="margin-bottom: 10px;">입금등록(F2)</button>
@@ -98,7 +98,7 @@
                         <div class="container-fluid p-4">
                             <div class="row mb-3">
                                 <div class="col">
-                                    <strong>거래처:</strong> 
+                                    <p id="payClientName"></p>
                                 </div>
                                 <div class="col text-end">
                                     <strong>Page #</strong> 1
@@ -110,12 +110,12 @@
                                         <th class="ledger-date-column">일자</th>
                                         <th class="ledger-description-column">계정</th>
                                         <th>적요</th>
-                                        <th class="ledger-amount-column">증감</th>
+                                        <th class="ledger-amount-column">증가</th>
                                         <th class="ledger-amount-column">감소</th>
                                         <th class="ledger-amount-column">잔고</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="ledgeBody">
                                     <tr>
                                         <td>01-14</td>
                                         <td>미수금</td>
@@ -157,7 +157,7 @@
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
 	//JSON 로드
-	fetch('http://localhost:8026/payList')
+	fetch('/payList')
   	.then(result => result.json())
   	.then((result) => {
 	    //grid 설정하기
@@ -187,6 +187,11 @@
 	    ],
 	      columns: [
                   {
+                      header:'매입전표번호',
+                      name:'purchaseChitNo',
+                      hidden:1,
+                  },
+                  {
                       header: '거래처코드',
                       name: 'clientCode',
                       sortable: true,
@@ -209,7 +214,7 @@
                   },      
                   {
                       header: '잔액',
-                      name: 'balancek',
+                      name: 'decreaseBalance',
                       sortable: true,
                       align: 'left'
                   },
@@ -222,7 +227,7 @@
                   },
                   {
                     header: '채무상태',
-                    name: 'state',
+                    name: 'decreaseStatus',
                     sortable: true,
                     align: 'left'
                   }
@@ -231,11 +236,44 @@
       grid.on('click', (event) => { // grid 클릭이벤트 발생
 	        if(event.columnName === 'clientCode' && event.rowKey>=0) {
 	          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
+              let purchaseChitNo = grid.getValue(event.rowKey,"purchaseChitNo");
+              let clientCode = grid.getValue(event.rowKey,"clientCode");
+              let clientData = {
+                method: 'POST',
+                body: JSON.stringify({"clientCode": clientCode, "purchaseChitNo": purchaseChitNo}),
+                headers: {
+                    'Content-Type' : 'application/json'
+                }
+              };
+              console.log(clientData);
+              fetch('/clientPayables', clientData)
+              .then(result => result.json())
+              .then(clientPayableList => {
+                let ledgebody = document.querySelector('#ledgeBody');
+                ledgebody.innerHTML = '';
+                let layout = '';
+                let tot = 0;
+                // console.log(clientPayableList);
+                for (const ele of clientPayableList) {
+                    document.querySelector('#payClientName').innerHTML = `<strong>거래처:</strong> ${ele.clientName}`;
+                    // console.log(ele);
+                    tot += ele.increasePrice - ele.decreasePrice;
+                    layout +=  `<tr>
+                                    <td>${ele.recDate}</td> 
+                                    <td>${ele.acctName}</td>
+                                    <td>${ele.summary}</td>
+                                    <td>${ele.increasePrice}</td>
+                                    <td>${ele.decreasePrice}</td>
+                                    <td>${ele.balance}</td>
+                                </tr>`
+                }
+                ledgebody.insertAdjacentHTML('beforeend', layout);
+              })
               ledgeModal.show();
         	}
       })
       // 계좌 목록 조회 모달
-      fetch('http://localhost:8026/bacctList')
+      fetch('/bacctList')
       .then(result => result.json())
       .then(accountList => {
         //Build Tabulator
