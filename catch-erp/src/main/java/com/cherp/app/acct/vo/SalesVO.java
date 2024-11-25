@@ -25,7 +25,7 @@ public class SalesVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date chitDate; 			// 전표 일자
-	private String client; 			// 거래처
+	private String clientCode; 			// 거래처 코드
 	private String acctName; 		// 계정 과목
 	private Integer supplyPrice; 	// 공급가 액
 	private Integer vat;			// 부가가치세
