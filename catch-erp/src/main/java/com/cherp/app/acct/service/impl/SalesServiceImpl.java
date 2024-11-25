@@ -46,24 +46,31 @@ public class SalesServiceImpl implements SalesService{
 	@Override
 	// 매출전표 등록
 	public void insertSale(SalesVO salesVO) {
-        // 매출 내역 추가
-        int resultSale = salesMapper.insertSale(salesVO); 
-        if (resultSale != 1) {
-            throw new RuntimeException("매출 내역 추가 실패");
-        }
-        
-        // 채권 내역 추가
-        int resultRe = salesMapper.insertReceivable(salesVO);
-        if (resultRe != 1) {
-            throw new RuntimeException("채무 내역 추가 실패");
-        }
-        
-        // 거래처 총 채권 잔액 업데이트
-        int resultUp = salesMapper.updateClientBalancek(salesVO.getClientCode(), resultRe);
-        if (resultUp != 1) {
-            throw new RuntimeException("거래처 총 잔액 업데이트 실패");
-        }
-	
+//		try {
+	        // 매출 내역 추가
+	        int resultSale = salesMapper.insertSale(salesVO); 
+//	        if (resultSale != 1) {
+//	            throw new RuntimeException("매출 내역 추가 실패");
+//	        }
+//	        
+	        // 채권 내역 추가
+	        int resultRe = salesMapper.insertReceivable(salesVO);
+//	        if (resultRe != 1) {
+//	            throw new RuntimeException("채무 내역 추가 실패");
+//	        }
+	        
+	        // 거래처 총 채권 잔액 업데이트
+	        int resultUp = salesMapper.updateClientBalancek(salesVO.getClientCode(), salesVO.getTotalPrice());
+//	        if (resultUp != 1) {
+//	            throw new RuntimeException("거래처 총 잔액 업데이트 실패");
+//	        }
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//			}
+	        
+	        // 세금계산서 발행
+	        int resultIv = salesMapper.insertInvoice(salesVO);
+	        
 	}
 	
 	@Override
