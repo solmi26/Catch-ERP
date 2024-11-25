@@ -14,7 +14,8 @@
 		    p.sales_chit_no,
 		    p.rec_date,
 		    p.bacct_code,
-		    p.client,
+		    c.client_bacct,
+		    p.client_code,
 		    (
 		        SELECT
 		            client_name
@@ -28,6 +29,7 @@
 		FROM
 		         receivables_log p
 		    JOIN sales s ON p.sales_chit_no = s.sales_chit_no
+		    JOIN client c ON c.client_code = p.client_code
 	</select>
 	
 	<select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
@@ -36,6 +38,7 @@
 		    p.purchase_chit_no,
 		    p.rec_date,
 		    p.bacct_code,
+		    c.client_bacct,
 		    p.client_code,
 		    (
 		        SELECT
@@ -50,6 +53,7 @@
 		FROM
 		         payables_log p
 		    JOIN purchase s ON p.purchase_chit_no = s.purchase_chit_no
+		    JOIN client c ON p.client_code = c.client_code
 	</select>
 	
 	<!-- 거래처 채무 거래처원장 조회 -->
@@ -64,7 +68,10 @@
 		FROM    client c 
 		        JOIN payables_log pl ON c.client_code = pl.client_code
 		        JOIN purchase p ON p.purchase_chit_no = pl.purchase_chit_no
-		WHERE   pl.client_code = #{clinetCode}
+		WHERE   pl.client_code = #{clientCode}
+		AND pl.purchase_chit_no = #{purchaseChitNo}
+		AND c.trade_type = '채무'
+		
 	</select>
 	
 	<!-- 거래처 채권 거래처원장 조회 -->

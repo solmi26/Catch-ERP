@@ -35,6 +35,7 @@ public class PayablesVO { // 구매전표, 매입, 채무거래내역 VO
 	private Date recDate; 			// 거래발생 일자
 	private Integer decreasePrice; 	// 채무감소 금액
 	private Integer bacctCode; 		// 계좌코드
+	private String clientBacct;		// 계좌번호
 	private String clientName;		// 거래처 명 -> AS 로 이용할 변수
 	private Integer increasePrice;  // 증가 금액
 	private Integer balance;		// 잔고

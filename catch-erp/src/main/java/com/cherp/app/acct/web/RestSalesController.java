@@ -1,9 +1,14 @@
 package com.cherp.app.acct.web;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.acct.service.SalesService;
@@ -34,9 +39,11 @@ public class RestSalesController {
 		return salesService.payablesList();
 	}
 	// JSON 거래처 채권 데이터
-	@GetMapping("clientPayables")
-	public List<PayablesVO> clientPayablesList(String clientCode) {
-		return salesService.ClientPayableList(clientCode);
+	@PostMapping("clientPayables")
+	@ResponseBody
+	public List<PayablesVO> clientPayablesList(@RequestBody HashMap<String, String> map) {
+		System.out.println(map.get("purchaseChitNo"));
+		return salesService.ClientPayableList(map.get("clientCode"), map.get("purchaseChitNo"));
 	}
 	
 }
