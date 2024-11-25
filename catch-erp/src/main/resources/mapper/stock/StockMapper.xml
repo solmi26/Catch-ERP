@@ -73,4 +73,11 @@
 	     	 ]]>
 	    </if>
 	</select>
+	
+	<!-- 매입품목 재고조회 _ 재고조정페이지 재고조회 -->
+	<select id="selectStocks" resultType="contractItemVO">
+		SELECT stocks_quantity
+		FROM   contract_item
+		WHERE  item_code = #{itemCode}		
+	</select>
 </mapper>

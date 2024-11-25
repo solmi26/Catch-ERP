@@ -66,6 +66,11 @@ public class StockServiceImpl implements StockService{
 		
 		return historyList;
 	}
+
+	@Override
+	public ContractItemVO getItemStocks(String itemCode) {
+		return stockMapper.selectStocks(itemCode);
+	}
 	
 	
 }	

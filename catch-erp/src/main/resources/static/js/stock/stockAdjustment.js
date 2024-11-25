@@ -1193,13 +1193,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		fetch("/stocks/itemList")
 		.then(result=> result.json())
 		.then(result=>{
-			console.log(result);
 			result.forEach(ele=>{
 				let dataRow = {};
 				dataRow.c4 = ele.itemCode;
 				dataRow.stocks = ele.stocksQuantity;
 				stocksArr.push(dataRow)
-			})
+			})	
 		})
 		//c8에 넣을 데이터를 위한 fetch함수 필요
 		arr.forEach(ele=>{
@@ -1211,12 +1210,16 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c5 = ele.c7;
 			data.c6 = 'X'
 			data.c7 = '1';
-			data.c8 = 
-			console.log(stocksArr);
-			data.c8 = stocks.stocks; //재고수량 
+			fetch(`/stocks/itemStocks/${ele.c4}`)
+			.then(result => result.json())
+			.then(result => {
+				data.c8 =result.stocksQuantity //재고수량
+			})  
 			dataArr.push(data)
 		})
-		console.log(dataArr);
+		window.setTimeout(function(){
+				console.log(dataArr);	
+			},200)
 		let selectedCtn = arr.length;
 		let exitedRowsInPage = grid.getRowCount()
 		let checkingMaxRows = selectedCtn + exitedRowsInPage;
@@ -1224,10 +1227,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			grid.appendRows(dataArr);
 		} else {
 			alert('한 번에 15건만을 처리할 수 있습니다.')
-		}
-		function filterFunc (itemCode){
-			//true일때 itemCode를 반환
-			return 
 		}	
 	})
 	
@@ -1262,7 +1261,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			
 	//내역,출하모달 띄울 때 조정페이지 grid에 이미 있는 rows들을 거르고 data 배열을 반환시킬 함수
 	function exceptExitingRows(data){
-		console.log(data);
 		//페이지 grid에 존재하는 내역No.
 		let gridData = grid.getData(); 
 		let exitedNo = [];
