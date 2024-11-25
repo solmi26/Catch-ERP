@@ -69,7 +69,7 @@
 	
 	<!-- 인사정보 단건조회 -->
 	<select id="seleectEmployee" resultMap="Employee">
-		SELECT 	em.employee_code,
+        		SELECT 	em.employee_code,
 		        em.employee_id,
 		        em.name,
 		        em.hire_date,
@@ -94,12 +94,24 @@
 		        ed.bacct,
 		        ed.depositor,
 		        ed.employee_image,
-		        ed.bank
+		        ed.bank,
+                es.monthly_salary,
+                fx.fixed_no,
+                fx.allowance_price,
+                fx.allowance_code,
+                ai.allowance_name,
+                ai.allowance_check
 		FROM    employees em
 		JOIN    department dp
 		ON      em.department_code = dp.department_code
 		JOIN    employees_detail ed
 		ON      em.employee_code = ed.employee_code
+        JOIN    employees_salary es
+        ON      em.employee_code = es.employee_code
+        JOIN    fixed fx
+        ON      em.employee_code = fx.employee_code
+        JOIN    allowance_item ai
+        ON      fx.allowance_code = ai.allowance_code
 		WHERE   em.employee_code = #{employeeCode}
 	</select>
 	<insert id="insertEmployee" statementType="CALLABLE" >
