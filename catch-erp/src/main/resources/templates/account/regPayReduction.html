@@ -110,7 +110,7 @@
                                         <th class="ledger-date-column">일자</th>
                                         <th class="ledger-description-column">계정</th>
                                         <th>적요</th>
-                                        <th class="ledger-amount-column">증감</th>
+                                        <th class="ledger-amount-column">증가</th>
                                         <th class="ledger-amount-column">감소</th>
                                         <th class="ledger-amount-column">잔고</th>
                                     </tr>
@@ -231,6 +231,11 @@
       grid.on('click', (event) => { // grid 클릭이벤트 발생
 	        if(event.columnName === 'clientCode' && event.rowKey>=0) {
 	          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
+              fetch('/clientPayables', event.columnName)
+              .then(result => result.json())
+              .then(clientPayableList => {
+                console.log(clientPayableList);
+              })
               ledgeModal.show();
         	}
       })

@@ -59,7 +59,7 @@ public class SalesServiceImpl implements SalesService{
         }
         
         // 거래처 총 채권 잔액 업데이트
-        int resultUp = salesMapper.updateClientBalancek(salesVO.getClient(), resultRe);
+        int resultUp = salesMapper.updateClientBalancek(salesVO.getClientCode(), resultRe);
         if (resultUp != 1) {
             throw new RuntimeException("거래처 총 잔액 업데이트 실패");
         }
@@ -143,13 +143,13 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public List<ClientPsVO> ClientPayableList() {
-		return salesMapper.SelectAllClientPayableList();
+	public List<PayablesVO> ClientPayableList(String clientCode) {
+		return salesMapper.SelectAllClientPayableList(clientCode);
 	}
 
 	@Override
-	public List<ClientPsVO> ClientReceivableList() {
-		return salesMapper.SelectAllClientReceivableList();
+	public List<SalesVO> ClientReceivableList(String clientCode) {
+		return salesMapper.SelectAllClientReceivableList(clientCode);
 	}
 	
 }

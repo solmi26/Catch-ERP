@@ -33,5 +33,10 @@ public class RestSalesController {
 	public List<PayablesVO> payList() {
 		return salesService.payablesList();
 	}
+	// JSON 거래처 채권 데이터
+	@GetMapping("clientPayables")
+	public List<PayablesVO> clientPayablesList(String clientCode) {
+		return salesService.ClientPayableList(clientCode);
+	}
 	
 }
