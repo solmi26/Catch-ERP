@@ -4116,7 +4116,7 @@ label.error {
 }
 .table > tbody > tr > td,
 .table > tbody > tr > th {
-  padding: 16px 24px !important;
+  padding: 16px 24px;
 }
 .table > tfoot > tr > td,
 .table > tfoot > tr > th {
