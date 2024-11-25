@@ -10,4 +10,5 @@ public interface StockService {
 	
 	public List<ContractItemVO> getItemList();
 	public List<PurchaseHistoryVO> getPurchaseHistoryList(String type1, String type2, String type3, String client, String employee, String item, String startDate, String endDate);
+	public ContractItemVO getItemStocks(String itemCode); 
 }

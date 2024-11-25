@@ -5,24 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
-
-import com.cherp.app.buss.mapper.ClientMapper;
-import com.cherp.app.empl.mapper.EmployeeMapper;
-
-=======
-import org.springframework.transaction.annotation.Transactional;
-
 import com.cherp.app.buss.vo.PurchaseChitVO;
 import com.cherp.app.buss.vo.PurchaseHistoryVO;
->>>>>>> N_KW
 import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
 public class StockServiceImpl implements StockService{
 	
@@ -35,18 +26,10 @@ public class StockServiceImpl implements StockService{
 //		this.employeeMapper = employeeMapper;
 //		this.clientMapper = clientMapper;
 //	}
-
-	
 	public StockServiceImpl(StockMapper stockMapper) { 
 		this.stockMapper = stockMapper;
 	}
-<<<<<<< HEAD
 
-
-=======
-	
-	//품목모달_품목전체조회
->>>>>>> N_KW
 	@Override
 	public List<ContractItemVO> getItemList() {
 		List<ContractItemVO> list = stockMapper.selectAllItemList();
@@ -60,13 +43,13 @@ public class StockServiceImpl implements StockService{
 		String clientInit = "";
 		String employeeInit = "";
 		String itemInit = "";
-		//구매 전표번호 불러온다.
+		//구매 전표번호 불러온다. 조건:사원코드이거나 사원이름 AND 거래처코드이거나 거래처명
 		clientInit = client.equals("all") ? "" : client;
-		employeeInit = client.equals("all") ? "" : employee;	
+		employeeInit = employee.equals("all") ? "" : employee;	
 		itemInit = item.equals("all") ? "" : item;
 		List<PurchaseChitVO> chitNoList = stockMapper.selectPurcSlipNoList(type1, type2, clientInit, employeeInit);
 		
-		//구매 전표번호에서 품목에 대한 조회조건으로 걸러준다.
+		//구매 전표번호에서 품목에 대한 조회조건으로 걸러준다. 조건:입고날짜 AND 품목
 		Map<String, Object> conditionMap = new HashMap<>();
 		String[] chitNoArr = new String[chitNoList.size()];
 		int cnt = 0;
@@ -82,6 +65,11 @@ public class StockServiceImpl implements StockService{
 		List<PurchaseHistoryVO> historyList = stockMapper.selectPurcHistoryList(conditionMap);
 		
 		return historyList;
+	}
+
+	@Override
+	public ContractItemVO getItemStocks(String itemCode) {
+		return stockMapper.selectStocks(itemCode);
 	}
 	
 	

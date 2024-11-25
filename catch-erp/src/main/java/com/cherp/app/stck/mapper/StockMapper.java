@@ -11,6 +11,8 @@ import com.cherp.app.stck.vo.ContractItemVO;
 
 public interface StockMapper {
 	public List<ContractItemVO> selectAllItemList();
-	public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String type1, @Param("type2") String type2, @Param("client") String client, @Param("employee") String employee);
+	public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String type1, @Param("type2") String type2
+			, @Param("client") String client, @Param("employee") String employee);
 	public List<PurchaseHistoryVO> selectPurcHistoryList(Map<String, Object> map);
+	public ContractItemVO selectStocks(String itemCode);
 }

@@ -53,8 +53,7 @@ class gridNumber {
       const hiddenInput = document.createElement('input');
       hiddenInput.className = 'hidden-input';
       hiddenInput.id = 'selectCheck'+grid.el.id+String(rowKey);
-	
-      console.log(grid.el.id);
+
       const customInput = document.createElement('span');
       customInput.className = 'custom-input';
 
