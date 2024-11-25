@@ -1,10 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 재고조정 mapper -->
 <mapper namespace="com.cherp.app.stck.mapper.StockMapper">
 	
 	<!-- 매입계약품목 전체조회 -->
 	<select id="selectAllItemList" resultType="com.cherp.app.stck.vo.ContractItemVO">
 		SELECT *
 		FROM   contract_item	
+	</select>
+	
+	<!-- 구매내역 조건조회 --> <!-- 작성중.. -->
+	<select id="selectAllPurchaseSeachList" resultType="PurchaseHistoryVO">
+		SELECT *
+		FROM purchase_history
+		WHERE purchase
+	</select>
+	
+	<!-- 구매내역 조회시 필요한 조회 조건에 맞는 구매전표번호 조회 -->
+	<select id="selectPurcSlipNoList" resultType="PurchaseChitVO">
+		SELECT purcslip_no
+		FROM   purchase_chit
+		WHERE  
+			<choose>
+				<when test="type1 == 'code'">
+				client_code = #{client} 
+				</when>
+				<otherwise>
+				client_name LIKE CONCAT(#{client}, '%')
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="type2 == 'code'">
+					AND employee_code = #{employee}
+				</when>
+				<otherwise>
+					AND employee_name LIKE CONCAT(#{employee}, '%')
+				</otherwise>
+			</choose>
+	</select>
+	
+	<!-- 조건검색된 구매전표번호로 구매내역을 조회 -->
+	<select id ="selectPurcHistoryList" parameterType ="map" resultType="PurchaseHistoryVO">
+		SELECT pur_no
+			   ,wh_code
+			   ,wh_name
+			   ,item_code
+			   ,item_name
+			   ,quantity
+			   ,restocking_price
+			   ,restocking_status
+			   ,restocking_date
+			   ,purcslip_no
+			   ch.client_code AS client_no
+		FROM   purchase_history hi JOIN purchase_chit ch 
+			ON (hi.purcslip_no = ch.purcslip_no)
+		WHERE purcslip_no IN
+	    <foreach item="purcNo" collection="chitNoArr" open="(" separator="," close=")">
+	        #{purcNo}
+	    </foreach>
+	    <choose>
+	    	<when test="type3 == 'code'">
+	    		AND item_code = #{item}
+	    	</when>
+	    	<otherwise>
+	    		AND item_name LIKE CONCAT(#{item}, '%')
+	    	</otherwise>
+	    </choose>
+	    <if test="startDate != 'noDate'">
+	    		AND restocking_date > #{startDate}
+	    </if>
+	    <if test="endDate != 'noDate'">
+	    	 <![CDATA[ 
+	    		AND restocking_date < #{endDate}
+	     	 ]]>
+	    </if>
 	</select>
 </mapper>
