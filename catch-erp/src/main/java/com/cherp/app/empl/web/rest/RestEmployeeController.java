@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.empl.service.EmployeeService;
@@ -32,6 +34,12 @@ public class RestEmployeeController {
 		EmployeeVO emp = new EmployeeVO();
 		emp.setEmployeeCode(employeeCode);
 		return employeeService.employeeInfo(emp);
+	}
+	
+	//사원단건데이터 추가
+	@PostMapping("emps")
+	public int employeeInsert (@RequestBody EmployeeVO employeeVO) {
+		return employeeService.employeeInsert(employeeVO);
 	}
 	
 }

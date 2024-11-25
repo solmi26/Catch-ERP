@@ -1,6 +1,7 @@
 package com.cherp.app.empl.vo;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import lombok.Data;
@@ -29,7 +30,7 @@ public class EmployeeVO {
 	
 // 고정수당
 	
-	private FixedVO fixedVO;
+	private ArrayList<FixedVO> fixedVO;
 	
 //  조인으로 추가할 컬럼들
 	private String departmentName; //부서이름
