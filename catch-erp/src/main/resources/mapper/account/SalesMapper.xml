@@ -36,14 +36,14 @@
 		    p.purchase_chit_no,
 		    p.rec_date,
 		    p.bacct_code,
-		    p.client,
+		    p.client_code,
 		    (
 		        SELECT
 		            client_name
 		        FROM
 		            client
 		        WHERE
-		            client_code = p.client
+		            client_code = p.client_code
 		    )                  AS client_name,
 		    s.decrease_balance AS decrease_balance,
 		    s.decrease_status  AS decrease_status
@@ -52,9 +52,34 @@
 		    JOIN purchase s ON p.purchase_chit_no = s.purchase_chit_no
 	</select>
 	
-	<select id="SelectAllClientPayableList" parameterType="com.cherp.app.acct.vo.ClientPsVO">
-		SELECT *
-		FROM   client
+	<!-- 거래처 채무 거래처원장 조회 -->
+	<select id="SelectAllClientPayableList" parameterType="com.cherp.app.acct.vo.PayablesVO">
+		SELECT  c.client_name
+		        ,pl.rec_date
+		        ,p.acct_name
+		        ,p.summary
+		        ,pl.increase_price
+		        ,pl.decrease_price
+		        ,(pl.increase_price-pl.decrease_price) as balance
+		FROM    client c 
+		        JOIN payables_log pl ON c.client_code = pl.client_code
+		        JOIN purchase p ON p.purchase_chit_no = pl.purchase_chit_no
+		WHERE   pl.client_code = #{clinetCode}
+	</select>
+	
+	<!-- 거래처 채권 거래처원장 조회 -->
+	<select id="SelectAllClientReceivableList" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT  c.client_name
+		        ,rl.rec_date
+		        ,s.acct_name
+		        ,s.summary
+		        ,rl.increase_price
+		        ,rl.decrease_price
+		        ,(rl.increase_price-rl.decrease_price) as balance
+		FROM    client c 
+		        JOIN receivables_log rl ON c.client_code = rl.client_code
+		        JOIN sales s ON s.sales_chit_no = rl.sales_chit_no
+        WHERE   rl.client_code = #{clinetCode}
 	</select>
 	
 	<!-- sales 테이블 insert(매출전표 등록) -->
@@ -68,7 +93,7 @@
 		INSERT INTO sales (
                      sales_chit_no
            			 ,chit_date
-           			 ,client
+           			 ,client_code
            			 ,acct_name
        			     ,supply_price
             		 ,vat
@@ -82,7 +107,7 @@
 			  VALUES(
 		           #{salesChitNo}
 		          ,#{chitDate}
-		          ,#{client}
+		          ,#{clientCode}
 		          ,#{acctName}
 		          ,#{supplyPrice}
 		          ,#{vat}
@@ -95,7 +120,8 @@
 		        )
 	</insert>
 
-	 <!--  RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->
+
+	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
 	<insert id="insertReceivable">
 	<selectKey keyProperty="logId" order="BEFORE" resultType="int">
 			SELECT NVL(MAX(log_id),0) + 1
@@ -107,11 +133,12 @@
 	            ,increase_price  <!-- 채권증가금액 --> 
 	            ,client  <!-- 거래처코드 --> 
 	            ,sales_chit_no <!-- 매출전표번호 --> 
+
 	        ) VALUES(
 	           #{logId}
 	           ,#{recDate}
 	           ,#{increasehkPrice}
-	           ,#{client}
+	           ,#{clientCode}
 	           ,#{salesChitNo}
 	</insert>
     
