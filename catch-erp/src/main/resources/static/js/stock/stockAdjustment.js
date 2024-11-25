@@ -443,8 +443,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	})   
 	
-	//거래처입력창에 수동으로 입력시 해당 거래처명과 동일한 거래처코드를 hidden input창에 자동입력, 없을 시 공백
-/*	let inputTag = document.getElementById('clientInput');
+	//거래처입력창에 수동으로 입력시 해당 거래처명과 동일한 거래처코드를 hidden input창에 자동입력, 없을 시 공백 => !보류 ->구현이 곤란
+	/*let inputTag = document.getElementById('clientInput');
 	inputTag.addEventListener('change', function(){
 		let inputVal = inputTag.value;
 		fetch(`/stocks/clientSearchList/${inputVal}`)
@@ -452,7 +452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		.then(result=>{ 
 			if(result.length == 0){
 				return;
-			} else {}
+			} else {
 			let inputTag2 = document.getElementById('clientInput2')
 			inputTag2.value = 
 		})
@@ -767,16 +767,92 @@ document.addEventListener("DOMContentLoaded", function () {
 	    }
 	];
 	
-	// 그리드에 데이터 넣기(출력)
-	
-	
+	// 그리드에 데이터 넣기(출력)		
 	let purchaseOrderBtn = document.getElementById('purchaseOrderBtn');
 	purchaseOrderBtn.addEventListener("click", function(){
+		
 		let purchaseFilteredData = exceptExitingRows(sampleData6);
 		createdGrid6.resetData(purchaseFilteredData);	
 	})
-			
-
+	
+	//조회조건에 맞는 전표No. 불러오기 & 수동입력시 hidden input.value 초기화
+	let clientInputTag = document.getElementById('clientInput')
+	clientInputTag.addEventListener('change', function(){
+		inputTag2 = document.getElementById('clientInput2');
+		inputTag2.value = '';
+	})
+	
+	let humanInputTag = document.getElementById('humanInput')
+	humanInputTag.addEventListener('change', function(){
+		inputTag2 = document.getElementById('humanInput2');
+		inputTag2.value = '';
+	})
+	
+	let itemInputTag = document.getElementById('itemInput')
+	itemInputTag.addEventListener('change', function(){
+		inputTag2 = document.getElementById('itemInput2');
+		inputTag2.value = '';
+	})
+	
+	//구매내역 조건 조회
+	searchPurchaseChitNo()
+	function searchPurchaseChitNo(){
+		let clientCode = document.getElementById("clientInput2").value;
+		let clientName = document.getElementById("clientInput").value;
+		let employeeCode = document.getElementById("humanInput2").value;
+		let employeeName = document.getElementById("humanInput").value;	 
+		let itemCode = document.getElementById("itemInput2").value;
+		let itemName = document.getElementById("itemInput").value;
+		let startDate = document.getElementById("startDate").value;
+		let endDate = document.getElementById("endDate").value;
+		let client; 
+		let employee;
+		let item;
+		let type1;
+		let type2; 
+		let type3;
+		if(clientCode != "") {
+			client = clientCode;
+			type1 = 'code';
+		} else {
+			client = clientName == "" ? 'all' : clientName;			
+			type1 = 'name';
+		}
+		
+		if(employeeCode != ""){
+			employee = employeeCode;
+			type2 = 'code';
+		} else {
+			employee = employeeName == "" ? 'all' : employeeName;			
+			type2 = 'name';
+		}
+		
+		if(itemCode != ""){
+			item = itemCode;
+			type3 = 'code';
+		} else {
+			item = itemName == "" ? 'all' : itemName;			
+			type3 = 'name';
+		}
+		startDate = startDate == "" ? 'noDate' : startDate;
+		endDate = endDate == "" ? 'noDate' : endDate;
+		//거래처, 사원을 조건으로 전표번호 리스트 불러옴
+		fetch(`/stocks/chitNoList/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
+		.then(result => result.json())
+		.then(result => {
+			let arr = [];
+			result.forEach(ele=>{
+				let data = {};
+				data.c1 = result.purcslipNo;
+				data.c2 = result.
+			})
+		})
+		
+		//불러온 전표번호에 해당하는 구매내역을 불러오는데 품목을 조건으로 구매내역 리스트 불러옴
+				
+	}
+	
+	
 	
     /*============================
     	StackInquery 출하지시내역 모달 JS
@@ -1182,66 +1258,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     /*===================================
     	StackInquery 그 외 JS
-    =====================================*/
-    /*
-    let selectedRow = new Set();  //선택된 Row를 판별하기위함,모달창 닫을때초기화
-    
-    //구매내역모달 내의 선택처리를 위한 함수
-    function selectInModal (ev){
-		//전표No.버튼 클릭시 처리
-		let selectNoRowKey = ev.rowKey; //전표No.을 찾기위한 버튼의 rowkey
-		let selectNo = grid6.getRow(selectNoRowKey).c1; //클릭된 row의 전표No.
-		let grid6Arr = grid6.getData() //모달그리드의 모든 rows를 가지는 배열				
-		
-		//전표No.을 클릭한 경우 모달 그리드를 순회해서 클릭한 전표No.에 해당하는 row의 rowKey를 담음
-		let exceptedTarget = new Set();
-		let unselected = new Set();
-		grid6Arr.forEach(ele=>{						
-			if(ele.c1 == selectNo && selectedRow.has(ele.rowKey) == false){				
-				exceptedTarget.add(ele.rowKey);	
-				selectedRow.add(ele.rowKey);							
-			}															
-		})	
-		
-		//방금 선택된 row는 재선택대상에서 제외
-		exceptedTarget.forEach(ele=>{
-			let selectedRowArr = Array.from(selectedRow);
-			selectedRow2 = new Set(selectedRowArr);
-			selectedRow2.delete(ele);			
-			unselected = selectedRow2;
-			console.log(unselected)
-		})					
-		console.log(unselected)
-		
-			
-		let purchaseGrid = document.getElementById('purchaseGrid') //구매내역모달
-		let arr = []; // 클릭된 전표No.과 동일한 td태그를 담음		
-		let arr2 = [];
-		
-		//filter함수 적용고려(교수님)
-		for(let i=0; i<selectedRow.size; i++){
-			let selectedArr = Array.from(selectedRow);
-			let target = purchaseGrid.querySelector(`[data-row-key="${selectedArr[i]}"]`);			
-			arr.push(target);
-		} 
-		
-		arr.forEach(ele=>{
-			ele.style.backgroundColor = "#9EED7C";		
-		})
-		
-		for(let i=0; i<unselected.size; i++){
-			let unselectedArr = Array.from(unselected);
-			let target = purchaseGrid.querySelector(`[data-row-key="${unselectedArr[i]}"]`);			
-			arr2.push(target);
-		}		
-		
-		
-		arr2.forEach(ele=>{
-			ele.style.backgroundColor = "white";			
-		})
-	}
-    */
-   
+    =====================================*/   
    
     //구매내역모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
           

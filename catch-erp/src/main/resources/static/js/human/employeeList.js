@@ -78,7 +78,16 @@ saveBtn.addEventListener('click',function(){
 	console.log(EmployeeVO);
 	//만약 사용자가 신규버튼을 누른 상태라면
 	if (saveBtn.dataset.mode == 'insert') {
-		
+		 fetch('/emps', {method: 'post', 
+             headers: { "Content-Type": "application/json", },
+             body: JSON.stringify(EmployeeVO)
+       }).then(
+		console.log("성공")
+	   )
+	   .catch(
+		console.log("실패")
+	   )
+
 	} 
 	//만약 사용자가 수정을 할려고하면
 	else {

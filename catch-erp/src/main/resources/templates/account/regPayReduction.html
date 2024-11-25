@@ -38,6 +38,7 @@
     }
     .ledger-table td {
         vertical-align: middle;
+        padding: 6px 24px !important;
     }
     .number-column {
         text-align: right;
@@ -116,28 +117,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="ledgeBody">
-                                    <tr>
-                                        <td>01-14</td>
-                                        <td>미수금</td>
-                                        <td>외화표-ESI 컴퍼니(302호)</td>
-                                        <td class="number-column">950,000</td>
-                                        <td class="number-column">0</td>
-                                        <td class="number-column">-9,378,469</td>
-                                    </tr>
-                                    <tr>
-                                        <td>01-21</td>
-                                        <td>매수금(환거래)</td>
-                                        <td>19년01월달 환거래금-개포3동</td>
-                                        <td class="number-column">35,427</td>
-                                        <td class="number-column"></td>
-                                        <td class="number-column">-9,413,896</td>
-                                    </tr>
-                                    <tr class="subtotal-row">
-                                        <td colspan="3">(누계)</td>
-                                        <td class="number-column">-9,261,172</td>
-                                        <td class="number-column">704,034</td>
-                                        <td class="number-column"></td>
-                                    </tr>
+                                    <!-- 거래처별 채무거래내역 -->
                                 </tbody>
                             </table>
                         </div>
@@ -187,11 +167,6 @@
 	    ],
 	      columns: [
                   {
-                      header:'매입전표번호',
-                      name:'purchaseChitNo',
-                      hidden:1,
-                  },
-                  {
                       header: '거래처코드',
                       name: 'clientCode',
                       sortable: true,
@@ -214,7 +189,7 @@
                   },      
                   {
                       header: '잔액',
-                      name: 'decreaseBalance',
+                      name: 'balancem',
                       sortable: true,
                       align: 'left'
                   },
@@ -227,7 +202,7 @@
                   },
                   {
                     header: '채무상태',
-                    name: 'decreaseStatus',
+                    name: 'state',
                     sortable: true,
                     align: 'left'
                   }
@@ -236,11 +211,10 @@
       grid.on('click', (event) => { // grid 클릭이벤트 발생
 	        if(event.columnName === 'clientCode' && event.rowKey>=0) {
 	          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
-              let purchaseChitNo = grid.getValue(event.rowKey,"purchaseChitNo");
               let clientCode = grid.getValue(event.rowKey,"clientCode");
               let clientData = {
                 method: 'POST',
-                body: JSON.stringify({"clientCode": clientCode, "purchaseChitNo": purchaseChitNo}),
+                body: JSON.stringify({"clientCode": clientCode}),
                 headers: {
                     'Content-Type' : 'application/json'
                 }
@@ -264,7 +238,7 @@
                                     <td>${ele.summary}</td>
                                     <td>${ele.increasePrice}</td>
                                     <td>${ele.decreasePrice}</td>
-                                    <td>${ele.balance}</td>
+                                    <td>${tot}</td>
                                 </tr>`
                 }
                 ledgebody.insertAdjacentHTML('beforeend', layout);
