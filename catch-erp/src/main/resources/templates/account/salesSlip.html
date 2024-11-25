@@ -87,14 +87,14 @@
           <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표일자</span>
-              <input type="date" class="form-control" />
+              <input type="date" class="form-control" name="date"/>
             </div>
           </div>
           <!-- 전표No -->
           <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표 No.</span>
-              <input type="text" class="form-control" readonly="readonly"/>
+              <input type="text" class="form-control" readonly="readonly" name="no"/>
             </div>
           </div>
         </div>
@@ -109,6 +109,7 @@
                 type="text"
                 class="form-control"
                 placeholder="재고전표내역보기"
+                name="saleslip"
               />
               <button class="btn btn-outline-secondary" type="button">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
@@ -123,6 +124,7 @@
                 type="text"
                 class="form-control"
                 placeholder="거래처 선택"
+                name="client"
               />
               <button class="btn btn-outline-secondary" type="button">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
@@ -151,6 +153,7 @@
                 type="text"
                 class="form-control"
                 placeholder="계정명 선택"
+                name="account"
               />
               <button class="btn btn-outline-secondary" type="button">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
@@ -169,6 +172,7 @@
                 type="number"
                 class="form-control"
                 placeholder="공급가액"
+                name="price"
               />
             </div>
           </div>
@@ -180,6 +184,7 @@
                 type="number"
                 class="form-control"
                 placeholder="부가세"
+                name="vat"
               />
             </div>
           </div>
@@ -190,7 +195,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text color">합계</span>
-              <input type="number" class="form-control" />
+              <input type="number" class="form-control" name="amount"/>
             </div>
           </div>
           </div>
@@ -200,7 +205,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text">적요</span>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" name="summary"/>
             </div>
           </div>
           </div>
@@ -221,7 +226,7 @@
     </form>
     
    </div> <!-- 전체 컨테이너 끝 -->
-        
+    <script th:src="@{/js/account/salesSlip.js}"></script>
     <script>
     
       document.addEventListener("DOMContentLoaded", function () {
