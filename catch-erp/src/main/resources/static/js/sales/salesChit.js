@@ -617,7 +617,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
             document.getElementById('inputClientName').value = clientRowData.clientName;
             document.getElementById('inputClientCode').value = clientRowData.clientCode;
-
         }
     });
 
