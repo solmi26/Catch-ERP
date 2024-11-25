@@ -16,7 +16,7 @@ public class StockAdjustController {
 
 //	private final StockService stockAdjustService;
 	
-	@GetMapping("stocks/stockAdjustment")
+	@GetMapping("stocks/stockAdjustment") //재고조정페이지
 	public String stockAdjustment(){
 		return "stock/stockAdjustment";
 	}
