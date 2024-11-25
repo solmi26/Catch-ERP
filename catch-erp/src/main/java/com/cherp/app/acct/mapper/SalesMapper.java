@@ -17,7 +17,7 @@ public interface SalesMapper {
 	public List<PayablesVO> payablesList(); 		// 채무거래 내역 전체 조회
 	public List<SalesVO> receivablesList(); 		// 채권거래 내역 전체 조회
 	public List<SalesVO> invoiceList();				// 세금계산서 내역 전체 조회
-	public List<PayablesVO> SelectAllClientPayableList(@Param("clientCode")String clientCode, @Param("purchaseChitNo")String purchaseChitNo);	// 채무 거래처 전체 조회
+	public List<PayablesVO> SelectAllClientPayableList(String clientCode);	// 채무 거래처 전체 조회
 	public List<SalesVO> SelectAllClientReceivableList(String clientCode);// 채권 거래처 전체 조회
 	
 	//단건 조회
