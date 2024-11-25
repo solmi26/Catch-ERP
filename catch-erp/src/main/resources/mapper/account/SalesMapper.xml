@@ -120,6 +120,7 @@
 		        )
 	</insert>
 
+
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
 	<insert id="insertReceivable">
 	<selectKey keyProperty="logId" order="BEFORE" resultType="int">
@@ -127,11 +128,12 @@
 			FROM receivables_log
 	</selectKey>
 		INSERT INTO  receivables_log(
-	            log_id
-	            ,rec_date
-	            ,increase_price
-	            ,client_code
-	            ,sales_chit_no
+	            log_id  log <!-- 번호 --> 
+	            ,rec_date  발생날짜 <!-- == 매출전표 --> 
+	            ,increase_price  <!-- 채권증가금액 --> 
+	            ,client  <!-- 거래처코드 --> 
+	            ,sales_chit_no <!-- 매출전표번호 --> 
+
 	        ) VALUES(
 	           #{logId}
 	           ,#{recDate}
