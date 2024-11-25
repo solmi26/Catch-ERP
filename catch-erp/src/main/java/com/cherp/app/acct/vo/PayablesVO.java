@@ -17,7 +17,7 @@ public class PayablesVO { // 구매전표, 매입, 채무거래내역 VO
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date chitDate; 			// 전표 일자
-	private String client; 			// 거래처
+	private String clientCode; 		// 거래처 코드
 	private String acctName; 		// 계정 과목
 	private Integer supplyPrice; 	// 공급가 액 purchase_chit 공통
 	private Integer vat;			// 부가가치세 purchase_chit 공통
@@ -35,5 +35,8 @@ public class PayablesVO { // 구매전표, 매입, 채무거래내역 VO
 	private Date recDate; 			// 거래발생 일자
 	private Integer decreasePrice; 	// 채무감소 금액
 	private Integer bacctCode; 		// 계좌코드
-	private String clientName;		// 거래처 명
+	private String clientBacct;		// 계좌번호
+	private String clientName;		// 거래처 명 -> AS 로 이용할 변수
+	private Integer increasePrice;  // 증가 금액
+	private Integer balance;		// 잔고
 }

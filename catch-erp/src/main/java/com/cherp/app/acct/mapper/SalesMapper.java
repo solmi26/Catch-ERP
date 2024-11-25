@@ -2,6 +2,8 @@ package com.cherp.app.acct.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cherp.app.acct.vo.ClientPsVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
@@ -15,11 +17,12 @@ public interface SalesMapper {
 	public List<PayablesVO> payablesList(); 		// 채무거래 내역 전체 조회
 	public List<SalesVO> receivablesList(); 		// 채권거래 내역 전체 조회
 	public List<SalesVO> invoiceList();				// 세금계산서 내역 전체 조회
-	public List<ClientPsVO> SelectAllClientPayableList();	// 채무 거래처 전체 조회
-	public List<ClientPsVO> SelectAllClientReceivableList();// 채권 거래처 전체 조회
+	public List<PayablesVO> SelectAllClientPayableList(@Param("clientCode")String clientCode, @Param("purchaseChitNo")String purchaseChitNo);	// 채무 거래처 전체 조회
+	public List<SalesVO> SelectAllClientReceivableList(String clientCode);// 채권 거래처 전체 조회
+	
 	//단건 조회
 	public SalesVO selectSaleInfo(SalesVO salesVO);			// 매출 단건 조회
-	public SalesVO selectPayableInfo(PayablesVO payablesVO);// 채무거래 단건 조회
+	public PayablesVO selectPayableInfo(PayablesVO payablesVO);// 채무거래 단건 조회
 	public SalesVO selectReceivableInfo(SalesVO salesVO);	// 채권거래 단건 조회
 	public SalesVO selectInvoiceInfo(SalesVO salesVO);		// 세금계산서 내역 단건 조회
 	
@@ -34,6 +37,11 @@ public interface SalesMapper {
 	public int updatePayable(PayablesVO payablesVO);// 채무거래 단건 수정
 	public int updateReceivable(SalesVO salesVO);	// 채권거래 단건 수정
 	public int updateInvoice(SalesVO salesVO);		// 세금 계산서 수정
+	// 거래처 채권 총 잔액 변경
+	public int updateClientBalancek(@Param("clientCode") String clientCode, @Param("balancek") int balancek);
+	// 거래처 채무 총 잔액 변경
+    public int updateClientBalancem(@Param("clientCode") String clientCode, @Param("balancem") int balancem);
+	
 	
 	//삭제
 	public int deleteSale(int salesChitNo);			// 매출 단건 삭제

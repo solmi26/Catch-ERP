@@ -1,7 +1,6 @@
 package com.cherp.app.buss.mapper;
 
 import com.cherp.app.buss.vo.AcntAcctVO;
-import com.cherp.app.buss.vo.WarehouseVO;
 
 import java.util.List;
 

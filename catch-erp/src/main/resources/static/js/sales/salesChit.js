@@ -210,6 +210,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 filter: 'select'
             }, {
+                header: '거래처코드',
+                name: 'clientCode',
+                hidden: true,
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
                 header: '대표자명',
                 name: 'ceoName',
                 align: "center",
@@ -421,21 +430,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }],
 
             columns: [{
-                header: "계정 코드",
-                name: "acctCode",
-                align: "center",
-                renderer: {
+                header: "계정 코드", name: "acctCode", align: "center", renderer: {
                     type: ButtonRenderer
                 },
-            },
-                {
-                    header: "계정명",
-                    name: "acctName",
-                    sortingType: "asc",
-                    sortable: true,
-                    align: "center",
-                }],
-            showDummyRows: true,
+            }, {
+                header: "계정명", name: "acctName", sortingType: "asc", sortable: true, align: "center",
+            }], showDummyRows: true,
         });
 
         return accCodeGrid;
@@ -456,24 +456,19 @@ document.addEventListener("DOMContentLoaded", function () {
             scrollX: true,
             scrollY: true,
             header: {height: 40},
-            bodyHeight: 500,
-            rowHeight: 102,
+            bodyHeight: 400,
+            rowHeight: 40,
             width: 'auto',
             contextMenu: null,
-            rowHeaders: [
-                {
-                    type: 'checkbox',
-                    header: `
+            rowHeaders: [{
+                type: 'checkbox', header: `
                         <span class="custom-input">
                             <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
                             <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-                        </span>`
-                    ,
-                    renderer: {
-                        type: gridCheckbox
-                    }
+                        </span>`, renderer: {
+                    type: gridCheckbox
                 }
-            ],
+            }],
             columns: [{
                 header: '품목코드', name: 'prodCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
             }, {
@@ -485,21 +480,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 editor: 'text',
                 className: 'border'
             }, {
-                header: '출고단가',
-                name: 'deliveryPrice',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className: 'border'
-            }, {
                 header: '수량',
                 name: 'quantity',
+                editor: 'text',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
-                editor: 'text',
                 sortable: true,
                 sortingType: 'desc',
                 className: 'border'
@@ -518,18 +504,49 @@ document.addEventListener("DOMContentLoaded", function () {
                 whiteSpace: 'normal',
                 sortingType: 'desc',
                 className: 'border'
-            }, {header: '이미지', name: 'image', align: "center", width: 200, whiteSpace: 'normal', className: 'border'}, {
-                header: '내용',
-                name: 'salesSummary',
-                align: "center",
-                width: 225,
-                whiteSpace: 'normal',
+            }, {
+                header: '단가',
+                name: 'deliveryPrice',
                 editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border'
+            }, {
+                header: '공급가액',
+                name: 'supplyPrice',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border'
+            }, {
+                header: '부가세',
+                name: 'vat',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
                 className: 'border'
             },],
             summary: {
-                height: 40, position: 'bottom', columnContent: {
-                    quantity: {template: valueMap => `총합: ${valueMap.sum}`},
+                height: 40, position: 'bottom', // or 'top'
+                columnContent: {
+                    deliveryPrice: {
+                        template: function (valueMap) {
+                            return `TOTAL: ${valueMap.sum}`;
+                        }
+                    }, quantity: {
+                        template: function (valueMap) {
+                            return `TOTAL: ${valueMap.sum}`;
+                        }
+                    }
                 }
             }
         });
@@ -546,8 +563,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })
 
-    //열을 삭제하는 이벤트
-
+    // 열을 삭제하는 이벤트
     let deletes = document.querySelectorAll('.deleteRowBtn')
     deletes.forEach(btn => {
         btn.addEventListener('click', function () {
@@ -572,7 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 50)
     }
 
-    const salesChitData = [{}];
+    const salesChitData = [];
 
     const createdSalesChitGrid = initSalesChitGrid();
 
@@ -601,25 +617,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //거래처 input
     clientGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
+        const clientRowData = clientGrid.getRow(ev.rowKey);
 
-        if (columnName === 'clientName') {
+        if (clientRowData && clientRowData.clientName) {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
-            document.getElementById('inputClient').value = columnValue
-
+            // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
+            document.getElementById('inputClientName').value = clientRowData.clientName;
+            document.getElementById('inputClientCode').value = clientRowData.clientCode;
         }
     });
 
     //담당자 input
     humanGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
-        const rowKey = ev.rowKey
+        const empRowData = humanGrid.getRow(ev.rowKey);
 
-        if (columnName === 'employeeCode') {
+        if (empRowData && empRowData.employeeCode) {
             // 특정 열(columnName)의 값 가져오기
-            const columnValue = humanGrid.getValue(rowKey, 'name');
-            document.getElementById('empInput').value = columnValue
+            // const columnValue = humanGrid.getValue(rowKey, 'name');
+            console.log(empRowData);
+            document.getElementById('empNameInput').value = empRowData.name;
+            document.getElementById('empCodeInput').value = empRowData.employeeId;
 
         }
     });
@@ -647,5 +664,241 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+
+    // 발주서 모달
+    /*============================
+       StackInquery 구매내역 모달 JS
+   ==============================*/
+    var orderModal = document.getElementById('orders')
+
+    orderModal.addEventListener('show.bs.modal', function () {
+        // 모달이 표시되기 전에 실행할 코드
+        window.setTimeout(function () {
+            ordersGrid.refreshLayout();
+        }, 200)
+    })
+
+    let ordersGrid;
+    const initordersGrid = () => {
+        ordersGrid = new Grid({
+            el: document.getElementById('ordersGrid'),
+            scrollX: true,
+            scrollY: true,
+            header: {height: 40},
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                type: 'checkbox', header: `
+		              <span class="custom-input">
+		              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+		            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+		          	</span>
+		          `, renderer: {
+                    type: gridCheckbox
+                }
+            }],
+            columns: [{
+                header: '발주번호',
+                name: 'orderNo',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border',
+            }, {
+                header: '거래처코드',
+                name: 'clientCode',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+            }, {
+                header: '거래처명',
+                name: 'clientName',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border',
+            }, {
+                header: '발주일자',
+                name: 'orderDate',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: {
+                    type: 'date', options: {
+                        format: 'yyyy.MM.dd', language: 'ko'
+                    }
+                }
+            }, {
+                header: '사원코드',
+                name: 'empCode',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '사원명',
+                name: 'empName',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '품목코드',
+                name: 'itemCode',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '품목명',
+                name: 'itemName',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '수량',
+                name: 'quantity',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '단가',
+                name: 'price',
+                align: "center",
+                width: 200,
+                whiteSpace: 'normal',
+                editor: 'text',
+                className: 'border',
+                formatter: function (e) {
+                    return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                },
+            },{
+                header: '공급가액',
+                name: 'supplyPrice',
+                align: "center",
+                width: 200,
+                whiteSpace: 'normal',
+                editor: 'text',
+                className: 'border',
+                formatter: function (e) {
+                    return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                },
+            }]
+        });
+        return ordersGrid;
+    }
+
+
+    // 샘플 데이터
+    const sampleData6 = [{
+        orderNo: 'A0000045',
+        clientCode: 'A0000045-1',
+        clientName: '태산물산',
+        orderDate: '2023.01.01',
+        empCode: 'E001',
+        empName: '홍길동',
+        itemCode: 'z0001',
+        itemName: '컵홀더',
+        quantity: '99',
+        price: '100000000',
+        supplyPrice: '10000',
+        vat: '100',
+    }, {
+        orderNo: 'A0000045',
+        clientCode: 'A0000045-1',
+        clientName: '2023.01.01',
+        orderDate: 'z0001',
+        empCode: '컵홀더',
+        empName: '태호물산',
+        itemCode: '0',
+        itemName: '컵홀더',
+        quantity: '123',
+        price: '100',
+        supplyPrice: '10000',
+        vat: '100',
+    },];
+
+    //출하지시내역 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
+    let orderInputBtn = document.getElementById('orderInputBtn');
+    orderInputBtn.addEventListener("click", function () {
+        let arr = ordersGrid.getCheckedRows();
+        let dataArr = [];
+
+        //price에 넣을 데이터를 위한 fetch함수 필요
+        arr.forEach(ele => {
+            let data = {};
+            data.prodCode = ele.itemCode;
+            data.prodName = ele.itemName;
+            data.deliveryPrice = ele.price;
+            data.quantity = ele.quantity;
+            data.stocksQuantity = '디비 값';
+            data.deficiencyQuantity = '디비 값 연산';
+            data.price = 'fetch필요(출하)';
+            data.supplyPrice = ele.supplyPrice;
+            data.vat = ele.vat;
+            dataArr.push(data)
+        })
+        let selectedCtn = arr.length;
+        let exitedRowsInPage = salesChit.getRowCount()
+        let checkingMaxRows = selectedCtn + exitedRowsInPage;
+        if (checkingMaxRows < 16) {
+            salesChit.appendRows(dataArr);
+        } else {
+            alert('한 번에 15건을 처리할 수 있습니다.')
+        }
+    })
+
+    //내역,출하모달 띄울 때 조정페이지 grid에 이미 있는 rows들을 거르고 data 배열을 반환시킬 함수
+    function exceptExitingRows(data) {
+        //페이지 grid에 존재하는 내역No.
+        let gridData = grid.getData();
+        let exitedNo = [];
+        gridData.forEach(ele => {
+            exitedNo.push(ele.orderNo);
+        })
+        let exitedNoSet = new Set(exitedNo);
+
+        //제외 된 후 최종적으로 출력될 row의 clientCode컬럼 값
+        let dataSet = new Set();
+        data.forEach((ele) => {
+            dataSet.add(ele.clientCode)
+            exitedNoSet.forEach(ele2 => {
+                if (ele.clientCode == ele2) {
+                    dataSet.delete(ele2)
+                }
+            })
+        })
+        let noArr = Array.from(dataSet);
+        let resultObj = [];
+        data.forEach(ele => {
+            noArr.forEach(ele2 => {
+                if (ele.clientCode == ele2) {
+                    resultObj.push(ele);
+                }
+            })
+        })
+        let resultArr = [];
+        let resultObjArr = Array.from(resultObj)
+        resultObjArr.forEach(ele => {
+            let row = {};
+            row.orderNo = ele.orderNo;
+            row.clientCode = ele.clientCode;
+            row.clientName = ele.clientName;
+            row.orderDate = ele.orderDate;
+            row.empCode = ele.empCode;
+            row.empName = ele.empName;
+            row.itemCode = ele.itemCode;
+            row.price = ele.price;
+            resultArr.push(row);
+        })
+        return resultArr
+    }
+
+    const createdOrderGrid = initordersGrid();
+    createdOrderGrid.resetData(sampleData6);
 });
 

@@ -20,18 +20,19 @@
 
 <!-- Form -->
 <div class="card">
-    <form class="bg-light p-4 rounded card-body">
+    <form class="bg-light p-4 rounded card-body" action="insertSalesChit" method="post">
         <div class="row g-3">
             <div class="col-md-12">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">작성일자</label>
-                        <input type="date" class="form-control" id="currentDate" disabled>
+                        <input type="date" class="form-control" id="currentDate" readonly>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">거래처</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="inputClient">
+                            <input type="text" class="form-control" id="inputClientName" name="clientName">
+                            <input type="hidden" class="form-control" id="inputClientCode" name="clientCode">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
                                     data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"></button>
                         </div>
@@ -39,7 +40,8 @@
                     <div class="col-md-6">
                         <label class="form-label">담당자</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="empInput">
+                            <input type="text" class="form-control" id="empNameInput" name="employeeName">
+                            <input type="hidden" class="form-control" id="empCodeInput" name="employeeCode">
                             <button type="button" class="bi bi-search border px-4 btn btn-success empBtn"
                                     data-bs-toggle="modal" data-bs-target="#humanModal" id="humanInqueryModal"></button>
                         </div>
@@ -47,7 +49,7 @@
                     <div class="col-md-6">
                         <label class="form-label">출하창고</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="warehouse">
+                            <input type="text" class="form-control" id="warehouse" name="whName">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
                                     data-bs-toggle="modal" data-bs-target="#warehouseModal"
                                     id="openWarehouseModal"></button>
@@ -56,7 +58,7 @@
                     <div class="col-md-6">
                         <label class="form-label">입금계좌</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="accountInput">
+                            <input type="text" class="form-control" id="accountInput" name="depBacct">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
                                     data-bs-toggle="modal" data-bs-target="#accountSearchModal"></button>
                         </div>
@@ -64,7 +66,7 @@
                     <div class="col-md-6">
                         <label class="form-label">매출계정</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="accCodeInput">
+                            <input type="text" class="form-control" id="accCodeInput" name="accCode">
                             <button type="button" class="bi bi-search border px-4 btn btn-success modalBtn"
                                     data-bs-toggle="modal" data-bs-target="#ledgerModal" id="openAccCodeModal"></button>
                         </div>
@@ -72,14 +74,15 @@
                 </div>
             </div>
         </div>
+        <button class="btn btn-success px-4" type="submit"
+                style="margin:10px 0px">
+            판매
+        </button>
     </form>
 </div>
 
 <!-- Transaction History Select -->
-<button class="btn btn-success px-4" id="sumbit" type="button" data-bs-toggle="dropdown"
-        style="margin:10px 0px">
-    판매
-</button>
+
 <button class="btn btn-success px-2 appendRowBtn" id="addRowBtn" type="button"
         style="margin:10px 0px">
     추가
@@ -88,9 +91,44 @@
         style="margin:10px 0px">
     삭제
 </button>
-<button class="btn btn-success px-5" type="button" data-bs-toggle="dropdown" style="margin:10px 0px">
+<button class="btn btn-success px-4" id="orderModal" type="button" data-bs-toggle="modal" data-bs-target="#orders" style="margin:10px 0px" >
+    발주서
+</button>
+<button class="btn btn-success px-4" type="button" style="margin:10px 0px">
     거래명세서
 </button>
+
+<!-- 발주서 모달 -->
+<div class="modal fade" id="orders" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">구매현황 (재고)</h5>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="d-flex justify-content-left mb-3">
+
+                    <div>
+                        <button class="btn btn-success">엑셀양식 다운로드</button>
+                    </div>
+                </div>
+
+                <div id="ordersGrid"></div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div><small>
+                    <p style="color: gray;">※재고를 조정할 전표No. / 내역No. 버튼을 클릭후 선택버튼을 클릭하세요.</p></small>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="orderInputBtn" data-bs-dismiss="modal">선택</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Table -->
 <div id="wrap">
@@ -101,7 +139,7 @@
 <!-- Bottom Button -->
 
 <!-- 거래처 모달 -->
-<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" >
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -156,7 +194,7 @@
 
 
 <!-- 담당자 모달 -->
-<div class="modal fade" id="humanModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="humanModal" tabindex="-1" aria-labelledby="modalLabel" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

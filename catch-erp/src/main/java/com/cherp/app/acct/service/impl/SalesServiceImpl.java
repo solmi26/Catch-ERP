@@ -3,6 +3,7 @@ package com.cherp.app.acct.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cherp.app.acct.mapper.SalesMapper;
 import com.cherp.app.acct.service.SalesService;
@@ -40,11 +41,36 @@ public class SalesServiceImpl implements SalesService{
 	public List<SalesVO> invoiceList() {
 		return salesMapper.invoiceList();
 	}
-
+	
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
 	// 매출전표 등록
-	public int insertSale(SalesVO salesVO) {
-		return salesMapper.insertSale(salesVO);
+	public void insertSale(SalesVO salesVO) {
+//		try {
+	        // 매출 내역 추가
+	        int resultSale = salesMapper.insertSale(salesVO); 
+//	        if (resultSale != 1) {
+//	            throw new RuntimeException("매출 내역 추가 실패");
+//	        }
+//	        
+	        // 채권 내역 추가
+	        int resultRe = salesMapper.insertReceivable(salesVO);
+//	        if (resultRe != 1) {
+//	            throw new RuntimeException("채무 내역 추가 실패");
+//	        }
+	        
+	        // 거래처 총 채권 잔액 업데이트
+	        int resultUp = salesMapper.updateClientBalancek(salesVO.getClientCode(), salesVO.getTotalPrice());
+//	        if (resultUp != 1) {
+//	            throw new RuntimeException("거래처 총 잔액 업데이트 실패");
+//	        }
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//			}
+	        
+	        // 세금계산서 발행
+	        int resultIv = salesMapper.insertInvoice(salesVO);
+	        
 	}
 	
 	@Override
@@ -53,7 +79,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public SalesVO payableInfo(PayablesVO payablesVO) {
+	public PayablesVO payableInfo(PayablesVO payablesVO) {
 		return null;
 	}
 
@@ -124,13 +150,13 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public List<ClientPsVO> ClientPayableList() {
-		return salesMapper.SelectAllClientPayableList();
+	public List<PayablesVO> ClientPayableList(String clientCode, String purchaseChitNo) {
+		return salesMapper.SelectAllClientPayableList(clientCode, purchaseChitNo);
 	}
 
 	@Override
-	public List<ClientPsVO> ClientReceivableList() {
-		return salesMapper.SelectAllClientReceivableList();
+	public List<SalesVO> ClientReceivableList(String clientCode) {
+		return salesMapper.SelectAllClientReceivableList(clientCode);
 	}
 	
 }
