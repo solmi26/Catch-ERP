@@ -94,7 +94,7 @@
           <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표 No.</span>
-              <input type="text" class="form-control" readonly="readonly" name="no"/>
+              <input type="text" class="form-control" readonly="readonly" name="no" value="-"/>
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@
               <input
                 type="text"
                 class="form-control"
-                placeholder="재고전표내역보기"
+                placeholder="판매전표 내역보기"
                 name="saleslip"
               />
               <button class="btn btn-outline-secondary" type="button">
@@ -140,8 +140,9 @@
             <div class="input-group input-group-sm">
               <span class="input-group-text">부가세 유형</span>
               <select class="form-select">
-                <option>세금계산서</option>
-                <option>영수증</option>
+                <option value="과세" selected="selected">과세</option>
+                <option value="면세">면세</option>
+                <option value="영세">영세</option>
               </select>
             </div>
           </div>
@@ -152,8 +153,8 @@
               <input
                 type="text"
                 class="form-control"
-                placeholder="계정명 선택"
-                name="account"
+                placeholder="회계계정 선택"
+                name="acct"
               />
               <button class="btn btn-outline-secondary" type="button">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
@@ -195,7 +196,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text color">합계</span>
-              <input type="number" class="form-control" name="amount"/>
+              <input type="number" class="form-control" name="amount" placeholder="합계"/>
             </div>
           </div>
           </div>
@@ -205,7 +206,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text">적요</span>
-              <input type="text" class="form-control" name="summary"/>
+              <input type="text" class="form-control" name="summary" placeholder="적요"/>
             </div>
           </div>
           </div>

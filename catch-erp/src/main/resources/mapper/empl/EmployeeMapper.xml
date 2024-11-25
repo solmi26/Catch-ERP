@@ -16,7 +16,7 @@
 		<result column="department_code" property="departmentCode"/>
 		<result column="department_name" property="departmentName"/>		
 		<!-- 인사세부정보 -->
-		<association property="employeeDetailVO" javaType="EmployeeDetailVO">
+		<association property="employeeDetailVO" javaType="com.cherp.app.empl.vo.EmployeeDetailVO">
 			<result column="eng_name" property="engName"/>
 			<result column="identity_no" property="identityNo"/>
 			<result column="head_check" property="headCheck"/>
@@ -34,13 +34,13 @@
 			<result column="bank" property="bank"/>
 		</association>
 		<!-- 기본급 -->
-		<association property="employeeSalaryVO" javaType="EmployeeSalaryVO">
+		<association property="employeeSalaryVO" javaType="com.cherp.app.empl.vo.EmployeeSalaryVO">
 			<result column="monthly_salary" property="monthlySalary"/>
 		</association>
 		<!-- 고정수당 -->
 		<collection property="fixedVO"
 					javaType="java.util.ArrayList"
-					ofType="FixedVO">
+					ofType="com.cherp.app.empl.vo.FixedVO">
 			<id column="fixed_no" property="fixedNo"/>
 			<result column="allowance_price" property="allowancePrice"/>
 			<result column="allowance_code" property="allowanceCode"/>
@@ -102,6 +102,35 @@
 		ON      em.employee_code = ed.employee_code
 		WHERE   em.employee_code = #{employeeCode}
 	</select>
-
+	<insert id="insertEmployee" statementType="CALLABLE" >
+		CALL employee_insert(
+								  #{name} 
+								, #{hireDate}
+								, #{password} 
+								, #{employeePosition} 
+								, #{statusType} 
+								, #{resignationDate} 
+								, #{hireType} 
+								, #{departmentCode} 
+								, #{employeeDetailVO.engName} 
+								, #{employeeDetailVO.identityNo}
+								, #{employeeDetailVO.headCheck}
+								, #{employeeDetailVO.duty}
+								, #{employeeDetailVO.tel}
+								, #{employeeDetailVO.phone}
+								, #{employeeDetailVO.email}
+								, #{employeeDetailVO.empStatus}
+								, #{employeeDetailVO.zipcode}
+								, #{employeeDetailVO.address}
+								, #{employeeDetailVO.detailAddress}
+								, #{employeeDetailVO.bacct}
+								, #{employeeDetailVO.depositor}
+								, #{employeeDetailVO.employeeImage}
+								, #{employeeDetailVO.bank}
+								, #{employeeSalaryVO.monthlySalary}
+								, #{fixedVO, mode=IN, typeHandler=com.cherp.app.empl.vo.EmployeeArrayStructHandler}
+							)
+	</insert>
+	
 	<!-- 인사정보 삽입 -->
 </mapper>

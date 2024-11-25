@@ -43,6 +43,7 @@ public class SalesController {
 	// 매출 전표 등록(화면)
 	@GetMapping("insertSales")
 	public String insertSalesForm(Model model) {
+		
 		return "account/salesSlip";
 	}
 	
