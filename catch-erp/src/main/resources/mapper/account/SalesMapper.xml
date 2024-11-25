@@ -60,24 +60,23 @@
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSale" parameterType="com.cherp.app.acct.vo.SalesVO">
 	<selectKey keyProperty="salesChitNo" order="BEFORE" resultType="string">
-	    SELECT 'mk' || TO_CHAR(SYSDATE, 'YYYYMMDD') || 
+	    SELECT 'MK' || TO_CHAR(SYSDATE, 'YYYYMMDD') || 
 	           LPAD(NVL(MAX(TO_NUMBER(SUBSTR(sales_chit_no, 10))), 0) + 1, 3, '0')
 	    FROM sales
 	    WHERE SUBSTR(sales_chit_no, 2, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
 	</selectKey>
 		INSERT INTO sales (
-                     sales_chit_no
-           			 ,chit_date
-           			 ,client
-           			 ,acct_name
-       			     ,supply_price
-            		 ,vat
-           		  	 ,total_price
-           	 	 	 ,writer
-           			 ,rec_balance
-           		  	 ,rec_status
-	       			 ,summary
-           			 ,saleslip_no)
+                     sales_chit_no <!-- 전표번호 -->
+           			 ,chit_date <!-- 전표일자 -->
+           			 ,client <!-- 거래처 -->
+           			 ,acct_name <!-- 계정명 -->
+       			     ,supply_price <!-- 공급가액 -->
+            		 ,vat <!-- 부가세 -->
+           		  	 ,total_price <!-- 합계 -->
+           	 	 	 ,writer <!-- 작성자 -->
+           			 ,rec_balance <!-- 해당 매출전표의 채권 잔액 -->
+	       			 ,summary <!-- 적요 -->
+           			 ,saleslip_no <!-- 판매전표 번호 -->
                     )
 			  VALUES(
 		           #{salesChitNo}
@@ -89,7 +88,6 @@
 	              ,#{totalPrice}
 	              ,#{writer}
                   ,#{recBalance}
-                  ,#{recStatus}
                   ,#{summary}
                   ,#{saleslipNo}
 		        )
