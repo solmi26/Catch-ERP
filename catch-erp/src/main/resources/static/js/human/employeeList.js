@@ -10,7 +10,7 @@ document.querySelector('#employeeTabContent').querySelectorAll('input')
 document.addEventListener('DOMContentLoaded', function() {
 	
     const tableRows = document.querySelectorAll('.employee-list tbody tr');
-    tableRows.forEach(row => {
+    tableRows.forEach(rwow => {
         row.addEventListener('click', function() {
 
             tableRows.forEach(r => r.classList.remove('table-active'));
@@ -37,8 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 //셀렉트 박스에 데이터를 뿌리는 함수
+
 async function datoToSelect(name,code) {
-await fetch('/empCommon?commonCode='+code)
+await fetch('employees/empCommon?commonCode='+code)
 .then(data => data.json())
 .then(datas => {
 	document.querySelectorAll(`[name="${name}"]`).forEach(item => {
@@ -49,6 +50,7 @@ await fetch('/empCommon?commonCode='+code)
 	})
 })
 };
+
 
 
 let readonly = [
@@ -75,7 +77,7 @@ grid.on('click', function (ev) {
 		allowanceGrid.refreshLayout();
 		}, 200) 
 		let empCode = grid.getFormattedValue(ev.rowKey,'employeeCode');
-		fetch('/emps/'+empCode)
+		fetch('employees/emps/'+empCode)
 		.then(data => data.json())
 		.then(data => {
 			//데이터 인풋에 뿌리는 함수
@@ -140,7 +142,7 @@ saveBtn.addEventListener('click',function(){
 	console.log(EmployeeVO);
 	//만약 사용자가 신규버튼을 누른 상태라면
 	if (saveBtn.dataset.mode == 'insert') {
-		 fetch('/emps', {method: 'post', 
+		 fetch('employees/emps', {method: 'post', 
              headers: { "Content-Type": "application/json", },
              body: JSON.stringify(EmployeeVO)
        }).then(
@@ -183,7 +185,7 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 		str += ""
 	}
 	parameter = '?'+str.substr(1)
-	fetch("/emps"+parameter)
+	fetch("employees/emps"+parameter)
 	.then(data => data.json())
 	.then(data => {
 		grid.resetData(data)

@@ -16,7 +16,7 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	
 	//인사목록 페이지
-	@GetMapping("employee")
+	@GetMapping("employees/employee")
 	public String employeeList(Model model) {
 		EmployeeSearchDto search = new EmployeeSearchDto();
 		search.setEmployeeName("gd");
@@ -27,7 +27,7 @@ public class EmployeeController {
 	
 	
 	//부서목록 페이지
-	@GetMapping("department")
+	@GetMapping("employees/department")
 	public String departmentList() {
 		return "human/departmentList";
 	}

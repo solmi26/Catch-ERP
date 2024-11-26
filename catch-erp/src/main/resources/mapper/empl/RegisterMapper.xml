@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.empl.RegisterMapper">
+<mapper namespace="com.cherp.app.empl.mapper.RegisterMapper">
+    <!-- 부서목록 조회 -->
+	<select id="selectAllDepartment" resultType="com.cherp.app.empl.vo.DepartmentVO">
+		SELECT department_code,
+		       department_name,
+		       manager_code
+		FROM   department
+	</select>
+
 	<!-- 부서목록 페이지의 부서등록  -->
 	<insert id="insertDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
 		INSERT INTO department(
-		                       deparment_code
-		                       deparmtnt_name
-		                       <if test="managerId != null and !managerId.equals('')">
-		                       manager_id
+		                       department_code
+		                       ,department_name
+		                       <if test="managerCode != null and !managerCode.equals('')">
+		                       ,manager_code
 		                       </if>)
 		VALUES (
 				#{departmentCode}
-		        #{departmentName}
-                <if test="managerId != null and !managerId.equals('')">
-                #{mangerId}
+		        ,#{departmentName}
+                <if test="managerCode != null and !managerCode.equals('')">
+                ,#{managerCode}
                 </if>
 		        )
 	</insert>
 
-
+	<!-- 부서목록의 부서삭제 -->
+	<delete>
+		DELETE FROM department
+		WHERE deparment_code IN
+		<foreach collection=""></foreach>
+	</delete>
 
 
 

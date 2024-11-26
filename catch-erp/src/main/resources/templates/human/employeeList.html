@@ -464,7 +464,7 @@
   	});
 
   document.addEventListener('DOMContentLoaded', function() {
-      fetch("/emps")
+      fetch("employees/emps")
       .then(result => result.json())
       .then(datas =>{grid.resetData(datas)})
 	})    

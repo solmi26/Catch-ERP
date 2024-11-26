@@ -36,7 +36,7 @@
 							<button type="button" class="btn btn-success btn-sm req-Btn" >등록</button>
 						</div>
 						<div class="col-auto ps-0">
-							<button type="button" class="btn btn-danger btn-sm" >삭제</button>
+							<button type="button" class="btn btn-danger btn-sm del-Btn" >삭제</button>
 						</div>
 						
 					</div>
@@ -72,7 +72,7 @@
                                          <label for="inputPassword6" class="col-form-label">부서코드</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input"  aria-describedby="passwordHelpInline">
+                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input"  name="departmentCode" aria-describedby="passwordHelpInline">
                                        </div>
                                    </div>                                    
                                    <div class="row justify-content-center align-items-center">
@@ -80,7 +80,7 @@
                                          <label for="inputPassword6" class="col-form-label">부서명</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input"  aria-describedby="passwordHelpInline">
+                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input"  name="departmentName" aria-describedby="passwordHelpInline">
                                        </div>
                                    </div>                                    
                                    <div class="row justify-content-center align-items-center">
@@ -88,7 +88,7 @@
                                          <label for="inputPassword6" class="col-form-label">부서장</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input"  aria-describedby="passwordHelpInline">
+                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input" name="managerCode" aria-describedby="passwordHelpInline">
                                        </div>
                                    </div> 
                                    </div>
@@ -106,70 +106,46 @@
    </div>
 		
 <!-- 부서등록모달끝!!~~~ -->		
-		
 	<script>
 	    var gridData = [{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'}]
 		const Grid = tui.Grid;
-		const instance = new Grid({
+		const grid = new Grid({
 			  el: document.getElementById('grid'), // Container element
 		      data: gridData.slice(0, 8),
 		      width: 650,
 		      bodyHeight: 600,
+		      rowHeaders: [
+		          {
+		            type: 'checkbox',
+		            header: `
+		              <span class="custom-input">
+		              <input type="checkbox" id="all-checkbox-1" class="hidden-input" name="_checked" />
+		            	<label for="all-checkbox-1" class="checkbox selectCheck">✔</label>
+		          	</span>
+		          `,
+		            renderer: {
+		              type: gridCheckbox
+		            }
+		          }
+		        ],
 		      scrollX: true,
 		      scrollY: false,
 			  columns: [
 			    {
 			      header: '부서코드',
-			      name: 'name'
+			      name: 'departmentCode'
 			    },
 			    {
 			      header: '부서명',
-			      name: 'artist'
+			      name: 'departmentName'
 			    },
 			    {
 			      header: '부서장',
-			      name: 'release'
+			      name: 'managerCode'
 			    }
 			  ],
 			  data: [
-			    {
-			      name: 'Beautiful Lies',
-			      artist: 'Birdy',
-			      release: '2016.03.26',
-			      genre: 'Pop'
-			    },
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-
-
+				{}
 			  ],
 			showDummyRows: true
 			});
