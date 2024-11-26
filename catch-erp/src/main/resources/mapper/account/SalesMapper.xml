@@ -167,5 +167,13 @@
 		SET balancek = balancek + #{balancek}
 		WHERE client_code = #{clientCode}
     </update>
-
+    
+    <!-- 회계 계정 조회 -->
+	<select id="selectAcctList" resultType="com.cherp.app.acct.vo.SalesVO">
+		SELECT   acct_code
+                 ,acct_name
+                 ,debit_side
+		FROM  acnt_acct
+		WHERE debit_side = #{debitSide}
+	</select>
 </mapper>
