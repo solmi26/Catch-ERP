@@ -21,4 +21,5 @@ public class SalesChitVO {
     private String employeeName; // 담당자 명
     private String employeeCode; // 사원 코드
     private Integer vat; // 부가세
+    private String slipState; // 발행상태
 }

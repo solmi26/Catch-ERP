@@ -69,6 +69,9 @@
 	  	background-color: #fff7e6;
 	  }
 	  
+	  input:read-only{
+	  	background-color: #eee !important;
+	  }
 
     </style>
     
@@ -110,8 +113,9 @@
                 class="form-control"
                 placeholder="판매전표 내역보기"
                 name="saleslip"
+                id="salesInput"
               />
-              <button class="btn btn-outline-secondary" type="button">
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#salesModal" id="openSalesModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
               </button>
             </div>
@@ -126,6 +130,7 @@
                 placeholder="거래처 선택"
                 name="clientName"
                 id="clientInput"
+                readonly="readonly"
               />
 	           <input type="text" style="display:none" id="clientInput2" name="clientCode">
               <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal">
@@ -158,6 +163,7 @@
                 placeholder="회계계정 선택"
                 name="acctName"
                 id="acctInput"
+                readonly="readonly"
               />
               <input type="text" style="display:none" id="acctInput2" name="acctCode">
               <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="openAcctModal">
@@ -245,7 +251,7 @@
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※거래처코드를 클릭하여 입력하세요.</small></p>
+	                    <p><small>※거래처코드를 클릭하여 입력해주세요.</small></p>
 	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
@@ -264,12 +270,43 @@
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※회계코드를 클릭하여 입력하세요.</small></p>
+	                    <p><small>※회계코드를 클릭하여 입력해주세요.</small></p>
 	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
+	    
+	 <!-- 판매전표 모달 HTML -->
+	<div class="modal fade" id="salesModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">판매전표</h5>
+                    
+                </div>
+                <div class="modal-body">
+                   
+                    <div class="d-flex justify-content-left mb-3">
+                        
+                        <div>
+                            <button class="btn btn-secondary">발행완료 건 보기</button>
+                        </div>
+                    </div>
+                    
+                    <div id="salesGrid"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div><small>
+                        <p style="color: gray;">※매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</p></small>
+                    </div>
+                    <div>
+                    	<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 	    
     <script th:src="@{/js/account/salesSlip.js}"></script>
 
