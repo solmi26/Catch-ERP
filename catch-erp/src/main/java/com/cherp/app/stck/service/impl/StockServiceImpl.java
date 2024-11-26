@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.cherp.app.buss.vo.PurchaseChitVO;
 import com.cherp.app.buss.vo.PurchaseHistoryVO;
 import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,6 +30,8 @@ public class StockServiceImpl implements StockService{
 	public StockServiceImpl(StockMapper stockMapper) { 
 		this.stockMapper = stockMapper;
 	}
+	
+	//품목모달_품목전체조회
 
 	@Override
 	public List<ContractItemVO> getItemList() {
