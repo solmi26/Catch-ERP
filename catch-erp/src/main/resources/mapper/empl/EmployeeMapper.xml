@@ -50,7 +50,7 @@
 		<!-- 리절트맵시 사용시 association넣고나서 다시 result를 삽입하지 말것 오류뜸.  -->
 	</resultMap>
 	<!-- 인사정보 다건조회 -->
-	<select id="selectAllEmployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO">
+	<select id="selectAllEmployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO" parameterType="com.cherp.app.common.dto.EmployeeSearchDto">
 		SELECT 	em.employee_code,
 				em.employee_id,
 				em.name,
@@ -65,11 +65,54 @@
 		FROM    employees em
 		JOIN    department dp
         ON      em.department_code = dp.department_code
+        <where>
+        <if test="employeePosition != null and !employeePosition.equals('')">
+        employee_position = #{employeePosition}
+        </if>
+        <if test="employeeName != null and !employeeName.equals('')">
+        AND name LIKE '%'||#{employeeName}||'%'
+        </if>
+        <if test="employeeId != null and !employeeId.equals('')">
+        AND employee_id LIKE '%'||#{employeeId}||'%'
+        </if>
+        <if test="departmentCode != null and !departmentCode.equals('')">
+        AND department_code = #{departmentCode}
+        </if>
+        <if test="statusType != null and !statusType.equals('')">
+        AND status_type = #{statusType}
+        </if>
+        <if test="hireDateStart != null and !hireDateStart.equals('') and hireDateEnd != null and !hireDateEnd.equals('')" >
+        AND hire_date BETWEEN  #{hireDateStart} AND #{hireDateEnd}
+        </if>
+        <if test="hireDateStart != null and !hireDateStart.equals('') and hireDateEnd = null and hireDateEnd.equals('')" >
+        <![CDATA[
+        AND hire_date > #{hireDateStart}
+        ]]>
+        </if>
+        <if test="hireDateStart = null and hireDateStart.equals('') and hireDateEnd != null and !hireDateEnd.equals('')" >
+        <![CDATA[
+        AND hire_date < #{hireDateEnd}
+        ]]>
+        </if>
+        <if test="resignationDateStart != null and !resignationDateStart.equals('') and resingationDateEnd != null and !resingationDateEnd.equals('')" >
+        AND hire_date BETWEEN  #{resignationDateStart} AND #{resingationDateEnd}
+        </if>
+        <if test="resignationDateStart != null and !resignationDateStart.equals('') and resingationDateEnd = null and resingationDateEnd.equals('')" >
+        <![CDATA[
+        AND hire_date > #{resignationDateStart}
+        ]]>
+        </if>
+        <if test="resignationDateStart = null and resignationDateStart.equals('') and resingationDateEnd != null and !resingationDateEnd.equals('')" >
+        <![CDATA[
+        AND hire_date < #{resignationDateStart}
+        ]]>
+        </if>        
+        </where>
 	</select>
 	
 	<!-- 인사정보 단건조회 -->
 	<select id="seleectEmployee" resultMap="Employee">
-		SELECT 	em.employee_code,
+        		SELECT 	em.employee_code,
 		        em.employee_id,
 		        em.name,
 		        em.hire_date,
@@ -94,13 +137,26 @@
 		        ed.bacct,
 		        ed.depositor,
 		        ed.employee_image,
-		        ed.bank
+		        ed.bank,
+                es.monthly_salary,
+                fx.fixed_no,
+                fx.allowance_price,
+                fx.allowance_code,
+                ai.allowance_name,
+                ai.allowance_check
 		FROM    employees em
 		JOIN    department dp
 		ON      em.department_code = dp.department_code
 		JOIN    employees_detail ed
 		ON      em.employee_code = ed.employee_code
+        JOIN    employees_salary es
+        ON      em.employee_code = es.employee_code
+        JOIN    fixed fx
+        ON      em.employee_code = fx.employee_code
+        JOIN    allowance_item ai
+        ON      fx.allowance_code = ai.allowance_code
 		WHERE   em.employee_code = #{employeeCode}
+		
 	</select>
 	<insert id="insertEmployee" statementType="CALLABLE" >
 		CALL employee_insert(
@@ -133,4 +189,16 @@
 	</insert>
 	
 	<!-- 인사정보 삽입 -->
+	
+	
+	
+	<!-- 셀렉트박스 정보 불러오기 -->
+	
+	<!--  직책 불러오기 -->
+	<select id="selectCommonCodeList" parameterType="com.cherp.app.common.vo.CommonCodeVO">
+	    SELECT code_rule,
+               common_name
+        FROM common_code
+        WHERE common_code = #{commonCode}
+	</select>
 </mapper>

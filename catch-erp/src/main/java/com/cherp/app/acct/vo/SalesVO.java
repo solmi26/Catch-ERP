@@ -54,4 +54,7 @@ public class SalesVO {
 	private Date ntsInvoiceDate;	// 국세청 전송 일자
 	private String refType;			// 원세금계산서 유형
 	
+	/*---------------회계 계정----------------------*/
+	private Integer acctCode;
+	private String debitSide;
 }

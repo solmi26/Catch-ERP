@@ -47,7 +47,6 @@ public class SalesController {
 	// 매출 전표 등록(화면)
 	@GetMapping("insertSales")
 	public String insertSalesForm(Model model) {
-		
 		return "account/salesSlip";
 	}
 	
@@ -64,6 +63,7 @@ public class SalesController {
 		}
 	}
 	
+
 	@PostMapping("insertPayablesBalance")
 	@ResponseBody
 	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
@@ -93,6 +93,12 @@ public class SalesController {
 		}
 
 		return message;
+	}
+	// 회계 계정 조회
+	@ResponseBody
+	@GetMapping("selectAcct")
+	public List<SalesVO> selectAcct(Model model){
+		return salesService.acctList("o1");
 	}
 	
 }

@@ -160,4 +160,9 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.SelectAllClientReceivableList(clientCode);
 	}
 	
+	@Override
+	public List<SalesVO> acctList(String debitSide) {
+		return salesMapper.selectAcctList(debitSide);
+	}
+	
 }

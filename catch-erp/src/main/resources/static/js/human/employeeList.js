@@ -6,6 +6,51 @@ console.log("gd")
 document.querySelector('#employeeTabContent').querySelectorAll('input')
 */
 
+
+document.addEventListener('DOMContentLoaded', function() {
+	
+    const tableRows = document.querySelectorAll('.employee-list tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('click', function() {
+
+            tableRows.forEach(r => r.classList.remove('table-active'));
+            this.classList.add('table-active');
+            console.log('zzzz')
+
+            // Here you would typically populate the form with the selected employee's data
+        });
+    });
+    //셀렉트 박스에 데이터 뿌리는 반복문
+    let selectBox = {employeePosition:'',
+                     duty:'0K',
+                     statusType:'0M',
+                     hireType:'0L',
+                     empStatus:'0J'
+                     }
+    for (ele in selectBox) {
+		let commonCode = {}
+	    commonCode[ele] = selectBox[ele];
+	    datoToSelect(ele,selectBox[ele]);
+	}
+    
+    
+});
+
+//셀렉트 박스에 데이터를 뿌리는 함수
+async function datoToSelect(name,code) {
+await fetch('/empCommon?commonCode='+code)
+.then(data => data.json())
+.then(datas => {
+	document.querySelectorAll(`[name="${name}"]`).forEach(item => {
+		datas.forEach(comp => {
+			let tag = `<option value="${comp.commonCode}">${comp.commonName}</option>`;
+			item.insertAdjacentHTML('beforeend',tag);
+		})
+	})
+})
+};
+
+
 let readonly = [
 	'employeeCode',
 	'employeePosition',
@@ -26,6 +71,9 @@ grid.on('click', function (ev) {
 	if (ev.targetType == 'cell') {
 		document.querySelector('#saveBtn').dataset.mode = 'update';
 		console.log(ev);
+		window.setTimeout(function(){
+		allowanceGrid.refreshLayout();
+		}, 200) 
 		let empCode = grid.getFormattedValue(ev.rowKey,'employeeCode');
 		fetch('/emps/'+empCode)
 		.then(data => data.json())
@@ -75,6 +123,20 @@ saveBtn.addEventListener('click',function(){
 	})
 	EmployeeVO['employeeSalaryVO'] = EmployeeSalaryVO 
 	
+	
+	// FixedVO 필드값넣기
+	let FixedVO =[]
+	let index = 0;
+	allowanceGrid.getData().forEach(ele => {
+		console.log(ele+' : ele')
+		FixedVO[index] = ele;
+		index += 1;
+	})
+	console.log(FixedVO+' : arr')
+
+	EmployeeVO['fixedVO'] = FixedVO;
+	console.log(EmployeeVO+' : vo')
+	
 	console.log(EmployeeVO);
 	//만약 사용자가 신규버튼을 누른 상태라면
 	if (saveBtn.dataset.mode == 'insert') {
@@ -96,8 +158,40 @@ saveBtn.addEventListener('click',function(){
 })
 
 
-
-
+//검색버튼 클릭 이벤트
+document.querySelector('.search-btn').addEventListener('click',function (ev) {
+	//검색옵션들 들고오기
+	let str = "";
+	let option = document.querySelectorAll('.search-option')
+	let radio = document.querySelector('input[name="statusType"]:checked')
+	option.forEach(ele =>{
+		if (ele.value === "" || ele.value == null ) {
+			
+		} else {
+		str += '&' 
+		str += ele.name
+		str += '='
+		str += ele.value 
+		}
+	})
+	str += '&' 
+	str += 'statusType';
+	str += '='
+	if (radio != null) {
+		str += radio.value;
+	} else {
+		str += ""
+	}
+	parameter = '?'+str.substr(1)
+	fetch("/emps"+parameter)
+	.then(data => data.json())
+	.then(data => {
+		grid.resetData(data)
+	})
+	
+	
+})
+console.log('gd')
 
 
 
@@ -113,20 +207,28 @@ saveBtn.addEventListener('click',function(){
  
 //데이터 인풋에 뿌리는 함수
 function dataToInput (data) {
+	console.log(data)
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
 	for (let ele in data) {
-		console.log(typeof(data[ele]))
+				console.log(typeof(data[ele])+' : '+data[ele])
+		//만약 배열타입이면
+		if (Array.isArray(data[ele])) {
+			console.log(data[ele])
+			allowanceGrid.resetData(data[ele])			
 		//받아온 json VO객체 안의 VO객체 뿌리기
-		if (typeof(data[ele]) == "object") {
+		} else if (typeof(data[ele]) == "object") {
 			for (comp in data[ele]) {
 				let input = document.querySelector(`input[name="${comp}"]`)
 				if (input != null) {
 					input.value = data[ele][comp]
 				}
 			}
+		}
+		
+		
 		//받아온 json VO객체 안의 속성 뿌리기
-
-		} else {
+		
+		else {
 			//받아온 속성이 날짜타입인지 검사
 				let input = document.querySelector(`input[name="${ele}"]`)
 			if (ele == "hireDate" || ele == "resignationDate") {

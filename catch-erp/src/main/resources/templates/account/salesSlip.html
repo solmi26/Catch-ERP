@@ -124,9 +124,11 @@
                 type="text"
                 class="form-control"
                 placeholder="거래처 선택"
-                name="client"
+                name="clientName"
+                id="clientInput"
               />
-              <button class="btn btn-outline-secondary" type="button">
+	           <input type="text" style="display:none" id="clientInput2" name="clientCode">
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
               </button>
             </div>
@@ -154,9 +156,11 @@
                 type="text"
                 class="form-control"
                 placeholder="회계계정 선택"
-                name="acct"
+                name="acctName"
+                id="acctInput"
               />
-              <button class="btn btn-outline-secondary" type="button">
+              <input type="text" style="display:none" id="acctInput2" name="acctCode">
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="openAcctModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
               </button>
             </div>
@@ -170,7 +174,7 @@
             <div class="input-group input-group-sm">
               <span class="input-group-text color">공급가액</span>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 placeholder="공급가액"
                 name="price"
@@ -182,7 +186,7 @@
             <div class="input-group input-group-sm">
               <span class="input-group-text color">부가세</span>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 placeholder="부가세"
                 name="vat"
@@ -196,7 +200,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text color">합계</span>
-              <input type="number" class="form-control" name="amount" placeholder="합계"/>
+              <input type="text" class="form-control" name="amount" placeholder="합계"/>
             </div>
           </div>
           </div>
@@ -227,22 +231,48 @@
     </form>
     
    </div> <!-- 전체 컨테이너 끝 -->
+   
+    <!-- 거래처 검색 모달 HTML -->
+	    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-lg">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">거래처검색</h5>
+	                   
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="clientGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p><small>※거래처코드를 클릭하여 입력하세요.</small></p>
+	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	     <!-- 회계 계정 검색 모달 HTML -->
+	    <div class="modal fade" id="acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-md">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">회계 계정 검색</h5>
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="acctGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p><small>※회계코드를 클릭하여 입력하세요.</small></p>
+	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
     <script th:src="@{/js/account/salesSlip.js}"></script>
-    <script>
-    
-      document.addEventListener("DOMContentLoaded", function () {
-    	  
-        // 모달 띄우기 -> 추후 수정
-        document.querySelectorAll(".select-modal").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            const modalId = btn.getAttribute("data-bs-target").substring(1);
-            const modal = new bootstrap.Modal(document.getElementById(modalId));
-            modal.show();
-          });
-        });
-      });
-      
-    </script>
+
     
   </body>
   
