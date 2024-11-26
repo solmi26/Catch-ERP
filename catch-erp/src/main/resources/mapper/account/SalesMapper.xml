@@ -31,8 +31,15 @@
 		    JOIN sales s ON p.sales_chit_no = s.sales_chit_no
 		    JOIN client c ON c.client_code = p.client_code
 	</select>
-	
-	<select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
+	<select id="payablesList" resultType="com.cherp.app.acct.vo.ClientPsVO">
+		SELECT
+		    client_bacct,
+		    client_code,
+		    balancem,
+		    state
+		FROM client
+	</select>
+	<!-- <select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
 		SELECT
 		    p.rec_log_id,
 		    p.purchase_chit_no,
@@ -54,7 +61,7 @@
 		         payables_log p
 		    JOIN purchase s ON p.purchase_chit_no = s.purchase_chit_no
 		    JOIN client c ON p.client_code = c.client_code
-	</select>
+	</select> -->
 	
 	<!-- 거래처 채무 거래처원장 조회 -->
 	<select id="SelectAllClientPayableList" parameterType="com.cherp.app.acct.vo.PayablesVO">
@@ -68,8 +75,7 @@
 		FROM    client c 
 		        JOIN payables_log pl ON c.client_code = pl.client_code
 		        JOIN purchase p ON p.purchase_chit_no = pl.purchase_chit_no
-		WHERE   pl.client_code = #{clientCode}
-		AND pl.purchase_chit_no = #{purchaseChitNo}
+		WHERE   c.client_code = #{clientCode}
 		AND c.trade_type = '채무'
 		
 	</select>
@@ -161,5 +167,13 @@
 		SET balancek = balancek + #{balancek}
 		WHERE client_code = #{clientCode}
     </update>
-
+    
+    <!-- 회계 계정 조회 -->
+	<select id="selectAcctList" resultType="com.cherp.app.acct.vo.SalesVO">
+		SELECT   acct_code
+                 ,acct_name
+                 ,debit_side
+		FROM  acnt_acct
+		WHERE debit_side = #{debitSide}
+	</select>
 </mapper>

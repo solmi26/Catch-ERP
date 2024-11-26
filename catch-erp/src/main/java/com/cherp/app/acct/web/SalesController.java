@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cherp.app.acct.service.SalesService;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
+import com.cherp.app.buss.vo.ClientVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,7 +44,6 @@ public class SalesController {
 	// 매출 전표 등록(화면)
 	@GetMapping("insertSales")
 	public String insertSalesForm(Model model) {
-		
 		return "account/salesSlip";
 	}
 	
@@ -60,5 +60,11 @@ public class SalesController {
 		}
 	}
 	
+	// 회계 계정 조회
+	@ResponseBody
+	@GetMapping("selectAcct")
+	public List<SalesVO> selectAcct(Model model){
+		return salesService.acctList("o1");
+	}
 	
 }

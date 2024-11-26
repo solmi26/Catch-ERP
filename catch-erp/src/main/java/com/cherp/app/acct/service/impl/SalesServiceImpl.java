@@ -150,13 +150,18 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public List<PayablesVO> ClientPayableList(String clientCode, String purchaseChitNo) {
-		return salesMapper.SelectAllClientPayableList(clientCode, purchaseChitNo);
+	public List<PayablesVO> ClientPayableList(String clientCode) {
+		return salesMapper.SelectAllClientPayableList(clientCode);
 	}
 
 	@Override
 	public List<SalesVO> ClientReceivableList(String clientCode) {
 		return salesMapper.SelectAllClientReceivableList(clientCode);
+	}
+	
+	@Override
+	public List<SalesVO> acctList(String debitSide) {
+		return salesMapper.selectAcctList(debitSide);
 	}
 	
 }

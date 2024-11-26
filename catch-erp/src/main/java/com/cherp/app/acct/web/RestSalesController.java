@@ -42,8 +42,8 @@ public class RestSalesController {
 	@PostMapping("clientPayables")
 	@ResponseBody
 	public List<PayablesVO> clientPayablesList(@RequestBody HashMap<String, String> map) {
-		System.out.println(map.get("purchaseChitNo"));
-		return salesService.ClientPayableList(map.get("clientCode"), map.get("purchaseChitNo"));
+		System.out.println(map.get("clientCode"));
+		return salesService.ClientPayableList(map.get("clientCode"));
 	}
 	
 }

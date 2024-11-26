@@ -28,11 +28,16 @@ public class BussController {
     }
     
     // 판매 페이지
-    @GetMapping("testSalesChit")
-    public String testSalesChit(Model model) {
+    @GetMapping("sales/salesChit")
+    public String SalesChit(Model model) {
         List<ClientVO> list = clientService.clientList();
         model.addAttribute("client", list);
         return "sales/salesChit";
     }
-    
+
+    // 판매 조회 페이지
+    @GetMapping("sales/saleSlip")
+    public String saleSlip(){
+        return "sales/saleSlip";
+    }
 }
