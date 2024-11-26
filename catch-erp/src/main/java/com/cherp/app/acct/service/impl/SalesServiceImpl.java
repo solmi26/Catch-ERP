@@ -71,6 +71,9 @@ public class SalesServiceImpl implements SalesService{
 	        // 세금계산서 발행
 	        int resultIv = salesMapper.insertInvoice(salesVO);
 	        
+	        // 판매전표 전표 발행 상태 변경
+	        int resultSt = salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
+	        
 	}
 	
 	@Override

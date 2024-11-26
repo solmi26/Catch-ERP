@@ -184,6 +184,7 @@
                 class="form-control"
                 placeholder="공급가액"
                 name="price"
+                id="price"
               />
             </div>
           </div>
@@ -206,7 +207,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text color">합계</span>
-              <input type="text" class="form-control" name="amount" placeholder="합계"/>
+              <input type="text" class="form-control" name="amount" id="amount" placeholder="합계"/>
             </div>
           </div>
           </div>
@@ -216,7 +217,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text">적요</span>
-              <input type="text" class="form-control" name="summary" placeholder="적요"/>
+              <input type="text" id="summary" class="form-control" name="summary" placeholder="적요"/>
             </div>
           </div>
           </div>
@@ -290,7 +291,8 @@
                     <div class="d-flex justify-content-left mb-3">
                         
                         <div>
-                            <button class="btn btn-secondary">발행완료 건 보기</button>
+                        	<button class="btn btn-secondary filter-item" data-state="미발행">미발행 건 보기</button>
+                            <button class="btn btn-success filter-item"  data-state="발행">발행완료 건 보기</button>
                         </div>
                     </div>
                     

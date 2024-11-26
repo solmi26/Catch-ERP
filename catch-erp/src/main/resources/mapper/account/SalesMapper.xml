@@ -184,4 +184,11 @@
 		FROM  acnt_acct
 		WHERE debit_side = #{debitSide}
 	</select>
+	
+	<!-- 판매전표 전표 상태 변경 -->
+	<update id="updateSalesSlipState">
+		UPDATE  sales_chit
+		SET slip_state = '발행'
+		WHERE saleslip_no = #{saleslipNo}
+	</update>
 </mapper>

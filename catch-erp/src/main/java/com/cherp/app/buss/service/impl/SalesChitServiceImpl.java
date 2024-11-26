@@ -22,8 +22,15 @@ public class SalesChitServiceImpl implements SalesChitService {
         return salesChitMapper.insertSalesChit(salesChitVO);
     }
     
+    // 판매 내역 전체 조회
     @Override
     public List<SalesChitVO> selectsalesChit() {
     	return salesChitMapper.selectSalesChit();
+    }
+    
+    // 판매내역 전표상태별 조회
+    @Override
+    public List<SalesChitVO> selectsalesChitState(String slipState) {
+    	return salesChitMapper.selectSalesChitState(slipState);
     }
 }

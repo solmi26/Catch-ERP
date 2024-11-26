@@ -10,4 +10,7 @@ public interface SalesChitMapper {
 	
 	// 판매전표 전체 조회
 	public List<SalesChitVO> selectSalesChit();
+	
+	// 판매전표 전표상태별 조회
+	public List<SalesChitVO> selectSalesChitState(String slipState);
 }
