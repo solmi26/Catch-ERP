@@ -36,15 +36,22 @@ public class RestStockAdjustController {
 	 * clientService.clientSearchList(clientCode); }
 	 */
 	
-	@GetMapping("stocks/itemList") //품목전체조회
+	//품목전체조회
+	@GetMapping("stocks/itemList") 
 	public List<ContractItemVO> getItemList() {
 		return stockAdjustService.getItemList();
 	}
-	
+	//구매내역조회
 	@GetMapping("stocks/chitNoList/{type1}/{type2}/{type3}/{client}/{employee}/{item}/{startDate}/{endDate}")
 	public List<PurchaseHistoryVO> getPurcChitNo(@PathVariable("type1") String type1, @PathVariable("type2") String type2, @PathVariable("type3") String type3
 			, @PathVariable("client") String client, @PathVariable("employee") String employee, @PathVariable("item") String item, @PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate){
 		return stockAdjustService.getPurchaseHistoryList(type1, type2, type3, client, employee, item, startDate, endDate);
+	}
+	
+	//재고 단건조회
+	@GetMapping("stocks/itemStocks/{itemCode}")
+	public ContractItemVO getItemStocks(@PathVariable("itemCode") String itemCode) {
+		return stockAdjustService.getItemStocks(itemCode);
 	}
 	
 }
