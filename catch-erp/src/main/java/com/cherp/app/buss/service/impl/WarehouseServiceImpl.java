@@ -18,9 +18,14 @@ public class WarehouseServiceImpl implements WarehouseService {
         this.warehouseMapper = warehouseMapper;
     }
 
-
     @Override
     public List<WarehouseVO> whList() {
         return warehouseMapper.selectWhList();
     }
+
+    @Override
+    public WarehouseVO whQuantity(String whCode) {
+        return warehouseMapper.selectWhQuantity(whCode);
+    }
+
 }

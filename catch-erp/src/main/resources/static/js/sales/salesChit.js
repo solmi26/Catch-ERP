@@ -223,10 +223,23 @@ document.addEventListener("DOMContentLoaded", async function () {
                 filter: 'select'
             }]
         });
+
         fetch('/emps')
             .then(result => result.json())
             .then(data => humanGrid.resetData(data))
             .catch(error => alert("사원 데이터를 조회하는데 실패"))
+
+        //담당자 input
+        humanGrid.on("click", (ev) => {
+            const empRowData = humanGrid.getRow(ev.rowKey);
+
+            if (empRowData && empRowData.employeeCode) {
+                // 특정 열(columnName)의 값 가져오기
+                // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
+                document.getElementById('empNameInput').value = empRowData.name;
+                document.getElementById('empCodeInput').value = empRowData.employeeCode;
+            }
+        });
 
         return humanGrid;
     }
@@ -412,6 +425,21 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }
         });
+
+        //매출계정 input
+        salesChit.on("click", (ev) => {
+            const columnName = ev.columnName;
+            if (columnName === 'whName') {
+                console.log(salesChit.store.data)
+                // 특정 열(columnName)의 값 가져오기
+
+                ///prodCode, whName
+                console.log(ev)
+                const columnValue = salesChit.getValue(ev.rowKey, 'acctName');
+                document.getElementById('accCodeInput').value = columnValue;
+            }
+        });
+
         return salesChit;
     }
 
@@ -452,13 +480,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     initSalesChitGrid();
 
     // 그리드 설정
-    const createdClientGrid = initClientGrid();
-
-    // 그리드에 창고 데이터 넣기(출력)
-    // createdWarehouseGrid.resetData(warehouseData);
-
-    // 그리드에 데이터 넣기(출력)
-    createdhumanGrid.resetData(empData);
+    initClientGrid();
 
     // 그리드에 데이터 넣기(출력)
     createdAccCodeGrid.resetData(accCodeData);
@@ -470,7 +492,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (columnName === 'acctCode') {
             // 특정 열(columnName)의 값 가져오기
             const columnValue = accCodeGrid.getValue(ev.rowKey, 'acctName');
-            document.getElementById('accCodeInput').value = columnValue
+            document.getElementById('accCodeInput').value = columnValue;
         }
     });
 
