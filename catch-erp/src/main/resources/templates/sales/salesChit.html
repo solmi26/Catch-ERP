@@ -46,15 +46,15 @@
                                     data-bs-toggle="modal" data-bs-target="#humanModal" id="humanInqueryModal"></button>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">출하창고</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="warehouse" name="whName">
-                            <button type="button" class="bi bi-search border px-4 btn btn-success"
-                                    data-bs-toggle="modal" data-bs-target="#warehouseModal"
-                                    id="openWarehouseModal"></button>
-                        </div>
-                    </div>
+<!--                    <div class="col-md-6">-->
+<!--                        <label class="form-label">출하창고</label>-->
+<!--                        <div class="input-group">-->
+<!--                            <input type="text" class="form-control" id="warehouse" name="whName">-->
+<!--                            <button type="button" class="bi bi-search border px-4 btn btn-success"-->
+<!--                                    data-bs-toggle="modal" data-bs-target="#warehouseModal"-->
+<!--                                    id="openWarehouseModal"></button>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="col-md-6">
                         <label class="form-label">입금계좌</label>
                         <div class="input-group">
@@ -173,24 +173,24 @@
 </div>
 
 <!-- 출하창고 모달 -->
-<div class="modal fade" id="warehouseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">창고검색</h5>
+<!--<div class="modal fade" id="warehouseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-lg">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">창고검색</h5>-->
 
-            </div>
-            <div class="modal-body p-0">
-                <div id="warehouseGrid">
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <p><small>※창고명을 클릭하여 입력하세요.</small></p>
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--            </div>-->
+<!--            <div class="modal-body p-0">-->
+<!--                <div id="warehouseGrid">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer justify-content-between">-->
+<!--                <p><small>※창고명을 클릭하여 입력하세요.</small></p>-->
+<!--                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 <!-- 담당자 모달 -->
@@ -238,12 +238,11 @@
     </div>
 </div>
 
-<script th:src="@{/js/sales/salesChit.js}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     const clientData = [[${client}]]
     /*]]>*/
 </script>
+<script th:src="@{/js/sales/salesChit.js}"></script>
 </body>
-
 </html>
