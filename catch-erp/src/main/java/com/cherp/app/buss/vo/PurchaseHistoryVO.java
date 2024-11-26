@@ -29,4 +29,7 @@ public class PurchaseHistoryVO {
 	private String clientCode; 	  // 거래처 코드
 	private String clientName; 	  // 거래처 명
 	
+	/* 매입계약 품목 [contract_item] 컬럼*/
+	private int stocksQuantity; // 재고 수량
+	
 }
