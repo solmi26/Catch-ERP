@@ -67,8 +67,7 @@ public class RestStockAdjustController {
 	@GetMapping("stocks/salesChitNoList")
 	public List<SalesHistoryVO> getSalesChitNo(HistorySearchVO searchVO){
 		
-		
-		return null;
+		return stockAdjustService.getSalesHistoryList(searchVO);
 	}
 	
 }
