@@ -42,14 +42,14 @@ public class SalesController {
 	}
 	
 	// 매출 전표 등록(화면)
-	@GetMapping("insertSales")
+	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
 	
 	
 	// 매출 전표 등록(기능)
-	@PostMapping("insertSales")
+	@PostMapping("sales/insertSales")
 	@ResponseBody
 	public String insertSales(@RequestBody SalesVO salesVO) {
 		try {
@@ -62,9 +62,10 @@ public class SalesController {
 	
 	// 회계 계정 조회
 	@ResponseBody
-	@GetMapping("selectAcct")
+	@GetMapping("sales/selectAcct")
 	public List<SalesVO> selectAcct(Model model){
 		return salesService.acctList("o1");
 	}
+	
 	
 }

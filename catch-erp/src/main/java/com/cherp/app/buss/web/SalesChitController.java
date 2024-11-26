@@ -1,9 +1,12 @@
 package com.cherp.app.buss.web;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.cherp.app.buss.service.SalesChitService;
 import com.cherp.app.buss.vo.SalesChitVO;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class SalesChitController {
@@ -20,5 +23,6 @@ public class SalesChitController {
         int rowInsert = salesChitService.salesChitInsert(salesChitVO);
         return "sales/salesChit";
     }
+    
 
 }
