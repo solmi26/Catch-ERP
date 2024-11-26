@@ -464,7 +464,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	            align: "center",
 	            width: 120,
 	            whiteSpace: 'normal',
-	            className:'border',		            
+	            className:'border',		
+				filter: "select",
+				renderer: {
+				  type: ButtonRenderer,
+				},            
 	            
 	        },
 	        {
@@ -507,9 +511,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	            whiteSpace: 'normal',
 	            editor: 'text',
 	            className:'border',
-	            formatter: function(e){
-	                return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	            },
+				formatter: function (e) {
+				  const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+				  return Number(value).toLocaleString(); // 숫자로 변환 후 포맷팅
+				},
 	        },
 			{
 			    header: '부가세',
@@ -519,9 +524,10 @@ document.addEventListener("DOMContentLoaded", function () {
 			    whiteSpace: 'normal',
 			    editor: 'text',
 			    className:'border',
-			    formatter: function(e){
-			        return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-			    },
+				formatter: function (e) {
+				  const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+				  return Number(value).toLocaleString(); // 숫자로 변환 후 포맷팅
+				},
 			},
 			{
 			    header: '적요',
@@ -563,22 +569,24 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 	
 	// 그리드에 데이터 넣기(출력)
-	fetch("/stocks/clientList")
+	fetch("/sales/selectSalesChit")
 	  .then((result) => result.json())
 	  .then((result) => {
 	    let dataArr = [];
 	    result.forEach((ele) => {
 	      let dataRow = {};
-	      dataRow.c1 = ele.clientName;
-	      dataRow.c2 = ele.ceoName;
-	      dataRow.c3 = ele.companyTel;
-	      dataRow.c4 = ele.employeeName;
-	      dataRow.c5 = ele.employeeTel;
-	      dataRow.c6 = ele.event;
-	      dataRow.c7 = ele.clientCode;
+	      dataRow.c1 = ele.saleslipNo;
+	      dataRow.c2 = ele.insertDate;
+	      dataRow.c3 = ele.clientCode;
+	      dataRow.c4 = ele.clientName;
+	      dataRow.c5 = ele.supplyPrice;
+	      dataRow.c6 = ele.vat;
+	      dataRow.c7 = ele.salesSummary;
+	      dataRow.c8 = ele.employeeCode;
+	      dataRow.c9 = ele.employeeName;
 	      dataArr.push(dataRow);
 	    });
-	    grid3.resetData(dataArr);
+	    grid2.resetData(dataArr);
 	  });
 	
 });
