@@ -42,7 +42,8 @@ public interface SalesMapper {
 	public int updateClientBalancek(@Param("clientCode") String clientCode, @Param("balancek") int balancek);
 	// 거래처 채무 총 잔액 변경
     public int updateClientBalancem(@Param("clientCode") String clientCode, @Param("balancem") int balancem);
-	
+	// 판매전표 전표 상태 변경
+    public int updateSalesSlipState(String saleslipNo);
 	
 	//삭제
 	public int deleteSale(int salesChitNo);			// 매출 단건 삭제

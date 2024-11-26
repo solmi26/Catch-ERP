@@ -16,7 +16,7 @@ public class SalesChitVO {
     private String clientName; // 거래처 명
     private String accCode; // 매출계정 코드
     private String depBacct; // 입금 계좌
-    private Integer supply_price; // 공급가 액
+    private Integer supplyPrice; // 공급가 액
     private String salesSummary; // 판매 적요
     private String employeeName; // 담당자 명
     private String employeeCode; // 사원 코드
