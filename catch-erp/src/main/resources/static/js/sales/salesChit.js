@@ -1,4 +1,12 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+
+    async function loadWhList() {
+        let result =  await fetch('whList');
+        result = await result.json();
+        return result;
+    }
+
+    let whList = await loadWhList();
 
     // 계좌 목록 조회 모달
     let accountList = [{accCode: "000001", accName: "신한(입금)"}, {accCode: "000002", accName: "대구(출금)"},];
@@ -117,9 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
             label.innerText = `${grid.getIndexOfRow(rowKey) + 1}`;
             const hiddenInput = document.createElement('input');
             hiddenInput.className = 'hidden-input';
-            hiddenInput.id = 'selectCheck' + String(rowKey);
+            hiddenInput.id = 'selectCheck'  + String(rowKey);
 
-
+            console.log(grid.el.id);
             const customInput = document.createElement('span');
             customInput.className = 'custom-input';
 
@@ -336,73 +344,69 @@ document.addEventListener("DOMContentLoaded", function () {
     /*============================
             StackInquery 창고 모달 JS
         ==============================*/
-    // 모달 관련 JavaScript
-    const warehouseModal = document.getElementById('warehouseModal')
 
-    //모달실행 시 grid refresh를 위한 코드
-    document.getElementById('openWarehouseModal').addEventListener('click', function () {
-        window.setTimeout(function () {
-            warehouseGrid.refreshLayout();
-        }, 200)
-    });
-
-    fetch('whList')
-        .then(result => result.json())
-        .then(data => warehouseGrid.resetData(data))
-        .catch(error => alert("데이터를 조회하는데 실패"))
-
-    // 샘플 데이터
-    const warehouseData = [{}];
-
-    let warehouseGrid;
-    const initWarehouseGrid = () => {
-        warehouseGrid = new Grid({
-            el: document.getElementById('warehouseGrid'),
-            scrollX: true,
-            scrollY: true,
-            header: {height: 40},
-            bodyHeight: 500,
-            width: 'auto',
-            contextMenu: null,
-            rowHeaders: [{
-                type: 'rowNum', header: "No.", width: 50, className: 'border'
-            }],
-            columns: [{
-                header: '창고명',
-                name: 'whName',
-                align: "center",
-                width: 183,
-                whiteSpace: 'normal',
-                className: 'border',
-                renderer: {
-                    type: ButtonRenderer
-                },
-                filter: 'select'
-
-            }, {
-                header: '창고코드', name: 'whCode', align: "center", width: 183, whiteSpace: 'normal', className: 'border'
-            }, {
-                header: '위치',
-                name: 'whPlace',
-                align: "center",
-                width: 184,
-                whiteSpace: 'normal',
-                className: 'border',
-                filter: 'select'
-            }, {
-                header: '구분',
-                name: 'whType',
-                align: "center",
-                width: 184,
-                whiteSpace: 'normal',
-                className: 'border',
-                filter: 'select'
-            }]
-        });
-        return warehouseGrid;
-    }
-
-    const createdWarehouseGrid = initWarehouseGrid();
+    // // 모달 관련 JavaScript
+    // const warehouseModal = document.getElementById('warehouseModal')
+    //
+    // //모달실행 시 grid refresh를 위한 코드
+    // document.getElementById('openWarehouseModal').addEventListener('click', function () {
+    //     window.setTimeout(function () {
+    //         warehouseGrid.refreshLayout();
+    //     }, 200)
+    // });
+    //
+    // // 샘플 데이터
+    // const warehouseData = [{}];
+    //
+    // let warehouseGrid;
+    // const initWarehouseGrid = () => {
+    //     warehouseGrid = new Grid({
+    //         el: document.getElementById('warehouseGrid'),
+    //         scrollX: true,
+    //         scrollY: true,
+    //         header: {height: 40},
+    //         bodyHeight: 500,
+    //         width: 'auto',
+    //         contextMenu: null,
+    //         rowHeaders: [{
+    //             type: 'rowNum', header: "No.", width: 50, className: 'border'
+    //         }],
+    //         columns: [{
+    //             header: '창고명',
+    //             name: 'whName',
+    //             align: "center",
+    //             width: 183,
+    //             whiteSpace: 'normal',
+    //             className: 'border',
+    //             renderer: {
+    //                 type: ButtonRenderer
+    //             },
+    //             filter: 'select'
+    //
+    //         }, {
+    //             header: '창고코드', name: 'whCode', align: "center", width: 183, whiteSpace: 'normal', className: 'border'
+    //         }, {
+    //             header: '위치',
+    //             name: 'whPlace',
+    //             align: "center",
+    //             width: 184,
+    //             whiteSpace: 'normal',
+    //             className: 'border',
+    //             filter: 'select'
+    //         }, {
+    //             header: '구분',
+    //             name: 'whType',
+    //             align: "center",
+    //             width: 184,
+    //             whiteSpace: 'normal',
+    //             className: 'border',
+    //             filter: 'select'
+    //         }]
+    //     });
+    //     return warehouseGrid;
+    // }
+    //
+    // const createdWarehouseGrid = initWarehouseGrid();
 
     /*============================
             매출계정 모달 JS
@@ -448,6 +452,11 @@ document.addEventListener("DOMContentLoaded", function () {
     /*============================
              판매 등록 그리드
     ==============================*/
+
+
+
+
+
     let salesChit;
     const initSalesChitGrid = () => {
 
@@ -495,6 +504,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 sortingType: 'desc',
                 className: 'border'
             }, {
+                header: '창고',
+                name: 'whName',
+                align: "center",
+                width: 200,
+                whiteSpace: 'normal',
+                formatter: 'listItemText',
+                editor: {
+                    type: 'select',
+                    options:{
+                        listItems: whList
+                    }
+                },
+                className: 'border'
+            },{
                 header: '재고수량',
                 name: 'stocksQuantity',
                 align: "center",
@@ -562,34 +585,34 @@ document.addEventListener("DOMContentLoaded", function () {
     let appends = document.querySelectorAll('.appendRowBtn')
     appends.forEach(btn => {
 
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', function (ev) {
             salesChit.appendRow();
+            console.log(ev);
         })
 
     })
 
-    // 열을 삭제하는 이벤트
+    //열을 삭제하는 이벤트
     let deletes = document.querySelectorAll('.deleteRowBtn')
     deletes.forEach(btn => {
         btn.addEventListener('click', function () {
             salesChit.removeCheckedRows();
-
             refreshRowNum();
-
         })
 
     })
 
-    //열을 추가후 체크박스에 다시 숫자부여하는 코드
+    // 열을 추가한 후 체크박스에 다시 숫자를 부여하는 코드
     function refreshRowNum() {
+        let num = 1;
         window.setTimeout(function () {
-            let checkList = document.querySelectorAll('.countCheck')
-            let num = 1;
+            let checkList = document.querySelectorAll('.countCheck');
+             // 번호 초기값 설정
             checkList.forEach(items => {
-                items.innerText = num;
-                num += 1;
-            })
-        }, 50)
+                items.innerText = num; // 번호 부여
+                num += 1; // 번호 증가
+            });
+        }, 200); // 200ms 딜레이 후 실행
     }
 
     const salesChitData = [];
@@ -599,8 +622,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // 그리드 설정
     const createdClientGrid = initClientGrid();
 
-    // 그리드에 데이터 넣기(출력)
-    createdWarehouseGrid.resetData(warehouseData);
+    // 그리드에 창고 데이터 넣기(출력)
+    // createdWarehouseGrid.resetData(warehouseData);
 
     createdSalesChitGrid.resetData(salesChitData);
 
@@ -646,16 +669,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     //창고 input
-    warehouseGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
-
-        if (columnName === 'whName') {
-            // 특정 열(columnName)의 값 가져오기
-            const columnValue = warehouseGrid.getValue(ev.rowKey, 'whName');
-            document.getElementById('warehouse').value = columnValue
-
-        }
-    });
+    // warehouseGrid.on("click", (ev) => {
+    //     const columnName = ev.columnName;
+    //
+    //     if (columnName === 'whName') {
+    //         // 특정 열(columnName)의 값 가져오기
+    //         const columnValue = warehouseGrid.getValue(ev.rowKey, 'whName');
+    //         document.getElementById('warehouse').value = columnValue
+    //
+    //     }
+    // });
 
     //매출계정 input
     accCodeGrid.on("click", (ev) => {
@@ -700,8 +723,8 @@ document.addEventListener("DOMContentLoaded", function () {
             rowHeaders: [{
                 type: 'checkbox', header: `
 		              <span class="custom-input">
-		              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-		            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+		              <input type="checkbox" id="all-checkbox-2" class="hidden-input" name="_checked" />
+		                <label for="all-checkbox-2" class="checkbox selectCheck">✔</label>
 		          	</span>
 		          `, renderer: {
                     type: gridCheckbox
@@ -785,7 +808,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // formatter: function (e) {
                 //     return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                 // },
-            },{
+            }, {
                 header: '공급가액',
                 name: 'supplyPrice',
                 align: "center",
@@ -808,7 +831,8 @@ document.addEventListener("DOMContentLoaded", function () {
     createdOrderGrid.resetData(sampleData6);
 
 
-    //출하지시내역 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
+
+    //발주서 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
     let orderInputBtn = document.getElementById('orderInputBtn');
     orderInputBtn.addEventListener("click", function () {
         let arr = ordersGrid.getCheckedRows();
@@ -837,6 +861,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert('한 번에 15건을 처리할 수 있습니다.')
         }
     })
+
 
     //내역,출하모달 띄울 때 조정페이지 grid에 이미 있는 rows들을 거르고 data 배열을 반환시킬 함수
     function exceptExitingRows(data) {
