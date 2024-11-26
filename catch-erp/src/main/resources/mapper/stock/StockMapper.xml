@@ -10,6 +10,13 @@
 		FROM   contract_item	
 	</select>
 	
+	<!-- 구매내역 조건조회 --> <!-- 작성중.. -->
+	<select id="selectAllPurchaseSeachList" resultType="PurchaseHistoryVO">
+		SELECT *
+		FROM purchase_history
+		WHERE purchase
+	</select>
+	
 	<!-- 구매내역 조회시 필요한 조회 조건에 맞는 구매전표번호 조회 -->
 	<select id="selectPurcSlipNoList" resultType="PurchaseChitVO">
 		SELECT purcslip_no
@@ -35,49 +42,85 @@
 	
 	<!-- 조건검색된 구매전표번호로 구매내역을 조회 -->
 	<select id ="selectPurcHistoryList" parameterType ="map" resultType="PurchaseHistoryVO">
-		SELECT  hi.pur_no
-		       ,hi.wh_code
-		       ,hi.wh_name
-		       ,hi.item_code
-		       ,hi.item_name
-		       ,hi.quantity
-		       ,hi.restocking_price
-		       ,hi.restocking_status
-		       ,hi.restocking_date
-		       ,hi.purcslip_no
+		SELECT hi.pur_no
+			   ,hi.wh_code
+			   ,hi.wh_name
+			   ,hi.item_code
+			   ,hi.item_name
+			   ,hi.quantity
+			   ,hi.restocking_price
+			   ,hi.restocking_status
+			   ,hi.restocking_date
+			   ,hi.purcslip_no
 			   ,ch.client_code
 			   ,ch.client_name
+			   ,ct.stocks_quantity
 		FROM   purchase_history hi JOIN purchase_chit ch 
-			ON (hi.purcslip_no = ch.purcslip_no)
+			ON (hi.purcslip_no = ch.purcslip_no) JOIN contract_item ct ON (hi.item_code = ct.item_code)
 		WHERE hi.purcslip_no IN
 	    <foreach item="purcNo" collection="chitNoArr" open="(" separator="," close=")">
 	        #{purcNo}
 	    </foreach>
-	    <if test="chitNoArr.length == 0">
-	    	('nothing')
-	    </if>
 	    <choose>
 	    	<when test="type3 == 'code'">
-	    		AND item_code = #{item}
+	    		AND hi.item_code = #{item}
 	    	</when>
 	    	<otherwise>
-	    		AND item_name LIKE CONCAT(#{item}, '%')
+	    		AND hi.item_name LIKE CONCAT(#{item}, '%')
 	    	</otherwise>
 	    </choose>
 	    <if test="startDate != 'noDate'">
-	    		AND restocking_date > #{startDate}
+	    		AND hi.restocking_date > #{startDate}
 	    </if>
 	    <if test="endDate != 'noDate'">
 	    	 <![CDATA[ 
-	    		AND restocking_date < #{endDate}
+	    		AND hi.restocking_date < #{endDate}
 	     	 ]]>
 	    </if>
+	    ORDER BY hi.restocking_date DESC
 	</select>
 	
-	<!-- 매입품목 재고조회 _ 재고조정페이지 재고조회 -->
-	<select id="selectStocks" resultType="contractItemVO">
-		SELECT stocks_quantity
-		FROM   contract_item
-		WHERE  item_code = #{itemCode}		
+	<!-- 판매내역조회 -->
+	<select id="selectSalesHistoryList" parameterType ="map" resultType="SalesHistoryVO">
+		SELECT *
+		FROM   saleslip_history hi JOIN sales_chit ch ON (hi.purcslip_no = ch.purcslip_no)
+		WHERE  saleslip_no IN		
+			(SELECT 
+			 FROM   sales_chit
+			 WHERE  1 != 1
+			 <choose>
+			 	<when test="clientName == 'no'">
+			 		AND client_code = #{clientCode}
+			 	</when>  
+			 	<otherwise>
+			 		AND client_name LIKE CONCAT(#{clientName}, '%')
+			 	</otherwise>
+			 </choose>
+			 <choose>
+			 	<when test="employeeName == 'no'">
+			 		AND employee_code = #{employeeName}
+			 	</when>  
+			 	<otherwise>
+			 		AND employee_name LIKE CONCAT(#{employeeName}, '%')
+			 	</otherwise>
+			 </choose>) <!-- 서브쿼리 End Point -->
+			<choose>
+		    	<when test="itemName == 'no'">
+		    		AND item_code = #{itemCode}
+		    	</when>
+		    	<otherwise>
+		    		AND item_name LIKE CONCAT(#{itemName}, '%')
+		    	</otherwise>
+		    </choose>
+		    <if test="startDate != 'no'">
+		    		AND delivery_date > #{startDate}
+		    </if>
+		    <if test="endDate != 'no'">
+		    	 <![CDATA[ 
+		    		AND delivery_date < #{endDate}
+		     	 ]]>
+		    </if>
+		    ORDER BY restocking_date DESC   
 	</select>
+	
 </mapper>

@@ -17,7 +17,7 @@
 	        </div>
 	        <!-- Form -->
 	        <div class="card">
-	          <form class="bg-light p-4 rounded card-body">
+	          <form class="bg-light p-4 rounded card-body" id="searchForm" name="searchForm">
 	              <div class="row g-3">
 	                  <div class="col-md-12">
 	                      <div class="row g-3">
@@ -27,13 +27,13 @@
 	                          </div>
 	                          <div class="col-md-2">
 	                            <label class="form-label">조회종료일자</label>
-	                            <input type="date" class="form-control" id="endDate">
+	                            <input type="date" class="form-control" id="endDate" name="endDate">
 	                        </div>
 	                          <div class="col-md-3">
 	                              <label class="form-label">거래처</label>
 	                              <div class="input-group">
-	                                  <input type="text" class="form-control" id="clientInput">
-	                                  <input type="text" style="display:none" id="clientInput2">
+	                                  <input type="text" class="form-control" id="clientInput" name="clientInput">
+	                                  <input type="text" style="display:none" id="clientInput2" name="clientHiddenInput">
 	                                  <!-- 거래처 모달 트리거 버튼 -->
 	                                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -43,8 +43,8 @@
 	                          <div class="col-md-2">
 	                              <label class="form-label">담당자</label>
 	                              <div class="input-group">
-	                                  <input type="text" class="form-control" id="humanInput">
-	                                  <input type="text" style="display:none" id="humanInput2">
+	                                  <input type="text" class="form-control" id="humanInput" name="humanInput">
+	                                  <input type="text" style="display:none" id="humanInput2" name="humanHiddenInput">
 	                                  <!-- 사원검색 모달 트리거 버튼 -->
 	                                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#humanModal" id="humanInqueryModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -54,8 +54,8 @@
 	                          <div class="col-md-3">
 	                            <label class="form-label">품목명</label>
 	                            <div class="input-group">
-	                                <input type="text" class="form-control" id="itemInput">
-	                                <input type="text" style="display:none" id="itemInput2">
+	                                <input type="text" class="form-control" id="itemInput" name="itemInput">
+	                                <input type="text" style="display:none" id="itemInput2" name="itemHiddenInput">
 	                                <!-- 품목검색 모달 트리거 버튼 -->
 	                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#purchaseOrderModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>

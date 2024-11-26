@@ -23,7 +23,7 @@
         constructor(props) {
             const el = document.createElement('input');
             const { maxLength } = props.columnInfo.editor.options;
-
+		
             el.type = 'text';
             el.maxLength = maxLength;
             el.value = String(props.value);
@@ -64,42 +64,14 @@
     }
     //구매현황, 출하지시서 모달에 사용되는 버튼 렌더러
     class BtnForOrder {
-            constructor(props) {
-				
+            constructor(props) {			
                 this.el = document.createElement('button');
                 this.el.innerText = props.value;
                 this.el.style.border = '1px solid gray';
                 this.el.style.borderRadius ='3px';
                 this.el.style.backgroundColor = 'white';
                 this.el.classList.add('gridBtn')
-                
-                /*
-          		this.el.onclick = () => {
-					 				
-					const tr = this.el.closest('tr'); 
-					tr.classList.add("selected");
-					
-					if(tr.classList.contains("selected") == false){ 						          	
-	                	tr.classList.add("selected")
-	                	const tds = tr.children;
-	                	const tdsArr = Array.from(tds);
-	                	tdsArr.forEach((ele)=>{
-							ele.style.backgroundColor = "#e5fad0";	
-						})                			
-					}					
-					if(tr.classList.contains("selected") == true){						
-						tr.classList.remove("selected")
-	                	const tds = tr.children;
-	                	const tdsArr = Array.from(tds);
-	                	tdsArr.forEach((ele)=>{
-							ele.style.backgroundColor = "white";	
-						}) 
-					}	
-								
-                }*/	
-                /*this.el.onclick = () => {
-                	console.log(this.el.innerText);             
-                };*/                        
+                                    
             }
             getElement() {
                 return this.el;
@@ -109,6 +81,8 @@
    
   //숫자타입 인풋 렌더러 (석진제작) => 공통코드파일에 병합
   //숫자있는 체크박스 (석진제작) => 공통코드파일에 병합
+  
+ let grid6 = null; 
   
 /*================================================================
 		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
@@ -146,7 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 	
     });*/
-    
 	Grid.applyTheme('default',  {
             outline:{
             border : '#dee2e6'
@@ -179,6 +152,14 @@ document.addEventListener("DOMContentLoaded", function () {
         el: document.getElementById('adjustmentGrid'),
         scrollX: true,
         scrollY: true,
+         row: {
+		    even: {
+		      background: '#f3ffe3'
+		    },
+		    hover: {
+		      background: '#ccc'
+		    }
+		  },
         rowHeaders: [
 	          {
 	            type: 'checkbox',
@@ -565,7 +546,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		})
 		grid5.resetData(dataArr);
 	})
-    
+	
+
     /*============================
     	StackInquery 구매내역 모달 JS
     ==============================*/
@@ -579,7 +561,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
     
     
-		let grid6 = new Grid({
+			 grid6 = new Grid({
 		    el: document.getElementById('purchaseGrid'),
 		    scrollX: true,
 		    scrollY: true,
@@ -608,7 +590,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 120,
 		            whiteSpace: 'normal',
-		            className:'border',		            
+		            className:'border',	
+		            filter: 'select',	            
 		            
 		        },
 		        {
@@ -616,7 +599,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            name: 'c2',
 		            align: "center",
 		            width: 120,
-		            whiteSpace: 'normal',		            
+		            whiteSpace: 'normal',
+		            filter: 'select',		            
 		        },
 		        {
 		            header: '일자',
@@ -628,9 +612,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		            filter: {
 		                type: 'date',
 		                options: {
-		                    format: 'yyyy.MM.dd',
+		                    format: 'yyyy-MM-dd',
 		                    language: 'ko'
-		                }
+		                },
+		                showClearBtn: true
 		            }
 		        },
 		        {
@@ -639,7 +624,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
-		            className:'border'
+		            className:'border',
+		            filter: 'select',
 		        }
 		        ,
 		        {
@@ -648,7 +634,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
-		            className:'border'
+		            className:'border',
+		            filter: 'select',
 		        },
 		        {
 		            header: '거래처명',
@@ -656,7 +643,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 140,
 		            whiteSpace: 'normal',
-		            className:'border'
+		            className:'border',
+		            filter: 'select',
 		        },
 		        {
 		            header: '거래처 코드',
@@ -685,11 +673,22 @@ document.addEventListener("DOMContentLoaded", function () {
 		            formatter: function(e){
 		                return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		            },
+		        },
+		        {
+		            header: '재고',
+		            name: 'c10',
+		            align: "center",
+		            width: 200,
+		            whiteSpace: 'normal',
+		            editor: 'text',
+		            className:'border',
+		            hidden: false,
 		        }
+		        
 		    ]
 		});
 	
-	//조회조건에 맞는 전표No. 불러오기 & 수동입력시 hidden input.value 초기화
+	//조회조건에 맞는 전표No. 불러오기 & 수동입력시 hidden input.value 초기화 => 구매내역,판매내역 공통
 	let clientInputTag = document.getElementById('clientInput')
 	clientInputTag.addEventListener('change', function(){
 		inputTag2 = document.getElementById('clientInput2');
@@ -750,8 +749,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		startDate = startDate == "" ? 'noDate' : startDate;
 		endDate = endDate == "" ? 'noDate' : endDate;
+		
 		//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
-		fetch(`/stocks/chitNoList/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
+		fetch(`/stocks/purchaseChitNoList/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
 		.then(result => result.json())
 		.then(result => {
 			let arr = [];
@@ -766,8 +766,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				data.c7 = String(ele.quantity);
 				data.c8 = String(ele.restockingPrice);
 				data.c9 = ele.clientCode;
+				data.c10 = String(ele.stocksQuantity)
 				arr.push(data);
+				
 			})
+			
 			// 그리드에 데이터 넣기(출력)		
 			let purchaseFilteredData = exceptExitingRows(arr);
 			grid6.resetData(purchaseFilteredData);	
@@ -822,14 +825,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 120,
 		            whiteSpace: 'normal',
-		            className:'border'		            
+		            className:'border',
+		            filter: 'select',	            
 		        },
 		        {
 		            header: '판매내역 No.',
 		            name: 'c2',
 		            align: "center",
 		            width: 120,
-		            whiteSpace: 'normal',		            
+		            whiteSpace: 'normal',
+		            filter: 'select',	            
 		        },
 		        {
 		            header: '일자',
@@ -841,9 +846,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		            filter: {
 		                type: 'date',
 		                options: {
-		                    format: 'yyyy.MM.dd',
+		                    format: 'yyyy-MM-dd',
 		                    language: 'ko'
-		                }
+		                },
+		                showClearBtn: true
 		            }
 		        },
 		        {
@@ -852,7 +858,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
-		            className:'border'
+		            className:'border',
+		            filter: 'select',
 		        }
 		        ,
 		        {
@@ -861,7 +868,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 100,
 		            whiteSpace: 'normal',
-		            className:'border'
+		            className:'border',
+		            filter: 'select',
 		        },
 		        {
 		            header: '거래처명',
@@ -869,7 +877,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 140,
 		            whiteSpace: 'normal',
-		            className:'border'
+		            className:'border',
+		            filter: 'select',
 		        },
 		        {
 		            header: '거래처 코드',
@@ -944,12 +953,23 @@ document.addEventListener("DOMContentLoaded", function () {
 	];
 	
 	
-	// 그리드에 데이터 넣기(출력)	 
 	
+	
+	// 그리드에 데이터 넣기(출력)	 
+	//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
     let salesOrderBtn = document.getElementById('salesOrderBtn');
 	salesOrderBtn.addEventListener("click", function(){
-		let salesFilteredData = exceptExitingRows(sampleData7);
-		createdGrid7.resetData(salesFilteredData);
+		let data = $('#searchForm').serialize();
+		console.log(data)
+		fetch(`/stocks/salesChitNoList?${data}`)
+		.then(result=> result.json())
+		.then(result=> {
+						console.log(result)
+								
+			//let salesFilteredData = exceptExitingRows(sampleData7);
+			//createdGrid7.resetData(salesFilteredData);
+		})
+		
 	})
     
     
@@ -1189,18 +1209,6 @@ document.addEventListener("DOMContentLoaded", function () {
     purchaseOrderInputBtn.addEventListener("click",function(){
 		let arr = grid6.getCheckedRows();		
 		let dataArr = [];
-		let stocksArr = [];
-		fetch("/stocks/itemList")
-		.then(result=> result.json())
-		.then(result=>{
-			result.forEach(ele=>{
-				let dataRow = {};
-				dataRow.c4 = ele.itemCode;
-				dataRow.stocks = ele.stocksQuantity;
-				stocksArr.push(dataRow)
-			})	
-		})
-		//c8에 넣을 데이터를 위한 fetch함수 필요
 		arr.forEach(ele=>{
 			let data = {};
 			data.c1 = ele.c2;
@@ -1209,25 +1217,23 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c4 = '상품 입고'
 			data.c5 = ele.c7;
 			data.c6 = 'X'
-			data.c7 = '1';
-			fetch(`/stocks/itemStocks/${ele.c4}`)
-			.then(result => result.json())
-			.then(result => {
-				data.c8 =result.stocksQuantity //재고수량
-			})  
+			data.c7 = '0';
+			data.c8 = ele.c10	 			
 			dataArr.push(data)
 		})
-		window.setTimeout(function(){
-				console.log(dataArr);	
-			},200)
+		console.log(dataArr)
+		
 		let selectedCtn = arr.length;
 		let exitedRowsInPage = grid.getRowCount()
 		let checkingMaxRows = selectedCtn + exitedRowsInPage;
-		if(checkingMaxRows < 16){
+		window.setTimeout(function(){
+			if(checkingMaxRows < 16){
 			grid.appendRows(dataArr);
 		} else {
 			alert('한 번에 15건만을 처리할 수 있습니다.')
-		}	
+			return;
+		}
+		},200)	
 	})
 	
 	//출하지시내역 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
@@ -1267,21 +1273,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		gridData.forEach(ele=>{
 			exitedNo.push(ele.c1);
 		})
-		let exitedNoSet = new Set(exitedNo);
+		let exitedNoSet = new Set(exitedNo); //페이지그리드에 존재하는 그리드의 내역No. Set
 		
 		//제외 된 후 최종적으로 출력될 row의 c2컬럼 값
 		let dataSet = new Set();
-		data.forEach((ele)=>{
+		data.forEach((ele)=>{  //DB조회 구매/판매내역의 값을 조회하며 최종적으로 출력될 모달그리드에 들어간 행의 내역번호를 값을 dataSet에 넣는다.
 			dataSet.add(ele.c2)		
 			exitedNoSet.forEach(ele2=>{
 				if(ele.c2 == ele2){
-					dataSet.delete(ele2)				
+					dataSet.delete(ele2)	// 페이지 그리드에 있는거면 빼버린다.
 				}
 			})	
 		})
-		let noArr = Array.from(dataSet);
+		let noArr = Array.from(dataSet); // Set -> 배열로바꿔주고
 		let resultObj = [];
-		data.forEach(ele=>{
+		data.forEach(ele=>{   //넘겨받은 그리드 data객체배열에서 필터링된 noArr배열에 해당하는 전표No을 가진 행만 최종 배열인 resultObj에 push한다
 			noArr.forEach(ele2 =>{
 				if(ele.c2 == ele2){
 					resultObj.push(ele);
@@ -1300,7 +1306,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			row.c6 = ele.c6;
 			row.c7 = ele.c7;
 			row.c8 = ele.c8;
-			row.c9 = ele.c9;	
+			row.c9 = ele.c9;
+			row.c10 = ele.c10;	
 			resultArr.push(row);
 		})		
 		return resultArr
