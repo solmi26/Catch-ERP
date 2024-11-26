@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
             {
             header: '사원번호',
             name: 'employeeCode'
-            
             },
             {
             header: '사원명',

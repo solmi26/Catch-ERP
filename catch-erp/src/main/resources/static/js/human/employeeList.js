@@ -7,54 +7,49 @@ document.querySelector('#employeeTabContent').querySelectorAll('input')
 */
 
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Photo upload preview
-        /*
-            document.getElementById('photoUpload').addEventListener('change', function(e) {
-                if (e.target.files && e.target.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('employeePhoto').src = e.target.result;
-                    }
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-            });
-
-            // Form submission (prevent default for demonstration)
-            document.getElementById('searchForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('검색 기능이 실행되었습니다.');
-            });
-
-            // Button click handlers
-            document.getElementById('saveBtn').addEventListener('click', function() {
-                alert('저장 버튼이 클릭되었습니다.');
-            });
-
-            document.getElementById('resetBtn').addEventListener('click', function() {
-                document.getElementById('generalForm').reset();
-                document.getElementById('salaryForm').reset();
-            });
-
-            document.getElementById('newBtn').addEventListener('click', function() {
-                document.getElementById('generalForm').reset();
-                document.getElementById('salaryForm').reset();
-                document.getElementById('employeePhoto').src = '/placeholder.svg?height=100&width=100';
-            });
-            */
-            // Row selection in employee list
-            const tableRows = document.querySelectorAll('.employee-list tbody tr');
-            tableRows.forEach(row => {
-                row.addEventListener('click', function() {
+document.addEventListener('DOMContentLoaded', function() {
 	
-                    tableRows.forEach(r => r.classList.remove('table-active'));
-                    this.classList.add('table-active');
-                    console.log('zzzz')
+    const tableRows = document.querySelectorAll('.employee-list tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('click', function() {
 
-                    // Here you would typically populate the form with the selected employee's data
-                });
-            });
+            tableRows.forEach(r => r.classList.remove('table-active'));
+            this.classList.add('table-active');
+            console.log('zzzz')
+
+            // Here you would typically populate the form with the selected employee's data
         });
+    });
+    //셀렉트 박스에 데이터 뿌리는 반복문
+    let selectBox = {employeePosition:'',
+                     duty:'0K',
+                     statusType:'0M',
+                     hireType:'0L',
+                     empStatus:'0J'
+                     }
+    for (ele in selectBox) {
+		let commonCode = {}
+	    commonCode[ele] = selectBox[ele];
+	    datoToSelect(ele,selectBox[ele]);
+	}
+    
+    
+});
+
+//셀렉트 박스에 데이터를 뿌리는 함수
+async function datoToSelect(name,code) {
+await fetch('/empCommon?commonCode='+code)
+.then(data => data.json())
+.then(datas => {
+	document.querySelectorAll(`[name="${name}"]`).forEach(item => {
+		datas.forEach(comp => {
+			let tag = `<option value="${comp.commonCode}">${comp.commonName}</option>`;
+			item.insertAdjacentHTML('beforeend',tag);
+		})
+	})
+})
+};
+
 
 let readonly = [
 	'employeeCode',
@@ -166,7 +161,34 @@ saveBtn.addEventListener('click',function(){
 //검색버튼 클릭 이벤트
 document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	//검색옵션들 들고오기
-	document
+	let str = "";
+	let option = document.querySelectorAll('.search-option')
+	let radio = document.querySelector('input[name="statusType"]:checked')
+	option.forEach(ele =>{
+		if (ele.value === "" || ele.value == null ) {
+			
+		} else {
+		str += '&' 
+		str += ele.name
+		str += '='
+		str += ele.value 
+		}
+	})
+	str += '&' 
+	str += 'statusType';
+	str += '='
+	if (radio != null) {
+		str += radio.value;
+	} else {
+		str += ""
+	}
+	parameter = '?'+str.substr(1)
+	fetch("/emps"+parameter)
+	.then(data => data.json())
+	.then(data => {
+		grid.resetData(data)
+	})
+	
 	
 })
 

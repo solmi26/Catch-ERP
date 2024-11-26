@@ -70,7 +70,7 @@
         employee_position = #{employeePosition}
         </if>
         <if test="employeeName != null and !employeeName.equals('')">
-        AND employee_name LIKE '%'||#{employeeName}||'%'
+        AND name LIKE '%'||#{employeeName}||'%'
         </if>
         <if test="employeeId != null and !employeeId.equals('')">
         AND employee_id LIKE '%'||#{employeeId}||'%'
@@ -189,4 +189,16 @@
 	</insert>
 	
 	<!-- 인사정보 삽입 -->
+	
+	
+	
+	<!-- 셀렉트박스 정보 불러오기 -->
+	
+	<!--  직책 불러오기 -->
+	<select id="selectCommonCodeList" parameterType="com.cherp.app.common.vo.CommonCodeVO">
+	    SELECT code_rule,
+               common_name
+        FROM common_code
+        WHERE common_code = #{commonCode}
+	</select>
 </mapper>

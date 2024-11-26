@@ -40,7 +40,7 @@
             	      <label class="form-label me-1 mb-0 label-width">직위/직급</label>
                   	</div>
                   	<div class="col align-self-start ps-0">
-                  		<select class="form-select input-width-120 search-option">
+                  		<select class="form-select input-width-120 search-option " name="employeePosition">
                     		<option value="">전체</option>
                     		<option value="m1">사원</option>
 		                    <option value="m2">대리</option>
@@ -59,7 +59,7 @@
                   		<label class="form-label me-2 mb-0 label-width">사원</label>
                   	</div>
                   	<div class="col">
-                  		<input type="text" class="form-control input-width-120 me-2 search-option" placeholder="사원" />
+                  		<input type="text" class="form-control input-width-120 me-2 search-option" name="employeeId" placeholder="사원" />
 					</div>
                 </div>
               </div>
@@ -74,7 +74,7 @@
                   			<label class="form-label me-2 mb-0 label-width">부서</label>
                   		</div>
                 		<div class="col">
-		                	<select class="form-select input-width-150 search-option">
+		                	<select class="form-select input-width-150 search-option" name="departmentCode" readonly>
 			                   <option value="">전체</option>
 			                   <option value="경영지원팀">경영지원팀</option>
 			                   <option value="인사팀">인사팀</option>
@@ -94,15 +94,15 @@
                   			<label class="form-label me-2 mb-0 label-width ">재직구분</label>
                   		</div>
                   		<div class="col">
-                    		<input class="form-check-input search-option1" type="radio" name="status" id="status2" value="regular" />
+                    		<input class="form-check-input search-option1" type="radio" name="statusType" id="status2" value="m1" />
                     		<label  for="status2">재직</label>
                   		</div>
                   		<div class="col">
-                    		<input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
+                    		<input class="form-check-input" type="radio" name="statusType" id="status3" value="m2" />
                     		<label  for="status3">휴직</label>
                   		</div>
                     	<div class="col">
-                    		<input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
+                    		<input class="form-check-input" type="radio" name="statusType" id="status3" value="m3" />
                     		<label  for="status3">퇴직</label>
                   		</div>
                 	</div>
@@ -115,16 +115,16 @@
             <div class="row mb-3 align-items-center row-gap-3">
             	<div class="col-lg-7 ">
                 	<label class="form-label me-2 mb-0 label-width">입사일자</label>
-                    <input type="date">
+                    <input type="date" class="search-option" name="hireDateStart">
                     <!-- &nbsp;는 공백(띄워쓰기)임 -->
                     <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
-                  	<input type="date">
+                  	<input type="date" class="search-option" name="hireDateEnd">
                	</div>
               	<div class="col-auto">                    
                 	<label class="form-label me-2 mb-0 label-width">퇴사일자</label>
-                  	<input type="date">
+                  	<input type="date" class="search-option" name="resignationDateStart">
                     <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
-                  	<input type="date">                    
+                  	<input type="date" class="search-option" name="resingationDateEnd">                    
               	</div>
             </div>
             <!-- 날짜칸끝 -->
@@ -137,7 +137,7 @@
                   			<label class="form-label me-2 mb-0 label-width">성명</label>
                   		</div>
                   		<div class="col-8 col-lg-6">
-                  			<input type="text" class="form-control input-width-200" placeholder="성명" />
+                  			<input type="text" class="form-control input-width-200 search-option" name="employeeName" placeholder="성명" />
                   		</div>
                   	</div>
                 </div>
@@ -181,7 +181,7 @@
                                                     	<label class="form-label">사원번호</label>
                                                     </div>
                                                     <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                    	<input type="text" class="form-control form-control-sm EmployeeVO" name="employeeCode">
+                                                    	<input type="text" class="form-control form-control-sm EmployeeVO" name="employeeCode" readonly>
                                                     </div>
                                                 </div>
                                             <div class="row mb-1">
@@ -212,16 +212,20 @@
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
                                                     <label class="form-label">부서코드</label>
                                                 </div>
-                                                <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeVO" name="departmentCode">
+                                                <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
+                                                	<select class="form-select form-select-sm" name="departmentCode">
+                                            		</select>    
                                                 </div>
                                             </div>
                                             <div class="row mb-1 mb-sm-0 ">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
                                                     <label class="form-label">세대주여부</label>
                                                 </div>
-                                                <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="headCheck">
+                                                <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
+                                                    <select class="form-select form-select-sm" name="headCheck">
+                                                    	<option value="o">o</option>
+                                                    	<option value="x">x</option>
+                                            		</select>
                                                 </div>
                                             </div>
                                             
@@ -233,7 +237,8 @@
                                            			<label class="form-label">직위/직급</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeVO" name="employeePosition">
+                                            		<select class="form-select form-select-sm" name="employeePosition">
+                                            		</select>
                                             	</div>
                                             </div>
                                         </div>
@@ -243,7 +248,8 @@
                                             		<label class="col-form-label-sm">직책</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="duty">
+                                            		<select class="form-select form-select-sm" name="duty">
+                                            		</select>
                                             	</div>
                                         	</div>
                                         </div>
@@ -284,7 +290,8 @@
                                             		<label class="col-form-label-sm">재직구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeVO" name="statusType">
+                                            		<select class="form-select form-select-sm" name="statusType">
+                                            		</select>
                                             	</div>
                                         	</div>
                                         </div>
@@ -294,7 +301,8 @@
                                            			<label class="form-label">입사구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeVO" name="hireType">
+                                            		<select class="form-select form-select-sm" name="hireType">
+                                            		</select>
                                             	</div>
                                             </div>
                                         </div>
@@ -314,7 +322,9 @@
                                            			<label class="form-label">재직상태</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="empStatus">
+                                            		<select class="form-select form-select-sm" name="empStatus">
+														<option >해당없음</option>
+                                            		</select>
                                             	</div>
                                             </div>
                                         </div>
@@ -331,9 +341,9 @@
                                         	
                                         <div class="col-12">
                                             <label class="form-label">주소</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2" placeholder="우편번호" name="zipcode">
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2" placeholder="기본주소" name="address">
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" placeholder="상세주소" name="detailAddress">
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2" placeholder="우편번호" name="zipcode" readonly>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2" placeholder="기본주소" name="address" readonly>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" placeholder="상세주소" name="detailAddress" readonly>
                                         </div>
                                     </div>
                                 </form>
@@ -350,7 +360,7 @@
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">은행</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="bank">
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="bank" readonly>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">계좌번호</label>
@@ -399,8 +409,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src='@{/js/common/toastsetting.js}'></script>
+
+
+
     
-    <script>
+    <script th:inline="javascript">
     const Grid = tui.Grid;
 
     const grid = new Grid({
