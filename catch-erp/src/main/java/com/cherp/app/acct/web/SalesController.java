@@ -1,6 +1,8 @@
 package com.cherp.app.acct.web;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cherp.app.acct.service.SalesService;
+import com.cherp.app.acct.vo.InsertPayableVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,5 +64,35 @@ public class SalesController {
 		}
 	}
 	
+	@PostMapping("insertPayablesBalance")
+	@ResponseBody
+	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
+
+		String message = "success";
+		Iterator<Entry<String, JsonNode>> fields = payables.fields();
+		fields.forEachRemaining(field -> {
+			int cnt = 0;
+			System.out.println("field : " + field.getValue());
+			System.out.println("field length : " + field.getValue().size());
+			for (int i = 0; i < field.getValue().size(); i++) {
+				System.out.println("i:"+field.getValue().get("clientCode"));
+			}
+			if(cnt == 1) {
+				System.out.println(field.getValue().get("bacctCode"));
+			}
+			cnt++;
+		});
+		for (JsonNode node : payables) {
+			InsertPayableVO payable = new InsertPayableVO();
+//			payable.setBacctCode(payables.get("bacctInfo").get("bacctCode").toString());
+//			payable.setClientCode(node.get("clientCode").toString());
+//			payable.setDecreasePrice(node.get("decreasePrice").asInt());
+//			System.out.println(node.get("clientCode").toPrettyString());
+//			System.out.println(node.get("clientCode").toString());
+//			salesService.insertPayable(payable);
+		}
+
+		return message;
+	}
 	
 }

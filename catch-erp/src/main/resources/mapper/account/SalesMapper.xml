@@ -35,10 +35,18 @@
 		SELECT
 		    client_bacct,
 		    client_code,
+		    client_name,
 		    balancem,
 		    state
 		FROM client
 	</select>
+	<insert id="insertPayable" parameterType="com.cherp.app.acct.vo.InsertPayableVO">
+		CALL decrease_payables
+			(#{decreasePrice}
+			,#{bacctCode}
+			,#{clientCode}
+			,#{result, mode = OUT, jdbcType=VARCHAR})
+	</insert>
 	<!-- <select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
 		SELECT
 		    p.rec_log_id,
