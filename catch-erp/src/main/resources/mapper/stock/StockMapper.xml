@@ -77,19 +77,36 @@
 	    		AND hi.restocking_date < #{endDate}
 	     	 ]]>
 	    </if>
+	    AND hi.restocking_status != 'b3'
 	    ORDER BY hi.restocking_date DESC
 	</select>
 	
 	<!-- 판매내역조회 -->
-	<select id="selectSalesHistoryList" parameterType ="map" resultType="SalesHistoryVO">
-		SELECT *
-		FROM   saleslip_history hi JOIN sales_chit ch ON (hi.purcslip_no = ch.purcslip_no)
-		WHERE  saleslip_no IN		
-			(SELECT 
+	<select id="selectSalesHistoryList" parameterType="map" resultType="SalesHistoryVO">
+		SELECT hi.sales_no
+			  ,hi.wh_code
+			  ,hi.wh_name
+			  ,hi.item_code
+			  ,hi.item_name
+			  ,hi.quantity
+			  ,hi.delivery_price
+			  ,hi.delivery_status
+			  ,hi.delivery_date
+			  ,hi.saleslip_no
+			  ,hi.acc
+			  ,ch.client_code
+			  ,ch.client_name
+			  ,ct.stocks_quantity
+		FROM   saleslip_history hi JOIN sales_chit ch 
+			ON (hi.saleslip_no = ch.saleslip_no)
+			   JOIN contract_item ct 
+			ON (hi.item_code = ct.item_code)	
+		WHERE  hi.saleslip_no IN		
+			(SELECT  saleslip_no
 			 FROM   sales_chit
-			 WHERE  1 != 1
+			 WHERE  1 != 2
 			 <choose>
-			 	<when test="clientName == 'no'">
+			 	<when test="clientCode != 'no'">
 			 		AND client_code = #{clientCode}
 			 	</when>  
 			 	<otherwise>
@@ -97,7 +114,7 @@
 			 	</otherwise>
 			 </choose>
 			 <choose>
-			 	<when test="employeeName == 'no'">
+			 	<when test="employeeCode != 'no'">
 			 		AND employee_code = #{employeeName}
 			 	</when>  
 			 	<otherwise>
@@ -105,22 +122,23 @@
 			 	</otherwise>
 			 </choose>) <!-- 서브쿼리 End Point -->
 			<choose>
-		    	<when test="itemName == 'no'">
-		    		AND item_code = #{itemCode}
+		    	<when test="itemCode != 'no'">
+		    		AND hi.item_code = #{itemCode}
 		    	</when>
 		    	<otherwise>
-		    		AND item_name LIKE CONCAT(#{itemName}, '%')
+		    		AND hi.item_name LIKE CONCAT(#{itemName}, '%')
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND delivery_date > #{startDate}
+		    		AND hi.delivery_date > #{startDate}
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND delivery_date < #{endDate}
+		    		AND hi.delivery_date < #{endDate}
 		     	 ]]>
 		    </if>
-		    ORDER BY restocking_date DESC   
+		    AND delivery_status != 'b3'
+		    ORDER BY hi.delivery_date DESC   
 	</select>
 	
 </mapper>

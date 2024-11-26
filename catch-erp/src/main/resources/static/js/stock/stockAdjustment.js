@@ -780,6 +780,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	
 	
+/*	let purcInputBtn = document.getElementById("purchaseOrderInputBtn");
+	
+    purcInputBtn.addEventListener("mouseover",function(){
+		if(grid.getRowCount()+grid6.getRowCount() > 16){		
+			purcInputBtn.removeAttribute("data-bs-dismiss");	
+		}
+		else{
+			
+		}	
+	})  */
 	
     /*============================
     	StackInquery 출하지시내역 모달 JS
@@ -794,9 +804,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	    }, 200) 
 	})
     
-    let grid7;
-    const initGrid7 = () => {
-		    grid7 = new Grid({
+	let grid7 = new Grid({
 		    el: document.getElementById('salesGrid'),
 		    scrollX: true,
 		    scrollY: true,
@@ -907,67 +915,46 @@ document.addEventListener("DOMContentLoaded", function () {
 		            formatter: function(e){
 		                return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		            },
+		        },
+		        {
+		            header: '재고',
+		            name: 'c10',
+		            align: "center",
+		            width: 200,
+		            whiteSpace: 'normal',
+		            editor: 'text',
+		            className:'border',
+		            hidden: false,
 		        }
 		    ]
 		});
-		
-		return grid7;
-    }
-    
-    const createdGrid7 = initGrid7();
 
-	// 샘플 데이터
-	const sampleData7 = [
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-1',
-	        c3: '2023.01.01',
-	        c4: '컵홀더',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '0',
-	        c8: '0'       
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-1',
-	        c3: '2023.01.01',
-	        c4: '컵홀더',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '0',
-	        c8: '0'       
-	    },
-	    {
-	        c1: 'A0000045',
-	        c2: 'A0000045-1',
-	        c3: '2023.01.01',
-	        c4: '컵홀더',
-	        c5: '12000',
-	        c6: '5',
-	        c7: '0',
-	        c8: '0',
-	        c9: '0',
-	        c10: '상품 입고'     
-	    }
-	];
-	
-	
-	
 	
 	// 그리드에 데이터 넣기(출력)	 
 	//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
     let salesOrderBtn = document.getElementById('salesOrderBtn');
 	salesOrderBtn.addEventListener("click", function(){
 		let data = $('#searchForm').serialize();
-		console.log(data)
 		fetch(`/stocks/salesChitNoList?${data}`)
 		.then(result=> result.json())
 		.then(result=> {
-						console.log(result)
-								
-			//let salesFilteredData = exceptExitingRows(sampleData7);
-			//createdGrid7.resetData(salesFilteredData);
+			let dataArr = [];
+			result.forEach(ele=>{
+				let data = {};
+				data.c1 = ele.salesNo;
+				data.c2 = String(ele.saleslipNo);
+				data.c3 = ele.delivery;
+				data.c4 = ele.itemCode;
+				data.c5 = ele.itemName;
+				data.c6 = ele.clientName;
+				data.c7 = String(ele.quantity);
+				data.c8 = String(ele.deliveryPrice);
+				data.c9 = ele.clientCode;
+				data.c10 = String(ele.stocksQuantity);
+				dataArr.push(data);
+			})					
+			let salesFilteredData = exceptExitingRows(dataArr);
+			grid7.resetData(salesFilteredData);
 		})
 		
 	})
@@ -1221,7 +1208,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c8 = ele.c10	 			
 			dataArr.push(data)
 		})
-		console.log(dataArr)
 		
 		let selectedCtn = arr.length;
 		let exitedRowsInPage = grid.getRowCount()
@@ -1250,9 +1236,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c3 = ele.c5;
 			data.c4 = '상품 출고'
 			data.c5 = ele.c7;
-			data.c6 = '1'
+			data.c6 = '0'
 			data.c7 = 'X';
-			data.c8 = 'fetch필요(출하)'
+			data.c8 = ele.c10
 			dataArr.push(data)
 		})
 		let selectedCtn = arr.length;
