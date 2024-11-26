@@ -77,6 +77,7 @@
 	    		AND hi.restocking_date < #{endDate}
 	     	 ]]>
 	    </if>
+	    AND hi.restocking_status != 'b3'
 	    ORDER BY hi.restocking_date DESC
 	</select>
 	
@@ -136,6 +137,7 @@
 		    		AND hi.delivery_date < #{endDate}
 		     	 ]]>
 		    </if>
+		    AND delivery_status != 'b3'
 		    ORDER BY hi.delivery_date DESC   
 	</select>
 	

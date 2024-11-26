@@ -780,6 +780,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	
 	
+/*	let purcInputBtn = document.getElementById("purchaseOrderInputBtn");
+	
+    purcInputBtn.addEventListener("mouseover",function(){
+		if(grid.getRowCount()+grid6.getRowCount() > 16){		
+			purcInputBtn.removeAttribute("data-bs-dismiss");	
+		}
+		else{
+			
+		}	
+	})  */
 	
     /*============================
     	StackInquery 출하지시내역 모달 JS
@@ -931,11 +941,19 @@ document.addEventListener("DOMContentLoaded", function () {
 			let dataArr = [];
 			result.forEach(ele=>{
 				let data = {};
-				data.c1 = ele.salesNo
-				data.c2 = ele.saleslipNo
-				data.c3 = ele.delivery
+				data.c1 = ele.salesNo;
+				data.c2 = String(ele.saleslipNo);
+				data.c3 = ele.delivery;
+				data.c4 = ele.itemCode;
+				data.c5 = ele.itemName;
+				data.c6 = ele.clientName;
+				data.c7 = String(ele.quantity);
+				data.c8 = String(ele.deliveryPrice);
+				data.c9 = ele.clientCode;
+				data.c10 = String(ele.stocksQuantity);
+				dataArr.push(data);
 			})					
-			let salesFilteredData = exceptExitingRows(sampleData7);
+			let salesFilteredData = exceptExitingRows(dataArr);
 			grid7.resetData(salesFilteredData);
 		})
 		
@@ -1218,7 +1236,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c3 = ele.c5;
 			data.c4 = '상품 출고'
 			data.c5 = ele.c7;
-			data.c6 = '1'
+			data.c6 = '0'
 			data.c7 = 'X';
 			data.c8 = ele.c10
 			dataArr.push(data)
