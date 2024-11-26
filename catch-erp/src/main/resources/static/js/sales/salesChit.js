@@ -470,7 +470,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }],
             columns: [{
-                header: '품목코드', name: 'prodCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
+                header: '품목코드',
+                name: 'prodCode',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className: 'border'
             }, {
                 header: '품목명',
                 name: 'prodName',
@@ -584,7 +589,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 items.innerText = num;
                 num += 1;
             })
-
         }, 50)
     }
 
@@ -678,6 +682,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 200)
     })
 
+    fetch('ordersList')
+        .then(result => result.json())
+        .then(data => ordersGrid.resetData(data))
+        .catch(error => alert("데이터를 조회하는데 실패"))
+
     let ordersGrid;
     const initordersGrid = () => {
         ordersGrid = new Grid({
@@ -732,14 +741,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }, {
                 header: '사원코드',
-                name: 'empCode',
+                name: 'employeeCode',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
                 header: '사원명',
-                name: 'empName',
+                name: 'name',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -773,9 +782,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 whiteSpace: 'normal',
                 editor: 'text',
                 className: 'border',
-                formatter: function (e) {
-                    return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                },
+                // formatter: function (e) {
+                //     return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                // },
             },{
                 header: '공급가액',
                 name: 'supplyPrice',
@@ -784,43 +793,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 whiteSpace: 'normal',
                 editor: 'text',
                 className: 'border',
-                formatter: function (e) {
-                    return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                },
+                // formatter: function (e) {
+                //     return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                // },
             }]
         });
         return ordersGrid;
     }
 
-
     // 샘플 데이터
-    const sampleData6 = [{
-        orderNo: 'A0000045',
-        clientCode: 'A0000045-1',
-        clientName: '태산물산',
-        orderDate: '2023.01.01',
-        empCode: 'E001',
-        empName: '홍길동',
-        itemCode: 'z0001',
-        itemName: '컵홀더',
-        quantity: '99',
-        price: '100000000',
-        supplyPrice: '10000',
-        vat: '100',
-    }, {
-        orderNo: 'A0000045',
-        clientCode: 'A0000045-1',
-        clientName: '2023.01.01',
-        orderDate: 'z0001',
-        empCode: '컵홀더',
-        empName: '태호물산',
-        itemCode: '0',
-        itemName: '컵홀더',
-        quantity: '123',
-        price: '100',
-        supplyPrice: '10000',
-        vat: '100',
-    },];
+    const sampleData6 = [{}];
+
+    const createdOrderGrid = initordersGrid();
+    createdOrderGrid.resetData(sampleData6);
+
 
     //출하지시내역 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
     let orderInputBtn = document.getElementById('orderInputBtn');
@@ -897,8 +883,5 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         return resultArr
     }
-
-    const createdOrderGrid = initordersGrid();
-    createdOrderGrid.resetData(sampleData6);
 });
 
