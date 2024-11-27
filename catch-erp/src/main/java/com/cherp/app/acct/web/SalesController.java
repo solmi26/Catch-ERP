@@ -19,12 +19,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import lombok.RequiredArgsConstructor;
 
-
-@Controller
-@RequiredArgsConstructor
 /**
  * 채권, 채무, 세금계산서, 매출 컨트롤러
  */
+
+@RequiredArgsConstructor
+@Controller
 public class SalesController {
 
 	private final SalesService salesService;
@@ -44,7 +44,7 @@ public class SalesController {
 		return "account/regPayReduction";
 	}
 	
-	// 매출 전표 등록(화면)
+	// 매출 전표 등록(화면) 
 	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
@@ -54,15 +54,32 @@ public class SalesController {
 	// 매출 전표 등록(기능)
 	@PostMapping("sales/insertSales")
 	@ResponseBody
-	public String insertSales(@RequestBody SalesVO salesVO) {
-		try {
-			salesService.insertSale(salesVO);
-			return "저장 성공";
-		} catch (Exception e) {
-			return "저장 실패: " + e.getMessage();
-		}
+	public String insertPurchase(@RequestBody SalesVO salesVO) {
+		salesService.insertSale(salesVO);
+		return "저장성공";
 	}
 	
+	// 매입 전표 등록(화면)
+	@GetMapping("sales/insertPurchase")
+	public String insertPurchaseForm(Model model) {
+		return "account/PurchaseSlip";
+	}
+	
+	
+	// 매입 전표 등록(기능)
+	@PostMapping("sales/insertPurchase")
+	@ResponseBody
+	public String insertSales(@RequestBody SalesVO salesVO) {
+		salesService.insertSale(salesVO);
+		return "저장 성공";
+	}
+	
+	// 회계 계정 조회
+	@ResponseBody
+	@GetMapping("sales/selectAcct")
+	public List<SalesVO> selectAcct(Model model){
+		return salesService.acctList("o1");
+	}
 
 	@PostMapping("insertPayablesBalance")
 	@ResponseBody
@@ -94,12 +111,5 @@ public class SalesController {
 
 		return message;
 	}
-	// 회계 계정 조회
-	@ResponseBody
-	@GetMapping("sales/selectAcct")
-	public List<SalesVO> selectAcct(Model model){
-		return salesService.acctList("o1");
-	}
-	
 	
 }
