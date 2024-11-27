@@ -1,7 +1,5 @@
 package com.cherp.app.acct.vo;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import lombok.Data;
 
 @Data
