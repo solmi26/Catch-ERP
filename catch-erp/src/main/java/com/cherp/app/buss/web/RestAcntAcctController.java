@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 public class RestAcntAcctController {
 
-    private AcntAcctService acntAcctService;
+    private final AcntAcctService acntAcctService;
 
     @Autowired
     public RestAcntAcctController(AcntAcctService acntAcctService) {

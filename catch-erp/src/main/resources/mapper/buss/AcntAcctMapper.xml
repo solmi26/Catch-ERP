@@ -4,7 +4,7 @@
 
 	<select id="selectAcntList" resultType="com.cherp.app.buss.vo.AcntAcctVO">
 		SELECT acct_code
-		,acct_name
-		FROM acnt_acct
+		      ,acct_name
+		  FROM acnt_acct
 	</select>
 </mapper>

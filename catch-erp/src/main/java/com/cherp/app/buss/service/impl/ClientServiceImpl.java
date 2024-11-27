@@ -25,9 +25,4 @@ public class ClientServiceImpl implements ClientService {
         return clientMapper.selectClientList();
     }
 
-	@Override
-	public List<ClientVO> clientSearchList(String clientCode) {
-		List<ClientVO> list = clientMapper.selectClientSearchList(clientCode);
-		return list;
-	}
 }
