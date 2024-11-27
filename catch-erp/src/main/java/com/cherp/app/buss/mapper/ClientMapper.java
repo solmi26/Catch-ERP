@@ -7,5 +7,4 @@ import java.util.List;
 public interface ClientMapper {
 	// 거래처 전체 조회
 	public List<ClientVO> selectClientList();
-	public List<ClientVO> selectClientSearchList(String clientName); //거래처 조건조회
 }
