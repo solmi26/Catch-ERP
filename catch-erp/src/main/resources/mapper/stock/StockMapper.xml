@@ -23,7 +23,7 @@
 		FROM   purchase_chit
 		WHERE  
 			<choose>
-				<when test="type1.equals('code')">
+				<when test="type1 == 'code'">
 				client_code = #{client} 
 				</when>
 				<otherwise>
@@ -31,7 +31,7 @@
 				</otherwise>
 			</choose>
 			<choose>
-				<when test="type2.equals('code')">
+				<when test="type2 == 'code'">
 					AND employee_code = #{employee}
 				</when>
 				<otherwise>
@@ -51,8 +51,8 @@
 			   ,hi.restocking_price
 			   ,hi.restocking_status
 			   ,hi.restocking_date
-			   ,hi.incomplete_quantity
 			   ,hi.purcslip_no
+			   ,hi.incomplete_quantity
 			   ,ch.client_code
 			   ,ch.client_name
 			   ,ct.stocks_quantity
@@ -63,19 +63,19 @@
 	        #{purcNo}
 	    </foreach>
 	    <choose>
-	    	<when test="type3.equals('code')">
+	    	<when test="type3 == 'code'">
 	    		AND hi.item_code = #{item}
 	    	</when>
 	    	<otherwise>
 	    		AND hi.item_name LIKE CONCAT(#{item}, '%')
 	    	</otherwise>
 	    </choose>
-	    <if test="!startDate.equals('noDate')">
-	    		AND hi.restocking_date > TO_DATE(#{startDate},'yyyy-MM-dd')
+	    <if test="startDate != 'noDate'">
+	    		AND hi.restocking_date > #{startDate}
 	    </if>
-	    <if test="!endDate.equals('noDate')">
+	    <if test="endDate != 'noDate'">
 	    	 <![CDATA[ 
-	    		AND hi.restocking_date < TO_DATE(#{endDate}, 'yyyy-MM-dd')
+	    		AND hi.restocking_date < #{endDate}
 	     	 ]]>
 	    </if>
 	    AND hi.restocking_status != 'b3'
@@ -93,9 +93,9 @@
 			  ,hi.delivery_price
 			  ,hi.delivery_status
 			  ,hi.delivery_date
-			  ,hi.incomplete_quantity
 			  ,hi.saleslip_no
 			  ,hi.acc
+			  ,hi.incomplete_quantity
 			  ,ch.client_code
 			  ,ch.client_name
 			  ,ct.stocks_quantity
@@ -103,51 +103,48 @@
 			ON (hi.saleslip_no = ch.saleslip_no)
 			   JOIN contract_item ct 
 			ON (hi.item_code = ct.item_code)	
-		WHERE  hi.saleslip_no IN ( SELECT  saleslip_no
-									 FROM  sales_chit
-									 <where>
-									 <choose>
-									 	<when test="!clientCode.equals('no')">
-									 		AND client_code = #{clientCode}
-									 	</when>  
-									 	<otherwise>
-									 		AND client_name LIKE CONCAT(#{clientName}, '%')
-									 	</otherwise>
-									 </choose>
-									 <choose>
-									 	<when test="!employeeCode.equals('no')">
-									 		AND employee_code = #{employeeName}
-									 	</when>  
-									 	<otherwise>
-									 		AND employee_name LIKE CONCAT(#{employeeName}, '%')
-									 	</otherwise>
-									 </choose>
-									 </where>
-			 ) <!-- 서브쿼리 End Point -->
+		WHERE  hi.saleslip_no IN		
+			(SELECT  saleslip_no
+			 FROM   sales_chit
+			 WHERE  1 != 2
+			 <choose>
+			 	<when test="clientCode != 'no'">
+			 		AND client_code = #{clientCode}
+			 	</when>  
+			 	<otherwise>
+			 		AND client_name LIKE CONCAT(#{clientName}, '%')
+			 	</otherwise>
+			 </choose>
+			 <choose>
+			 	<when test="employeeCode != 'no'">
+			 		AND employee_code = #{employeeName}
+			 	</when>  
+			 	<otherwise>
+			 		AND employee_name LIKE CONCAT(#{employeeName}, '%')
+			 	</otherwise>
+			 </choose>) <!-- 서브쿼리 End Point -->
 			<choose>
-		    	<when test="!itemCode.equals('no')">
+		    	<when test="itemCode != 'no'">
 		    		AND hi.item_code = #{itemCode}
 		    	</when>
 		    	<otherwise>
 		    		AND hi.item_name LIKE CONCAT(#{itemName}, '%')
 		    	</otherwise>
 		    </choose>
-		    <if test="!startDate.equals('no')">
-		    		AND hi.delivery_date > TO_DATE(#{startDate}, 'yyyy-MM-dd')
+		    <if test="startDate != 'no'">
+		    		AND hi.delivery_date > #{startDate}
 		    </if>
-		    <if test="!endDate.equals('no')">
+		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.delivery_date < TO_DATE(#{endDate}, 'yyyy-MM-dd')
+		    		AND hi.delivery_date < #{endDate}
 		     	 ]]>
 		    </if>
 		    AND delivery_status != 'b3'
 		    ORDER BY hi.delivery_date DESC   
 	</select>
-	
 	<insert id="insertAdjustment" statementType="CALLABLE">
 		CALL stocksadjust_insert(
-							#{StocksAdjustVO, mode=IN, typeHandler=com.cherp.app.stck.vo.StockAdjustArrayStructHandler},							
+							#{StocksAdjustVO, mode=IN, typeHandler=com.cherp.app.stck.vo.StockAdjustArrayStructHandler}						
 							)
 	</insert>
-	
 </mapper>

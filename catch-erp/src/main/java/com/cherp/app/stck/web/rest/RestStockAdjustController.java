@@ -35,12 +35,6 @@ public class RestStockAdjustController {
 		return clientService.clientList();
 	}
 	
-	/* INPUT창 ajax 검색 기능 보류
-	 * @GetMapping("stocks/clientSearchList/{clientCode}") //사원전체조회 public
-	 * List<ClientVO> getClientSearchList(@PathVariable String clientCode){ return
-	 * clientService.clientSearchList(clientCode); }
-	 */
-	
 	//품목전체조회
 	@GetMapping("/item") 
 	public List<ContractItemVO> getItemList() {
@@ -59,13 +53,6 @@ public class RestStockAdjustController {
 			                                     @PathVariable("endDate") String endDate){
 		return stockAdjustService.getPurchaseHistoryList(type1, type2, type3, client, employee, item, startDate, endDate);
 	}
-	
-	/* => 구매내역 조회에서 JOIN하면되었음
-	 * //재고 단건조회
-	 * @GetMapping("stocks/itemStocks/{itemCode}") public ContractItemVO
-	 * getItemStocks(@PathVariable("itemCode") String itemCode) { return
-	 * stockAdjustService.getItemStocks(itemCode); }
-	 */
 	
 	//판매내역조회 
 	@GetMapping("/salesChitNo")
