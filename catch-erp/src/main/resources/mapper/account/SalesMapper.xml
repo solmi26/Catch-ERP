@@ -230,7 +230,7 @@
 	<!-- payables_log 테이블 insert(채무 거래 내역 등록) -->  
 	<insert id="insertReceivableSM" parameterType="com.cherp.app.acct.vo.PayablesVO">
 	<selectKey keyProperty="recLogId" order="BEFORE" resultType="int">
-			SELECT NVL(MAX(log_id),0) + 1
+			SELECT NVL(MAX(rec_log_id),0) + 1
 			FROM payables_log
 	</selectKey>
 		INSERT INTO payables_log(
@@ -241,8 +241,8 @@
 	            ,purchase_chit_no <!-- 매입전표번호 -->
 	        ) VALUES(
 	           #{recLogId}
-	           ,#{recDate}
-	           ,#{decreasePrice}
+	           ,#{chitDate}
+	           ,#{totalPrice}
 	           ,#{clientCode}
 	           ,#{purchaseChitNo}
 	       )

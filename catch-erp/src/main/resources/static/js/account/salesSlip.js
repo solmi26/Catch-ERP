@@ -437,7 +437,7 @@ document.addEventListener("DOMContentLoaded", function () {
   })*/
 
   // 거래처모달 그리드에 데이터 넣기(출력)
-  fetch("/stocks/clientList")
+  fetch("/stocks/client")
     .then((result) => result.json())
     .then((result) => {
       let dataArr = [];
