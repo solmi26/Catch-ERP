@@ -72,7 +72,6 @@ public class SalesController {
 		return "account/PurchaseSlip";
 	}
 	
-	
 	// 매입 전표 등록(기능) by sm
 	@PostMapping("sales/insertPurchase")
 	@ResponseBody
