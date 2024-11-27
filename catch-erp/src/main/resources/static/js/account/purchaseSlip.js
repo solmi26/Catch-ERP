@@ -1,7 +1,8 @@
-// 매출전표 등록 페이지 js
+// 매입전표 등록 페이지 js
 
 // 페이지 로드 완료 시 실행
 document.addEventListener("DOMContentLoaded", function () {
+
   // 공급가액, 부가세, 합계, 부가세 유형 필드
   const priceInput = document.querySelector("input[name='price']");
   const vatInput = document.querySelector("input[name='vat']");
@@ -96,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
   vatTypeSelect.addEventListener("change", calculateVat);
 
   // 저장 버튼 클릭 이벤트
-  const target = document.getElementById("save-btn").addEventListener("click", function (event) {
+  document.getElementById("save-btn").addEventListener("click", function (event) {
 	 // 필수 입력값
     // name은 alert 창에 띄울 내용, ele는 html 요소
     const requiredFields = [
@@ -107,8 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
       { name: "부가세", element: document.querySelector("input[name='vat']") },
       { name: "합계", element: document.querySelector("input[name='amount']") },
     ];
-
+	
+	// 버튼 동작 허용
     let isAllow = true;
+    // 값이 빈 필드
     let noValueFields = [];
 
     // 입력되었는지 확인
@@ -129,20 +132,19 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-
     // 저장 로직
     const chitDate = document.querySelector("input[name='date']").value; // 전표일자
     const client = document.querySelector("input[name='clientCode']").value; // 거래처 코드
-    const acct = document.querySelector("input[name='acctName']").value; // 계정명
+    const acct = document.querySelector("input[name='acctCode']").value; // 계정명
     const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
     const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
     const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
     const writer = "김도영"; // 작성자
-    const balance = amount; // 채권 잔액
+    //const balance = amount; // 채권 잔액
     const summary = document.querySelector("input[name='summary']").value; // 적요
-    const saleslip = document.querySelector("input[name='saleslip']").value; // 판매전표 번호
+    const purchaseSlip = document.querySelector("input[name='purchaseslip']").value; // 구매전표 번호
 
-    const salesData = {
+    const purchaseData = {
       chitDate: chitDate,
       clientCode: client,
       acctName: acct,
@@ -150,13 +152,13 @@ document.addEventListener("DOMContentLoaded", function () {
       vat: vat,
       totalPrice: amount,
       writer: writer,
-      recBalance: balance,
+      //recBalance: balance,
       summary: summary,
-      saleslipNo: saleslip,
+      PurchaseslipNo: purchaseslip,
     };
 
     // 디버깅용
-    console.log(salesData);
+    console.log(purchaseData);
 
     // AJAX 요청
     fetch("/sales/insertSales", {
@@ -164,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(salesData),
+      body: JSON.stringify(purchaseData),
     })
       .then((response) => response.text())
       .then((data) => {
@@ -460,14 +462,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	==============================*/
 
   //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openSalesModal").addEventListener("click", function () {
+  document.getElementById("openPurchaseModal").addEventListener("click", function () {
     window.setTimeout(function () {
       grid2.refreshLayout();
     }, 200);
   });
 
   let grid2 = new Grid({
-    el: document.getElementById("salesGrid"),
+    el: document.getElementById("purchaseGrid"),
     scrollX: true,
     scrollY: true,
     header: { height: 40 },
@@ -492,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
         className: "border",
       },
       {
-        header: "판매전표 No.",
+        header: "구매전표 No.",
         name: "c1",
         align: "center",
         width: 120,
@@ -504,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       },
       {
-        header: "판매일자",
+        header: "구매일자",
         name: "c2",
         align: "center",
         width: 120,
@@ -591,7 +593,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "c1") {
       rowKeyNum = ev.rowKey;
-      let inputTag1 = document.getElementById("salesInput");
+      let inputTag1 = document.getElementById("PurchaseInput");
       let inputTag2 = document.getElementById("clientInput");
       let inputTag3 = document.getElementById("clientInput2");
       let inputTag4 = document.getElementById("price");
@@ -619,19 +621,19 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 그리드에 데이터 넣기(출력)
-  fetch("/sales/selectSalesChitState?state=r1")
+  fetch("/sales/selectSalesChitState?state=미발행")
     .then((result) => result.json())
     .then((result) => {
       let dataArr = [];
       result.forEach((ele) => {
         let dataRow = {};
-        dataRow.c1 = ele.saleslipNo;
+        dataRow.c1 = ele.purchaseslipNo;
         dataRow.c2 = ele.insertDate;
         dataRow.c3 = ele.clientCode;
         dataRow.c4 = ele.clientName;
         dataRow.c5 = ele.supplyPrice;
         dataRow.c6 = ele.vat;
-        dataRow.c7 = ele.salesSummary;
+        dataRow.c7 = ele.purchaseSummary;
         dataRow.c8 = ele.employeeCode;
         dataRow.c9 = ele.employeeName;
         dataRow.c10 = ele.slipState;
@@ -650,13 +652,13 @@ document.addEventListener("DOMContentLoaded", function () {
           let dataArr = [];
           result.forEach((ele) => {
             let dataRow = {};
-            dataRow.c1 = ele.saleslipNo;
+            dataRow.c1 = ele.purchaseslipNo;
             dataRow.c2 = ele.insertDate;
             dataRow.c3 = ele.clientCode;
             dataRow.c4 = ele.clientName;
             dataRow.c5 = ele.supplyPrice;
             dataRow.c6 = ele.vat;
-            dataRow.c7 = ele.salesSummary;
+            dataRow.c7 = ele.purchaseSummary;
             dataRow.c8 = ele.employeeCode;
             dataRow.c9 = ele.employeeName;
             dataRow.c10 = ele.slipState;

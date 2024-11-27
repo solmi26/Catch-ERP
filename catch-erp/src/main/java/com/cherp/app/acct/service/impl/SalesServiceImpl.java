@@ -47,34 +47,40 @@ public class SalesServiceImpl implements SalesService{
 	@Override
 	// 매출전표 등록
 	public void insertSale(SalesVO salesVO) {
-//		try {
-	        // 매출 내역 추가
-	        int resultSale = salesMapper.insertSale(salesVO); 
-//	        if (resultSale != 1) {
-//	            throw new RuntimeException("매출 내역 추가 실패");
-//	        }
-//	        
-	        // 채권 내역 추가
-	        int resultRe = salesMapper.insertReceivable(salesVO);
-//	        if (resultRe != 1) {
-//	            throw new RuntimeException("채무 내역 추가 실패");
-//	        }
+
+	    // 매출 내역 추가
+	    salesMapper.insertSale(salesVO); 
+	    
+	    // 채권 내역 추가
+	    salesMapper.insertReceivable(salesVO);
+	    
+	    // 거래처 총 채권 잔액 업데이트
+	    salesMapper.updateClientBalancek(salesVO.getClientCode(), salesVO.getTotalPrice());
+	    
+	    // 세금계산서 발행
+	    salesMapper.insertInvoice(salesVO);
+	    
+	    // 판매전표 전표 발행 상태 변경
+	    salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
 	        
-	        // 거래처 총 채권 잔액 업데이트
-	        int resultUp = salesMapper.updateClientBalancek(salesVO.getClientCode(), salesVO.getTotalPrice());
-//	        if (resultUp != 1) {
-//	            throw new RuntimeException("거래처 총 잔액 업데이트 실패");
-//	        }
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//			}
-	        
-	        // 세금계산서 발행
-	        int resultIv = salesMapper.insertInvoice(salesVO);
-	        
-	        // 판매전표 전표 발행 상태 변경
-	        int resultSt = salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
-	        
+	}
+	
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
+	@Override
+	// 매입전표 발행
+	public void insertPurchase(PayablesVO payblesVO) {
+		
+		// 매입 내역 추가
+		salesMapper.insertPurchase(payblesVO);
+		
+		// 채무 내역 추가
+		salesMapper.insertReceivableSM(payblesVO);
+		
+		// 거래처 총 채무 잔액 업데이트
+		salesMapper.updateClientBalancem(payblesVO.getClientCode(), payblesVO.getTotalPrice());
+		
+		// 구매전표 발행 상태 변경
+		salesMapper.updatePurchaseSlipState(payblesVO.getPurcslipNo());
 	}
 	
 	@Override
