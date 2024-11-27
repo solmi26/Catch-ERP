@@ -255,10 +255,15 @@
 	<!-- CLIENT(거래처) 테이블 BALANCEK(총 채무 잔액) 업데이트 -->
     <update id="updateClientBalancem" >
     	UPDATE client
-		SET balancem = balancem + #{balancek}
+		SET balancem = balancem + #{balancem}
 		WHERE client_code = #{clientCode}
     </update>
 	
-
+	<!-- 구매전표 전표 상태 변경 -->
+	<update id="updatePurchaseSlipState">
+		UPDATE  purchase_chit
+		SET slip_state = 'r2'
+		WHERE purcslip_no = #{saleslipNo}
+	</update>
 	
 </mapper>

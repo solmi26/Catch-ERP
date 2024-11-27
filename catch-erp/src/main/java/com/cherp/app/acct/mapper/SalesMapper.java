@@ -29,9 +29,9 @@ public interface SalesMapper {
 	
 	//추가
 	public int insertSale(SalesVO salesVO);			// 매출내역 추가
-	public int insertPurchase(SalesVO salesVO);	    // 매입내역 추가
+	public int insertPurchase(PayablesVO payablesVO); // 매입내역 추가
 	public int insertReceivable(SalesVO salesVO);	// 채권거래 추가
-	public int insertReceivableSM(SalesVO salesVO);	// 채권거래 추가(by sm)
+	public int insertReceivableSM(PayablesVO payablesVO);	// 채권거래 추가(by sm)
 	public int insertPayable(InsertPayableVO insertPayableVO);// 채무거래 추가
 	public int insertInvoice(SalesVO salesVO);		// 세금 계산서 추가
 	

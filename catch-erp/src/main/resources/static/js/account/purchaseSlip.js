@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   let grid2 = new Grid({
-    el: document.getElementById("PurchaseGrid"),
+    el: document.getElementById("purchaseGrid"),
     scrollX: true,
     scrollY: true,
     header: { height: 40 },
