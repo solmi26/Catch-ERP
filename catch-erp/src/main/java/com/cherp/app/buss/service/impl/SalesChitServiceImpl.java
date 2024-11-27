@@ -6,6 +6,7 @@ import com.cherp.app.buss.vo.SalesChitVO;
 
 import java.util.List;
 
+import com.cherp.app.buss.vo.SaleslipHistoryVO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,9 +18,21 @@ public class SalesChitServiceImpl implements SalesChitService {
         this.salesChitMapper = salesChitMapper;
     }
 
+    // 판매 전표, 판매 내역 추가
     @Override
-    public int salesChitInsert(SalesChitVO salesChitVO) {
-        return salesChitMapper.insertSalesChit(salesChitVO);
+    public void salesChitInsert(SalesChitVO salesChitVO) {
+
+        //판매 전표 등록
+        salesChitMapper.insertSalesChit(salesChitVO);
+
+        for (int i = 0; i < salesChitVO.getSaleslipHistory().size(); i++) {
+
+            // SaleslipHistoryVO 객체 가져오기
+            SaleslipHistoryVO history = salesChitVO.getSaleslipHistory().get(i);
+            // SalesChitMapper를 사용하여 history 데이터 삽입
+            salesChitMapper.insertSaleslipHistory(history);
+        }
+
     }
     
     // 판매 내역 전체 조회

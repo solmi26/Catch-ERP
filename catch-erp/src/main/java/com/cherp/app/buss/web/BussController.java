@@ -1,12 +1,16 @@
 package com.cherp.app.buss.web;
 
 import com.cherp.app.buss.service.ClientService;
+import com.cherp.app.buss.service.SalesChitService;
 import com.cherp.app.buss.vo.ClientVO;
+import com.cherp.app.buss.vo.SalesChitVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -17,10 +21,12 @@ import java.util.List;
 public class BussController {
 
     private ClientService clientService;
+    private SalesChitService salesChitService;
 
     @Autowired
-    public BussController(ClientService clientService){
+    public BussController(ClientService clientService, SalesChitService salesChitService){
         this.clientService = clientService;
+        this.salesChitService = salesChitService;
     }
 
     // 구매 페이지
@@ -41,5 +47,12 @@ public class BussController {
     @GetMapping("/saleSlip")
     public String saleSlip(){
         return "sales/saleSlip";
+    }
+
+    // 판매전표 및 판매목록 등록
+    @PostMapping("/insertSalesChit")
+    public String insertSalesChit(@RequestBody SalesChitVO salesChitVO) {
+        salesChitService.salesChitInsert(salesChitVO);
+        return "sales/salesChit";
     }
 }

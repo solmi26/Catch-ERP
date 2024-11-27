@@ -20,13 +20,6 @@ public class SalesChitController {
     public SalesChitController(SalesChitService salesChitService) {
         this.salesChitService = salesChitService;
     }
-
-    // 매출전표 등록
-    @PostMapping("sales/insertSalesChit")
-    public String insertSalesChit(SalesChitVO salesChitVO) {
-        int rowInsert = salesChitService.salesChitInsert(salesChitVO);
-        return "sales/salesChit";
-    }
     
     // 매출전표 전체 조회
 	@ResponseBody

@@ -49,8 +49,7 @@ public class SalesController {
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
-	
-	
+
 	// 매출 전표 등록(기능)
 	@PostMapping("sales/insertSales")
 	@ResponseBody
@@ -67,7 +66,6 @@ public class SalesController {
 	@PostMapping("insertPayablesBalance")
 	@ResponseBody
 	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
-
 		String message = "success";
 		Iterator<Entry<String, JsonNode>> fields = payables.fields();
 		fields.forEachRemaining(field -> {

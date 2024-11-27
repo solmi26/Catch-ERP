@@ -24,5 +24,5 @@ public class SalesChitVO {
     private Integer vat; // 부가세
     private String slipState; // 발행상태
 
-    List<saleslipHistoryVO> saleslipHistories;
+    List<SaleslipHistoryVO> saleslipHistory;
 }

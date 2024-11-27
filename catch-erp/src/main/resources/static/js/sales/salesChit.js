@@ -743,10 +743,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     document.getElementById('saveBtn').addEventListener('click', function () {
-        //     전송할 데이터
+        // 전송할 데이터
         let insertSales = {};
-        //      마스터 정보
-        //  거래처
+        // 마스터 정보
+        // 거래처
         insertSales.clientName = document.getElementById('inputClientName').value;
         insertSales.clientCode = document.getElementById('inputClientCode').value;
         // 담당자
@@ -757,7 +757,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 매출계정
         insertSales.accCode = document.getElementById('accCodeInput').value;
 
-        //  그리드 정보
+        // 그리드 정보
         insertSales.saleslipHistories = salesChit.getData();
 
         let vat = 0;
@@ -771,10 +771,26 @@ document.addEventListener("DOMContentLoaded", async function () {
         insertSales.vat = vat;
         insertSales.supplyPrice = supplyPrice;
 
-        //     ajax 호출
+        // ajax 호출 전 확인
         console.log(insertSales);
         console.log(JSON.stringify(insertSales));
-        //
+        // ajax 호출
+        fetch('/sales/insertSalesChit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(insertSales),
+        })
+            .then(result => {
+                if(result.status === 200) {
+                    alert("저장 완료");
+                }
+            })
+            .then(result => {
+                console.log("판매전표 에러 : ", res.message)
+            })
+
     })
 
     const myModal = new bootstrap.Modal('#accountSearchModal')
