@@ -20,13 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class StockServiceImpl implements StockService{
 
 
-	private StockMapper stockMapper;
-	//	public StockServiceImpl(StockMapper stockMapper, EmployeeMapper employeeMapper, ClientMapper clientMapper) {
-	//	this.stockMapper = stockMapper;
-	//	this.employeeMapper = employeeMapper;
-	//	this.clientMapper = clientMapper;
-	//	}
-	
+	private StockMapper stockMapper;	
 	public StockServiceImpl(StockMapper stockMapper) {
 		this.stockMapper = stockMapper;
 	}
@@ -79,7 +73,7 @@ public class StockServiceImpl implements StockService{
 		String clientCodeInit = searchVO.getClientHiddenInput() == "" ? "no" : searchVO.getClientHiddenInput();
 		String humanCodeInit = searchVO.getHumanHiddenInput() == "" ? "no" : searchVO.getHumanHiddenInput();
 		String itemCodeInit = searchVO.getItemHiddenInput() == "" ? "no" : searchVO.getItemHiddenInput();
-		String startDateInit = searchVO.getStartDate() == null ? "no" : searchVO.getStartDate();
+		String startDateInit = searchVO.getStartDate() == "" ? "no" : searchVO.getStartDate();
 		String endDateInit = searchVO.getEndDate() == "" ? "no" : searchVO.getEndDate();
 		conditionMap.put("clientCode", clientCodeInit);
 		conditionMap.put("clientName", searchVO.getClientInput());

@@ -24,6 +24,7 @@ public class PurchaseHistoryVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date restockingDate;  // 입고 예정일
 	private String purcslipNo;    // 구매전표 번호
+	private int incompleteQuantity; // 미완료 수량
 	
 	/* 구매전표 [purchase_chit] 컬럼*/
 	private String clientCode; 	  // 거래처 코드
