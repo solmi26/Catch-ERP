@@ -105,6 +105,10 @@
 	
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSale" parameterType="com.cherp.app.acct.vo.SalesVO">
+	<selectKey keyProperty="salesChitNo" order="BEFORE" resultType="string">
+			SELECT domain('sales_chit_no')
+			FROM dual
+	</selectKey>
 		INSERT INTO sales (
                      sales_chit_no <!-- 전표번호 -->
            			 ,chit_date <!-- 전표일자 -->
@@ -119,7 +123,7 @@
            			 ,saleslip_no <!-- 판매전표 번호 -->
                     )
 			  VALUES(
-		           domain('sales_chit_no')
+		           #{salesChitNo}
 		          ,#{chitDate}
 		          ,#{clientCode}
 		          ,#{acctName}
@@ -163,7 +167,7 @@
 	        ) VALUES(
 	           #{logId}
 	           ,#{chitDate}
-	           ,#{increasePrice}
+	           ,#{totalPrice}
 	           ,#{clientCode}
 	           ,#{salesChitNo}
 	           )
