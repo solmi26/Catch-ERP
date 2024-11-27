@@ -24,9 +24,10 @@ public class RestWarehouseController {
         return warehouseService.whList();
     }
 
-    @GetMapping("/quantity/{whCode}")
-    public WarehouseVO whQuantity(@PathVariable String whCode){
-        return warehouseService.whQuantity(whCode);
+    @GetMapping("/quantity/{whCode}/{itemCode}")
+    public WarehouseVO whQuantity(@PathVariable("whCode") String whCode,
+                                  @PathVariable("itemCode") String itemCode){
+        return warehouseService.whQuantity(whCode, itemCode);
     }
 
 }

@@ -11,9 +11,12 @@
 	</select>
 
 	<select id="selectWhQuantity" resultType="com.cherp.app.buss.vo.WarehouseVO">
-		SELECT a.stocks_quantity
-		FROM contract_item a INNER JOIN stocks b
-		ON a.item_code = b.item_code
-		WHERE b.wh_code = #{whCode} and b.item_code=#{itemCode}
+		SELECT
+			a.stocks_quantity
+		FROM
+			contract_item a
+		INNER JOIN stocks b ON a.item_code = b.item_code
+		WHERE b.wh_code = #{whCode} and
+		      a.item_code = #{itemCode}
 	</select>
 </mapper>

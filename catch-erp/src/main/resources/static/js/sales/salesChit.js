@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     type: gridCheckbox
                 }
             }],
-            data: whList,
+            data: [],
             columns: [{
                 header: '품목코드',
                 name: 'prodCode',
@@ -426,17 +426,33 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
 
-        //매출계정 input
-        salesChit.on("click", (ev) => {
+        //
+        salesChit.on("editingFinish", (ev) => {
+
             const columnName = ev.columnName;
             if (columnName === 'whName') {
-                console.log(salesChit.store.data)
-                // 특정 열(columnName)의 값 가져오기
+                let whCode = ev.value ;
+                let itemCode = salesChit.getValue(ev.rowKey, 'prodCode');
 
-                ///prodCode, whName
-                console.log(ev)
-                const columnValue = salesChit.getValue(ev.rowKey, 'acctName');
-                document.getElementById('accCodeInput').value = columnValue;
+                let params = {
+                    whCode: whCode,
+                    itemCode: itemCode
+                }
+
+                if(whCode && itemCode){
+                    fetch('/quantity/' + whCode + '/' + itemCode)
+                        .then(result => result.json())
+                        .then(data => {
+                            salesChit.setValue(ev.rowKey, 'stocksQuantity', data.stocksQuantity)
+                            let quantity = salesChit.getValue(ev.rowKey, 'quantity');
+                            let deficiencyQuantity = Number(data.stocksQuantity) - Number(quantity);
+                            salesChit.setValue(ev.rowKey, 'deficiencyQuantity', deficiencyQuantity)
+                        } )
+                        .catch(error => console.log('창고 재고수량을 불러오지 못 했습니다.'))
+                }
+
+
+
             }
         });
 
@@ -649,7 +665,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             data.prodName = ele.itemName;
             data.deliveryPrice = ele.price;
             data.quantity = ele.quantity;
-            data.stocksQuantity = '디비 값';
+            // data.stocksQuantity = '';
             data.deficiencyQuantity = '디비 값 연산';
             data.price = 'fetch필요(출하)';
             data.supplyPrice = ele.supplyPrice;

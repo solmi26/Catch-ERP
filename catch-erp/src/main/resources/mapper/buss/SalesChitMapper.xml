@@ -3,12 +3,29 @@
 <mapper namespace="com.cherp.app.buss.mapper.SalesChitMapper">
 
 	<insert id="insertSalesChit" parameterType="com.cherp.app.buss.vo.SalesChitVO">
-		<selectKey keyProperty="saleslipNo" resultType="java.lang.String" order="BEFORE">
+		<selectKey keyProperty="saleslipNo" resultType="String" order="BEFORE">
 			SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') AS saleslip_no FROM DUAL
 		</selectKey>
-		INSERT INTO sales_chit(saleslip_no, insert_date, client_code,
-		client_name, acc_code, dep_bacct, employee_name, employee_code)
-		VALUES (#{saleslipNo}, sysdate, #{clientCode},
-		#{clientName}, #{accCode}, #{depBacct}, #{employeeName}, #{employeeCode})
+		INSERT
+		INTO sales_chit (
+			saleslip_no,
+			insert_date,
+			client_code,
+			client_name,
+			acc_code,
+			dep_bacct,
+			employee_name,
+			employee_code
+		)
+		VALUES (
+			#{saleslipNo},
+		    sysdate,
+			#{clientCode},
+			#{clientName},
+			#{accCode},
+			#{depBacct},
+			#{employeeName},
+			#{employeecode}
+		)
 	</insert>
 </mapper>

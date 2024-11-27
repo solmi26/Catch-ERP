@@ -24,8 +24,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public WarehouseVO whQuantity(String whCode) {
-        return warehouseMapper.selectWhQuantity(whCode);
+    public WarehouseVO whQuantity(String whCode, String itemCode) {
+        return warehouseMapper.selectWhQuantity(whCode, itemCode);
     }
 
 }
