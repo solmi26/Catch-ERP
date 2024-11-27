@@ -44,41 +44,41 @@ public class SalesController {
 		return "account/regPayReduction";
 	}
 	
-	// 매출 전표 등록(화면) 
+	// 매출 전표 등록(화면) by sm
 	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
 	
 	
-	// 매출 전표 등록(기능)
+	// 매출 전표 등록(기능) by sm
 	@PostMapping("sales/insertSales")
-	@ResponseBody
-	public String insertPurchase(@RequestBody SalesVO salesVO) {
-		salesService.insertSale(salesVO);
-		return "저장성공";
-	}
-	
-	// 매입 전표 등록(화면)
-	@GetMapping("sales/insertPurchase")
-	public String insertPurchaseForm(Model model) {
-		return "account/PurchaseSlip";
-	}
-	
-	
-	// 매입 전표 등록(기능)
-	@PostMapping("sales/insertPurchase")
 	@ResponseBody
 	public String insertSales(@RequestBody SalesVO salesVO) {
 		salesService.insertSale(salesVO);
 		return "저장 성공";
 	}
 	
-	// 회계 계정 조회
+	// 회계 계정 조회 by sm
 	@ResponseBody
 	@GetMapping("sales/selectAcct")
 	public List<SalesVO> selectAcct(Model model){
 		return salesService.acctList("o1");
+	}
+	
+	// 매입 전표 등록(화면) by sm
+	@GetMapping("sales/insertPurchase")
+	public String insertPurchaseForm(Model model) {
+		return "account/PurchaseSlip";
+	}
+	
+	
+	// 매입 전표 등록(기능) by sm
+	@PostMapping("sales/insertPurchase")
+	@ResponseBody
+	public String insertPurchase(@RequestBody PayablesVO payablesVO) {
+		salesService.insertPurchase(payablesVO);
+		return "저장 성공";
 	}
 
 	@PostMapping("insertPayablesBalance")
