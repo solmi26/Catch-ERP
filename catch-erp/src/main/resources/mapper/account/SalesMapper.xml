@@ -8,28 +8,14 @@
 		FROM receivables_log
 	</select>-->
 	
-	<select id="receivablesList" resultType="com.cherp.app.acct.vo.SalesVO">
+	<select id="receivablesList" resultType="com.cherp.app.acct.vo.ClientPsVO">
 		SELECT
-		    p.log_id,
-		    p.sales_chit_no,
-		    p.rec_date,
-		    p.bacct_code,
-		    c.client_bacct,
-		    p.client_code,
-		    (
-		        SELECT
-		            client_name
-		        FROM
-		            client
-		        WHERE
-		            client_code = p.client
-		    )             AS client_name,
-		    s.rec_balance AS rec_balance,
-		    s.rec_status  AS rec_status
-		FROM
-		         receivables_log p
-		    JOIN sales s ON p.sales_chit_no = s.sales_chit_no
-		    JOIN client c ON c.client_code = p.client_code
+		    client_bacct,
+		    client_code,
+		    client_name,
+		    balancek,
+		    state
+		FROM client
 	</select>
 	<select id="payablesList" resultType="com.cherp.app.acct.vo.ClientPsVO">
 		SELECT
@@ -41,11 +27,22 @@
 		FROM client
 	</select>
 	<insert id="insertPayable" parameterType="com.cherp.app.acct.vo.InsertPayableVO" statementType="CALLABLE">
-		{ CALL decrease_payables
-			(#{decreasePrice}
-			,#{bacctCode}
-			,#{clientCode}
-			,#{result, mode=INOUT, jdbcType=VARCHAR, javaType=java.lang.String}) }
+		{ 
+			CALL decrease_payables
+				(#{decreasePrice}
+				,#{bacctCode}
+				,#{clientCode}
+				,#{result, mode=INOUT, jdbcType=VARCHAR, javaType=java.lang.String})
+		}
+	</insert>
+	<insert id="insertDecreaseReceivable" parameterType="com.cherp.app.acct.vo.InsertReceivableVO" statementType="CALLABLE">
+		{
+			CALL decrease_receivable
+				(#{recPrice}
+				,#{bacctCode}
+				,#{clientCode}
+				,#{result, mode=OUT, jdbcType=VARCHAR})
+		}
 	</insert>
 	<!-- <select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
 		SELECT
@@ -84,7 +81,6 @@
 		        JOIN payables_log pl ON c.client_code = pl.client_code
 		        JOIN purchase p ON p.purchase_chit_no = pl.purchase_chit_no
 		WHERE   c.client_code = #{clientCode}
-		AND c.trade_type = '채무'
 		
 	</select>
 	

@@ -1,11 +1,7 @@
 package com.cherp.app.acct.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cherp.app.acct.service.SalesService;
 import com.cherp.app.acct.vo.InsertPayableVO;
+import com.cherp.app.acct.vo.InsertReceivableVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,7 +34,7 @@ public class SalesController {
 	public String receivableList(Model model) {
 		List<SalesVO> receList = salesService.receivablesList();
 		model.addAttribute("receive",receList);
-		return "account/regSalesSlipReduction";
+		return "account/regReceReduction";
 	}
 	// 채무 전체 조회
 	@GetMapping("payable/payablesList")
@@ -92,6 +89,33 @@ public class SalesController {
 			System.out.println(":"+pay.getClientCode()+":");
 			pay.setResult("aa");
 			message = salesService.insertPayable(pay);
+		}
+		return message;
+	}
+	@PostMapping("insertReceivableBalance")
+	@ResponseBody
+	public String insertReceivableBalance(@RequestBody JsonNode receiables) {
+		String message = "fail";
+		
+		String bacctCode = "";
+		List<InsertReceivableVO> recs = new ArrayList<InsertReceivableVO>();
+		for (JsonNode node : receiables) {
+			if(node.get("bacctCode")!=null)	bacctCode = node.get("bacctCode").toString(); // bacctCode가 존재하는 node의 경우 해당 값을 저장
+			for (JsonNode sel : node) {
+				System.out.println("sel : " + sel);
+				if(sel.get("clientCode")!=null) { // Client정보가 저장된 node의 값들 중 필요한 정보를 VO에 저장
+					InsertReceivableVO rec = new InsertReceivableVO();
+					rec.setClientCode(sel.get("clientCode").asText());
+					rec.setRecPrice(sel.get("decreasePrice").asInt());
+					recs.add(rec);
+				}
+			}
+		}
+		for (InsertReceivableVO rec : recs) {
+			rec.setBacctCode(bacctCode);
+			System.out.println(":"+rec.getClientCode()+":");
+			rec.setResult("aa");
+			message = salesService.insertDecreaseReceivable(rec);
 		}
 		return message;
 	}

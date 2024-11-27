@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cherp.app.acct.service.SalesService;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
+import com.fasterxml.jackson.databind.JsonNode;
 
 
 @RestController
@@ -38,12 +39,17 @@ public class RestSalesController {
 	public List<PayablesVO> payList() {
 		return salesService.payablesList();
 	}
-	// JSON 거래처 채권 데이터
+	// JSON 거래처 채무 데이터
 	@PostMapping("clientPayables")
 	@ResponseBody
 	public List<PayablesVO> clientPayablesList(@RequestBody HashMap<String, String> map) {
 		System.out.println(map.get("clientCode"));
 		return salesService.ClientPayableList(map.get("clientCode"));
 	}
-	
+	// JSON 거래처 채권 데이터
+	@PostMapping("clientReceivables")
+	@ResponseBody
+	public List<SalesVO> clientReceivablesList(@RequestBody JsonNode json) {
+		return salesService.ClientReceivableList(json.get("clientCode").asText());
+	}
 }
