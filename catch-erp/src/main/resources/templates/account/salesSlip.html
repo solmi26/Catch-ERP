@@ -45,14 +45,11 @@
 	  /* 그리드 위 영역 */
 	  .grid-controls {
 	    display: flex;
-	    justify-content: flex-end; /* 양쪽 끝으로 버튼 그룹 배치 */
+	    justify-content: flex-start; /* 양쪽 끝으로 버튼 그룹 배치 */
 	    align-items: center;
 	    margin-top:50px;
 	  }
 	  
-	  .rigth{
-	  	padding-right: 540px;
-	  }
 	  
 	  .input-group-text{
         font-weight: bold;
@@ -225,9 +222,9 @@
 	<!-- 버튼 구역 -->
     <div class="grid-controls">
        
-       <!-- 버튼 그룹 오른쪽 -->
+       <!-- 버튼 그룹 -->
       <div class="btn-group rigth">
-      	<button type="button" class="btn btn-secondary">다시 작성</button>
+      	<button type="reset" class="btn btn-secondary">다시 작성</button>
         <!-- 리스트로 이동하는 버튼 -->
         <button type="button" class="btn btn-secondary">전표관리</button>
         <button type="button" class="btn btn-success" id="save-btn">저장</button>
@@ -252,8 +249,8 @@
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※거래처코드를 클릭하여 입력해주세요.</small></p>
-	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+	                    <p><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
 	        </div>
@@ -271,8 +268,8 @@
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※회계코드를 클릭하여 입력해주세요.</small></p>
-	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+	                    <p><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
 	        </div>
@@ -300,10 +297,10 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <div><small>
-                        <p style="color: gray;">※매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</p></small>
+                        <p>※ 매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</p></small>
                     </div>
                     <div>
-                    	<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+                    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>
             </div>

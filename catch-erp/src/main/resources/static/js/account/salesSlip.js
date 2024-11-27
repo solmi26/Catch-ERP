@@ -77,74 +77,105 @@ document.addEventListener("DOMContentLoaded", function () {
     calculateVat(); // 부가세 및 합계 계산
   });
 
+  // 부가세 수정 시 합계 자동 계산
+  vatInput.addEventListener("input", function () {
+    const rawVat = vatInput.value.replace(/,/g, ""); // 콤마 제거
 
-	// 부가세 수정 시 합계 자동 계산
-	vatInput.addEventListener("input", function () {
-	  const rawVat = vatInput.value.replace(/,/g, ""); // 콤마 제거
+    // "-"만 입력한 경우에는 바로 업데이트하지 않고 유효성을 유지
+    if (/^-?$/.test(rawVat)) {
+      vatInput.value = rawVat; // "-" 또는 "" 그대로 유지
+      return; // 나머지 계산 스킵
+    }
 
-	  // "-"만 입력한 경우에는 바로 업데이트하지 않고 유효성을 유지
-	  if (/^-?$/.test(rawVat)) {
-	    vatInput.value = rawVat; // "-" 또는 "" 그대로 유지
-	    return; // 나머지 계산 스킵
-	  }
-
-	  const formattedVat = formatNumber(parseNumber(rawVat)); // 콤마 추가
-	  vatInput.value = formattedVat;
-	  calculateTotal(); // 합계 계산
-	});
+    const formattedVat = formatNumber(parseNumber(rawVat)); // 콤마 추가
+    vatInput.value = formattedVat;
+    calculateTotal(); // 합계 계산
+  });
 
   // 부가세 유형 변경 시 부가세 및 합계 자동 계산
   vatTypeSelect.addEventListener("change", calculateVat);
 
   // 저장 버튼 클릭 이벤트
-  document
-    .getElementById("save-btn")
-    .addEventListener("click", function (event) {
-      const chitDate = document.querySelector("input[name='date']").value; // 전표일자
-      const client = document.querySelector("input[name='clientCode']").value; // 거래처 코드
-      const acct = document.querySelector("input[name='acctCode']").value; // 계정명
-      const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
-      const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
-      const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
-      const writer = "김도영"; // 작성자
-      const balance = amount; // 채권 잔액
-      const summary = document.querySelector("input[name='summary']").value; // 적요
-      const saleslip = document.querySelector("input[name='saleslip']").value; // 판매전표 번호
+  const target = document.getElementById("save-btn").addEventListener("click", function (event) {
+	 // 필수 입력값
+    // name은 alert 창에 띄울 내용, ele는 html 요소
+    const requiredFields = [
+      { name: "전표일자", element: document.querySelector("input[name='date']") },
+      { name: "거래처", element: document.querySelector("input[name='clientName']") },
+      { name: "계정명", element: document.querySelector("input[name='acctCode']") },
+      { name: "공급가액", element: document.querySelector("input[name='price']") },
+      { name: "부가세", element: document.querySelector("input[name='vat']") },
+      { name: "합계", element: document.querySelector("input[name='amount']") },
+    ];
 
-      const salesData = {
-        chitDate: chitDate,
-        clientCode: client,
-        acctName: acct,
-        supplyPrice: price,
-        vat: vat,
-        totalPrice: amount,
-        writer: writer,
-        recBalance: balance,
-        summary: summary,
-        saleslipNo: saleslip,
-      };
+    let isAllow = true;
+    let noValueFields = [];
 
-      // 디버깅용
-      console.log(salesData);
-
-      // AJAX 요청
-      fetch("/sales/insertSales", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(salesData),
-      })
-        .then((response) => response.text())
-        .then((data) => {
-          console.log(data);
-          alert("저장이 완료되었습니다.");
-        })
-        .catch((error) => {
-          console.error("Error: ", error);
-          alert("서버와 연결에 실패했습니다.");
-        });
+    // 입력되었는지 확인
+    requiredFields.forEach((field) => {
+      if (!field.element.value.trim()) {
+        isAllow = false;
+        noValueFields.push(field.name);
+      }
     });
+
+    // 경고창 표시
+    if (!isAllow) {
+      // 버튼 기본 동작 중단
+      event.preventDefault()
+      // 비활성화
+      // target = true;
+      alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+      return;
+    }
+
+
+    // 저장 로직
+    const chitDate = document.querySelector("input[name='date']").value; // 전표일자
+    const client = document.querySelector("input[name='clientCode']").value; // 거래처 코드
+    const acct = document.querySelector("input[name='acctCode']").value; // 계정명
+    const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
+    const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
+    const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
+    const writer = "김도영"; // 작성자
+    const balance = amount; // 채권 잔액
+    const summary = document.querySelector("input[name='summary']").value; // 적요
+    const saleslip = document.querySelector("input[name='saleslip']").value; // 판매전표 번호
+
+    const salesData = {
+      chitDate: chitDate,
+      clientCode: client,
+      acctName: acct,
+      supplyPrice: price,
+      vat: vat,
+      totalPrice: amount,
+      writer: writer,
+      recBalance: balance,
+      summary: summary,
+      saleslipNo: saleslip,
+    };
+
+    // 디버깅용
+    console.log(salesData);
+
+    // AJAX 요청
+    fetch("/sales/insertSales", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(salesData),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data);
+        alert("저장이 완료되었습니다.");
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+        alert("서버와 연결에 실패했습니다.");
+      });
+  });
 
   // 전체 모달 관련
   class ButtonRenderer {
@@ -197,13 +228,11 @@ document.addEventListener("DOMContentLoaded", function () {
   ==============================*/
 
   //모달실행 시 grid refresh를 위한 코드
-  document
-    .getElementById("openAcctModal")
-    .addEventListener("click", function () {
-      window.setTimeout(function () {
-        grid1.refreshLayout();
-      }, 200);
-    });
+  document.getElementById("openAcctModal").addEventListener("click", function () {
+    window.setTimeout(function () {
+      grid1.refreshLayout();
+    }, 200);
+  });
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid1 = new Grid({
@@ -285,13 +314,11 @@ document.addEventListener("DOMContentLoaded", function () {
   //const clientModal = document.getElementById('clientModal');
 
   //모달실행 시 grid refresh를 위한 코드
-  document
-    .getElementById("openClientModal")
-    .addEventListener("click", function () {
-      window.setTimeout(function () {
-        grid3.refreshLayout();
-      }, 200);
-    });
+  document.getElementById("openClientModal").addEventListener("click", function () {
+    window.setTimeout(function () {
+      grid3.refreshLayout();
+    }, 200);
+  });
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid3 = new Grid({
@@ -427,222 +454,216 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       grid3.resetData(dataArr);
     });
-	
-	/*============================
+
+  /*============================
 		구매전표 모달 JS
 	==============================*/
-	
-	//모달실행 시 grid refresh를 위한 코드
-	document
-	  .getElementById("openSalesModal")
-	  .addEventListener("click", function () {
-	    window.setTimeout(function () {
-	      grid2.refreshLayout();
-	    }, 200);
-	  });
 
-	let grid2 = new Grid({
-	    el: document.getElementById('salesGrid'),
-	    scrollX: true,
-	    scrollY: true,
-	    header: { height: 40 },
-	    bodyHeight: 500,
-	    width: 'auto',
-	    contextMenu: null,
-		rowHeaders: [
-		   {
-		     type: "rowNum",
-		     header: "No.",
-		     width: 50,
-		     className: "border",
-		   },
-		 ],
-	    columns: [
-			{
-				    header: '발행상태',
-				    name: 'c10',
-				    align: "center",
-				    width: 100,
-				    whiteSpace: 'normal',
-				    className:'border'
-				},
-	        {
-	            header: '판매전표 No.',
-	            name: 'c1',
-	            align: "center",
-	            width: 120,
-	            whiteSpace: 'normal',
-	            className:'border',		
-				filter: "select",
-				renderer: {
-				  type: ButtonRenderer,
-				},            
-	            
-	        },
-	        {
-	            header: '판매일자',
-	            name: 'c2',
-	            align: "center",
-	            width: 120,
-	            whiteSpace: 'normal',
-	            className:'border',
-	            filter: {
-	                type: 'date',
-	                options: {
-	                    format: 'yyyy.MM.dd',
-	                    language: 'ko'
-	                }
-	            }
-	        },
-	        {
-	            header: '거래처 코드',
-	            name: 'c3',
-	            align: "center",
-	            width: 100,
-	            whiteSpace: 'normal',
-	            className:'border'
-	        }
-	        ,
-	        {
-	            header: '거래처명',
-	            name: 'c4',
-	            align: "center",
-	            width: 100,
-	            whiteSpace: 'normal',
-	            className:'border'
-	        },
-	        {
-	            header: '공급가액',
-	            name: 'c5',
-	            align: "center",
-	            width: 200,
-	            whiteSpace: 'normal',
-	            editor: 'text',
-	            className:'border',
-				formatter: function (e) {
-				  const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
-				  return Number(value).toLocaleString(); // 숫자로 변환 후 포맷팅
-				},
-	        },
-			{
-			    header: '부가세',
-			    name: 'c6',
-			    align: "center",
-			    width: 200,
-			    whiteSpace: 'normal',
-			    editor: 'text',
-			    className:'border',
-				formatter: function (e) {
-				  const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
-				  return Number(value).toLocaleString(); // 숫자로 변환 후 포맷팅
-				},
-			},
-			{
-			    header: '적요',
-			    name: 'c7',
-			    align: "center",
-			    width: 100,
-			    whiteSpace: 'normal',
-			    className:'border'
-			},
-			{
-			    header: '담당자 코드',
-			    name: 'c8',
-			    align: "center",
-			    width: 100,
-			    whiteSpace: 'normal',
-			    className:'border'
-			},
-			{
-			    header: '담당자명',
-			    name: 'c9',
-			    align: "center",
-			    width: 100,
-			    whiteSpace: 'normal',
-			    className:'border'
-			},
+  //모달실행 시 grid refresh를 위한 코드
+  document.getElementById("openSalesModal").addEventListener("click", function () {
+    window.setTimeout(function () {
+      grid2.refreshLayout();
+    }, 200);
+  });
 
-	    ]
-	});
-	
-	grid2.on("click", function (ev) {
-	  let rowKeyNum;
-	  if (ev.columnName == "c1") {
-	    rowKeyNum = ev.rowKey;
-	    let inputTag1 = document.getElementById("salesInput");
-	    let inputTag2 = document.getElementById("clientInput");
-	    let inputTag3 = document.getElementById("clientInput2");
-	    let inputTag4 = document.getElementById("price");
-	    //let inputTag5 = document.getElementById("vat");
-	    //let inputTag6 = document.getElementById("amount");
-	    let inputTag7 = document.getElementById("summary");
-		
-	    inputTag1.value = "";
-	    inputTag1.value = grid2.getValue(rowKeyNum, "c1");
-		
-		inputTag2.value = "";
-		inputTag2.value = grid2.getValue(rowKeyNum, "c4");
-		
-		inputTag3.value = "";
-		inputTag3.value = grid2.getValue(rowKeyNum, "c3");
-		
-		inputTag4.value = "";
-		inputTag4.value = grid2.getValue(rowKeyNum, "c5");
-		
-		inputTag4.dispatchEvent(new Event("input"));
-		
-		inputTag7.value = "";
-		inputTag7.value = grid2.getValue(rowKeyNum, "c7");
+  let grid2 = new Grid({
+    el: document.getElementById("salesGrid"),
+    scrollX: true,
+    scrollY: true,
+    header: { height: 40 },
+    bodyHeight: 500,
+    width: "auto",
+    contextMenu: null,
+    rowHeaders: [
+      {
+        type: "rowNum",
+        header: "No.",
+        width: 50,
+        className: "border",
+      },
+    ],
+    columns: [
+      {
+        header: "발행상태",
+        name: "c10",
+        align: "center",
+        width: 100,
+        whiteSpace: "normal",
+        className: "border",
+      },
+      {
+        header: "판매전표 No.",
+        name: "c1",
+        align: "center",
+        width: 120,
+        whiteSpace: "normal",
+        className: "border",
+        filter: "select",
+        renderer: {
+          type: ButtonRenderer,
+        },
+      },
+      {
+        header: "판매일자",
+        name: "c2",
+        align: "center",
+        width: 120,
+        whiteSpace: "normal",
+        className: "border",
+        filter: {
+          type: "date",
+          options: {
+            format: "yyyy.MM.dd",
+            language: "ko",
+          },
+        },
+      },
+      {
+        header: "거래처 코드",
+        name: "c3",
+        align: "center",
+        width: 100,
+        whiteSpace: "normal",
+        className: "border",
+      },
+      {
+        header: "거래처명",
+        name: "c4",
+        align: "center",
+        width: 200,
+        whiteSpace: "normal",
+        className: "border",
+      },
+      {
+        header: "공급가액",
+        name: "c5",
+        align: "center",
+        width: 100,
+        whiteSpace: "normal",
+        editor: "text",
+        className: "border",
+        formatter: function (e) {
+          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+        },
+      },
+      {
+        header: "부가세",
+        name: "c6",
+        align: "center",
+        width: 100,
+        whiteSpace: "normal",
+        editor: "text",
+        className: "border",
+        formatter: function (e) {
+          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+        },
+      },
+      {
+        header: "적요",
+        name: "c7",
+        align: "center",
+        width: 200,
+        whiteSpace: "normal",
+        className: "border",
+      },
+      {
+        header: "담당자 코드",
+        name: "c8",
+        align: "center",
+        width: 100,
+        whiteSpace: "normal",
+        className: "border",
+      },
+      {
+        header: "담당자명",
+        name: "c9",
+        align: "center",
+        width: 200,
+        whiteSpace: "normal",
+        className: "border",
+      },
+    ],
+  });
 
-	  }
-	});
-	
-	// 그리드에 데이터 넣기(출력)
-	fetch("/sales/selectSalesChitState?state=미발행")
-	  .then((result) => result.json())
-	  .then((result) => {
-	    let dataArr = [];
-	    result.forEach((ele) => {
-	      let dataRow = {};
-	      dataRow.c1 = ele.saleslipNo;
-	      dataRow.c2 = ele.insertDate;
-	      dataRow.c3 = ele.clientCode;
-	      dataRow.c4 = ele.clientName;
-	      dataRow.c5 = ele.supplyPrice;
-	      dataRow.c6 = ele.vat;
-	      dataRow.c7 = ele.salesSummary;
-	      dataRow.c8 = ele.employeeCode;
-	      dataRow.c9 = ele.employeeName;
-	      dataRow.c10 = ele.slipState;		  
-	      dataArr.push(dataRow);
-	    });
-	    grid2.resetData(dataArr);
-	  });
-	  
-	  // 버튼 클릭 이벤트(미발행 발행)
-	  document.querySelectorAll(".filter-item").forEach((button) => {
-	    button.addEventListener("click", function () {
-	      const state = this.dataset.state; // 버튼의 data-state 속성 값 가져오기
-	      fetch(`/sales/selectSalesChitState?state=${state}`)
-	        .then((result) => result.json())
-	        .then((result) => {
-	          let dataArr = [];
-	          result.forEach((ele) => {
-	            let dataRow = {};
-	            dataRow.c1 = ele.saleslipNo;
-	            dataRow.c2 = ele.insertDate;
-	            dataRow.c3 = ele.clientCode;
-	            dataRow.c4 = ele.clientName;
-	            dataRow.c5 = ele.supplyPrice;
-	            dataRow.c6 = ele.vat;
-	            dataRow.c7 = ele.salesSummary;
-	            dataRow.c8 = ele.employeeCode;
-	            dataRow.c9 = ele.employeeName;
-	            dataRow.c10 = ele.slipState;
-	            dataArr.push(dataRow);
-	          });
-	          grid2.resetData(dataArr);
-	        });
-	    });
-	  });
+  grid2.on("click", function (ev) {
+    let rowKeyNum;
+    if (ev.columnName == "c1") {
+      rowKeyNum = ev.rowKey;
+      let inputTag1 = document.getElementById("salesInput");
+      let inputTag2 = document.getElementById("clientInput");
+      let inputTag3 = document.getElementById("clientInput2");
+      let inputTag4 = document.getElementById("price");
+      //let inputTag5 = document.getElementById("vat");
+      //let inputTag6 = document.getElementById("amount");
+      let inputTag7 = document.getElementById("summary");
+
+      inputTag1.value = "";
+      inputTag1.value = grid2.getValue(rowKeyNum, "c1");
+
+      inputTag2.value = "";
+      inputTag2.value = grid2.getValue(rowKeyNum, "c4");
+
+      inputTag3.value = "";
+      inputTag3.value = grid2.getValue(rowKeyNum, "c3");
+
+      inputTag4.value = "";
+      inputTag4.value = grid2.getValue(rowKeyNum, "c5");
+
+      inputTag4.dispatchEvent(new Event("input"));
+
+      inputTag7.value = "";
+      inputTag7.value = grid2.getValue(rowKeyNum, "c7");
+    }
+  });
+
+  // 그리드에 데이터 넣기(출력)
+  fetch("/sales/selectSalesChitState?state=미발행")
+    .then((result) => result.json())
+    .then((result) => {
+      let dataArr = [];
+      result.forEach((ele) => {
+        let dataRow = {};
+        dataRow.c1 = ele.saleslipNo;
+        dataRow.c2 = ele.insertDate;
+        dataRow.c3 = ele.clientCode;
+        dataRow.c4 = ele.clientName;
+        dataRow.c5 = ele.supplyPrice;
+        dataRow.c6 = ele.vat;
+        dataRow.c7 = ele.salesSummary;
+        dataRow.c8 = ele.employeeCode;
+        dataRow.c9 = ele.employeeName;
+        dataRow.c10 = ele.slipState;
+        dataArr.push(dataRow);
+      });
+      grid2.resetData(dataArr);
+    });
+
+  // 버튼 클릭 이벤트(미발행 발행)
+  document.querySelectorAll(".filter-item").forEach((button) => {
+    button.addEventListener("click", function () {
+      const state = this.dataset.state; // 버튼의 data-state 속성 값 가져오기
+      fetch(`/sales/selectSalesChitState?state=${state}`)
+        .then((result) => result.json())
+        .then((result) => {
+          let dataArr = [];
+          result.forEach((ele) => {
+            let dataRow = {};
+            dataRow.c1 = ele.saleslipNo;
+            dataRow.c2 = ele.insertDate;
+            dataRow.c3 = ele.clientCode;
+            dataRow.c4 = ele.clientName;
+            dataRow.c5 = ele.supplyPrice;
+            dataRow.c6 = ele.vat;
+            dataRow.c7 = ele.salesSummary;
+            dataRow.c8 = ele.employeeCode;
+            dataRow.c9 = ele.employeeName;
+            dataRow.c10 = ele.slipState;
+            dataArr.push(dataRow);
+          });
+          grid2.resetData(dataArr);
+        });
+    });
+  });
 });

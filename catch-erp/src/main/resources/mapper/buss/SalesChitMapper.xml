@@ -29,6 +29,7 @@
 		)
 	</insert>
 	
+	<!-- 판매전표 전체 조회 -->
 	<select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
 		SELECT saleslip_no
             , insert_date
@@ -45,6 +46,7 @@
 		FROM sales_chit
 	</select>
 	
+	<!-- 판매전표 전표 상태별 조회 -->
 	<select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
 		SELECT saleslip_no
             , insert_date
