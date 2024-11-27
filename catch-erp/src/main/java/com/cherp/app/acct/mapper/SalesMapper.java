@@ -9,7 +9,7 @@ import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
 /**
- * 매출 Mapper
+ * 매출, 매입, 채권, 채무 Mapper
  */
 public interface SalesMapper {
 	// 전체 조회
@@ -29,8 +29,10 @@ public interface SalesMapper {
 	
 	//추가
 	public int insertSale(SalesVO salesVO);			// 매출내역 추가
-	public int insertPayable(InsertPayableVO insertPayableVO);// 채무거래 추가
+	public int insertPurchase(SalesVO salesVO);	    // 매입내역 추가
 	public int insertReceivable(SalesVO salesVO);	// 채권거래 추가
+	public int insertReceivableSM(SalesVO salesVO);	// 채권거래 추가(by sm)
+	public int insertPayable(InsertPayableVO insertPayableVO);// 채무거래 추가
 	public int insertInvoice(SalesVO salesVO);		// 세금 계산서 추가
 	
 	//수정
@@ -44,6 +46,8 @@ public interface SalesMapper {
     public int updateClientBalancem(@Param("clientCode") String clientCode, @Param("balancem") int balancem);
 	// 판매전표 전표 상태 변경
     public int updateSalesSlipState(String saleslipNo);
+	// 구매전표 전표 상태 변경
+    public int updatePurchaseSlipState(String purcslipNo);
 	
 	//삭제
 	public int deleteSale(int salesChitNo);			// 매출 단건 삭제
