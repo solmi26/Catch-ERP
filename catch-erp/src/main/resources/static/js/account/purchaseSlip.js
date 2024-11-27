@@ -2,7 +2,6 @@
 
 // 페이지 로드 완료 시 실행
 document.addEventListener("DOMContentLoaded", function () {
-
   // 공급가액, 부가세, 합계, 부가세 유형 필드
   const priceInput = document.querySelector("input[name='price']");
   const vatInput = document.querySelector("input[name='vat']");
@@ -98,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 저장 버튼 클릭 이벤트
   document.getElementById("save-btn").addEventListener("click", function (event) {
-	 // 필수 입력값
+    // 필수 입력값
     // name은 alert 창에 띄울 내용, ele는 html 요소
     const requiredFields = [
       { name: "전표일자", element: document.querySelector("input[name='date']") },
@@ -108,8 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
       { name: "부가세", element: document.querySelector("input[name='vat']") },
       { name: "합계", element: document.querySelector("input[name='amount']") },
     ];
-	
-	// 버튼 동작 허용
+
+    // 버튼 동작 허용
     let isAllow = true;
     // 값이 빈 필드
     let noValueFields = [];
@@ -125,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 경고창 표시
     if (!isAllow) {
       // 버튼 기본 동작 중단
-      event.preventDefault()
+      event.preventDefault();
       // 비활성화
       // target = true;
       alert(`${noValueFields.join(", ")}를 입력해주세요.`);
@@ -139,8 +138,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
     const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
     const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
-    const writer = "김도영"; // 작성자
-    //const balance = amount; // 채권 잔액
+    const writer = "정재현"; // 작성자
+    //const balance = amount; // 채무 잔액
     const summary = document.querySelector("input[name='summary']").value; // 적요
     const purchaseSlip = document.querySelector("input[name='purchaseslip']").value; // 구매전표 번호
 
@@ -154,14 +153,14 @@ document.addEventListener("DOMContentLoaded", function () {
       writer: writer,
       //recBalance: balance,
       summary: summary,
-      PurchaseslipNo: purchaseslip,
+      purcslipNo: purchaseSlip,
     };
 
     // 디버깅용
     console.log(purchaseData);
 
     // AJAX 요청
-    fetch("/sales/insertSales", {
+    fetch("/sales/insertPurchase", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -593,7 +592,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "c1") {
       rowKeyNum = ev.rowKey;
-      let inputTag1 = document.getElementById("PurchaseInput");
+      let inputTag1 = document.getElementById("purchaseInput");
       let inputTag2 = document.getElementById("clientInput");
       let inputTag3 = document.getElementById("clientInput2");
       let inputTag4 = document.getElementById("price");
@@ -621,13 +620,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 그리드에 데이터 넣기(출력)
-  fetch("/sales/selectSalesChitState?state=미발행")
+  fetch("/sales/selectSalesChitState?state=r1")
     .then((result) => result.json())
     .then((result) => {
       let dataArr = [];
       result.forEach((ele) => {
         let dataRow = {};
-        dataRow.c1 = ele.purchaseslipNo;
+        dataRow.c1 = ele.purcslipNo;
         dataRow.c2 = ele.insertDate;
         dataRow.c3 = ele.clientCode;
         dataRow.c4 = ele.clientName;
