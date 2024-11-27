@@ -3,6 +3,7 @@ package com.cherp.app.acct.service;
 import java.util.List;
 
 import com.cherp.app.acct.vo.InsertPayableVO;
+import com.cherp.app.acct.vo.InsertReceivableVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
@@ -30,6 +31,7 @@ public interface SalesService {
 	public void insertSale(SalesVO salesVO);			
 	public String insertPayable(InsertPayableVO insertPayableVO);	// 채무거래 추가
 	public int insertReceivable(SalesVO salesVO);	// 채권거래 추가
+	public String insertDecreaseReceivable(InsertReceivableVO insertReceivableVO);	// 채권거래 추가
 	public int insertInvoice(SalesVO salesVO);		// 세금 계산서 추가
 	// 매입전표 추가, 채무 내역 추가, 거래처 채권 총 잔액 업데이트, 구매전표 상태 변경
 	public void insertPurchase(PayablesVO payblesVO);

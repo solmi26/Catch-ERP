@@ -1,0 +1,52 @@
+.modal-header {
+    background-color: #AACB73;
+    color: white;
+}
+.modal-dialog {
+    max-width: 800px;
+}
+.ledger-form {
+    border: 2px solid #FF0000;
+    margin: 1rem;
+}
+.ledger-title {
+    background-color: #FFF;
+    color: #FF0000;
+    border: 1px solid #FF0000;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+}
+.ledger-table {
+    font-size: 0.9rem;
+}
+.ledger-table th {
+    background-color: #f8f9fa;
+    text-align: center;
+    vertical-align: middle;
+}
+.ledger-table td {
+    vertical-align: middle;
+    padding: 6px 24px !important;
+}
+.ledge-footer {
+	 border-top: solid 2px double !important;
+	 padding: 8px 24px !important; 
+}
+.number-column {
+    text-align: right;
+    font-family: monospace;
+}
+.subtotal-row {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+.ledger-date-column {
+    width: 140px;
+}
+.ledger-description-column {
+    width: 120px;
+}
+.ledger-amount-column {
+    width: 120px;
+}
