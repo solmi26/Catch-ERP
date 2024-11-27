@@ -1,7 +1,10 @@
 package com.cherp.app.acct.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.stereotype.Controller;
@@ -68,30 +71,28 @@ public class SalesController {
 	@ResponseBody
 	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
 
-		String message = "success";
-		Iterator<Entry<String, JsonNode>> fields = payables.fields();
-		fields.forEachRemaining(field -> {
-			int cnt = 0;
-			System.out.println("field : " + field.getValue());
-			System.out.println("field length : " + field.getValue().size());
-			for (int i = 0; i < field.getValue().size(); i++) {
-				System.out.println("i:"+field.getValue().get("clientCode"));
-			}
-			if(cnt == 1) {
-				System.out.println(field.getValue().get("bacctCode"));
-			}
-			cnt++;
-		});
+		String message = "fail";
+		
+		String bacctCode = "";
+		List<InsertPayableVO> pays = new ArrayList<InsertPayableVO>();
 		for (JsonNode node : payables) {
-			InsertPayableVO payable = new InsertPayableVO();
-//			payable.setBacctCode(payables.get("bacctInfo").get("bacctCode").toString());
-//			payable.setClientCode(node.get("clientCode").toString());
-//			payable.setDecreasePrice(node.get("decreasePrice").asInt());
-//			System.out.println(node.get("clientCode").toPrettyString());
-//			System.out.println(node.get("clientCode").toString());
-//			salesService.insertPayable(payable);
+			if(node.get("bacctCode")!=null)	bacctCode = node.get("bacctCode").toString(); // bacctCode가 존재하는 node의 경우 해당 값을 저장
+			for (JsonNode sel : node) {
+				System.out.println("sel : " + sel);
+				if(sel.get("clientCode")!=null) { // Client정보가 저장된 node의 값들 중 필요한 정보를 VO에 저장
+					InsertPayableVO pay = new InsertPayableVO();
+					pay.setClientCode(sel.get("clientCode").asText());
+					pay.setDecreasePrice(sel.get("decreasePrice").asInt());
+					pays.add(pay);
+				}
+			}
 		}
-
+		for (InsertPayableVO pay : pays) {
+			pay.setBacctCode(bacctCode);
+			System.out.println(":"+pay.getClientCode()+":");
+			pay.setResult("aa");
+			message = salesService.insertPayable(pay);
+		}
 		return message;
 	}
 	// 회계 계정 조회
