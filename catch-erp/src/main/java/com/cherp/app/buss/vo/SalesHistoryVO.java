@@ -24,6 +24,7 @@ public class SalesHistoryVO {
 	private Date deliveryDate;     // 출하 예정일
 	private String saleslipNo;     // 판매전표 번호
 	private String acc; 		   // 매출계정
+	private int incompleteQuantity; // 미완료수량
 	
 	/* 판매전표 [sales_chit] 컬럼*/
 	private String clientCode; 	   // 거래처 코드

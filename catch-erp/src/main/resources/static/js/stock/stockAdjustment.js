@@ -144,11 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-    let grid
-    const initGrid = () => {
-        // 그리드 객체
-	
-     	grid = new Grid({
+    // 조정 페이지 그리드 객체     	
+    let grid = new Grid({
         el: document.getElementById('adjustmentGrid'),
         scrollX: true,
         scrollY: true,
@@ -247,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 validation: {
                     dataType: 'number',
                     min: 1,
-                    max: 100
+                    max: 99999999
                 },
                 className:'border'
             },
@@ -260,56 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 className:'border'
             }           
         ]
-    	});
-
-    	return grid;
-	}
-
-    // 그리드 설정
-    const createdGrid = initGrid();
-
-    // 샘플 데이터
-    const sampleData = [
-        {
-			c1: 'A0000045-1',
-            c2: 'A2024',
-            c3: '컵홀더',
-            c4: '상품 출하',
-            c5: '1400',
-            c6: '5',
-            c7: '0',
-            c8: '1000',
-            c8: '1200',
-        },
-        {
-			c1: 'A0000045-2',
-            c2: 'A2024',
-            c3: '컵홀더',
-            c4: '상품 출하',
-            c5: '1400',
-            c6: '5',
-            c7: '0',
-            c8: '1000',
-            c8: '1200',
-        },
-        {
-			c1: 'A0000045-4',
-            c2: 'A2024',
-            c3: '컵홀더',
-            c4: '상품 출하',
-            c5: '1400',
-            c6: '5',
-            c7: '0',
-            c8: '1000',
-            c8: '1200',
-        },
-        
-    ];
-
-    // 그리드에 데이터 넣기(출력)
-    createdGrid.resetData(sampleData);
-
-
+    });
 
 
 	/*============================
@@ -442,7 +390,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	})*/
 	
 	// 거래처모달 그리드에 데이터 넣기(출력)
-	fetch("/stocks/clientList")
+	fetch("/stocks/client")
 	.then(result => result.json())
 	.then(result => {
 		let dataArr = [];
@@ -534,7 +482,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	})   
 	
 	// 품목조회 그리드에 데이터 넣기(출력)
-	fetch("/stocks/itemList")
+	fetch("/stocks/item")
 	.then(result=> result.json())
 	.then(result=>{
 		let dataArr = [];
@@ -655,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            className:'border'
 		        },
 		        {
-		            header: '수량',
+		            header: '미완료 수량',
 		            name: 'c7',
 		            align: "center",
 		            width: 100,
@@ -751,7 +699,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		endDate = endDate == "" ? 'noDate' : endDate;
 		
 		//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
-		fetch(`/stocks/purchaseChitNoList/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
+		fetch(`/stocks/purchaseChitNo/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
 		.then(result => result.json())
 		.then(result => {
 			let arr = [];
@@ -763,7 +711,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				data.c4 = ele.itemCode;
 				data.c5 = ele.itemName;
 				data.c6 = ele.clientName;
-				data.c7 = String(ele.quantity);
+				data.c7 = String(ele.incompleteQuantity);
 				data.c8 = String(ele.restockingPrice);
 				data.c9 = ele.clientCode;
 				data.c10 = String(ele.stocksQuantity)
@@ -897,7 +845,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            className:'border'
 		        },
 		        {
-		            header: '수량',
+		            header: '미완료 수량',
 		            name: 'c7',
 		            align: "center",
 		            width: 100,
@@ -930,12 +878,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 
 	
-	// 그리드에 데이터 넣기(출력)	 
+	// 그리드에 데이터 넣기(출력)
 	//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
     let salesOrderBtn = document.getElementById('salesOrderBtn');
 	salesOrderBtn.addEventListener("click", function(){
 		let data = $('#searchForm').serialize();
-		fetch(`/stocks/salesChitNoList?${data}`)
+		fetch(`/stocks/salesChitNo?${data}`)
 		.then(result=> result.json())
 		.then(result=> {
 			let dataArr = [];
@@ -943,11 +891,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				let data = {};
 				data.c1 = ele.salesNo;
 				data.c2 = String(ele.saleslipNo);
-				data.c3 = ele.delivery;
+				data.c3 = ele.deliveryDate;
 				data.c4 = ele.itemCode;
 				data.c5 = ele.itemName;
 				data.c6 = ele.clientName;
-				data.c7 = String(ele.quantity);
+				data.c7 = String(ele.incompleteQuantity);
 				data.c8 = String(ele.deliveryPrice);
 				data.c9 = ele.clientCode;
 				data.c10 = String(ele.stocksQuantity);
@@ -983,8 +931,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
        
-       
-    //재고조정 버튼 이벤트함수
+    
+    //재고조정 버튼 
     let reportBtn = document.getElementById("reportBtn");
     reportBtn.addEventListener("mouseover",function(){
 		if(grid.getRowCount()<1){		
@@ -992,13 +940,67 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		if(grid.getRowCount()>0){
 			reportBtn.setAttribute("data-bs-toggle","modal")
-		}	
+		}
+		let pageGrid = grid.getData();
+		//let itemCodeSet = new Set(); //페이지 그리드에 존재하는 행들의 item Set => 보류
+
+		pageGrid.forEach(ele=>{
+			
+			//itemCodeSet.add(ele.c2); //페이지그리드에있는 상품코드 항목들 모은다. => 보류
+			
+			if(ele.c4 == '상품 출고'){ //1. 출하수량이 숫자가 아니거나 수량이 1보다작은경우 2. 출하수량이 재고수량보다 많은경우 3. 출하수량이 지시수량보다 많은경우 
+				if(isNaN(Number(ele.c6)) || Number(ele.c6) < 1 || Number(ele.c6) > Number(ele.c8) || Number(ele.c6) > Number(ele.c5)){
+					reportBtn.removeAttribute("data-bs-toggle"); //출고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
+				}
+			}
+			if(ele.c4 == '상품 입고'){// 1. 입고수량이 숫자가 아니거나 수량이 1보다작은경우 2. 입고수량이 지시수량보다 많은경우
+				if(isNaN(Number(ele.c7)) || Number(ele.c7) < 1 || Number(ele.c7) > Number(ele.c5)){ //입고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
+					reportBtn.removeAttribute("data-bs-toggle");					
+				}
+			}
+			
+		})	
+		//페이지 그리드의 항목별 출하수량과 재고수량의 유효성검사를 위한부분 => 보류
+		/*let itemCodeArr = Array.from(itemCodeSet)
+		let numCheckObj = {};
+		
+		grid.getData().forEach(ele=>{
+			
+			itemCodeArr.forEach(ele2=>{
+				if(ele.c2 == ele2){
+					let obj = {};
+					`obj.${ele}` = ele.c8;
+					numCheckObj.push(obj)
+					console.log(numCheckObj)
+				}	
+			})
+				
+		})*/
+			
 	})   
     
     reportBtn.addEventListener("click", function(){		
 		if(grid.getRowCount()<1){						
 				alert('재고조정을 실시할 작업 건을 추가하세요.');						
 		}
+		
+		let pageGrid = grid.getData();
+		pageGrid.forEach(ele=>{
+			if(ele.c4 == '상품 출고'){	
+				if(isNaN(Number(ele.c6)) || Number(ele.c6) < 1 || Number(ele.c6) > Number(ele.c8) || Number(ele.c6) > Number(ele.c5)){ //c.5 지시수량 / c.6 실출하수량
+					alert('유효한 작업수량을 입력하세요.') //출고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
+					throw new Error("재고조정 중지시키기!");
+				}
+			}
+			
+			if(ele.c4 == '상품 입고'){
+				if(isNaN(Number(ele.c7)) || Number(ele.c7) < 1 || Number(ele.c7) > Number(ele.c5)){ //입고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
+					alert('유효한 작업수량을 입력하세요.')				
+					throw new Error("재고조정 중지시키기!");
+				}
+			}
+			
+		})
 		
 		let today = new Date();   	
 		let dateString = today.toLocaleDateString(); //작성일자	yyyy. MM. dd	
@@ -1011,7 +1013,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.a3 = ele.c3;
 			data.a4 = ele.c8;
 			if(ele.c4 == '상품 출고'){
-				data.a5 = ele.c6; //입고c7 / 출하 c6
+				data.a5 = "-" + ele.c6; //입고c7 / 출하 c6
 			} else {
 				data.a5 = ele.c7
 			}
@@ -1160,7 +1162,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let initBtn = document.getElementById("inputInitial");
     initBtn.addEventListener('click',function(){
 		let blank = [];
-		createdGrid.resetData(blank)
+		grid.resetData(blank)
 	})
 	
 	//체크된 항목 row 삭제	

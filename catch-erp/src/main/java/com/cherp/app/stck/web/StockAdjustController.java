@@ -17,11 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class StockAdjustController {
 
-//	private final StockService stockAdjustService;
-
-	private final ClientService clientServcie;
-	private final StockService stockAdjustService;
-
 	
 	@GetMapping("stocks/stockAdjustment") //재고조정페이지
 	public String stockAdjustment(){
