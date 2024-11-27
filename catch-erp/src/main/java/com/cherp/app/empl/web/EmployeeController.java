@@ -19,7 +19,6 @@ public class EmployeeController {
 	@GetMapping("employees/employee")
 	public String employeeList(Model model) {
 		EmployeeSearchDto search = new EmployeeSearchDto();
-		search.setEmployeeName("gd");
 		model.addAttribute("search", search);
 		
 		return "human/employeeList";
@@ -32,4 +31,16 @@ public class EmployeeController {
 		return "human/departmentList";
 	}
 
+	//근태입력페이지
+	@GetMapping("employees/attendanceinput")
+	public String attendanceInput () {
+		return "human/attendanceInput";
+	}
+	
+	
+	@GetMapping("employees/attendanceElementInput")
+	public String attendanceElementInput () {
+		return "human/attendanceElementInput";
+	}
+	
 }

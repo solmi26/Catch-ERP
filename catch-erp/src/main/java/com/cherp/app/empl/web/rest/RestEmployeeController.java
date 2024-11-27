@@ -16,17 +16,27 @@ import com.cherp.app.empl.vo.EmployeeVO;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 사원관리
+ * 유석진
+ * 2024.11.27
+ */
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 public class RestEmployeeController {
 
 	private final EmployeeService employeeService;
 	
+	/**
+	 * 
+	 * @param search
+	 * @return
+	 */
 	//사원목록 데이터
 	@GetMapping("employees/emps")
 	public List<EmployeeVO> employeeList (EmployeeSearchDto search) {
+		System.out.println(search);
 		return employeeService.employeeList(search);
 	} 
 	

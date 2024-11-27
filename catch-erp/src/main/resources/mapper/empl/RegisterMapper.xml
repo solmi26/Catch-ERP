@@ -8,30 +8,72 @@
 		       manager_code
 		FROM   department
 	</select>
-
+	
+	<!-- 부서단건 조회 -->
+	<select id="selectDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
+		SELECT department_code,
+		       department_name,
+		       manager_code
+		FROM   department
+		WHERE  department_code = #{departmentCode}
+	</select>
+	
+	
+	<!-- 부서단건 수정 -->
+	<update id="updateDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
+		UPDATE department
+		SET department_code = #{departmentCode},
+		    department_name = #{departmentName},
+		    manager_code = #{managerCode}
+		WHERE department_code = #{departmentCode}
+	</update>
 	<!-- 부서목록 페이지의 부서등록  -->
 	<insert id="insertDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
 		INSERT INTO department(
 		                       department_code
 		                       ,department_name
-		                       <if test="managerCode != null and !managerCode.equals('')">
 		                       ,manager_code
-		                       </if>)
+		                       )
 		VALUES (
 				#{departmentCode}
 		        ,#{departmentName}
-                <if test="managerCode != null and !managerCode.equals('')">
                 ,#{managerCode}
-                </if>
 		        )
 	</insert>
 
 	<!-- 부서목록의 부서삭제 -->
-	<delete>
+	<delete id="deleteDepartment" parameterType="java.util.ArrayList">
 		DELETE FROM department
-		WHERE deparment_code IN
-		<foreach collection=""></foreach>
+		WHERE department_code IN
+		<foreach collection="array" item="departmentCode" open="(" separator="," close=")">
+			#{departmentCode}
+		</foreach>
 	</delete>
+	
+	<!-- 근태항목 조회 -->
+	<select id="selectAttItemList" resultType="com.cherp.app.empl.vo.AttItemVO" >
+		SELECT att_code,
+		       att_status,
+		       att_name
+		FROM   att_item
+	</select>
+	
+	<!-- 근태항목 단건조회 -->
+	
+	<!-- 근태항목 등록 -->
+	<insert id="insertAttItem" parameterType="com.cherp.app.empl.vo.AttItemVO">
+		INSERT INTO att_item (att_code
+		                     ,att_status
+		                     ,att_name)
+		                     
+		VALUES               (#{attCode}
+		                     ,#{attStatus}
+		                     ,#{attName})                     
+	
+	</insert>
+	<!--  -->
+	
+	
 
 
 

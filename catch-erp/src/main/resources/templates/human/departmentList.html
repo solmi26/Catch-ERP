@@ -106,6 +106,68 @@
    </div>
 		
 <!-- 부서등록모달끝!!~~~ -->		
+
+<!-- 부서수정모달!!!1 -->
+    <div class="modal fade" id="deptModifyModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">부서수정</h5>
+
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>부서수정</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row g-3 align-items-center">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label">부서코드</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" readonly aria-describedby="passwordHelpInline" name="departmentCode">
+                                        </div>
+                                    </div>                                    
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label">부서명</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" aria-describedby="passwordHelpInline"  name="departmentName">
+                                        </div>
+                                    </div>                                    
+                                   <div class="row justify-content-center align-items-center">
+                                       <div class="col-3">
+                                         <label for="inputPassword6" class="col-form-label">부서장</label>
+                                       </div>
+                                       <div class="col">
+                                         <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" name="managerCode" aria-describedby="passwordHelpInline" >
+                                       </div>
+                                   </div> 
+
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary modify-save-Btn" data-bs-dismiss="modal">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 부서수정모달끝!!! -->
 	<script>
 	    var gridData = [{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'}]
 		const Grid = tui.Grid;
