@@ -43,7 +43,9 @@ public class StockServiceImpl implements StockService{
 		employeeInit = employee.equals("all") ? "" : employee;
 		itemInit = item.equals("all") ? "" : item;
 		List<PurchaseChitVO> chitNoList = stockMapper.selectPurcSlipNoList(type1, type2, clientInit, employeeInit);
-		
+		if(chitNoList.size() == 0) {
+			return null;
+		}
 		//구매 전표번호에서 품목에 대한 조회조건으로 걸러준다. 조건:입고날짜 AND 품목
 		Map<String, Object> conditionMap = new HashMap<>();
 		String[] chitNoArr = new String[chitNoList.size()];
@@ -58,7 +60,7 @@ public class StockServiceImpl implements StockService{
 		conditionMap.put("startDate", startDate);
 		conditionMap.put("endDate", endDate);
 		List<PurchaseHistoryVO> historyList = stockMapper.selectPurcHistoryList(conditionMap);
-
+		
 		return historyList;
 	}
 

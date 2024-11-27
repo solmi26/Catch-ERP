@@ -700,7 +700,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		
 		//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
 		fetch(`/stocks/purchaseChitNo/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
-		.then(result => result.json())
+		.then(result => {if(result != typeof(JSON)){
+							//throw new Error("조회결과없음");		
+						} 
+		})
 		.then(result => {
 			let arr = [];
 			result.forEach(ele=>{
@@ -723,6 +726,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			let purchaseFilteredData = exceptExitingRows(arr);
 			grid6.resetData(purchaseFilteredData);	
 		})
+		.catch(error=> {console.log("조회결과없습니다.")})
 				
 				
 	})
@@ -1140,7 +1144,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	})   
 	
 	// 그리드에 데이터 넣기(출력) 
-	fetch('/emps')
+	fetch('/employees/emps')
 	.then(result => result.json())
 	.then(result => {
 		let dataArr = [];
