@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cherp.app.common.dto.EmployeeSearchDto;
+import com.cherp.app.common.vo.CommonCodeVO;
 import com.cherp.app.empl.service.EmployeeService;
 import com.cherp.app.empl.vo.EmployeeVO;
 
@@ -20,12 +22,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RestEmployeeController {
 
-	final EmployeeService employeeService;
+	private final EmployeeService employeeService;
 	
 	//사원목록 데이터
 	@GetMapping("emps")
-	public List<EmployeeVO> employeeList () {
-		return employeeService.employeeList();
+	public List<EmployeeVO> employeeList (EmployeeSearchDto search) {
+		return employeeService.employeeList(search);
 	} 
 	
 	//사원 단건데이터    
@@ -42,4 +44,9 @@ public class RestEmployeeController {
 		return employeeService.employeeInsert(employeeVO);
 	}
 	
+	//공통코드 검색 다건데이터
+	@GetMapping("/empCommon")
+	public List<CommonCodeVO> CommonCodeSelect (CommonCodeVO commonCode) {
+		return employeeService.commonCodeList(commonCode);
+	}
 }

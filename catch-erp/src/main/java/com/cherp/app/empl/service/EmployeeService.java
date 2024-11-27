@@ -2,10 +2,13 @@ package com.cherp.app.empl.service;
 
 import java.util.List;
 
+import com.cherp.app.common.dto.EmployeeSearchDto;
+import com.cherp.app.common.vo.CommonCodeVO;
 import com.cherp.app.empl.vo.EmployeeVO;
 
 public interface EmployeeService {
-	public List<EmployeeVO> employeeList ();
+	public List<EmployeeVO> employeeList (EmployeeSearchDto search);
 	public EmployeeVO employeeInfo (EmployeeVO employee);
 	public int employeeInsert(EmployeeVO employee);
+	public List<CommonCodeVO> commonCodeList(CommonCodeVO commonCode);
 }

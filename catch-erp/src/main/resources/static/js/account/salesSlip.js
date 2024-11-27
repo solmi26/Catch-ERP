@@ -13,8 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  // 콤마 제거
+  // 콤마 제거 및 음수 기호 처리
   function parseNumber(value) {
+    // 값이 "-" 또는 "-" 뒤에 숫자만 있는 경우 처리
+    if (/^-?$/.test(value)) return 0; // "-"만 입력 시 임시로 0 반환
     return parseInt(value.replace(/,/g, ""), 10) || 0;
   }
 
@@ -25,6 +27,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let vat = 0;
 
+    if (isNaN(price)) {
+      // 유효하지 않은 입력 시 부가세 초기화
+      vatInput.value = "";
+      totalInput.value = "";
+      return;
+    }
+
     // 과세인 경우 공급가액의 10%를 부가세로 설정
     if (vatType === "과세") {
       vat = Math.floor(price * 0.1);
@@ -32,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
       vat = 0; // 면세 또는 영세일 경우 부가세는 0
     }
 
-    vatInput.value = formatNumber(vat);
+    vatInput.value = formatNumber(vat); // 부가세 계산
     calculateTotal(); // 합계 계산
   }
 
@@ -41,23 +50,48 @@ document.addEventListener("DOMContentLoaded", function () {
     const price = parseNumber(priceInput.value); // 공급가액
     const vat = parseNumber(vatInput.value); // 부가세
 
+    if (isNaN(price) || isNaN(vat)) {
+      // 유효하지 않은 입력 시 합계 초기화
+      totalInput.value = "";
+      return;
+    }
+
     const total = price + vat; // 합계 = 공급가액 + 부가세
     totalInput.value = formatNumber(total); // 합계에 콤마 추가
   }
 
   // 공급가액 입력 시 부가세 및 합계 자동 계산
   priceInput.addEventListener("input", function () {
-    const rawValue = parseNumber(priceInput.value); // 콤마 제거
-    priceInput.value = formatNumber(rawValue); // 실시간으로 콤마 추가
+    const rawValue = priceInput.value;
+
+    if (/^-?$/.test(rawValue)) {
+      // 유효하지 않은 상태: '-' 또는 빈 입력만 존재
+      priceInput.value = rawValue; // 그대로 유지
+      vatInput.value = "";
+      totalInput.value = "";
+      return;
+    }
+
+    const parsedValue = parseNumber(rawValue); // 콤마 제거 후 숫자로 변환
+    priceInput.value = formatNumber(parsedValue); // 실시간으로 콤마 추가
     calculateVat(); // 부가세 및 합계 계산
   });
 
-  // 부가세 수정 시 합계 자동 계산
-  vatInput.addEventListener("input", function () {
-    const rawVat = parseNumber(vatInput.value); // 콤마 제거
-    vatInput.value = formatNumber(rawVat); // 실시간으로 콤마 추가
-    calculateTotal(); // 합계 계산
-  });
+
+	// 부가세 수정 시 합계 자동 계산
+	vatInput.addEventListener("input", function () {
+	  const rawVat = vatInput.value.replace(/,/g, ""); // 콤마 제거
+
+	  // "-"만 입력한 경우에는 바로 업데이트하지 않고 유효성을 유지
+	  if (/^-?$/.test(rawVat)) {
+	    vatInput.value = rawVat; // "-" 또는 "" 그대로 유지
+	    return; // 나머지 계산 스킵
+	  }
+
+	  const formattedVat = formatNumber(parseNumber(rawVat)); // 콤마 추가
+	  vatInput.value = formattedVat;
+	  calculateTotal(); // 합계 계산
+	});
 
   // 부가세 유형 변경 시 부가세 및 합계 자동 계산
   vatTypeSelect.addEventListener("change", calculateVat);
@@ -94,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(salesData);
 
       // AJAX 요청
-      fetch("/insertSales", {
+      fetch("/sales/insertSales", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -228,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 거래처모달 그리드에 데이터 넣기(출력)
-  fetch("/selectAcct")
+  fetch("/sales/selectAcct")
     .then((result) => result.json())
     .then((result) => {
       let dataArr = [];
@@ -393,4 +427,222 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       grid3.resetData(dataArr);
     });
+	
+	/*============================
+		구매전표 모달 JS
+	==============================*/
+	
+	//모달실행 시 grid refresh를 위한 코드
+	document
+	  .getElementById("openSalesModal")
+	  .addEventListener("click", function () {
+	    window.setTimeout(function () {
+	      grid2.refreshLayout();
+	    }, 200);
+	  });
+
+	let grid2 = new Grid({
+	    el: document.getElementById('salesGrid'),
+	    scrollX: true,
+	    scrollY: true,
+	    header: { height: 40 },
+	    bodyHeight: 500,
+	    width: 'auto',
+	    contextMenu: null,
+		rowHeaders: [
+		   {
+		     type: "rowNum",
+		     header: "No.",
+		     width: 50,
+		     className: "border",
+		   },
+		 ],
+	    columns: [
+			{
+				    header: '발행상태',
+				    name: 'c10',
+				    align: "center",
+				    width: 100,
+				    whiteSpace: 'normal',
+				    className:'border'
+				},
+	        {
+	            header: '판매전표 No.',
+	            name: 'c1',
+	            align: "center",
+	            width: 120,
+	            whiteSpace: 'normal',
+	            className:'border',		
+				filter: "select",
+				renderer: {
+				  type: ButtonRenderer,
+				},            
+	            
+	        },
+	        {
+	            header: '판매일자',
+	            name: 'c2',
+	            align: "center",
+	            width: 120,
+	            whiteSpace: 'normal',
+	            className:'border',
+	            filter: {
+	                type: 'date',
+	                options: {
+	                    format: 'yyyy.MM.dd',
+	                    language: 'ko'
+	                }
+	            }
+	        },
+	        {
+	            header: '거래처 코드',
+	            name: 'c3',
+	            align: "center",
+	            width: 100,
+	            whiteSpace: 'normal',
+	            className:'border'
+	        }
+	        ,
+	        {
+	            header: '거래처명',
+	            name: 'c4',
+	            align: "center",
+	            width: 100,
+	            whiteSpace: 'normal',
+	            className:'border'
+	        },
+	        {
+	            header: '공급가액',
+	            name: 'c5',
+	            align: "center",
+	            width: 200,
+	            whiteSpace: 'normal',
+	            editor: 'text',
+	            className:'border',
+				formatter: function (e) {
+				  const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+				  return Number(value).toLocaleString(); // 숫자로 변환 후 포맷팅
+				},
+	        },
+			{
+			    header: '부가세',
+			    name: 'c6',
+			    align: "center",
+			    width: 200,
+			    whiteSpace: 'normal',
+			    editor: 'text',
+			    className:'border',
+				formatter: function (e) {
+				  const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+				  return Number(value).toLocaleString(); // 숫자로 변환 후 포맷팅
+				},
+			},
+			{
+			    header: '적요',
+			    name: 'c7',
+			    align: "center",
+			    width: 100,
+			    whiteSpace: 'normal',
+			    className:'border'
+			},
+			{
+			    header: '담당자 코드',
+			    name: 'c8',
+			    align: "center",
+			    width: 100,
+			    whiteSpace: 'normal',
+			    className:'border'
+			},
+			{
+			    header: '담당자명',
+			    name: 'c9',
+			    align: "center",
+			    width: 100,
+			    whiteSpace: 'normal',
+			    className:'border'
+			},
+
+	    ]
+	});
+	
+	grid2.on("click", function (ev) {
+	  let rowKeyNum;
+	  if (ev.columnName == "c1") {
+	    rowKeyNum = ev.rowKey;
+	    let inputTag1 = document.getElementById("salesInput");
+	    let inputTag2 = document.getElementById("clientInput");
+	    let inputTag3 = document.getElementById("clientInput2");
+	    let inputTag4 = document.getElementById("price");
+	    //let inputTag5 = document.getElementById("vat");
+	    //let inputTag6 = document.getElementById("amount");
+	    let inputTag7 = document.getElementById("summary");
+		
+	    inputTag1.value = "";
+	    inputTag1.value = grid2.getValue(rowKeyNum, "c1");
+		
+		inputTag2.value = "";
+		inputTag2.value = grid2.getValue(rowKeyNum, "c4");
+		
+		inputTag3.value = "";
+		inputTag3.value = grid2.getValue(rowKeyNum, "c3");
+		
+		inputTag4.value = "";
+		inputTag4.value = grid2.getValue(rowKeyNum, "c5");
+		
+		inputTag4.dispatchEvent(new Event("input"));
+		
+		inputTag7.value = "";
+		inputTag7.value = grid2.getValue(rowKeyNum, "c7");
+
+	  }
+	});
+	
+	// 그리드에 데이터 넣기(출력)
+	fetch("/sales/selectSalesChitState?state=미발행")
+	  .then((result) => result.json())
+	  .then((result) => {
+	    let dataArr = [];
+	    result.forEach((ele) => {
+	      let dataRow = {};
+	      dataRow.c1 = ele.saleslipNo;
+	      dataRow.c2 = ele.insertDate;
+	      dataRow.c3 = ele.clientCode;
+	      dataRow.c4 = ele.clientName;
+	      dataRow.c5 = ele.supplyPrice;
+	      dataRow.c6 = ele.vat;
+	      dataRow.c7 = ele.salesSummary;
+	      dataRow.c8 = ele.employeeCode;
+	      dataRow.c9 = ele.employeeName;
+	      dataRow.c10 = ele.slipState;		  
+	      dataArr.push(dataRow);
+	    });
+	    grid2.resetData(dataArr);
+	  });
+	  
+	  // 버튼 클릭 이벤트(미발행 발행)
+	  document.querySelectorAll(".filter-item").forEach((button) => {
+	    button.addEventListener("click", function () {
+	      const state = this.dataset.state; // 버튼의 data-state 속성 값 가져오기
+	      fetch(`/sales/selectSalesChitState?state=${state}`)
+	        .then((result) => result.json())
+	        .then((result) => {
+	          let dataArr = [];
+	          result.forEach((ele) => {
+	            let dataRow = {};
+	            dataRow.c1 = ele.saleslipNo;
+	            dataRow.c2 = ele.insertDate;
+	            dataRow.c3 = ele.clientCode;
+	            dataRow.c4 = ele.clientName;
+	            dataRow.c5 = ele.supplyPrice;
+	            dataRow.c6 = ele.vat;
+	            dataRow.c7 = ele.salesSummary;
+	            dataRow.c8 = ele.employeeCode;
+	            dataRow.c9 = ele.employeeName;
+	            dataRow.c10 = ele.slipState;
+	            dataArr.push(dataRow);
+	          });
+	          grid2.resetData(dataArr);
+	        });
+	    });
+	  });
 });

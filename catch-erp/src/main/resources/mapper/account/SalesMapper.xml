@@ -35,10 +35,18 @@
 		SELECT
 		    client_bacct,
 		    client_code,
+		    client_name,
 		    balancem,
 		    state
 		FROM client
 	</select>
+	<insert id="insertPayable" parameterType="com.cherp.app.acct.vo.InsertPayableVO">
+		CALL decrease_payables
+			(#{decreasePrice}
+			,#{bacctCode}
+			,#{clientCode}
+			,#{result, mode = OUT, jdbcType=VARCHAR})
+	</insert>
 	<!-- <select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
 		SELECT
 		    p.rec_log_id,
@@ -176,4 +184,11 @@
 		FROM  acnt_acct
 		WHERE debit_side = #{debitSide}
 	</select>
+	
+	<!-- 판매전표 전표 상태 변경 -->
+	<update id="updateSalesSlipState">
+		UPDATE  sales_chit
+		SET slip_state = '발행'
+		WHERE saleslip_no = #{saleslipNo}
+	</update>
 </mapper>

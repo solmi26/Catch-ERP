@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.cherp.app.acct.vo.ClientPsVO;
+import com.cherp.app.acct.vo.InsertPayableVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
@@ -29,7 +29,7 @@ public interface SalesMapper {
 	
 	//추가
 	public int insertSale(SalesVO salesVO);			// 매출내역 추가
-	public int insertPayable(PayablesVO payablesVO);// 채무거래 추가
+	public int insertPayable(InsertPayableVO insertPayableVO);// 채무거래 추가
 	public int insertReceivable(SalesVO salesVO);	// 채권거래 추가
 	public int insertInvoice(SalesVO salesVO);		// 세금 계산서 추가
 	
@@ -42,7 +42,8 @@ public interface SalesMapper {
 	public int updateClientBalancek(@Param("clientCode") String clientCode, @Param("balancek") int balancek);
 	// 거래처 채무 총 잔액 변경
     public int updateClientBalancem(@Param("clientCode") String clientCode, @Param("balancem") int balancem);
-	
+	// 판매전표 전표 상태 변경
+    public int updateSalesSlipState(String saleslipNo);
 	
 	//삭제
 	public int deleteSale(int salesChitNo);			// 매출 단건 삭제

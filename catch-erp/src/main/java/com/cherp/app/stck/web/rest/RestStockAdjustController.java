@@ -10,8 +10,10 @@ import com.cherp.app.buss.service.ClientService;
 import com.cherp.app.buss.vo.ClientVO;
 import com.cherp.app.buss.vo.PurchaseChitVO;
 import com.cherp.app.buss.vo.PurchaseHistoryVO;
+import com.cherp.app.buss.vo.SalesHistoryVO;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
+import com.cherp.app.stck.vo.HistorySearchVO;
 import com.cherp.app.stck.web.StockAdjustController;
 
 import lombok.RequiredArgsConstructor;
@@ -42,16 +44,30 @@ public class RestStockAdjustController {
 		return stockAdjustService.getItemList();
 	}
 	//구매내역조회
-	@GetMapping("stocks/chitNoList/{type1}/{type2}/{type3}/{client}/{employee}/{item}/{startDate}/{endDate}")
-	public List<PurchaseHistoryVO> getPurcChitNo(@PathVariable("type1") String type1, @PathVariable("type2") String type2, @PathVariable("type3") String type3
-			, @PathVariable("client") String client, @PathVariable("employee") String employee, @PathVariable("item") String item, @PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate){
+	@GetMapping("stocks/purchaseChitNoList/{type1}/{type2}/{type3}/{client}/{employee}/{item}/{startDate}/{endDate}")
+	public List<PurchaseHistoryVO> getPurcChitNo(@PathVariable("type1") String type1, 
+			                                     @PathVariable("type2") String type2, 
+			                                     @PathVariable("type3") String type3, 
+			                                     @PathVariable("client") String client, 
+			                                     @PathVariable("employee") String employee, 
+			                                     @PathVariable("item") String item, 
+			                                     @PathVariable("startDate") String startDate, 
+			                                     @PathVariable("endDate") String endDate){
 		return stockAdjustService.getPurchaseHistoryList(type1, type2, type3, client, employee, item, startDate, endDate);
 	}
 	
-	//재고 단건조회
-	@GetMapping("stocks/itemStocks/{itemCode}")
-	public ContractItemVO getItemStocks(@PathVariable("itemCode") String itemCode) {
-		return stockAdjustService.getItemStocks(itemCode);
+	/* => 구매내역 조회에서 JOIN하면되었음
+	 * //재고 단건조회
+	 * @GetMapping("stocks/itemStocks/{itemCode}") public ContractItemVO
+	 * getItemStocks(@PathVariable("itemCode") String itemCode) { return
+	 * stockAdjustService.getItemStocks(itemCode); }
+	 */
+	
+	//판매내역조회 
+	@GetMapping("stocks/salesChitNoList")
+	public List<SalesHistoryVO> getSalesChitNo(HistorySearchVO searchVO){
+		
+		return stockAdjustService.getSalesHistoryList(searchVO);
 	}
 	
 }

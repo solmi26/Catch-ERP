@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cherp.app.acct.mapper.SalesMapper;
 import com.cherp.app.acct.service.SalesService;
-import com.cherp.app.acct.vo.ClientPsVO;
+import com.cherp.app.acct.vo.InsertPayableVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 
@@ -71,6 +71,9 @@ public class SalesServiceImpl implements SalesService{
 	        // 세금계산서 발행
 	        int resultIv = salesMapper.insertInvoice(salesVO);
 	        
+	        // 판매전표 전표 발행 상태 변경
+	        int resultSt = salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
+	        
 	}
 	
 	@Override
@@ -95,8 +98,9 @@ public class SalesServiceImpl implements SalesService{
 
 
 	@Override
-	public int insertPayable(PayablesVO payablesVO) {
-		return 0;
+	public String insertPayable(InsertPayableVO insertPayableVO) {
+		salesMapper.insertPayable(insertPayableVO);
+		return insertPayableVO.getResult();
 	}
 
 	@Override
