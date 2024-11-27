@@ -252,6 +252,9 @@
                               </tr>`;
                 }
                 ledgebody.insertAdjacentHTML('beforeend', layout);
+                document.querySelector('#totIncrease').innerHTML = increaseTot;
+                document.querySelector('#totDecrease').innerHTML = decreaseTot;
+                document.querySelector('#totBalance').innerHTML = increaseTot - decreaseTot;
               })
               ledgeModal.show();
             }

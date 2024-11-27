@@ -12,5 +12,27 @@
 		,client_code
 		FROM client
 	</select>
+	
+	<select id="gwSelectAllClientList" resultType="com.cherp.app.acct.vo.ClientPsVO">
+		SELECT 	CLIENT_CODE
+				,CLIENT_NAME
+				,CEO_NAME
+				,TRADE_ITEM
+				,TRADE_TYPE
+				,COMPANY_TEL
+				,FAX
+				,ADDRESS
+				,EMPLOYEE_NAME
+				,EMPLOYEE_TEL
+				,EMPLOYEE_EMAIL
+				,CLIENT_BACCT
+				,CLIENT_DATE
+				,BALANCEK
+				,BALANCEM
+				,STATE
+				,EVENT
+				,SUMMARY
+		FROM    client
+	</select>
 
 </mapper>

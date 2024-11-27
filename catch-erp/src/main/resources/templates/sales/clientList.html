@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/sales_layout}"
+      layout:fragment="Content">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>거래처 조회</title>
+</head>
+    <style>
+        .price-input {
+            position: relative;
+        }
+
+        .price-input::after {
+            content: '원';
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .sort-icon {
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .sort-icon:hover {
+            color: #0d6efd;
+        }
+
+        .list {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-white shadow-sm rounded" style="padding: 20px;">
+	    <!-- Search Section -->
+	    <div class="border-bottom pb-3 mb-4">
+	      <h2>거래처 리스트</h2>
+	    </div>
+	    <div class="gridWrapper">
+	      <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#customerModal" style="margin-bottom: 10px;">신규등록</button>
+	      <div id="tabulatorGrid"></div>
+	      <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
+	    </div>
+        <!-- 모달창 -->
+        <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="customerModalLabel">거래처등록</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs" id="customerTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="basic-tab" data-bs-toggle="tab"
+                                    data-bs-target="#basic" type="button" role="tab" aria-controls="basic"
+                                    aria-selected="true">기본</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="credit-price-tab" data-bs-toggle="tab"
+                                    data-bs-target="#credit-price" type="button" role="tab" aria-controls="credit-price"
+                                    aria-selected="false">여신/단가</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="additional-tab" data-bs-toggle="tab"
+                                    data-bs-target="#additional" type="button" role="tab" aria-controls="additional"
+                                    aria-selected="false">부가정보</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="customerTabContent">
+                            <!-- 기본 탭 내용 -->
+                            <div class="tab-pane fade  show active" id="basic" role="tabpanel"
+                                aria-labelledby="basic-tab">
+                                <form>
+                                    <div class="mb-3 row">
+                                        <label for="customerCode" class="col-sm-3 col-form-label">거래처코드</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="customerCode" value="00012">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="customerName" class="col-sm-3 col-form-label">상호(이름)</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="customerName"
+                                                placeholder="상호(이름)">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label class="col-sm-3 col-form-label">거래처코드구분</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="customerType"
+                                                    id="type1" checked>
+                                                <label class="form-check-label" for="type1">사업자등록번호</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="customerType"
+                                                    id="type2">
+                                                <label class="form-check-label" for="type2">비사업자(내국인)</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="customerType"
+                                                    id="type3">
+                                                <label class="form-check-label" for="type3">비사업자(외국인)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="representativeName" class="col-sm-3 col-form-label">대표자명</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="representativeName"
+                                                placeholder="대표자명">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="industry" class="col-sm-3 col-form-label">업태</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="industry" placeholder="업태">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="category" class="col-sm-3 col-form-label">종목</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="category" placeholder="종목">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="phone" class="col-sm-3 col-form-label">전화</label>
+                                        <div class="col-sm-9">
+                                            <input type="tel" class="form-control" id="phone" placeholder="전화">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="fax" class="col-sm-3 col-form-label">Fax</label>
+                                        <div class="col-sm-9">
+                                            <input type="tel" class="form-control" id="fax" placeholder="Fax">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="searchContents" class="col-sm-3 col-form-label">검색용내용</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="searchContents"
+                                                placeholder="검색용내용">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="mobilePhone" class="col-sm-3 col-form-label">모바일</label>
+                                        <div class="col-sm-9">
+                                            <input type="tel" class="form-control" id="mobilePhone" placeholder="모바일">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="address" class="col-sm-3 col-form-label">주소1</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="address" placeholder="주소1">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="address2" class="col-sm-3 col-form-label">주소2</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="address2" placeholder="주소2">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="homepage" class="col-sm-3 col-form-label">홈페이지</label>
+                                        <div class="col-sm-9">
+                                            <input type="url" class="form-control" id="homepage" placeholder="홈페이지">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="manager" class="col-sm-3 col-form-label">담당자</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="manager" placeholder="담당자">
+                                                <button class="btn btn-outline-secondary" type="button">검색</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- 여신/단가 탭 -->
+                            <div class="tab-pane fade" id="credit-price" role="tabpanel"
+                                aria-labelledby="credit-price-tab">
+                                <form>
+                                    <div class="mb-3 row">
+                                        <label for="customerCode" class="col-sm-3 col-form-label">거래처코드</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="customerCode" value="00012"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="manager" class="col-sm-3 col-form-label">담당자</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="manager" placeholder="담당자">
+                                                <button class="btn btn-outline-secondary btn-search"
+                                                    type="button">검색</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label class="col-sm-3 col-form-label">수금/지급예정일</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentTerms"
+                                                    id="defaultSetting" checked>
+                                                <label class="form-check-label" for="defaultSetting">기본설정</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentTerms"
+                                                    id="endOfMonth">
+                                                <label class="form-check-label" for="endOfMonth">
+                                                    <input type="number"
+                                                        class="form-control form-control-sm d-inline-block"
+                                                        style="width: 50px;"> 월 후
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentTerms"
+                                                    id="monthsLater">
+                                                <label class="form-check-label" for="monthsLater">
+                                                    <input type="number"
+                                                        class="form-control form-control-sm d-inline-block"
+                                                        style="width: 50px;"> 개월 후
+                                                    <input type="number"
+                                                        class="form-control form-control-sm d-inline-block"
+                                                        style="width: 50px;"> 일
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentTerms"
+                                                    id="weeksLater">
+                                                <label class="form-check-label" for="weeksLater">
+                                                    <input type="number"
+                                                        class="form-control form-control-sm d-inline-block"
+                                                        style="width: 50px;"> 주 후
+                                                    <input type="number"
+                                                        class="form-control form-control-sm d-inline-block"
+                                                        style="width: 50px;"> 일
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="paymentTerms"
+                                                    id="notUsed">
+                                                <label class="form-check-label" for="notUsed">사용안함</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="debtManagement" class="col-sm-3 col-form-label">채권번호관리</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-select" id="debtManagement">
+                                                <option selected>기본설정</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="creditManagement" class="col-sm-3 col-form-label">채무번호관리</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-select" id="creditManagement">
+                                                <option selected>기본설정</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="creditLimit" class="col-sm-3 col-form-label">여신한도</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="creditLimit"
+                                                    placeholder="여신한도">
+                                                <span class="input-group-text">원</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="salesDiscount" class="col-sm-3 col-form-label">출고조정율</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="salesDiscount"
+                                                    placeholder="출고조정율">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="purchaseDiscount" class="col-sm-3 col-form-label">입고조정율</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="purchaseDiscount"
+                                                    placeholder="입고조정율">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="salesPriceGroup" class="col-sm-3 col-form-label">영업단가그룹</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="salesPriceGroup"
+                                                    placeholder="영업단가그룹">
+                                                <button class="btn btn-outline-secondary btn-search"
+                                                    type="button">검색</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="purchasePriceGroup" class="col-sm-3 col-form-label">구매단가그룹</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="purchasePriceGroup"
+                                                    placeholder="구매단가그룹">
+                                                <button class="btn btn-outline-secondary btn-search"
+                                                    type="button">검색</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <label for="creditPeriod" class="col-sm-3 col-form-label">여신기간</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="creditPeriod"
+                                                    placeholder="여신기간">
+                                                <span class="input-group-text">일 전</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">
+                                <!-- 부가정보 탭 내용 -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary">저장</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function makeClientListTabulator(clientList) {
+            let grid = new Tabulator("#tabulatorGrid", {
+            layout:"fitColumns",
+            pagination:"local",
+            data: clientList,
+            paginationSize:12,
+            movableColumns:true,
+            paginationCounter:"rows",
+            paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+                return "등록된 거래처 : "+totalRows+"개";
+            },
+            rowFormatter:function(row){
+                row.getElement().classList.add(".table-light"); //mark rows with age greater than or equal to 18 as successful;
+            },
+            langs:{
+                "default":{
+                    "pagination":{
+                        "first":"처음",
+                        "first_title":"처음으로",
+                        "last":"끝",
+                        "last_title":"마지막으로",
+                        "prev":"이전",
+                        "prev_title":"이전으로",
+                        "next":"다음",
+                        "next_title":"다음으로",
+                        "all":"전체",
+                    }
+                }
+            },
+            columns:[
+                {title:"거래처코드", field:"clientCode", width:150, sorter:"string", headerFilter:"input"},
+                {title:"거래처명", field:"clientName", width:200, sorter:"string", headerFilter:"input"},
+                {title:"거래유형", field:"tradeType", width:120, sorter:"string", headerFilter:"input"},
+                {title:"연락처", field:"companyTel", width:200, sorter:"string", headerFilter:"input"},
+                {title:"주소", field:"address", width:400, sorter:"string", headerFilter:"input"},
+                {title:"적요", field:"summary", width:470, sorter:"string", headerFilter:"input"},
+            ],
+            });
+            return grid;
+        }
+        // 모달창
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/api/business/client')
+            .then(result => result.json())
+            .then(clientList => {
+                console.log(clientList)
+                makeClientListTabulator(clientList);
+            })
+            var saveButton = document.getElementById('saveButton');
+            saveButton.addEventListener('click', function () {
+                // 저장 로직을 여기에 구현
+                console.log('저장 버튼이 클릭되었습니다.');
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'F8') {
+                    event.preventDefault();
+                    saveButton.click();
+                }
+            });
+        });
+
+        
+    </script>
+
+</body>
+
+</html>
