@@ -15,6 +15,8 @@ public interface RegisterMapper {
 	
 	
 	public List<AttItemVO> selectAttItemList(); //근태항목 전체조회
-	public int insertAttItem (AttItemVO attitem); //근태항목등록
-	
+	public AttItemVO selectAttItem(String attCode);//근태항목 단건조회
+	public int insertAttItem (AttItemVO attItem); //근태항목등록
+	public int updateAttItem (AttItemVO attItem); //근태항목수정
+	public int deleteAttItem (String[] attItem); //근태항목 다건삭제
 }

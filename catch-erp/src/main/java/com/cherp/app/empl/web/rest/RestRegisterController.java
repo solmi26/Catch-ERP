@@ -24,6 +24,12 @@ public class RestRegisterController {
 	
 	private final RegisterService service;
 	
+
+	
+	/**
+	 * 
+	 * @return 전체부서의 vo타입을 반환합니다 
+	 */
 	//부서목록 조회
 	@GetMapping("employees/dept")
 	public List<DepartmentVO> departmentList() {
@@ -60,11 +66,27 @@ public class RestRegisterController {
 	public List<AttItemVO> attItemList () {
 		return service.attItemList();
 	}
+	//근태항목 단건조회
+	@GetMapping("/employees/attItem/{attCode}")
+	public AttItemVO attItemInfo(@PathVariable(name="attCode") String attCode) {
+		return service.attItmeInfo(attCode);
+	}
 	
 	//근태항목 등록
 	@PostMapping("/employees/attitem")
 	public int attItemInsert(@RequestBody AttItemVO attitem) {
 		return service.attItemInsert(attitem);
+	}
+	
+	//근태항목 수정
+	@PutMapping("/employees/attitem")
+	public int attItemUpdate(@RequestBody AttItemVO attitem) {
+		return service.attItemUpdate(attitem);
+	}
+	//근태항목 다건삭제
+	@DeleteMapping("/employees/attitem")
+	public int attItemDelete(@RequestParam(value="attCode") String[] attItem) {
+		return service.attItemDelete(attItem);
 	}
 	
 }

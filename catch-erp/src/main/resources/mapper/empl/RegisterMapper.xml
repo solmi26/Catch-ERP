@@ -59,6 +59,13 @@
 	</select>
 	
 	<!-- 근태항목 단건조회 -->
+	<select id="selectAttItem" parameterType="string" resultType="com.cherp.app.empl.vo.AttItemVO">
+		SELECT att_code,
+		       att_status,
+		       att_name
+		FROM   att_item
+		WHERE  att_code = #{attCode}
+	</select>
 	
 	<!-- 근태항목 등록 -->
 	<insert id="insertAttItem" parameterType="com.cherp.app.empl.vo.AttItemVO">
@@ -71,10 +78,22 @@
 		                     ,#{attName})                     
 	
 	</insert>
-	<!--  -->
-	
-	
-
+	<!-- 근태항목 수정 -->
+	<update id="updateAttItem" parameterType="com.cherp.app.empl.vo.AttItemVO">
+		UPDATE att_item
+		SET   att_code = #{attCode},
+		      att_status = #{attStatus},
+		      att_name = #{attName}
+		WHERE att_code = #{attCode}
+	</update>
+	<!-- 근태항목 다건삭제 -->
+	<delete id="deleteAttItem" parameterType="java.util.ArrayList">
+		DELETE FROM att_item
+		WHERE att_code IN
+		<foreach collection="array" item="attCode" open="(" separator="," close=")">
+			#{attCode}
+		</foreach>
+	</delete>
 
 
 

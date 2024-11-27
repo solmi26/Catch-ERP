@@ -11,7 +11,8 @@ import java.util.List;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
-import oracle.jdbc.driver.OracleConnection;
+import oracle.jdbc.OracleConnection;
+
 
 public class AttendanceArrayStructHandler implements TypeHandler<Object> {
 
@@ -19,6 +20,11 @@ public class AttendanceArrayStructHandler implements TypeHandler<Object> {
 	public void setParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
 		OracleConnection conn = ps.getConnection().unwrap(OracleConnection.class);
 		List<AttendanceVO> list = (List<AttendanceVO>) parameter;
+		if (list == null || list.size() == 0) {
+			Array VOarray = (Array)conn.createOracleArray("ATTARRAY", null);
+			ps.setArray(i, VOarray);
+			return;
+		}
 		Object[] obj = new Object[6];
 		Struct[] array = new Struct[list.size()];
 		

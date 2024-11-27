@@ -20,8 +20,11 @@ public class RestAttendanceController {
 	
 	
 	@PostMapping("/employees/att")
-	public int attendanceInsert (@RequestBody List<AttendanceVO> attendance) {
-		return service.attendanceInsert(attendance);
+	public int attendanceInsert (@RequestBody List<AttendanceVO> attendanceVO) {
+		attendanceVO.forEach(ele -> {
+			System.out.println(ele);;
+		});
+		return service.attendanceInsert(attendanceVO);
 	}
 	
 	

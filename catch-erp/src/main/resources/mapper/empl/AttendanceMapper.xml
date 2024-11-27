@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.empl.AttendanceMapper">
-<!-- 
-	<insert id ="" parameterType="">
+<mapper namespace="com.cherp.app.empl.mapper.AttendanceMapper">
+
+	<insert id ="insertAttendance" parameterType="hashmap" statementType="CALLABLE">
 		CALL ATTENDANCE_INSERT (
-		              #{attnedanceVO, mode=IN typeHandler=com.cherp.app.empl.vo.AttendanceArrayStructHandler}
-		               )
-		
-	
+     #{attendanceVO,mode=IN, typeHandler=com.cherp.app.empl.vo.AttendanceArrayStructHandler}
+		              )
 	</insert>
 
- -->
+ 
 
 
 

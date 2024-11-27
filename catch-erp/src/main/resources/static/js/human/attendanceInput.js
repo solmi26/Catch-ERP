@@ -56,7 +56,19 @@ aeSearchGrid.on('dblclick', function (ev) {
 	let attName = aeSearchGrid.getFormattedValue(ev.rowKey,'attName');
 		grid.setValue(currentTarget.rowKey,ev.columnName,attName);
 		aeSearchModal.hide();
-	}
-	
-		
+	}	
+})
+
+//저장버튼 클릭시 이벤트
+document.querySelector('.insert-Btn').addEventListener('click',function () {
+	let row = grid.getData()
+	fetch("/employees/att",{
+		method:"post",
+		headers:{"Content-Type":"application/json"},
+		body:JSON.stringify(row)
+	})
+	.then(data => data.json())
+	.then(data => {
+		console.log("성공?")
+	})
 })
