@@ -14,7 +14,8 @@
 			b.item_name,
 			b.quantity,
 			( b.quantity * e.price )        price,
-			( b.quantity * e.supply_price ) supply_price
+			( b.quantity * e.supply_price ) supply_price,
+			( b.quantity * e.vat) 			vat
 		FROM
 			orders a
 			INNER JOIN order_item    b ON a.order_no = b.order_no

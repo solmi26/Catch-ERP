@@ -22,7 +22,7 @@ public class SalesChitController {
     }
 
     // 매출전표 등록
-    @PostMapping("insertSalesChit")
+    @PostMapping("sales/insertSalesChit")
     public String insertSalesChit(SalesChitVO salesChitVO) {
         int rowInsert = salesChitService.salesChitInsert(salesChitVO);
         return "sales/salesChit";

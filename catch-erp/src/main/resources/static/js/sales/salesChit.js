@@ -326,12 +326,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
             data: [],
             columns: [{
-                header: '품목코드',
-                name: 'prodCode',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                className: 'border'
+                header: '품목코드', name: 'prodCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
             }, {
                 header: '품목명',
                 name: 'prodName',
@@ -354,12 +349,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '창고',
                 name: 'whName',
                 align: "center",
-                width: 200,
+                width: 125,
                 whiteSpace: 'normal',
                 formatter: 'listItemText',
                 editor: {
-                    type: 'select',
-                    options: {
+                    type: 'select', options: {
                         listItems: whList
                     }
                 },
@@ -378,17 +372,38 @@ document.addEventListener("DOMContentLoaded", async function () {
                 width: 100,
                 whiteSpace: 'normal',
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                validation: {dataType: 'string'}
             }, {
                 header: '단가',
-                name: 'deliveryPrice',
+                name: 'price',
                 editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '출고 단가',
+                name: 'deliveryPrice',
+                editor: {
+                    type: 'text', options: {
+                        inputType: 'number', placeholder: '금액 입력',
+                    }
+                },
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                },
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
@@ -398,7 +413,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             }, {
                 header: '부가세',
                 name: 'vat',
@@ -408,22 +426,26 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
-            },],
-            summary: {
-                height: 40, position: 'bottom', // or 'top'
-                columnContent: {
-                    deliveryPrice: {
-                        template: function (valueMap) {
-                            return `TOTAL: ${valueMap.sum}`;
-                        }
-                    }, quantity: {
-                        template: function (valueMap) {
-                            return `TOTAL: ${valueMap.sum}`;
-                        }
-                    }
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
-            }
+            }, {
+                header: '출하 예정일',
+                name: 'deliveryDate',
+                editor: {
+                    type: 'datePicker',
+                    options: {
+                        language: 'ko', // 한국어 설정
+                    }
+                },
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+            }],
         });
 
         //
@@ -431,33 +453,34 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const columnName = ev.columnName;
             if (columnName === 'whName') {
-                let whCode = ev.value ;
+                let whCode = ev.value;
                 let itemCode = salesChit.getValue(ev.rowKey, 'prodCode');
 
                 let params = {
-                    whCode: whCode,
-                    itemCode: itemCode
+                    whCode: whCode, itemCode: itemCode
                 }
 
-                if(whCode && itemCode){
+                if (whCode && itemCode) {
                     fetch('/quantity/' + whCode + '/' + itemCode)
                         .then(result => result.json())
                         .then(data => {
                             salesChit.setValue(ev.rowKey, 'stocksQuantity', data.stocksQuantity)
                             let quantity = salesChit.getValue(ev.rowKey, 'quantity');
                             let deficiencyQuantity = Number(data.stocksQuantity) - Number(quantity);
-                            salesChit.setValue(ev.rowKey, 'deficiencyQuantity', deficiencyQuantity)
-                        } )
+                            // 부족수량 체크
+                            if (Number(data.stocksQuantity) >= Number(quantity)) {
+                                salesChit.setValue(ev.rowKey, 'deficiencyQuantity', 'X');
+                            } else {
+                                salesChit.setValue(ev.rowKey, 'deficiencyQuantity', deficiencyQuantity)
+                            }
+                        })
                         .catch(error => console.log('창고 재고수량을 불러오지 못 했습니다.'))
                 }
-
-
-
             }
         });
-
         return salesChit;
     }
+
 
     // 그리드 추가
     let appends = document.querySelectorAll('.appendRowBtn')
@@ -465,7 +488,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         btn.addEventListener('click', function (ev) {
             salesChit.appendRow();
-            console.log(ev);
         })
 
     })
@@ -556,18 +578,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }],
             columns: [{
-                header: '발주번호',
-                name: 'orderNo',
-                align: "center",
-                width: 120,
-                whiteSpace: 'normal',
-                className: 'border',
+                header: '발주번호', name: 'orderNo', align: "center", width: 120, whiteSpace: 'normal', className: 'border',
             }, {
-                header: '거래처코드',
-                name: 'clientCode',
-                align: "center",
-                width: 120,
-                whiteSpace: 'normal',
+                header: '거래처코드', name: 'clientCode', align: "center", width: 120, whiteSpace: 'normal',
             }, {
                 header: '거래처명',
                 name: 'clientName',
@@ -595,33 +608,21 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
-                header: '사원명',
-                name: 'name',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border'
+                header: '사원명', name: 'name', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
             }, {
-                header: '품목코드',
-                name: 'itemCode',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border'
+                header: '품목코드', name: 'itemCode', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
             }, {
-                header: '품목명',
-                name: 'itemName',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border'
+                header: '품목명', name: 'itemName', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
             }, {
                 header: '수량',
                 name: 'quantity',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 숫자에 콤마 추가
+                }
             }, {
                 header: '단가',
                 name: 'price',
@@ -630,9 +631,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 editor: 'text',
                 className: 'border',
-                // formatter: function (e) {
-                //     return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                // },
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
@@ -641,10 +642,21 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 editor: 'text',
                 className: 'border',
-                // formatter: function (e) {
-                //     return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                // },
-            }]
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '부가세',
+                name: 'vat',
+                align: "center",
+                width: 200,
+                whiteSpace: 'normal',
+                editor: 'text',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            },]
         });
         return ordersGrid;
     }
@@ -663,11 +675,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             let data = {};
             data.prodCode = ele.itemCode;
             data.prodName = ele.itemName;
-            data.deliveryPrice = ele.price;
+            data.price = ele.price;
             data.quantity = ele.quantity;
-            // data.stocksQuantity = '';
-            data.deficiencyQuantity = '디비 값 연산';
-            data.price = 'fetch필요(출하)';
+            data.vat = ele.vat;
+            // data.deficiencyQuantity = '디비 값 연산';
+            data.deliveryPrice = '';
+            data.deliveryDate = '';
             data.supplyPrice = ele.supplyPrice;
             data.vat = ele.vat;
             dataArr.push(data)
@@ -728,6 +741,41 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
         return resultArr
     }
+
+    document.getElementById('saveBtn').addEventListener('click', function () {
+        //     전송할 데이터
+        let insertSales = {};
+        //      마스터 정보
+        //  거래처
+        insertSales.clientName = document.getElementById('inputClientName').value;
+        insertSales.clientCode = document.getElementById('inputClientCode').value;
+        // 담당자
+        insertSales.employeeName = document.getElementById('empNameInput').value;
+        insertSales.employeeCode = document.getElementById('empCodeInput').value;
+        // 입금계좌
+        insertSales.depBacct = document.getElementById('accountInput').value;
+        // 매출계정
+        insertSales.accCode = document.getElementById('accCodeInput').value;
+
+        //  그리드 정보
+        insertSales.saleslipHistories = salesChit.getData();
+
+        let vat = 0;
+        let supplyPrice = 0;
+        for (ele of insertSales.saleslipHistories) {
+            vat += ele.vat;
+            supplyPrice += ele.supplyPrice;
+        }
+
+        // 부가세, 공급가액 계산
+        insertSales.vat = vat;
+        insertSales.supplyPrice = supplyPrice;
+
+        //     ajax 호출
+        console.log(insertSales);
+        console.log(JSON.stringify(insertSales));
+        //
+    })
 
     const myModal = new bootstrap.Modal('#accountSearchModal')
 });

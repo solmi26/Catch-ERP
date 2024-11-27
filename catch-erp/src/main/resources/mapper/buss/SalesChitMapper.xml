@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.buss.mapper.SalesChitMapper">
 
+	<!-- 판매전표 등록 -->
 	<insert id="insertSalesChit" parameterType="com.cherp.app.buss.vo.SalesChitVO">
 		<selectKey keyProperty="saleslipNo" resultType="String" order="BEFORE">
-			SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') AS saleslip_no FROM DUAL
+			SELECT domain('saleslip_no') FROM DUAL
 		</selectKey>
 		INSERT
 		INTO sales_chit (
@@ -25,10 +26,10 @@
 			#{accCode},
 			#{depBacct},
 			#{employeeName},
-			#{employeecode}
+			#{employeeCode}
 		)
 	</insert>
-	
+
 	<select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
 		SELECT saleslip_no
             , insert_date
