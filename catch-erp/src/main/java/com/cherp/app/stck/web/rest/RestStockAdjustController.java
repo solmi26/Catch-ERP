@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,9 +14,11 @@ import com.cherp.app.buss.vo.ClientVO;
 import com.cherp.app.buss.vo.PurchaseChitVO;
 import com.cherp.app.buss.vo.PurchaseHistoryVO;
 import com.cherp.app.buss.vo.SalesHistoryVO;
+import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
+import com.cherp.app.stck.vo.StocksAdjustVO;
 import com.cherp.app.stck.web.StockAdjustController;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +63,18 @@ public class RestStockAdjustController {
 	public List<SalesHistoryVO> getSalesChitNo(HistorySearchVO searchVO){
 		
 		return stockAdjustService.getSalesHistoryList(searchVO);
+	}
+	
+	//재고조정 (프로시저)
+	@PostMapping("/stocksAdjustment")
+	public int stocksAdjustment(@RequestBody List<StocksAdjustVO> stocksAdjustVO) {
+		return stockAdjustService.insertStocksAdjustment(stocksAdjustVO);
+	}
+	
+	//최신재고조정번호 조회
+	@GetMapping("/stocksAdjustNo")
+	public Long stocksAdjustNo() {
+		return stockAdjustService.getAdjustNo();
 	}
 	
 }

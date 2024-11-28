@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '구매/판매내역 No.',
                 name: 'c1',
                 align: "center",
-                width: 220,
+                width: 170,
                 whiteSpace: 'normal',
                 className:'border'               
             },
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '품목코드',
                 name: 'c2',
                 align: "center",
-                width: 220,
+                width: 150,
                 whiteSpace: 'normal',
                 className:'border'              
             },
@@ -203,14 +203,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '품목명',
                 name: 'c3',
                 align: "center",
-                width: 200,
+                width: 170,
                 whiteSpace: 'normal'
             },
             {
                 header: '재고조정사유',
                 name: 'c4',
                 align: "center",
-                width: 200,
+                width: 150,
                 whiteSpace: 'normal',
                 className:'border'              
             },           
@@ -226,11 +226,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '출하수량',
                 name: 'c6',
                 align: "center",
-                width: 100,
+                width: 85,
                 whiteSpace: 'normal',
                 editor: 'text',
                 validation: {
-                    dataType: 'number'
+                    dataType: 'number',
+                    min: 1,
+                   	max: 99999999
                 },                         
                 className:'border'
             },
@@ -238,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '입고수량',
                 name: 'c7',
                 align: "center",
-                width: 100,
+                width: 85,
                 whiteSpace: 'normal',
                 editor: 'text',
                 validation: {
@@ -255,7 +257,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 width: 100,
                 whiteSpace: 'normal',
                 className:'border'
-            }           
+            },
+	           {
+	            header: '사원명',
+	            name: 'c9',
+	            align: "center",
+	            width: 150,
+	            whiteSpace: 'normal',
+	            className:'border'
+            },
+            {
+                header: '사원 코드',
+                name: 'c10',
+                align: "center",
+                width: 80,
+                whiteSpace: 'normal',
+                className:'border'
+            }       
         ]
     });
 
@@ -289,6 +307,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     width: 50,
                     className:'border'
             }],
+		    columnOptions: {
+			    frozenCount: 2, 
+			    frozenBorderWidth: 0 
+			},
             columns: [
 				{
                     header: '거래처코드',
@@ -531,6 +553,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		            }
 		          }
 		    ],
+		    columnOptions: {
+			    frozenCount: 2, 
+			    frozenBorderWidth: 1 
+			},
 		    columns: [
 		        {
 		            header: '구매전표 No.',
@@ -554,7 +580,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '일자',
 		            name: 'c3',
 		            align: "center",
-		            width: 120,
+		            width: 90,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: {
@@ -565,6 +591,24 @@ document.addEventListener("DOMContentLoaded", function () {
 		                },
 		                showClearBtn: true
 		            }
+		        },
+		        {
+		            header: '사원명',
+		            name: 'c11',
+		            align: "center",
+		            width: 150,
+		            whiteSpace: 'normal',
+		            className:'border',
+		            filter: 'select',
+		        },
+		        {
+		            header: '사원 코드',
+		            name: 'c12',
+		            align: "center",
+		            width: 100,
+		            whiteSpace: 'normal',
+		            className:'border',
+		            filter: 'select',
 		        },
 		        {
 		            header: '품목코드',
@@ -603,7 +647,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            className:'border'
 		        },
 		        {
-		            header: '미완료 수량',
+		            header: '미완료수량',
 		            name: 'c7',
 		            align: "center",
 		            width: 100,
@@ -614,7 +658,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '입고단가',
 		            name: 'c8',
 		            align: "center",
-		            width: 200,
+		            width: 100,
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',
@@ -626,7 +670,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '재고',
 		            name: 'c10',
 		            align: "center",
-		            width: 200,
+		            width: 70,
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',
@@ -700,9 +744,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		
 		//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
 		fetch(`/stocks/purchaseChitNo/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
-		.then(result => {if(result != typeof(JSON)){
-							//throw new Error("조회결과없음");		
-						} 
+		.then(result => {			
+			return result.json()		
 		})
 		.then(result => {
 			let arr = [];
@@ -718,15 +761,15 @@ document.addEventListener("DOMContentLoaded", function () {
 				data.c8 = String(ele.restockingPrice);
 				data.c9 = ele.clientCode;
 				data.c10 = String(ele.stocksQuantity)
-				arr.push(data);
-				
+				data.c11 = ele.employeeName;
+				data.c12 = ele.employeeCode;
+				arr.push(data);			
 			})
-			
 			// 그리드에 데이터 넣기(출력)		
 			let purchaseFilteredData = exceptExitingRows(arr);
 			grid6.resetData(purchaseFilteredData);	
 		})
-		.catch(error=> {console.log("조회결과없습니다.")})
+		.catch(error=> {console.log("구매내역 조회결과없습니다." + error)})
 				
 				
 	})
@@ -778,6 +821,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		            }
 		          }
 		    ],
+		    columnOptions: {
+			    frozenCount: 2, 
+			    frozenBorderWidth: 1 
+			},
 		    columns: [
 		        {
 		            header: '판매전표 No.',
@@ -800,7 +847,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '일자',
 		            name: 'c3',
 		            align: "center",
-		            width: 120,
+		            width: 90,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: {
@@ -811,6 +858,24 @@ document.addEventListener("DOMContentLoaded", function () {
 		                },
 		                showClearBtn: true
 		            }
+		        },	        
+		        {
+		            header: '사원명',
+		            name: 'c11',
+		            align: "center",
+		            width: 150,
+		            whiteSpace: 'normal',
+		            className:'border',
+		            filter: 'select',
+		        },
+		        {
+		            header: '사원 코드',
+		            name: 'c12',
+		            align: "center",
+		            width: 100,
+		            whiteSpace: 'normal',
+		            className:'border',
+		            filter: 'select',
 		        },
 		        {
 		            header: '품목코드',
@@ -849,7 +914,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            className:'border'
 		        },
 		        {
-		            header: '미완료 수량',
+		            header: '미완료수량',
 		            name: 'c7',
 		            align: "center",
 		            width: 100,
@@ -860,7 +925,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '출고단가',
 		            name: 'c8',
 		            align: "center",
-		            width: 200,
+		            width: 100,
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',
@@ -872,7 +937,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '재고',
 		            name: 'c10',
 		            align: "center",
-		            width: 200,
+		            width: 70,
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',
@@ -893,8 +958,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			let dataArr = [];
 			result.forEach(ele=>{
 				let data = {};
-				data.c1 = ele.salesNo;
-				data.c2 = String(ele.saleslipNo);
+				data.c1 = ele.saleslipNo;
+				data.c2 = String(ele.salesNo);
 				data.c3 = ele.deliveryDate;
 				data.c4 = ele.itemCode;
 				data.c5 = ele.itemName;
@@ -903,6 +968,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				data.c8 = String(ele.deliveryPrice);
 				data.c9 = ele.clientCode;
 				data.c10 = String(ele.stocksQuantity);
+				data.c11 = ele.employeeName;
+				data.c12 = ele.employeeCode;
 				dataArr.push(data);
 			})					
 			let salesFilteredData = exceptExitingRows(dataArr);
@@ -934,9 +1001,8 @@ document.addEventListener("DOMContentLoaded", function () {
             pdf.save('재고조정보고서.pdf');
         });
     });
-       
-    
-    //재고조정 버튼 
+          
+    //재고조정 버튼 마우스오버
     let reportBtn = document.getElementById("reportBtn");
     reportBtn.addEventListener("mouseover",function(){
 		if(grid.getRowCount()<1){		
@@ -982,7 +1048,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		})*/
 			
 	})   
-    
+    let adjustTargetList = []; //이정보는 재고조정에 사용될 StocksAdjustVO객체(DB에 등록한거) 형태의 배열
     reportBtn.addEventListener("click", function(){		
 		if(grid.getRowCount()<1){						
 				alert('재고조정을 실시할 작업 건을 추가하세요.');						
@@ -1009,8 +1075,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		let today = new Date();   	
 		let dateString = today.toLocaleDateString(); //작성일자	yyyy. MM. dd	
 		let gridData = grid.getData(); 
-		let dataArr = [];
+		let dataArr = [];	
+		adjustTargetList = [];
 		gridData.forEach(ele=>{
+			
 			let data = {};
 			data.a1 = ele.c1;
 			data.a2 = ele.c2;
@@ -1022,7 +1090,24 @@ document.addEventListener("DOMContentLoaded", function () {
 				data.a5 = ele.c7
 			}
 			data.a6 = ele.c4;
+			data.a7 = ele.c10;
 			dataArr.push(data) 
+			
+			//프로시저 인자에 들어갈 데이터배열
+			let adjustTarget = {};
+			if(ele.c4 == '상품 출고'){
+				adjustTarget.salesNo = ele.c1; //입고c7 / 출하 c6
+				adjustTarget.purNo = null;
+				adjustTarget.stocksStocks = ele.c6;		
+			} else {
+				adjustTarget.purNo = ele.c1
+				adjustTarget.salesNo = null;
+				adjustTarget.stocksStocks = ele.c7;
+			}
+			adjustTarget.employeeCode = ele.c10;
+			adjustTarget.itemCode = ele.c2;
+			adjustTarget.updateReason = ele.c4;
+			adjustTargetList.push(adjustTarget);
 		})
 		
 		//보고서의 기존 cell값 제거
@@ -1034,11 +1119,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		//보고서 cell에 값 넣기
 		dataArr.forEach((ele,index)=>{
 			let tr = document.querySelector(`#adjustTbody tr:nth-child(${index+1})`)
-			for(let i=1; i<7; i++){
+			for(let i=1; i<8; i++){
 				tr.querySelector(`td:nth-child(${i})`).innerHTML = ele[Object.keys(ele)[i-1]];
 			}
 		})
 		
+		//일자에 값넣기
 		let inputDate = document.querySelectorAll('.inputDate');
 		inputDate.forEach(ele=>{
 			if(ele.tagName == "DIV"){
@@ -1048,7 +1134,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		})
 		
-		//재고조정번호,담당자에 들어갈 값은 DB에서 조회해서 가져와야함.
+		//재고조정번호 출력은 fetch처리, 실제 DB INSERT는 프로시저에서 처리됨. ,담당자에 들어갈 값은 로그인 중인 회원의 session에서 읽어올 예정
+		fetch("/stocks/stocksAdjustNo")
+		.then(result=> result.json())
+		.then(result=>{
+			document.querySelector("#adjustNo").innerHTML = result;
+		})
 	}) 
        
        let reportSubmit = document.getElementById('reportSubmit');
@@ -1056,8 +1147,20 @@ document.addEventListener("DOMContentLoaded", function () {
 			let flag = confirm("재고조정을 완료하시겠습니까?");
 			if(flag == false){
 				return;
-			} else {
-				//함수필요
+			} else {			
+				fetch("/stocks/stocksAdjustment"
+				,{
+					method:'post',
+					headers:{"Content-Type":"application/json"},
+					body: JSON.stringify(adjustTargetList)
+				})
+				.then(result=>{
+					console.log("성공할 거 같음?" + result)
+					})
+				.catch(err=>{
+					console.log("실패함" + err)
+				})			
+				
 				alert('재고조정처리되었습니다.')
 				let data = [];
 				grid.resetData(data);
@@ -1211,7 +1314,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c5 = ele.c7;
 			data.c6 = 'X'
 			data.c7 = '0';
-			data.c8 = ele.c10	 			
+			data.c8 = ele.c10
+			data.c9 = ele.c11
+			data.c10 = ele.c12		
 			dataArr.push(data)
 		})
 		
@@ -1245,6 +1350,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c6 = '0'
 			data.c7 = 'X';
 			data.c8 = ele.c10
+			data.c9 = ele.c11
+			data.c10 = ele.c12
 			dataArr.push(data)
 		})
 		let selectedCtn = arr.length;
@@ -1300,8 +1407,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			row.c8 = ele.c8;
 			row.c9 = ele.c9;
 			row.c10 = ele.c10;	
+			row.c11 = ele.c11;
+			row.c12 = ele.c12;
 			resultArr.push(row);
 		})		
 		return resultArr
 	}
+	
 }); //End Point

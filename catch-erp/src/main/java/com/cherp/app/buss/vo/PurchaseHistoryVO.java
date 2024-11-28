@@ -29,7 +29,8 @@ public class PurchaseHistoryVO {
 	/* 구매전표 [purchase_chit] 컬럼*/
 	private String clientCode; 	  // 거래처 코드
 	private String clientName; 	  // 거래처 명
-	
+	private String employeeCode;  // 사원코드
+	private String employeeName;  // 사원이름
 	/* 매입계약 품목 [contract_item] 컬럼*/
 	private int stocksQuantity; // 재고 수량
 	

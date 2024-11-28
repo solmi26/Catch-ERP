@@ -55,6 +55,8 @@
 			   ,hi.incomplete_quantity
 			   ,ch.client_code
 			   ,ch.client_name
+			   ,ch.employee_code
+			   ,ch.employee_name
 			   ,ct.stocks_quantity
 		FROM   purchase_history hi JOIN purchase_chit ch 
 			ON (hi.purcslip_no = ch.purcslip_no) JOIN contract_item ct ON (hi.item_code = ct.item_code)
@@ -94,10 +96,11 @@
 			  ,hi.delivery_status
 			  ,hi.delivery_date
 			  ,hi.saleslip_no
-			  ,hi.acc
 			  ,hi.incomplete_quantity
 			  ,ch.client_code
-			  ,ch.client_name
+			  ,ch.client_name 
+			  ,ch.employee_code
+			  ,ch.employee_name
 			  ,ct.stocks_quantity
 		FROM   saleslip_history hi JOIN sales_chit ch 
 			ON (hi.saleslip_no = ch.saleslip_no)
@@ -143,8 +146,12 @@
 		    ORDER BY hi.delivery_date DESC   
 	</select>
 	<insert id="insertAdjustment" statementType="CALLABLE">
-		CALL stocksadjust_insert(
-							#{StocksAdjustVO, mode=IN, typeHandler=com.cherp.app.stck.vo.StockAdjustArrayStructHandler}						
+		CALL stocks_adjustment(
+							#{StocksAdjustVO, mode=IN, typeHandler=com.cherp.app.stck.vo.StockAdjustArrayStructHandler}													
 							)
 	</insert>
+	<select id="selectAdjustNo" resultType="StocksVO">
+		SELECT MAX(real_no) AS real_no
+		FROM   stocks
+	</select>
 </mapper>

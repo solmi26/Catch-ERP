@@ -12,6 +12,8 @@ import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
+import com.cherp.app.stck.vo.StocksAdjustVO;
+import com.cherp.app.stck.vo.StocksVO;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +26,14 @@ public class StockServiceImpl implements StockService{
 	public StockServiceImpl(StockMapper stockMapper) {
 		this.stockMapper = stockMapper;
 	}
-
+	//품목 전체조회
 	@Override
 	public List<ContractItemVO> getItemList() {
 		List<ContractItemVO> list = stockMapper.selectAllItemList();
 		return list;
 	}
 
-	//전표No 리스트 조건조회
-	@Transactional
+	//구매내역 리스트 조건조회
 	@Override
 	public List<PurchaseHistoryVO> getPurchaseHistoryList(String type1, String type2, String type3, String client, String employee, String item, String startDate, String endDate) {
 		String clientInit = "";
@@ -63,12 +64,14 @@ public class StockServiceImpl implements StockService{
 		
 		return historyList;
 	}
-
+	
+	//단 건 품목의 재고조회
 	@Override
 	public ContractItemVO getItemStocks(String itemCode) {
 		return stockMapper.selectStocks(itemCode);
 	}
-
+	
+	//판매내역 조건 조회
 	@Override
 	public List<SalesHistoryVO> getSalesHistoryList(HistorySearchVO searchVO) {
 		Map<String, Object> conditionMap = new HashMap<>();
@@ -86,6 +89,21 @@ public class StockServiceImpl implements StockService{
 		conditionMap.put("startDate", startDateInit);
 		conditionMap.put("endDate", endDateInit);
 		return stockMapper.selectSalesHistoryList(conditionMap);
+	}
+	
+	//재고조정 프로시저 
+	@Override
+	public int insertStocksAdjustment(List<StocksAdjustVO> stocksAdjustVO) {
+		System.out.println(stocksAdjustVO.get(0));
+		System.out.println(stocksAdjustVO.get(0).getPurNo());
+		System.out.println(stocksAdjustVO.get(0).getPurNo());
+		return stockMapper.insertAdjustment(stocksAdjustVO);
+	}
+	//최신 재고조정번호 조회
+	@Override
+	public Long getAdjustNo() {
+		Long AdjustmentNo = stockMapper.selectAdjustNo().getRealNo();
+		return AdjustmentNo;
 	}
 
 
