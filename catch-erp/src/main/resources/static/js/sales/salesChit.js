@@ -326,10 +326,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
             data: [],
             columns: [{
-                header: '품목코드', name: 'prodCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
+                header: '품목코드', name: 'itemCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
             }, {
                 header: '품목명',
-                name: 'prodName',
+                name: 'itemName',
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
@@ -347,13 +347,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 className: 'border'
             }, {
                 header: '창고',
-                name: 'whName',
+                name: 'whCode',
                 align: "center",
                 width: 125,
                 whiteSpace: 'normal',
                 formatter: 'listItemText',
                 editor: {
-                    type: 'select', options: {
+                    type: 'select',
+                    options: {
                         listItems: whList
                     }
                 },
@@ -452,9 +453,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         salesChit.on("editingFinish", (ev) => {
 
             const columnName = ev.columnName;
-            if (columnName === 'whName') {
+            if (columnName === 'whCode') {
                 let whCode = ev.value;
-                let itemCode = salesChit.getValue(ev.rowKey, 'prodCode');
+                let itemCode = salesChit.getValue(ev.rowKey, 'itemCode');
 
                 let params = {
                     whCode: whCode, itemCode: itemCode
@@ -673,8 +674,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         //price에 넣을 데이터를 위한 fetch함수 필요
         arr.forEach(ele => {
             let data = {};
-            data.prodCode = ele.itemCode;
-            data.prodName = ele.itemName;
+            data.itemCode = ele.itemCode;
+            data.itemName = ele.itemName;
             data.price = ele.price;
             data.quantity = ele.quantity;
             data.vat = ele.vat;
@@ -755,7 +756,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 입금계좌
         insertSales.depBacct = document.getElementById('accountInput').value;
         // 매출계정
-        insertSales.accCode = document.getElementById('accCodeInput').value;
+        insertSales.acc = document.getElementById('accCodeInput').value;
 
         // 그리드 정보
         insertSales.saleslipHistories = salesChit.getData();

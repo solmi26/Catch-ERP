@@ -13,6 +13,8 @@ public interface SalesChitService {
     
     // 판매전표 전표 발행 상태별 조회
     public List<SalesChitVO> selectsalesChitState(String slipState);
-    
+
+    // 판매전표별 총 금액 조회
+    public List<SalesChitVO> selectSalesTotalPrice();
     
 }

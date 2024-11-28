@@ -35,6 +35,12 @@ public class SalesChitController {
 		System.out.println(state);
 		return salesChitService.selectsalesChitState(state);
 	}
+
+	@ResponseBody
+	@GetMapping("sales/selectSalesTotalPrice")
+	public List<SalesChitVO> selectSalesTotalPrice() {
+		return salesChitService.selectSalesTotalPrice();
+	}
     
 
 }

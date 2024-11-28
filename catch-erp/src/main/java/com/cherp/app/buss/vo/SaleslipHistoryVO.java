@@ -16,6 +16,9 @@ public class SaleslipHistoryVO {
     private String deliveryStatus; // 출고 상태
     private Date deliveryDate; // 출하 예정일
     private String saleslipNo; // 판매전표 번호
-    private String acc; // 매출계정
+
     private int incompleteQuantity; // 미완료 수량
+
+    private int supplyPrice; // 공급가액
+    private int vat; // 부가세
 }

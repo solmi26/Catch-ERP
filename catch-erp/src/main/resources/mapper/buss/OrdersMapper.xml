@@ -18,9 +18,9 @@
 			( b.quantity * e.vat) 			vat
 		FROM
 			orders a
-			INNER JOIN order_item    b ON a.order_no = b.order_no
-			JOIN client        c ON a.client_code = c.client_code
-			JOIN employees     d ON a.employee_code = d.employee_code
-			JOIN contract_item e ON b.item_code = e.item_code
+			INNER JOIN order_item b ON a.order_no = b.order_no
+			JOIN client           c ON a.client_code = c.client_code
+			JOIN employees        d ON a.employee_code = d.employee_code
+			JOIN contract_item    e ON b.item_code = e.item_code
 	</select>
 </mapper>

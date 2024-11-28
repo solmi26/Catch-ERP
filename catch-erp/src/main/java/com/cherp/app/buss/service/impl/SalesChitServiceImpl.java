@@ -25,11 +25,11 @@ public class SalesChitServiceImpl implements SalesChitService {
         //판매 전표 등록
         salesChitMapper.insertSalesChit(salesChitVO);
 
-        for (int i = 0; i < salesChitVO.getSaleslipHistory().size(); i++) {
-
+        for (int i = 0; i < salesChitVO.getSaleslipHistories().size(); i++) {
             // SaleslipHistoryVO 객체 가져오기
-            SaleslipHistoryVO history = salesChitVO.getSaleslipHistory().get(i);
+            SaleslipHistoryVO history = salesChitVO.getSaleslipHistories().get(i);
             // SalesChitMapper를 사용하여 history 데이터 삽입
+            history.setSaleslipNo(salesChitVO.getSaleslipNo());
             salesChitMapper.insertSaleslipHistory(history);
         }
 
@@ -45,5 +45,10 @@ public class SalesChitServiceImpl implements SalesChitService {
     @Override
     public List<SalesChitVO> selectsalesChitState(String slipState) {
     	return salesChitMapper.selectSalesChitState(slipState);
+    }
+
+    @Override
+    public List<SalesChitVO> selectSalesTotalPrice() {
+        return salesChitMapper.selectTotalPrice();
     }
 }

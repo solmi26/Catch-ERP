@@ -6,8 +6,10 @@ import com.cherp.app.buss.vo.SalesChitVO;
 import com.cherp.app.buss.vo.SaleslipHistoryVO;
 
 public interface SalesChitMapper {
+
 	// 판매전표 등록
 	public int insertSalesChit(SalesChitVO salesChitVO);
+
 	// 판매내역 등록
 	public int insertSaleslipHistory(SaleslipHistoryVO SaleslipHistoryVO);
 	
@@ -16,4 +18,7 @@ public interface SalesChitMapper {
 	
 	// 판매전표 전표상태별 조회
 	public List<SalesChitVO> selectSalesChitState(String slipState);
+
+	// 판매전표별 총 금액 조회
+	public List<SalesChitVO> selectTotalPrice();
 }

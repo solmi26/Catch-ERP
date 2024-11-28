@@ -2,96 +2,100 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.buss.mapper.SalesChitMapper">
 
-	<!-- 판매전표 등록 -->
-	<insert id="insertSalesChit" parameterType="com.cherp.app.buss.vo.SalesChitVO">
-		<selectKey keyProperty="saleslipNo" resultType="String" order="BEFORE">
-			SELECT domain('saleslip_no') FROM DUAL
-		</selectKey>
-		INSERT
-		INTO sales_chit (
-			saleslip_no,
-			insert_date,
-			client_code,
-			client_name,
-			acc_code,
-			dep_bacct,
-			employee_name,
-			employee_code
-		)
-		VALUES (
-			#{saleslipNo},
-		    sysdate,
-			#{clientCode},
-			#{clientName},
-			#{accCode},
-			#{depBacct},
-			#{employeeName},
-			#{employeeCode}
-		)
-	</insert>
-
-	<insert id="insertSaleslipHistory" parameterType="com.cherp.app.buss.vo.SaleslipHistoryVO">
+    <!-- 판매전표 등록 -->
+    <insert id="insertSalesChit" parameterType="com.cherp.app.buss.vo.SalesChitVO">
+        <selectKey keyProperty="saleslipNo" resultType="String" order="BEFORE">
+            SELECT domain('saleslip_no') FROM DUAL
+        </selectKey>
         INSERT
-        INTO saleslip_history (
-            saleslip_no,
-            sales_no,
-            wh_code,
-            wh_name,
-            item_code,
-            item_name,
-            quantity,
-            delivery_price,
-            delivery_status,
-            delivery_date,
-            acc,
-            incomplete_quantity
+        INTO sales_chit (
+        saleslip_no,
+        insert_date,
+        client_code,
+        client_name,
+        acc_code,
+        dep_bacct,
+        employee_name,
+        employee_code
         )
         VALUES (
-            #{saleslipNo},
-            DOMAIN('sales_no'),
-            #{whCode},
-            #{whName},
-            #{itemCode},
-            #{itemName},
-            #{quantity},
-            #{deliveryPrice},
-            #{deliveryStatus},
-            #{deliveryDate},
-            #{acc},
-            #{incompleteQuantity}
+        #{saleslipNo},
+        sysdate,
+        #{clientCode},
+        #{clientName},
+        #{accCode},
+        #{depBacct},
+        #{employeeName},
+        #{employeeCode}
         )
-	</insert>
+    </insert>
 
-	<select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
-		SELECT saleslip_no
-            , insert_date
-            , client_code
-            ,client_name
-            , acc_code
-            , dep_bacct
-            ,supply_price
-            ,sales_summary
-            , employee_name
-            , employee_code
-            ,vat
-            ,slip_state
-		FROM sales_chit
-	</select>
+    <!-- 판매내역 등록 -->
+    <insert id="insertSaleslipHistory" parameterType="com.cherp.app.buss.vo.SaleslipHistoryVO">
+        INSERT
+        INTO saleslip_history (
+        saleslip_no,
+        sales_no,
+        wh_code,
+        wh_name,
+        item_code,
+        item_name,
+        quantity,
+        delivery_price,
+        delivery_status,
+        delivery_date,
+        incomplete_quantity
+        )
+        VALUES (
+        #{saleslipNo},
+        DOMAIN('sales_no'),
+        #{whCode},
+        (SELECT wh_name FROM WAREHOUSE WHERE wh_code = #{whCode}),
+        #{itemCode},
+        #{itemName},
+        #{quantity},
+        #{deliveryPrice},
+        'b1',
+        #{deliveryDate},
+        #{quantity}
+        )
+    </insert>
 
-	<select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
-		SELECT saleslip_no
-            , insert_date
-            , client_code
-            ,client_name
-            , acc_code
-            , dep_bacct
-            ,supply_price
-            ,sales_summary
-            , employee_name
-            , employee_code
-            ,vat
-            ,slip_state
-		FROM sales_chit
-		WHERE slip_state = #{slipState}
-	</select>
+    <!-- 판매전표 조회 -->
+    <select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
+        WITH b as (SELECT saleslip_no , SUM(delivery_price) delivery_price
+        FROM  saleslip_history
+        GROUP BY saleslip_no)
+        SELECT a.saleslip_no
+        , insert_date
+        , client_code
+        ,client_name
+        , acc_code
+        , dep_bacct
+        ,supply_price
+        ,sales_summary
+        , employee_name
+        , employee_code
+        ,vat
+        ,slip_state
+        ,delivery_price
+        FROM sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
+    </select>
+
+    <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
+        SELECT saleslip_no
+        , insert_date
+        , client_code
+        ,client_name
+        , acc_code
+        , dep_bacct
+        ,supply_price
+        ,sales_summary
+        , employee_name
+        , employee_code
+        ,vat
+        ,slip_state
+        FROM sales_chit
+        WHERE slip_state = #{slipState}
+    </select>
 </mapper>
