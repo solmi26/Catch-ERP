@@ -21,7 +21,7 @@ import lombok.ToString;
 public class SalesVO { 				
 	private String salesChitNo; 	// 매출전표번호 PK
 	private String saleslipNo; 		// 판매전표번호 FK
-	private Integer invoiceNo; 		// 세금계산서번호 FK, 전자 세금 계산서 PK
+	private String invoiceNo; 		// 세금계산서번호 FK, 전자 세금 계산서 PK
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date chitDate; 			// 전표 일자
@@ -35,7 +35,7 @@ public class SalesVO {
 	private Integer recBalance; 	// 채권 잔액
 	private String recStatus; 		// 채권 상태
 	private String summary; 		// 적요
-	
+	private String type;            // 전표유형
 	
 	/*---------------채권/채무거래 내역----------------*/
 	private Integer logId; 			// 로그 아이디

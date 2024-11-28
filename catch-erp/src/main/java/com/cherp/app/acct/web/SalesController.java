@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,12 +45,34 @@ public class SalesController {
 		return "account/regPayReduction";
 	}
 	
+	// 전표 관리 페이지(조회 화면) by sm
+	@GetMapping("sales/selectSlipView")
+	public String selectSlipView(Model model) {
+		List<SalesVO> salesList = salesService.selectAllSlip();
+		model.addAttribute("slip", salesList);
+		return "account/statement";
+	}
+	
+	// 전표 관리 페이지(조회 기능) by sm
+	@GetMapping("sales/selectSlip")
+	@ResponseBody
+	public List<SalesVO> selectSlip() {
+		return salesService.selectAllSlip();
+	}
+	
+	// 매입, 매출전표 삭제(기능) by sm
+	@DeleteMapping("sales/deleteSlip")
+	@ResponseBody
+	public String deleteSlip(@RequestBody List<SalesVO> salesVO) {
+		salesService.deleteSlip(salesVO);
+		return "삭제 성공";
+	}
+	
 	// 매출 전표 등록(화면) by sm
 	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
-	
 	
 	// 매출 전표 등록(기능) by sm
 	@PostMapping("sales/insertSales")
@@ -72,7 +95,6 @@ public class SalesController {
 		return "account/PurchaseSlip";
 	}
 	
-	
 	// 매입 전표 등록(기능) by sm
 	@PostMapping("sales/insertPurchase")
 	@ResponseBody
@@ -80,6 +102,7 @@ public class SalesController {
 		salesService.insertPurchase(payablesVO);
 		return "저장 성공";
 	}
+
 	/**
 	 * 채무감소 등록을 위한 컨트롤러
 	 * 

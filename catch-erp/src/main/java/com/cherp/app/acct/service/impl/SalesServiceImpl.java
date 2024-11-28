@@ -43,9 +43,14 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.invoiceList();
 	}
 	
+	@Override
+	public List<SalesVO> selectAllSlip() {
+		return salesMapper.selectAllSlip();
+	}
+	
 	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
-	// 매출전표 등록
+	// 매출전표 등록 // by sm
 	public void insertSale(SalesVO salesVO) {
 
 	    // 매출 내역 추가
@@ -60,6 +65,9 @@ public class SalesServiceImpl implements SalesService{
 	    // 세금계산서 발행
 	    salesMapper.insertInvoice(salesVO);
 	    
+	    // 매출 전표 인보이스 번호 추가
+	    salesMapper.updateSalesInvoiceNo(salesVO);
+	    
 	    // 판매전표 전표 발행 상태 변경
 	    salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
 	        
@@ -67,7 +75,7 @@ public class SalesServiceImpl implements SalesService{
 	
 	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
-	// 매입전표 발행
+	// 매입전표 발행 // by sm
 	public void insertPurchase(PayablesVO payblesVO) {
 		
 		// 매입 내역 추가
@@ -81,6 +89,24 @@ public class SalesServiceImpl implements SalesService{
 		
 		// 구매전표 발행 상태 변경
 		salesMapper.updatePurchaseSlipState(payblesVO.getPurcslipNo());
+	}
+	
+	// 회계 계정 조회 by sm
+	@Override
+	public List<SalesVO> acctList(String debitSide) {
+		return salesMapper.selectAcctList(debitSide);
+	}
+	
+	// 매출, 매입 전표 삭제
+	@Override
+	public void deleteSlip(List<SalesVO> salesVO) {
+		salesVO.forEach((data) -> {if(data.getType().equals("매출전표")) {
+			salesMapper.deleteSales(data.getSalesChitNo());
+		}else {
+			salesMapper.deletePurchase(data.getSalesChitNo());
+		}
+		});
+		
 	}
 	
 	@Override
@@ -121,7 +147,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public int updateSale(SalesVO salesVO) {
+	public int updateSalesInvoiceNo(SalesVO salesVO) {
 		return 0;
 	}
 
@@ -140,10 +166,6 @@ public class SalesServiceImpl implements SalesService{
 		return 0;
 	}
 
-	@Override
-	public int deleteSale(int salesChitNo) {
-		return 0;
-	}
 
 	@Override
 	public int deletePayable(int recLogId) {
@@ -170,10 +192,6 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.SelectAllClientReceivableList(clientCode);
 	}
 	
-	@Override
-	public List<SalesVO> acctList(String debitSide) {
-		return salesMapper.selectAcctList(debitSide);
-	}
 
 	@Override
 	public String insertDecreaseReceivable(InsertReceivableVO insertReceivableVO) {

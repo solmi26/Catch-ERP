@@ -16,22 +16,32 @@ import com.cherp.app.empl.vo.EmployeeVO;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 사원관리
+ * 유석진
+ * 2024.11.27
+ */
 
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 public class RestEmployeeController {
 
 	private final EmployeeService employeeService;
 	
+	/**
+	 * 
+	 * @param search
+	 * @return
+	 */
 	//사원목록 데이터
-	@GetMapping("emps")
+	@GetMapping("employees/emps")
 	public List<EmployeeVO> employeeList (EmployeeSearchDto search) {
+		System.out.println(search);
 		return employeeService.employeeList(search);
 	} 
 	
 	//사원 단건데이터    
-	@GetMapping("emps/{employeeCode}")  //패스바리어블에 name 정의해주지않으면 컴파일일러가 변수명을 인식못하는 경우가 자주있음.
+	@GetMapping("employees/emps/{employeeCode}")  //패스바리어블에 name 정의해주지않으면 컴파일일러가 변수명을 인식못하는 경우가 자주있음.
 	public EmployeeVO employeeInfo(@PathVariable(name = "employeeCode") String employeeCode) {
 		EmployeeVO emp = new EmployeeVO();
 		emp.setEmployeeCode(employeeCode);
@@ -39,13 +49,13 @@ public class RestEmployeeController {
 	}
 	
 	//사원단건데이터 추가
-	@PostMapping("emps")
+	@PostMapping("employees/emps")
 	public int employeeInsert (@RequestBody EmployeeVO employeeVO) {
 		return employeeService.employeeInsert(employeeVO);
 	}
 	
 	//공통코드 검색 다건데이터
-	@GetMapping("/empCommon")
+	@GetMapping("employees/empCommon")
 	public List<CommonCodeVO> CommonCodeSelect (CommonCodeVO commonCode) {
 		return employeeService.commonCodeList(commonCode);
 	}

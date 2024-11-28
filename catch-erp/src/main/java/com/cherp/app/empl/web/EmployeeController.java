@@ -16,10 +16,9 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	
 	//인사목록 페이지
-	@GetMapping("employee")
+	@GetMapping("employees/employee")
 	public String employeeList(Model model) {
 		EmployeeSearchDto search = new EmployeeSearchDto();
-		search.setEmployeeName("gd");
 		model.addAttribute("search", search);
 		
 		return "human/employeeList";
@@ -27,9 +26,21 @@ public class EmployeeController {
 	
 	
 	//부서목록 페이지
-	@GetMapping("department")
+	@GetMapping("employees/department")
 	public String departmentList() {
 		return "human/departmentList";
 	}
 
+	//근태입력페이지
+	@GetMapping("employees/attendanceinput")
+	public String attendanceInput () {
+		return "human/attendanceInput";
+	}
+	
+	
+	@GetMapping("employees/attendanceElementInput")
+	public String attendanceElementInput () {
+		return "human/attendanceElementInput";
+	}
+	
 }

@@ -19,6 +19,7 @@ public interface SalesService {
 	public List<PayablesVO> ClientPayableList(String clientCode);	// 채무 거래처 전체 조회
 	public List<SalesVO> ClientReceivableList(String clientCode);	// 채권 거래처 전체 조회
 	public List<SalesVO> acctList(String debitSide);
+	public List<SalesVO> selectAllSlip();
 	
 	//단건 조회
 	public SalesVO saleInfo(SalesVO salesVO);		// 매출 단건 조회
@@ -37,13 +38,13 @@ public interface SalesService {
 	public void insertPurchase(PayablesVO payblesVO);
 	
 	//수정
-	public int updateSale(SalesVO salesVO);			 // 매출 단건 수정
+	public int updateSalesInvoiceNo(SalesVO salesVO); // 매출 단건 수정
 	public int updatePayable(PayablesVO payablesVO); // 채무거래 단건 수정
 	public int updateReceivable(SalesVO salesVO);	 // 채권거래 단건 수정
 	public int updateInvoice(SalesVO salesVO);		 // 세금 계산서 수정
 	
 	//삭제
-	public int deleteSale(int salesChitNo);			// 매출 단건 삭제
+	public void deleteSlip(List<SalesVO> salesVO);	// 매출, 매입 삭제
 	public int deletePayable(int recLogId);			// 채무거래 단건 삭제
 	public int deleteReceivable(int logId);			// 채권거래 단건 삭제
 	public int deleteInvoice(int invoiceNo);		// 세금 계산서 삭제

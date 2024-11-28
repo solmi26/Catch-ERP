@@ -6,5 +6,5 @@ import lombok.Data;
 public class DepartmentVO {
 	private String departmentCode;
 	private String departmentName;
-	private String managerId;
+	private String managerCode;
 }

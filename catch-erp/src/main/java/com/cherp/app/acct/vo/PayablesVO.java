@@ -26,6 +26,7 @@ public class PayablesVO { // 구매전표, 매입, 채무거래내역 VO
 	private Integer decreaseBalance;// 채무 잔액
 	private String decreaseStatus; 	// 채권 상태
 	private String summary; 		// 적요
+	private String type; // 전표유형
 	
 	// PAYABLES_LOG TABLE
 	/*---------------채무거래 내역----------------*/
