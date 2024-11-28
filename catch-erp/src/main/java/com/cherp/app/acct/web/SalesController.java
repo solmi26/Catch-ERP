@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,6 +60,14 @@ public class SalesController {
 		return salesService.selectAllSlip();
 	}
 	
+	// 매입, 매출전표 삭제(기능) by sm
+	@DeleteMapping("sales/deleteSlip")
+	@ResponseBody
+	public String deleteSlip(@RequestBody List<SalesVO> salesVO) {
+		salesService.deleteSlip(salesVO);
+		return "삭제 성공";
+	}
+	
 	// 매출 전표 등록(화면) by sm
 	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {
@@ -93,7 +102,7 @@ public class SalesController {
 		salesService.insertPurchase(payablesVO);
 		return "저장 성공";
 	}
-
+	
 	@PostMapping("insertPayablesBalance")
 	@ResponseBody
 	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌

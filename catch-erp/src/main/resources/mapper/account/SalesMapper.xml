@@ -307,7 +307,7 @@
 	<update id="updatePurchaseSlipState">
 		UPDATE  purchase_chit
 		SET slip_state = 'r2'
-		WHERE purcslip_no = #{saleslipNo}
+		WHERE purcslip_no = #{purcslipNo}
 	</update>
 	
 	<!-- 매출전표에 인보이스 번호 업데이트 -->
@@ -316,4 +316,16 @@
 		SET invoice_no = #{invoiceNo}
 		WHERE sales_chit_no = #{salesChitNo}
 	</update>
+	
+	<!-- 매출전표 삭제 -->
+	<delete id="deleteSales">
+		DELETE FROM sales
+		WHERE sales_chit_no = #{salesChitNo}
+	</delete>
+	
+	<!-- 매입전표 삭제 -->
+	<delete id="deletePurchase">
+		DELETE FROM purchase
+		WHERE purchase_chit_no = #{purchaseChitNo}
+	</delete>
 </mapper>

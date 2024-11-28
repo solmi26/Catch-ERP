@@ -3,9 +3,10 @@
  * 조회, 수정, 삭제
  */
 
+let grid = null;
 document.addEventListener("DOMContentLoaded", function () {
   // 그리드 초기화
-  const grid = new tui.Grid({
+  grid = new tui.Grid({
     el: document.querySelector("#grid"),
     scrollX: true,
     scrollY: true,
@@ -101,15 +102,58 @@ document.addEventListener("DOMContentLoaded", function () {
       grid.resetData(dataArr);
 
       // 데이터 로드 후 스타일 적용
-	  grid.getData().forEach((row) => {
-	    console.log(row.transactionType === "매출전표");
-	    let check = row.transactionType === "매출전표";
-	    if (check) {
-	      grid.addRowClassName(row.rowKey, "sales");
-	    } else {
-	      grid.addRowClassName(row.rowKey, "purchase");
-	    }
-	  });
-
+      grid.getData().forEach((row) => {
+        console.log(row.transactionType === "매출전표");
+        let check = row.transactionType === "매출전표";
+        if (check) {
+          grid.addRowClassName(row.rowKey, "sales");
+        } else {
+          grid.addRowClassName(row.rowKey, "purchase");
+        }
+      });
     });
+
+  // 선택 삭제 버튼
+  document.querySelector("#deleteButton").addEventListener("click", function () {
+    console.log("삭제 버튼 클릭됨");
+    let selectedRows = grid.getCheckedRows(); // 체크된 데이터
+    console.log("선택된 데이터:", selectedRows);
+
+    if (selectedRows.length === 0) {
+      alert("삭제할 전표를 선택하세요.");
+      return;
+    }
+
+    // "미전송 상태의 전표만 전송"
+    const deletableRows = selectedRows.filter((row) => row.eTaxInvoice === "미전송");
+    const undeletableRows = selectedRows.filter((row) => row.eTaxInvoice !== "미전송");
+
+    // 삭제 불가능한 전표가 있을 경우 alert 창
+    if (undeletableRows.length > 0) {
+      alert("미전송 상태의 전표만 삭제할 수 있습니다.");
+      return;
+    }
+
+    // 전송할 데이터
+    let deleteData = deletableRows.map((row) => ({
+      salesChitNo: row.voucherNumber,
+      type: row.transactionType,
+    }));
+
+    // 서버로 삭제 요청
+    fetch("/sales/deleteSlip", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(deleteData),
+    })
+      .then((response) => response.text())
+      .then((result) => {
+        console.log("데이터 : ", result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 });
