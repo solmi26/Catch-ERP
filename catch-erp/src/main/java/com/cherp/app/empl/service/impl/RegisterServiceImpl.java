@@ -54,11 +54,25 @@ public class RegisterServiceImpl implements RegisterService {
 	public List<AttItemVO> attItemList() {
 		return mapper.selectAttItemList();
 	}
+	//근태항목 단건조회
+	@Override
+	public AttItemVO attItmeInfo(String attCode) {
+		return mapper.selectAttItem(attCode);
+	}
 	//근태항목등록
 	@Override
 	public int attItemInsert(AttItemVO attItem) {
 		return mapper.insertAttItem(attItem);
 	}
-	
+	//근태항목수정
+	@Override
+	public int attItemUpdate(AttItemVO attItem) {
+		return mapper.updateAttItem(attItem);
+	}
+	//근태항목 다건삭제
+	@Override
+	public int attItemDelete(String[] attItem) {
+		return mapper.deleteAttItem(attItem);
+	}
 
 }

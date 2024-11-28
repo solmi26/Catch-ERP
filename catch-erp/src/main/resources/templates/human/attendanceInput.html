@@ -70,25 +70,26 @@
 				<h2>근태 입력</h2>
 			</div>
 		</div>
-		<div class="row mb-3">
-			<!-- 버튼용 로우 -->
-			<div class="row">
-				<div class="col">
-					<button type="button" class="btn btn-sm btn-danger deleteRowBtn">삭제</button>
-					<button type="button" class="btn btn-sm btn-info addBtn appendRowBtn">추가</button>
-				</div>
-			</div>
-		</div>
 		<div class="row mb-2">
 			<div class="col">
 				<div id="grid"></div>
 			</div>
 		</div>
-		<div class="row mb-3">
-			<!-- 버튼용 로우 -->
-			<div class="row">
-				<div class="col">
-					<button type="button" class="btn btn-sm btn-success">저장</button>
+		<div class="row mb-3 justify-content-between">
+			<div class="col-auto">
+				<!-- 버튼용 로우 -->
+				<div class="row">
+					<div class="col">
+						<button type="button" class="btn btn-sm btn-danger deleteRowBtn">삭제</button>
+						<button type="button" class="btn btn-sm btn-info addBtn appendRowBtn">추가</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-auto">
+				<div class="row">
+					<div class="col">
+						<button type="button" class="btn btn-sm btn-success insert-Btn">저장</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -195,7 +196,9 @@
     </div>
     
     <!-- 근태항목조회 모달끝!!! -->
-		
+	<script th:src="@{/js/common/appendRowBtn.js}"></script>	
+	<script th:src="@{/js/common/deleteRowBtn.js}"></script>	
+	
 	<script>
 		const Grid = tui.Grid;
 	    const grid = new Grid({
@@ -219,14 +222,19 @@
 	        ],
 
 	      columns: [
+	    	{
+	    	  header:'사원코드',
+	    	  name:'employeeCode',
+	    	  hidden:true
+	    	},
 	        {
-	          header: '사원번호',
-	          name: 'employeeCode',
+	          header: '사원아이디',
+	          name: 'employeeId',
 	          validation: { required: true }
 	        },
 	        {
 	          header: '성명',
-	          name: 'employeeName',
+	          name: 'name',
 	          ignored:true
 	        },
 	        {
@@ -237,8 +245,7 @@
 	          	type:'datePicker',
 	          	options:{
 	          		language: 'ko'
-	          	}
-	          	
+	          	},
 	          }
 	        },
 	        {
@@ -266,10 +273,9 @@
 	          editor: {
 	        	  type:gridTime
 	          }
-	          
 	        }	        
 	      ],
-	      data: [{employeeCode:'g'}
+	      data: [{}
 	      ],
 	      showDummyRows: true
 	    });

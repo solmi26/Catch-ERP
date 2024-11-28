@@ -14,7 +14,9 @@ public interface RegisterService {
 	public int departmentDelete(String[] department);//부서 삭제
 	
 	
-	public List<AttItemVO> attItemList();
+	public List<AttItemVO> attItemList();//근태항목 단건조회
+	public AttItemVO attItmeInfo(String attCode);//근태항목 단건조회
 	public int attItemInsert(AttItemVO attItem);//근태항목 등록
-
+	public int attItemUpdate (AttItemVO attItem);//근태항목 수정
+	public int attItemDelete (String[] attItem); //근태항목 다건삭제
 }

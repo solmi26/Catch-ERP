@@ -32,7 +32,7 @@
 							<button type="button" class="btn btn-success btn-sm req-Btn" >신규</button>
 						</div>
 						<div class="col-auto ps-0">
-							<button type="button" class="btn btn-danger btn-sm" >삭제</button>
+							<button type="button" class="btn btn-danger btn-sm delete-Btn" >삭제</button>
 						</div>
 						
 					</div>
@@ -54,7 +54,7 @@
                         <!-- 검색창-->
                         <div class="row justify-content-between mb-3">
                             <div class="col-auto">
-                                <h4>근태항목수정</h4>
+                                <h4>근태항목등록</h4>
                             </div>
 
                         </div> <!--검색창끝-->
@@ -105,6 +105,73 @@
     </div>
 
 <!-- 근태등록 모달끝!!! -->
+
+<!-- 근태수정 모달시작!! -->
+   <div class="modal fade" id="attModifyModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">근태항목수정</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>근태항목수정</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row g-3 align-items-center">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label">근태코드</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" name="attCode" class="form-control form-control-sm modify-input" readonly aria-describedby="passwordHelpInline">
+                                        </div>
+                                    </div>                                    
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label ">근태명</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" name="attName" class="form-control form-control-sm modify-input" aria-describedby="passwordHelpInline">
+                                        </div>
+                                    </div>                                    
+                                    <div class="row">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label ">근태구분</label>
+                                        </div>
+                                        <div class="col">
+                                      		<select class="form-select form-select-sm EmployeeDetailVO modify-input" name="attStatus">
+												<option value="i1" >일반</option>
+												<option value="i2" >휴가</option>
+												<option value="i3" >기타</option>
+                                       		</select>		                                        
+                                        </div>
+                                   		</div>
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary modify-Btn" data-bs-dismiss="modal">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 근태수정 모달끝!! -->
+
 	<script>
 		const Grid = tui.Grid;
 		const grid = new Grid({

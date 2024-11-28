@@ -79,7 +79,7 @@ document.querySelector('.del-Btn').addEventListener('click',function () {
 
 //그리드 클릭시 이벤트
 grid.on('click',function (ev) {
-	if (ev.targetType = "cell") {
+	if (ev.targetType == "cell") {
 		currentTarget = ev;
 		let departmentCode = grid.getFormattedValue(ev.rowKey,'departmentCode');
 		console.log(departmentCode);
