@@ -43,6 +43,11 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.invoiceList();
 	}
 	
+	@Override
+	public List<SalesVO> selectAllSlip() {
+		return salesMapper.selectAllSlip();
+	}
+	
 	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
 	// 매출전표 등록
@@ -59,6 +64,9 @@ public class SalesServiceImpl implements SalesService{
 	    
 	    // 세금계산서 발행
 	    salesMapper.insertInvoice(salesVO);
+	    
+	    // 매출 전표 인보이스 번호 추가
+	    salesMapper.updateSalesInvoiceNo(salesVO);
 	    
 	    // 판매전표 전표 발행 상태 변경
 	    salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
@@ -121,7 +129,7 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public int updateSale(SalesVO salesVO) {
+	public int updateSalesInvoiceNo(SalesVO salesVO) {
 		return 0;
 	}
 
