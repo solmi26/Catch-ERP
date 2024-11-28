@@ -2,6 +2,7 @@
  * 
  */
 
+//#region 그리드클릭이벤트
 datoToGrid ()
 //그리드 클릭 이벤트
  grid.on('click',function (ev) {
@@ -14,8 +15,9 @@ datoToGrid ()
 		atModifyModal.show()
 	}
  })
+//#endregion 그리드클릭이벤트
 
-//수정모달 저장 버튼 클릭 함수
+//#region 수정모달 저장 버튼 클릭 함수
 document.querySelector('.save-Btn').addEventListener('click',function () {
 	let AttendanceVO = atModifyGrid.getData()
 	fetch("/employees/att",{
@@ -29,8 +31,16 @@ document.querySelector('.save-Btn').addEventListener('click',function () {
 		atModifyModal.hide()
 	})
 })
+//#endregion
 
-//검색 
+//#region 삭제버튼 클릭이벤트
+document.querySelector('delete-Btn').addEventListener('click',function () {
+	let 
+})
+//#endregion 삭제버튼
+
+
+//#region 검색 
 document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	//검색옵션들 들고오기
 	let str = "";
@@ -61,12 +71,12 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	
 	
 })
+//#endregion
 
 
 
 
-
-//메인그리드 데이터 로드 함수
+//#region 메인그리드 데이터 로드 함수
  async function datoToGrid () {
 	await fetch("/employees/att")
 	      .then(data => data.json())
@@ -74,3 +84,4 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 			grid.resetData(data)
 		  })
  }
+//#endregion
