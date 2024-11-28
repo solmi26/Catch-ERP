@@ -23,7 +23,7 @@ public class RestBacctController {
 	}
 	
 	// JSON 계좌 데이터
-	@GetMapping("bacctList")
+	@GetMapping("api/account/bacct")
 	public List<BacctVO> bacctList() {
 		return bacctService.bacctList();
 	}

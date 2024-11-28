@@ -102,8 +102,12 @@ public class SalesController {
 		salesService.insertPurchase(payablesVO);
 		return "저장 성공";
 	}
-	
-	@PostMapping("insertPayablesBalance")
+
+	/**
+	 * 채무감소 등록을 위한 컨트롤러
+	 * 
+	 * */
+	@PostMapping("account/insertPayablesBalance")
 	@ResponseBody
 	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
 
@@ -123,6 +127,7 @@ public class SalesController {
 				}
 			}
 		}
+
 		for (InsertPayableVO pay : pays) {
 			pay.setBacctCode(bacctCode);
 			System.out.println(":"+pay.getClientCode()+":");
@@ -131,7 +136,7 @@ public class SalesController {
 		}
 		return message;
 	}
-	@PostMapping("insertReceivableBalance")
+	@PostMapping("account/insertReceivableBalance")
 	@ResponseBody
 	public String insertReceivableBalance(@RequestBody JsonNode receiables) {
 		String message = "fail";

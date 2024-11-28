@@ -30,7 +30,9 @@
     padding: 6px 24px !important;
 }
 .ledge-footer {
-	 border-top: solid 2px double !important;
+	 border-top-style: double;
+	 border-top-width: 2px;
+	 border-top-color: #fdbbb9;
 	 padding: 8px 24px !important; 
 }
 .number-column {

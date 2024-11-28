@@ -13,11 +13,13 @@ public class ClientPsVO {	// 매출, 매입, 판매전표에서 사용할 Client
     private String clientCode;		// 거래처 코드
     private String clientName;		// 거래처 명
     private String ceoName;			// 대표자 명
-    private String tradeItem;		// 거래 품목
     private String tradeType;		// 거래 유형
+    private String tradeStatus;		// 거래 상태
     private String companyTel;		// 회사 전화
     private String fax;				// 팩스
+    private String zipcode;			// 우편번호
     private String address;			// 주소
+    private String detailAddress;	// 상세 주소
     private String employeeName;	// 담당자 이름
     private String employeeTel;		// 담당자 연락처
     private String employeeEmail;	// 담당자 메일
