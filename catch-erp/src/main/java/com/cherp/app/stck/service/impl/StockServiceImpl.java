@@ -1,5 +1,6 @@
 package com.cherp.app.stck.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,25 +45,24 @@ public class StockServiceImpl implements StockService{
 		employeeInit = employee.equals("all") ? "" : employee;
 		itemInit = item.equals("all") ? "" : item;
 		List<PurchaseChitVO> chitNoList = stockMapper.selectPurcSlipNoList(type1, type2, clientInit, employeeInit);
-		if(chitNoList.size() == 0) {
-			return null;
+		if(chitNoList.size() != 0) {
+			//구매 전표번호에서 품목에 대한 조회조건으로 걸러준다. 조건:입고날짜 AND 품목 AND 구매전표번호에서 내역번호 조회건수가 1건이상
+			Map<String, Object> conditionMap = new HashMap<>();
+			String[] chitNoArr = new String[chitNoList.size()];
+			int cnt = 0;
+			for(PurchaseChitVO obj : chitNoList) {
+				chitNoArr[cnt++] = obj.getPurcslipNo();
+			}
+	
+			conditionMap.put("chitNoArr", chitNoArr);
+			conditionMap.put("type3", type3);
+			conditionMap.put("item", itemInit);
+			conditionMap.put("startDate", startDate);
+			conditionMap.put("endDate", endDate);
+			List<PurchaseHistoryVO> historyList = stockMapper.selectPurcHistoryList(conditionMap);
+			return historyList;
 		}
-		//구매 전표번호에서 품목에 대한 조회조건으로 걸러준다. 조건:입고날짜 AND 품목
-		Map<String, Object> conditionMap = new HashMap<>();
-		String[] chitNoArr = new String[chitNoList.size()];
-		int cnt = 0;
-		for(PurchaseChitVO obj : chitNoList) {
-			chitNoArr[cnt++] = obj.getPurcslipNo();
-		}
-
-		conditionMap.put("chitNoArr", chitNoArr);
-		conditionMap.put("type3", type3);
-		conditionMap.put("item", itemInit);
-		conditionMap.put("startDate", startDate);
-		conditionMap.put("endDate", endDate);
-		List<PurchaseHistoryVO> historyList = stockMapper.selectPurcHistoryList(conditionMap);
-		
-		return historyList;
+		return new ArrayList<PurchaseHistoryVO>();
 	}
 	
 	//단 건 품목의 재고조회

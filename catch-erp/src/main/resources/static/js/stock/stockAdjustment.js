@@ -775,17 +775,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	
 	
-/*	let purcInputBtn = document.getElementById("purchaseOrderInputBtn");
-	
-    purcInputBtn.addEventListener("mouseover",function(){
-		if(grid.getRowCount()+grid6.getRowCount() > 16){		
-			purcInputBtn.removeAttribute("data-bs-dismiss");	
-		}
-		else{
-			
-		}	
-	})  */
-	
     /*============================
     	StackInquery 출하지시내역 모달 JS
     ==============================*/
@@ -1084,10 +1073,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.a2 = ele.c2;
 			data.a3 = ele.c3;
 			data.a4 = ele.c8;
+			let filtedC6 = ele.c6.replace(/^0+/, '');
+			let filtedC7 = ele.c7.replace(/^0+/, '');
+			
 			if(ele.c4 == '상품 출고'){
-				data.a5 = "-" + ele.c6; //입고c7 / 출하 c6
+				data.a5 = "-" + filtedC6; //입고c7 / 출하 c6
 			} else {
-				data.a5 = ele.c7
+				data.a5 = filtedC7
 			}
 			data.a6 = ele.c4;
 			data.a7 = ele.c10;

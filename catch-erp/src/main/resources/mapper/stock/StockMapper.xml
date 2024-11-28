@@ -145,7 +145,7 @@
 		    AND delivery_status != 'b3'
 		    ORDER BY hi.delivery_date DESC   
 	</select>
-	<insert id="insertAdjustment" statementType="CALLABLE">
+	<insert id="insertAdjustment" statementType="CALLABLE"> 
 		CALL stocks_adjustment(
 							#{StocksAdjustVO, mode=IN, typeHandler=com.cherp.app.stck.vo.StockAdjustArrayStructHandler}													
 							)
