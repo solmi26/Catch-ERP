@@ -203,7 +203,16 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 })
 console.log('gd')
 
-
+//삭제버튼 클릭 이벤트
+document.querySelector('.delete-Btn').addEventListener('click',function(){
+	let check = grid.getCheckedRows()
+	//널체크
+	if (check.length == 0) {
+		return;
+	}
+	fetch('/employees/att',{method:'delete'}
+	)
+})
 
 
 

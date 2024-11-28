@@ -141,3 +141,59 @@ mounted() {
 }
 
 
+
+
+//토스트 사용불가 컬럼 타입 정의(시간)
+class gridDisableTime {
+constructor(props) {
+    const el = document.createElement('input');
+
+    el.type = 'time';
+    el.value = String(props.value);
+    el.className = 'form-control from-control-sm'
+    el.disabled = 'true'
+    this.el = el;
+}
+
+getElement() {
+    return this.el;
+}
+
+getValue() {
+    return this.el.value;
+}
+
+mounted() {
+    this.el.select();
+}
+}
+
+
+
+
+
+//토스트 사용불가 컬럼 타입 정의 (날짜)
+class gridDisableDate {
+constructor(props) {
+    const el = document.createElement('input');
+
+    el.type = 'date';
+    el.value = String(props.value);
+    el.className = 'form-control from-control-sm'
+	el.disabled = true
+    this.el = el;
+}
+
+getElement() {
+    return this.el;
+}
+
+getValue() {
+    return this.el.value;
+}
+
+mounted() {
+    this.el.select();
+}
+}
+

@@ -1,5 +1,5 @@
 /**
- * 
+ *  dataToEmpModal() 사원 모달 그리드 데이터 불러오기
  */
 //모달이벤트
 const empModal = new bootstrap.Modal(document.getElementById('empModal'))
@@ -25,50 +25,62 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     
-        const empGrid = new Grid({
-        el: document.getElementById('empGrid'), // Container element
-        scrollX: false,
-        scrollY: true,
-        bodyHeight: 350,
+const empGrid = new Grid({
+el: document.getElementById('empGrid'), // Container element
+scrollX: false,
+scrollY: true,
+bodyHeight: 350,
 
-        columns: [
-            {
-            header: '사원번호',
-            name: 'employeeCode'
-            },
-            {
-            header: '사원명',
-            name: 'employeeName',
-            sortingType: 'asc',
-            sortable: true
-            },
-            {
-            header: '부서명',
-            name: 'release'
-            }
-        ],
-        data: [
-            {
-            employeeCode: '2024-001',
-            employeeName: '유석진',
-            release: '볼보이',
-            genre: 'Pop'
-            },
-            {
-            employeeCode: '2024-001',
-            employeeName: '김석진',
-            release: '볼보이',
-            genre: 'Pop'
-            },
-            {
-            employeeCode: '2024-001',
-            employeeName: '하석진',
-            release: '볼보이',
-            genre: 'Pop'
-            },
+columns: [
+	{
+	 header:'사원번호',
+	 name:'employeeCode',
+	 hidden:true
+	},
+    {
+    header: '사원아이디',
+    name: 'employeeId'
+    },
+    {
+    header: '사원명',
+    name: 'name',
+    sortingType: 'asc',
+    sortable: true
+    },
+    {
+    header: '부서명',
+    name: 'departmentName'
+    }
+],
+data: [
+    {
+    employeeCode: '2024-001',
+    employeeName: '유석진',
+    release: '볼보이',
+    genre: 'Pop'
+    },
+    {
+    employeeCode: '2024-001',
+    employeeName: '김석진',
+    release: '볼보이',
+    genre: 'Pop'
+    },
+    {
+    employeeCode: '2024-001',
+    employeeName: '하석진',
+    release: '볼보이',
+    genre: 'Pop'
+    },
 
-        ],
-        showDummyRows: true
-        });
+],
+showDummyRows: true
+});
 
-
+//사원그리드 데이터 불러오기 함수
+async function dataToEmpModal () {
+	await fetch("/employees/emps")
+	      .then(data => data.json())
+	      .then(data => {
+			empGrid.resetData(data);
+		  })
+};

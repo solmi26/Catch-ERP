@@ -61,6 +61,8 @@ public class RestRegisterController {
 		return service.departmentDelete(department);
 	}
 	
+	
+	
 	//근태항목 다건조회
 	@GetMapping("/employees/attitem")
 	public List<AttItemVO> attItemList () {
@@ -83,6 +85,7 @@ public class RestRegisterController {
 	public int attItemUpdate(@RequestBody AttItemVO attitem) {
 		return service.attItemUpdate(attitem);
 	}
+	
 	//근태항목 다건삭제
 	@DeleteMapping("/employees/attitem")
 	public int attItemDelete(@RequestParam(value="attCode") String[] attItem) {

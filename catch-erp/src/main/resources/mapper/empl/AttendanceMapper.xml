@@ -2,14 +2,113 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.empl.mapper.AttendanceMapper">
 
+	<!-- 근태 다건조회 -->
+
+	<select id="selectAttendanceList" 
+	        resultType="com.cherp.app.empl.vo.AttendanceVO"
+	        parameterType="com.cherp.app.common.dto.EmployeeSearchDto">
+  		SELECT ah.att_history_code,
+               em.employee_id,
+               em.name,
+               ah.attendance_date,
+		       ah.attendance_time,
+		       ah.leave_time,
+               ai.att_name
+               
+		FROM   att_history ah
+		JOIN   employees em           ON ah.employee_code = em.employee_code
+        JOIN   att_item ai         ON ah.att_code = ai.att_code
+
+        <where>
+        <if test="employeePosition != null and !employeePosition.equals('')">
+        em.employee_position = #{employeePosition}
+        </if>
+        <if test="employeeName != null and !employeeName.equals('')">
+        AND em.name LIKE '%'|| #{employeeName}|| '%'
+        </if>
+        <if test="employeeId != null and !employeeId.equals('')">
+        AND em.employee_id LIKE '%'||#{employeeId}||'%'
+        </if>
+        <if test="departmentCode != null and !departmentCode.equals('')">
+        AND em.department_code = #{departmentCode}
+        </if>
+        <if test="statusType != null and !statusType.equals('')">
+        AND em.status_type = #{statusType}
+        </if>
+        <if test="hireDateStart != null" >
+        AND em.hire_date >= #{hireDateStart}
+        </if>
+        <if test=" hireDateEnd != null " >        
+        AND em.hire_date <![CDATA[ <= ]]> #{hireDateEnd}        
+        </if>
+        <if test="resignationDateStart != null " >
+        AND em.RESIGNATION_DATE >= #{resignationDateStart}
+        </if>
+        <if test="resingationDateEnd != null " >
+        AND em.RESIGNATION_DATE <![CDATA[ <=  ]]> #{resingationDateEnd}
+        </if>        
+        </where>
+        
+	</select>
+
+	<!-- 근태 단건조회 -->
+	<select id="selectAttendance" parameterType="string">
+  		SELECT ah.att_history_code,
+               em.employee_code,
+               em.employee_id,
+               em.name,
+               ah.attendance_date,
+               ah.att_code,
+		       ah.attendance_time,
+		       ah.leave_time,
+               NUMBER_TO_MINUTE(ah.total_worktime) AS total_worktime ,
+               NUMBER_TO_MINUTE(ah.overtime_worktime) AS overtime_worktime,
+               NUMBER_TO_MINUTE(ah.night_worktime) AS night_worktime,
+               NUMBER_TO_MINUTE(ah.weekend_worktime) AS weekend_worktime,
+               ai.att_name
+               
+		FROM   att_history ah
+		JOIN   employees em           ON ah.employee_code = em.employee_code
+        JOIN   att_item ai         ON ah.att_code = ai.att_code
+        
+        WHERE  ah.att_history_code = #{attHistoryCode}
+	</select>
+	
+	<!-- 근태 등록 -->
 	<insert id ="insertAttendance" parameterType="hashmap" statementType="CALLABLE">
 		CALL ATTENDANCE_INSERT (
-     #{attendanceVO,mode=IN, typeHandler=com.cherp.app.empl.vo.AttendanceArrayStructHandler}
+     #{ATTELE,mode=IN, typeHandler=com.cherp.app.empl.vo.AttendanceArrayStructHandler}
 		              )
 	</insert>
-
+	
+	<!-- 근태 수정 -->
+	<update id="updateAttendance" parameterType="com.cherp.app.empl.vo.AttendanceVO">
+		UPDATE  att_history
+		
+		SET     employee_code     = #{employeeCode}
+		       ,attendance_date   = #{attendanceDate}
+		       ,attendance_time   = #{attendanceTime}
+		       ,leave_time        = #{leaveTime}
+		       ,total_worktime    = MINUTE_TO_NUMBER(#{totalWorktime})
+		       ,overtime_worktime = MINUTE_TO_NUMBER(#{overtimeWorktime})
+		       ,night_worktime    = MINUTE_TO_NUMBER(#{nightWorktime})
+		       ,weekend_worktime  = MINUTE_TO_NUMBER(#{weekendWorktime})
+		       ,att_code          = #{attCode}
+		       ,att_history_code  = #{attHistoryCode}
+		   
+		 WHERE  att_history_code     = #{attHistoryCode}
+		        
+	</update>
  
 
-
+	<!-- 근태 삭제 -->
+	<delete id="deleteAttendance" parameterType="java.util.ArrayList">
+		DELETE att_history
+		WHERE  att_history_code IN
+		<foreach collection="array" item="attHistoryCode" open="(" separator="," close=")">
+			#{attHistoryCode}
+		</foreach>
+	
+	</delete>
 
 </mapper>

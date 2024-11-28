@@ -31,13 +31,19 @@ public class EmployeeController {
 		return "human/departmentList";
 	}
 
+	//근태조회페이지
+	@GetMapping("employees/attendance")
+	public String attendance() {
+		return "human/attendanceList";
+	}
+	
 	//근태입력페이지
 	@GetMapping("employees/attendanceinput")
 	public String attendanceInput () {
 		return "human/attendanceInput";
 	}
 	
-	
+	//근태항목등록페이지
 	@GetMapping("employees/attendanceElementInput")
 	public String attendanceElementInput () {
 		return "human/attendanceElementInput";
