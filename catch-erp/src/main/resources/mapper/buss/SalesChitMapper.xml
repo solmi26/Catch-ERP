@@ -108,7 +108,7 @@
         d.saleslip_no = #{saleslipNo}
     </select>
 
-    <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
+    <!-- <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT saleslip_no
             , insert_date
             , client_code
@@ -119,9 +119,26 @@
             , sales_summary
             , employee_name
             , employee_code
-            , vat
-            , slip_state
-        FROM sales_chit
-        WHERE slip_state = #{slipState}
-    </select>
+            ,vat
+            ,find_code(slip_state) as slip_state
+		FROM sales_chit
+	</select> -->
+	
+	<!-- 판매전표 전표 상태별 조회 -->
+	<select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
+		SELECT saleslip_no
+            , insert_date
+            , client_code
+            ,client_name
+            , acc_code
+            , dep_bacct
+            ,supply_price
+            ,sales_summary
+            , employee_name
+            , employee_code
+            ,vat
+            ,find_code(slip_state) as slip_state
+		FROM sales_chit
+		WHERE slip_state = #{slipState}
+	</select>
 </mapper>

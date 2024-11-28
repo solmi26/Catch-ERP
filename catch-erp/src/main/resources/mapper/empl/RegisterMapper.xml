@@ -1,25 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.empl.RegisterMapper">
+<mapper namespace="com.cherp.app.empl.mapper.RegisterMapper">
+    <!-- 부서목록 조회 -->
+	<select id="selectAllDepartment" resultType="com.cherp.app.empl.vo.DepartmentVO">
+		SELECT department_code,
+		       department_name,
+		       manager_code
+		FROM   department
+	</select>
+	
+	<!-- 부서단건 조회 -->
+	<select id="selectDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
+		SELECT department_code,
+		       department_name,
+		       manager_code
+		FROM   department
+		WHERE  department_code = #{departmentCode}
+	</select>
+	
+	
+	<!-- 부서단건 수정 -->
+	<update id="updateDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
+		UPDATE department
+		SET department_code = #{departmentCode},
+		    department_name = #{departmentName},
+		    manager_code = #{managerCode}
+		WHERE department_code = #{departmentCode}
+	</update>
 	<!-- 부서목록 페이지의 부서등록  -->
 	<insert id="insertDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
 		INSERT INTO department(
-		                       deparment_code
-		                       deparmtnt_name
-		                       <if test="managerId != null and !managerId.equals('')">
-		                       manager_id
-		                       </if>)
+		                       department_code
+		                       ,department_name
+		                       ,manager_code
+		                       )
 		VALUES (
 				#{departmentCode}
-		        #{departmentName}
-                <if test="managerId != null and !managerId.equals('')">
-                #{mangerId}
-                </if>
+		        ,#{departmentName}
+                ,#{managerCode}
 		        )
 	</insert>
 
-
-
+	<!-- 부서목록의 부서삭제 -->
+	<delete id="deleteDepartment" parameterType="java.util.ArrayList">
+		DELETE FROM department
+		WHERE department_code IN
+		<foreach collection="array" item="departmentCode" open="(" separator="," close=")">
+			#{departmentCode}
+		</foreach>
+	</delete>
+	
+	<!-- 근태항목 조회 -->
+	<select id="selectAttItemList" resultType="com.cherp.app.empl.vo.AttItemVO" >
+		SELECT att_code,
+		       att_status,
+		       att_name
+		FROM   att_item
+	</select>
+	
+	<!-- 근태항목 단건조회 -->
+	<select id="selectAttItem" parameterType="string" resultType="com.cherp.app.empl.vo.AttItemVO">
+		SELECT att_code,
+		       att_status,
+		       att_name
+		FROM   att_item
+		WHERE  att_code = #{attCode}
+	</select>
+	
+	<!-- 근태항목 등록 -->
+	<insert id="insertAttItem" parameterType="com.cherp.app.empl.vo.AttItemVO">
+		INSERT INTO att_item (att_code
+		                     ,att_status
+		                     ,att_name)
+		                     
+		VALUES               (#{attCode}
+		                     ,#{attStatus}
+		                     ,#{attName})                     
+	
+	</insert>
+	<!-- 근태항목 수정 -->
+	<update id="updateAttItem" parameterType="com.cherp.app.empl.vo.AttItemVO">
+		UPDATE att_item
+		SET   att_code = #{attCode},
+		      att_status = #{attStatus},
+		      att_name = #{attName}
+		WHERE att_code = #{attCode}
+	</update>
+	<!-- 근태항목 다건삭제 -->
+	<delete id="deleteAttItem" parameterType="java.util.ArrayList">
+		DELETE FROM att_item
+		WHERE att_code IN
+		<foreach collection="array" item="attCode" open="(" separator="," close=")">
+			#{attCode}
+		</foreach>
+	</delete>
 
 
 

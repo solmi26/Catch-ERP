@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.buss.service.ClientService;
@@ -22,29 +23,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("stocks")
 public class RestStockAdjustController {
 	
 	private final StockService stockAdjustService;
 	private final ClientService clientService;
 	
-	@GetMapping("stocks/clientList") //거래처전체조회
+	//거래처 검색
+	@GetMapping("/client") //거래처전체조회
 	public List<ClientVO> getClientList() {  
 		return clientService.clientList();
 	}
 	
-	/* INPUT창 ajax 검색 기능 보류
-	 * @GetMapping("stocks/clientSearchList/{clientCode}") //사원전체조회 public
-	 * List<ClientVO> getClientSearchList(@PathVariable String clientCode){ return
-	 * clientService.clientSearchList(clientCode); }
-	 */
-	
 	//품목전체조회
-	@GetMapping("stocks/itemList") 
+	@GetMapping("/item") 
 	public List<ContractItemVO> getItemList() {
 		return stockAdjustService.getItemList();
 	}
+	
 	//구매내역조회
-	@GetMapping("stocks/purchaseChitNoList/{type1}/{type2}/{type3}/{client}/{employee}/{item}/{startDate}/{endDate}")
+	@GetMapping("/purchaseChitNo/{type1}/{type2}/{type3}/{client}/{employee}/{item}/{startDate}/{endDate}")
 	public List<PurchaseHistoryVO> getPurcChitNo(@PathVariable("type1") String type1, 
 			                                     @PathVariable("type2") String type2, 
 			                                     @PathVariable("type3") String type3, 
@@ -56,15 +54,8 @@ public class RestStockAdjustController {
 		return stockAdjustService.getPurchaseHistoryList(type1, type2, type3, client, employee, item, startDate, endDate);
 	}
 	
-	/* => 구매내역 조회에서 JOIN하면되었음
-	 * //재고 단건조회
-	 * @GetMapping("stocks/itemStocks/{itemCode}") public ContractItemVO
-	 * getItemStocks(@PathVariable("itemCode") String itemCode) { return
-	 * stockAdjustService.getItemStocks(itemCode); }
-	 */
-	
 	//판매내역조회 
-	@GetMapping("stocks/salesChitNoList")
+	@GetMapping("/salesChitNo")
 	public List<SalesHistoryVO> getSalesChitNo(HistorySearchVO searchVO){
 		
 		return stockAdjustService.getSalesHistoryList(searchVO);

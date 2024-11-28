@@ -74,13 +74,7 @@
                   			<label class="form-label me-2 mb-0 label-width">부서</label>
                   		</div>
                 		<div class="col">
-		                	<select class="form-select input-width-150 search-option" name="departmentCode" readonly>
-			                   <option value="">전체</option>
-			                   <option value="경영지원팀">경영지원팀</option>
-			                   <option value="인사팀">인사팀</option>
-			                   <option value="개발팀">개발팀</option>
-			                   <option value="영업팀">영업팀</option>
-			                   <option value="마케팅팀">마케팅팀</option>
+		                	<select class="form-select input-width-150 search-option" name="departmentCode">
 		                 	</select>
 	                 	</div>
     	            </div>
@@ -213,7 +207,7 @@
                                                     <label class="form-label">부서코드</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                	<select class="form-select form-select-sm" name="departmentCode">
+                                                	<select class="form-select form-select-sm EmployeeVO" name="departmentCode">
                                             		</select>    
                                                 </div>
                                             </div>
@@ -222,7 +216,7 @@
                                                     <label class="form-label">세대주여부</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                    <select class="form-select form-select-sm" name="headCheck">
+                                                    <select class="form-select form-select-sm EmployeeDetailVO" name="headCheck">
                                                     	<option value="o">o</option>
                                                     	<option value="x">x</option>
                                             		</select>
@@ -237,7 +231,7 @@
                                            			<label class="form-label">직위/직급</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm" name="employeePosition">
+                                            		<select class="form-select form-select-sm EmployeeVO" name="employeePosition">
                                             		</select>
                                             	</div>
                                             </div>
@@ -248,7 +242,7 @@
                                             		<label class="col-form-label-sm">직책</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm" name="duty">
+                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="duty">
                                             		</select>
                                             	</div>
                                         	</div>
@@ -290,7 +284,7 @@
                                             		<label class="col-form-label-sm">재직구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm" name="statusType">
+                                            		<select class="form-select form-select-sm EmployeeVO" name="statusType">
                                             		</select>
                                             	</div>
                                         	</div>
@@ -301,7 +295,7 @@
                                            			<label class="form-label">입사구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm" name="hireType">
+                                            		<select class="form-select form-select-sm EmployeeVO" name="hireType">
                                             		</select>
                                             	</div>
                                             </div>
@@ -322,8 +316,8 @@
                                            			<label class="form-label">재직상태</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm" name="empStatus">
-														<option >해당없음</option>
+                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="empStatus">
+														<option value="" >해당없음</option>
                                             		</select>
                                             	</div>
                                             </div>
@@ -464,7 +458,7 @@
   	});
 
   document.addEventListener('DOMContentLoaded', function() {
-      fetch("/emps")
+      fetch("/employees/emps")
       .then(result => result.json())
       .then(datas =>{grid.resetData(datas)})
 	})    

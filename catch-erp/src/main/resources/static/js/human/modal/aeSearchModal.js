@@ -1,5 +1,8 @@
 /**
  * 
+ * 
+ * dataToAeSearch () => 모달 그리드 데이터 불러오기 함수
+ * 
  */
 //모달이벤트
 const aeSearchModal = new bootstrap.Modal(document.getElementById('aeSearchModal'))
@@ -43,7 +46,13 @@ data: [
 showDummyRows: true
 });
 
-instance.resetData(newData); // Call API of instance's public method
 
-Grid.applyTheme('striped'); // Call API of static method
 
+//근태항목조회 테이블 데이터 불러오기 함수
+async function dataToAeSearch () {
+	await fetch("/employees/attitem")
+	      .then(data => data.json())
+	      .then(data => {
+			aeSearchGrid.resetData(data);
+		  })
+}

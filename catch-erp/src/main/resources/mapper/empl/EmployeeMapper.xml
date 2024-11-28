@@ -49,8 +49,11 @@
 		</collection>
 		<!-- 리절트맵시 사용시 association넣고나서 다시 result를 삽입하지 말것 오류뜸.  -->
 	</resultMap>
+	
 	<!-- 인사정보 다건조회 -->
-	<select id="selectAllEmployeeList" resultType="com.cherp.app.empl.vo.EmployeeVO" parameterType="com.cherp.app.common.dto.EmployeeSearchDto">
+	<select id="selectAllEmployeeList" 
+	        resultType="com.cherp.app.empl.vo.EmployeeVO" 
+	        parameterType="com.cherp.app.common.dto.EmployeeSearchDto">
 		SELECT 	em.employee_code,
 				em.employee_id,
 				em.name,
@@ -70,41 +73,32 @@
         employee_position = #{employeePosition}
         </if>
         <if test="employeeName != null and !employeeName.equals('')">
-        AND name LIKE '%'||#{employeeName}||'%'
+        AND name LIKE '%'|| #{employeeName}|| '%'
         </if>
         <if test="employeeId != null and !employeeId.equals('')">
         AND employee_id LIKE '%'||#{employeeId}||'%'
         </if>
         <if test="departmentCode != null and !departmentCode.equals('')">
-        AND department_code = #{departmentCode}
+        AND em.department_code = #{departmentCode}
         </if>
         <if test="statusType != null and !statusType.equals('')">
         AND status_type = #{statusType}
         </if>
-        <if test="hireDateStart != null and !hireDateStart.equals('') and hireDateEnd != null and !hireDateEnd.equals('')" >
-        AND hire_date BETWEEN  #{hireDateStart} AND #{hireDateEnd}
+
+        <if test="hireDateStart != null" >
+        AND hire_date >= #{hireDateStart}
         </if>
-        <if test="hireDateStart != null and !hireDateStart.equals('') and hireDateEnd = null and hireDateEnd.equals('')" >
+        <if test=" hireDateEnd != null " >        
+        AND hire_date <![CDATA[ <= ]]> #{hireDateEnd}        
+        </if>
+        <if test="resignationDateStart != null " >
         <![CDATA[
-        AND hire_date > #{hireDateStart}
+        AND RESIGNATION_DATE >= #{resignationDateStart}
         ]]>
         </if>
-        <if test="hireDateStart = null and hireDateStart.equals('') and hireDateEnd != null and !hireDateEnd.equals('')" >
+        <if test="resingationDateEnd != null " >
         <![CDATA[
-        AND hire_date < #{hireDateEnd}
-        ]]>
-        </if>
-        <if test="resignationDateStart != null and !resignationDateStart.equals('') and resingationDateEnd != null and !resingationDateEnd.equals('')" >
-        AND hire_date BETWEEN  #{resignationDateStart} AND #{resingationDateEnd}
-        </if>
-        <if test="resignationDateStart != null and !resignationDateStart.equals('') and resingationDateEnd = null and resingationDateEnd.equals('')" >
-        <![CDATA[
-        AND hire_date > #{resignationDateStart}
-        ]]>
-        </if>
-        <if test="resignationDateStart = null and resignationDateStart.equals('') and resingationDateEnd != null and !resingationDateEnd.equals('')" >
-        <![CDATA[
-        AND hire_date < #{resignationDateStart}
+        AND RESIGNATION_DATE <= #{resingationDateEnd}
         ]]>
         </if>        
         </where>
@@ -112,7 +106,7 @@
 	
 	<!-- 인사정보 단건조회 -->
 	<select id="seleectEmployee" resultMap="Employee">
-        		SELECT 	em.employee_code,
+        SELECT 	em.employee_code,
 		        em.employee_id,
 		        em.name,
 		        em.hire_date,
@@ -144,17 +138,14 @@
                 fx.allowance_code,
                 ai.allowance_name,
                 ai.allowance_check
+                
 		FROM    employees em
-		JOIN    department dp
-		ON      em.department_code = dp.department_code
-		JOIN    employees_detail ed
-		ON      em.employee_code = ed.employee_code
-        JOIN    employees_salary es
-        ON      em.employee_code = es.employee_code
-        JOIN    fixed fx
-        ON      em.employee_code = fx.employee_code
-        JOIN    allowance_item ai
-        ON      fx.allowance_code = ai.allowance_code
+		JOIN    department dp	ON    em.department_code = dp.department_code
+		JOIN    employees_detail ed		ON      em.employee_code = ed.employee_code
+        JOIN    employees_salary es        ON      em.employee_code = es.employee_code
+        JOIN    fixed fx        ON      em.employee_code = fx.employee_code
+        JOIN    allowance_item ai        ON      fx.allowance_code = ai.allowance_code
+        
 		WHERE   em.employee_code = #{employeeCode}
 		
 	</select>

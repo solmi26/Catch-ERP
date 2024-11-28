@@ -24,4 +24,5 @@ public class PurchaseChitVO {
 	private String employeeName; // 담당자 명
 	private String employeeCode; // 사원 코드
 	private int vat; 			 // 부가세
+	private String slipState; 	 // 전표 발행 상태
 }

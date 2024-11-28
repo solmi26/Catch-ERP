@@ -21,16 +21,6 @@
 						<div class="col">
 							<h3>근태항목목록</h3>
 						</div>
-						<div class="col-auto">
-							<div class="row justify-content-end">
-								<div class="col-auto">
-									<input class="form-control form-control-sm" type="text">					
-								</div>
-								<div class="col-auto">
-									<button type="button" class="btn btn-success btn-sm" >검색</button>
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="row">
 						<div class="col">
@@ -39,28 +29,167 @@
 					</div>
 					<div class="row justify-content-start mt-4">
 						<div class="col-auto">
-							<button type="button" class="btn btn-success btn-sm" >신규</button>
+							<button type="button" class="btn btn-success btn-sm req-Btn" >신규</button>
 						</div>
 						<div class="col-auto ps-0">
-							<button type="button" class="btn btn-danger btn-sm" >삭제</button>
-						</div>
-						<div class="col-auto ps-0">
-							<button type="button" class="btn btn-warning btn-sm hihi" >추가</button>						
+							<button type="button" class="btn btn-danger btn-sm delete-Btn" >삭제</button>
 						</div>
 						
 					</div>
 				</div>
-				
-
-			
 			</div>
 		</div>
+		
+<!-- 근태등록 모달시작!!! -->
+   <div class="modal fade" id="attReqModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">근태항목등록</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>근태항목등록</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row g-3 align-items-center">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label">근태코드</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" name="attCode" class="form-control form-control-sm insert-input" aria-describedby="passwordHelpInline">
+                                        </div>
+                                    </div>                                    
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label ">근태명</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" name="attName" class="form-control form-control-sm insert-input" aria-describedby="passwordHelpInline">
+                                        </div>
+                                    </div>                                    
+                                    <div class="row">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label ">근태구분</label>
+                                        </div>
+                                        <div class="col">
+                                      		<select class="form-select form-select-sm EmployeeDetailVO insert-input" name="attStatus">
+												<option value="i1" selected>일반</option>
+												<option value="i2" >휴가</option>
+												<option value="i3" >기타</option>
+                                       		</select>		                                        
+                                        </div>
+                                   		</div>
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary insert-Btn" data-bs-dismiss="modal">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 근태등록 모달끝!!! -->
+
+<!-- 근태수정 모달시작!! -->
+   <div class="modal fade" id="attModifyModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">근태항목수정</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>근태항목수정</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row g-3 align-items-center">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label">근태코드</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" name="attCode" class="form-control form-control-sm modify-input" readonly aria-describedby="passwordHelpInline">
+                                        </div>
+                                    </div>                                    
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label ">근태명</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" name="attName" class="form-control form-control-sm modify-input" aria-describedby="passwordHelpInline">
+                                        </div>
+                                    </div>                                    
+                                    <div class="row">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label ">근태구분</label>
+                                        </div>
+                                        <div class="col">
+                                      		<select class="form-select form-select-sm EmployeeDetailVO modify-input" name="attStatus">
+												<option value="i1" >일반</option>
+												<option value="i2" >휴가</option>
+												<option value="i3" >기타</option>
+                                       		</select>		                                        
+                                        </div>
+                                   		</div>
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary modify-Btn" data-bs-dismiss="modal">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 근태수정 모달끝!! -->
+
 	<script>
-	    var gridData = [{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'}]
 		const Grid = tui.Grid;
-		const instance = new Grid({
+		const grid = new Grid({
 			  el: document.getElementById('grid'), // Container element
-		      data: gridData.slice(0, 8),
+		      rowHeaders: [
+		          {
+		            type: 'checkbox',
+		            header: `
+		              <span class="custom-input">
+		              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+		            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
+		          	</span>
+		          `,
+		            renderer: {
+		              type: gridCheckbox
+		            }
+		          }
+		        ],
 		      width: 650,
 		      bodyHeight: 600,
 		      scrollX: true,
@@ -68,55 +197,18 @@
 			  columns: [
 			    {
 			      header: '근태코드',
-			      name: 'name'
+			      name: 'attCode'
 			    },
 			    {
 			      header: '근태명칭',
-			      name: 'artist'
+			      name: 'attName'
 			    },
 			    {
 			      header: '근태유형',
-			      name: 'release'
+			      name: 'attStatus'
 			    }
 			  ],
 			  data: [
-			    {
-			      name: 'Beautiful Lies',
-			      artist: 'Birdy',
-			      release: '2016.03.26',
-			      genre: 'Pop'
-			    },
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-			    {
-				      name: 'Beautiful Lies',
-				      artist: 'Birdy',
-				      release: '2016.03.26',
-				      genre: 'Pop'
-				},
-
 
 			  ],
 			showDummyRows: true
@@ -127,12 +219,7 @@
 			Grid.applyTheme('striped'); // Call API of static method
 			
 
-	</script>
-	<script>
-	document.querySelector('.hihi').addEventListener('click',function () {
-		console.log('hi')
-		instance.appendRow()
-	})
-	</script>
+		</script>
+	<script th:src="@{/js/human/attendanceElementInput.js}"></script>
 </body>
 </html>

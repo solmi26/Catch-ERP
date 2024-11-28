@@ -19,6 +19,16 @@
 	    background-color: #ffebee !important; /* 밝은 빨강색 */
 	  
 	  }
+	  
+		.r1 {
+		  color: red;
+		}
+		.r2 {
+		  color: green;
+		}
+		.r3{
+			color: blue;
+		}
 
 	  
 	</style>
@@ -35,14 +45,14 @@
       
       <!-- 버튼 그룹 -->
       <div class="button-group mt-3">
-        <button type="button" class="btn btn-success btn">신규 등록</button>
-        <button type="button" class="btn btn-danger btn">선택 삭제</button>
-        <button type="button" class="btn btn-secondary btn">인쇄</button>
-        <button type="button" class="btn btn-secondary btn">Excel</button>
+        <button type="button" class="btn btn-success btn" id="new">신규 등록</button>
+        <button type="button" class="btn btn-danger btn" id="deleteButton">선택 삭제</button>
+        <button type="button" class="btn btn-secondary btn" id="print">인쇄</button>
+        <button type="button" class="btn btn-secondary btn" id="excel">Excel</button>
       </div>
       
        <!-- 조회 기간 -->
-        <span class="date-range">2024/05/01 ~ 2024/12/15</span>
+        <!-- <span class="date-range">2024/05/01 ~ 2024/12/15</span> -->
       
      </div> <!-- 그리드 위 구역 끝. -->
 
@@ -56,110 +66,7 @@
       
     </div> <!-- 전체 페이지 컨테이너 끝. -->
 
-    <script>
-    
- 	document.addEventListener('DOMContentLoaded', function() {
-    	
-    // 그리드 기초 데이터
-	  const gridData = [
-		  {
-		    voucherNumber: "24/11/30-1",     // 전표번호
-		    transactionType: "매출전표",        // 거래유형
-		    amount: 132000,                  // 금액
-		    clientName: "구로조영유통",          // 거래처명
-		    description: "구매이력조회 판매분",    // 적요
-		    eTaxInvoice: "전송중",            // 전자세금계산서
-		    
-		  },  {
-		        voucherNumber: "24/11/30-2",
-		        transactionType: "매입전표",    // 거래유형
-		        amount: 100000,
-		        clientName: "서울상사",
-		        description: "물품 구매",
-		        eTaxInvoice: "전송",
-		      },
-	];
-
-    	 // 그리드 초기화
-    	  const grid = new tui.Grid({
-    	    el: document.querySelector('#grid'),
-    	    data: gridData,
-    	    scrollX: true,
-    	    scrollY: true,
-    	    pageOptions: {
-    	      useClient: true,
-    	      perPage: 5,
-    	    },
-    	    columns : [
-    	    	  {
-    	    	    header: "전표번호", // 전표번호
-    	    	    name: "voucherNumber",
-    	    	    align: "center",
-    	    	    formatter: (cellValue) =>
-	    	      	`<a href="#" class="btn-link text-primary">${cellValue.value}</a>`,
-    	    	  },
-    	    	  {
-    	    	    header: "거래유형", // 거래유형
-    	    	    name: "transactionType",
-    	    	    align: "center",
-    	    	  },
-    	    	  {
-    	    	    header: "금액", // 금액
-    	    	    name: "amount",
-    	    	    align: "right",
-    	    	  },
-    	    	  {
-    	    	    header: "거래처", // 거래처명
-    	    	    name: "clientName",
-    	    	    align: "left",
-    	    	  },
-    	    	  {
-    	    	    header: "적요", // 적요
-    	    	    name: "description",
-    	    	    align: "left",
-    	    	  },
-    	    	  {
-    	    	    header: "전자세금계산서", // 전자세금계산서
-    	    	    name: "eTaxInvoice",
-    	    	    align: "center",
-    	    	  },
-    	    	],
-      	      rowHeaders: [
-    	            {
-    	              type: 'checkbox',
-    	              header: 
-    	                `<span class="custom-input">
-    	                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-    	                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-    	                </span>`
-    	            ,
-    	              renderer: {
-    	                type: gridCheckbox
-    	              }
-    	            }],
-    	  });
-    	 
-    	 
-    	 grid.getData().forEach(row => {
-    		 console.log(row.transactionType === "매출전표");
-    		 let check = row.transactionType === "매출전표";
-    		 if(check){ 
-    			 grid.addRowClassName(row.rowKey, "sales")
-    		 } else{
-    			 	grid.addRowClassName(row.rowKey, "purchase")
-    		 }
-    	 });
-
-    	 // 그리드 클릭 이벤트 -> 추후 수정
-    	  grid.on('click', (event) => {
-    	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
-    	      console.log('클릭이벤트 발생');
-    	      console.log(event.rowKey);
-    	    }
-    	  });
-    });
- 	
-    </script>
+	<script th:src="@{/js/account/statement.js}"></script>
     
   </body>
   
