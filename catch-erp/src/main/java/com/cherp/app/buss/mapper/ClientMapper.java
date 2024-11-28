@@ -10,4 +10,8 @@ public interface ClientMapper {
 	public List<ClientVO> selectClientList();
 	
 	public List<ClientPsVO> gwSelectAllClientList();     // 거래처 목록 조회 - GW
+	
+	public ClientPsVO selectClientInfo(String clientCode); // 거래처 단건 조회 - GW
+	
+	public int insertClient(ClientPsVO clientPsVO); // 거래처 등록 - GW
 }

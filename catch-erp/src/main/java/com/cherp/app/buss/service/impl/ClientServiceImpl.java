@@ -30,4 +30,15 @@ public class ClientServiceImpl implements ClientService {
 		return clientMapper.gwSelectAllClientList();
 	}
 
+	@Override
+	public int insertClient(ClientPsVO clientPsVO) {
+		clientPsVO.setTradeStatus("거래중");
+		return clientMapper.insertClient(clientPsVO);
+	}
+
+	@Override
+	public ClientPsVO getClientInfo(String clientCode) {
+		return clientMapper.selectClientInfo(clientCode);
+	}
+
 }

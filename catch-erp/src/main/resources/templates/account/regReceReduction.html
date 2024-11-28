@@ -91,163 +91,152 @@
   
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
-  function makeClientGrid(result) {
-    
-    let grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
-        el: document.querySelector('#grid'),
-        data: result, // toast ui table 에 입력할 데이터값
-        scrollX: true,
-        scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
-        pageOptions: {
-          useClient: true,
-          perPage: 5
-        },
-        rowHeaders: [
-	          {
-	            type: 'checkbox',
-	            header: `
-	              <span class="custom-input">
-	              <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-	            	<label for="all-checkbox" class="checkbox selectCheck">✔</label>
-	          	</span>
-	          `,
-	            renderer: {
-	              type: gridCheckbox
-	            }
-	          }
-	      ],
-        columns: [
-        {
-                      header: '거래처코드',
-                      name: 'clientCode',
-                      sortable: true,
-                      filter: 'select',
-                      align: 'center'
-                  },
-                  {
-                      header: '거래처명',
-                      name: 'clientName',
-                      filter: 'select',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '거래처 계좌',
-                      name: 'clientBacct',
-                      filter: 'select',
-                      sortable: true,
-                      align: 'left'
-                  },      
-                  {
-                      header: '잔액',
-                      name: 'balancek',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '입금금액',
-                      name: 'decreasePrice',
-                      editor: 'text',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                    header: '채무상태',
-                    name: 'state',
-                    sortable: true,
-                    align: 'left'
-                  }
-              ],
-      });                                                                                                                                                                                                                                                      
-      return grid;
-  }
-  function makeReceivableTabulator(accountList) {
-    let grid = new Tabulator("#example-table", {
-      layout:"fitColumns",
-      pagination:"local",
-      data: accountList,
-      paginationSize:8,
-      movableColumns:true,
-      paginationCounter:"rows",
-      paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
-          return "";
-      },
-      langs:{
-          "default":{
-              "pagination":{
-                  "first":"처음",
-                  "first_title":"처음으로",
-                  "last":"끝",
-                  "last_title":"마지막으로",
-                  "prev":"이전",
-                  "prev_title":"이전으로",
-                  "next":"다음",
-                  "next_title":"다음으로",
-                  "all":"전체",
-              }
-          }
-      },
-      columns:[
-          {title:"계좌코드", field:"bacctCode", visible:false},
-          {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
-          {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
-          {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
-      ],
-    });
-    return grid;
-  }
   document.addEventListener('DOMContentLoaded', function() {
-
-    fetch("/receList") // 추후 url수정되면 수정된 url으로 수정
-    .then(result => result.json())
-    .then(result => {
-      console.log(result);
-      //toast ui table 기본 틀 작성
-      const grid = makeClientGrid(result);
-      
-      grid.on('click', (event) => { // grid 클릭이벤트 발생
-        if(event.columnName === 'clientCode' && event.rowKey>=0) {
-          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
-          let clientCode = grid.getValue(event.rowKey,"clientCode");
-          let clientData = {
-            method: 'POST',
-            body: JSON.stringify({"clientCode":clientCode}),
-            headers: {
-              'Content-Type' : 'application/json'
+	  let grid;
+    function makeClientGrid(result) { 
+      let grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
+          el: document.querySelector('#grid'),
+          data: result, // toast ui table 에 입력할 데이터값
+          scrollX: true,
+          scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
+          pageOptions: {
+            useClient: true,
+            perPage: 5
+          },
+          rowHeaders: [
+              {
+                type: 'checkbox',
+                header: `
+                  <span class="custom-input">
+                  <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+                </span>
+              `,
+                renderer: {
+                  type: gridCheckbox
+                }
+              }
+          ],
+          columns: [
+          {
+                        header: '거래처코드',
+                        name: 'clientCode',
+                        sortable: true,
+                        filter: 'select',
+                        align: 'center'
+                    },
+                    {
+                        header: '거래처명',
+                        name: 'clientName',
+                        filter: 'select',
+                        sortable: true,
+                        align: 'left'
+                    },
+                    {
+                        header: '거래처 계좌',
+                        name: 'clientBacct',
+                        filter: 'select',
+                        sortable: true,
+                        align: 'left'
+                    },      
+                    {
+                        header: '잔액',
+                        name: 'balancek',
+                        sortable: true,
+                        align: 'left'
+                    },
+                    {
+                        header: '입금금액',
+                        name: 'decreasePrice',
+                        editor: 'text',
+                        sortable: true,
+                        align: 'left'
+                    },
+                    {
+                      header: '채무상태',
+                      name: 'state',
+                      sortable: true,
+                      align: 'left'
+                    }
+                ],
+        });                                                                                                                                                                                                                                                      
+        return grid;
+    }
+    
+    function makeReceivableTabulator(accountList) {
+      let grid = new Tabulator("#example-table", {
+        layout:"fitColumns",
+        pagination:"local",
+        data: accountList,
+        paginationSize:8,
+        movableColumns:true,
+        paginationCounter:"rows",
+        paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+            return "";
+        },
+        langs:{
+            "default":{
+                "pagination":{
+                    "first":"처음",
+                    "first_title":"처음으로",
+                    "last":"끝",
+                    "last_title":"마지막으로",
+                    "prev":"이전",
+                    "prev_title":"이전으로",
+                    "next":"다음",
+                    "next_title":"다음으로",
+                    "all":"전체",
+                }
             }
-          };
-          fetch('/clientReceivables', clientData)
-          .then(result => result.json())
-          .then(clientReceivableList => {
-            let ledgeBody = document.querySelector('#ledgeBody');
-            ledgeBody.innerHTML = '';
-            let layout = '';
-            let balanceTot = 0;
-            let increaseTot = 0; // 증가금액 누계
-            let decreaseTot = 0; // 감소금액 누계
-            for (const rec of clientReceivableList) {
-              document.querySelector('#payClientName').innerHTML = `<strong>거래처:</strong> ${rec.clientName}`;
-              balanceTot += rec.increasePrice - rec.decreasePrice;
-              layout += `<tr>
-                            <td>${rec.recDate}</td>
-                            <td>${rec.acctName}</td>
-                            <td>${rec.summary}</td>
-                            <td>${rec.increasePrice}</td>
-                            <td>${rec.decreasePrice}</td>
-                            <td>${balanceTot}</td>
-                          </tr>`;
-            }
-            document.querySelector('#totIncrease').innerHTML = increaseTot;
-            document.querySelector('#totDecrease').innerHTML = decreaseTot;
-            document.querySelector('#totBalance').innerHTML = increaseTot - decreaseTot;
-            ledgeBody.insertAdjacentHTML('beforeend', layout);
-          })
-          ledgeModal.show();
+        },
+        columns:[
+            {title:"계좌코드", field:"bacctCode", visible:false},
+            {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
+            {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
+            {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
+        ],
+      });
+      return grid;
+    }
+    
+    function fetchClientCode(clientCode) {
+      let clientData = {
+        method: 'POST',
+        body: JSON.stringify({"clientCode":clientCode}),
+        headers: {
+          'Content-Type' : 'application/json'
         }
-        
+      };
+      fetch('/api/account/clientReceivables', clientData)
+      .then(result => result.json())
+      .then(clientReceivableList => {
+        let ledgeBody = document.querySelector('#ledgeBody');
+        ledgeBody.innerHTML = '';
+        let layout = '';
+        let balanceTot = 0;
+        let increaseTot = 0; // 증가금액 누계
+        let decreaseTot = 0; // 감소금액 누계
+        for (const rec of clientReceivableList) {
+          document.querySelector('#payClientName').innerHTML = `<strong>거래처:</strong> ${rec.clientName}`;
+          balanceTot += rec.increasePrice - rec.decreasePrice;
+          layout += `<tr>
+                        <td>${rec.recDate}</td>
+                        <td>${rec.acctName}</td>
+                        <td>${rec.summary}</td>
+                        <td>${rec.increasePrice}</td>
+                        <td>${rec.decreasePrice}</td>
+                        <td>${balanceTot}</td>
+                      </tr>`;
+        }
+        document.querySelector('#totIncrease').innerHTML = increaseTot;
+        document.querySelector('#totDecrease').innerHTML = decreaseTot;
+        document.querySelector('#totBalance').innerHTML = increaseTot - decreaseTot;
+        ledgeBody.insertAdjacentHTML('beforeend', layout);
       })
-      // 계좌 목록 조회 모달
-      fetch('/bacctList')
+    }
+
+    function fetchBacctList() {
+      fetch('/api/account/bacct')
       .then(result => result.json())
       .then(accountList => {
         //Build Tabulator
@@ -288,7 +277,7 @@
                         'Content-Type' : 'application/json'
                     }
                   };
-                  fetch('/insertReceivableBalance', receivables)
+                  fetch('/account/insertReceivableBalance', receivables)
                   // .then(result => result.json())
                   .then(result => {
                     console.log(result);
@@ -304,6 +293,26 @@
           });
         })
       })
+    }
+    
+    // 클라이언트별 총 채권 페이지
+    fetch("/api/account/receivables") 
+    .then(result => result.json())
+    .then(result => {
+      grid = makeClientGrid(result);
+      // 거래처의 채권 내역을 출력하는 거래처 원장 모달
+      grid.on('click', (event) => { // grid 클릭이벤트 발생
+        if(event.columnName === 'clientCode' && event.rowKey>=0) {
+          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
+          let clientCode = grid.getValue(event.rowKey,"clientCode");
+
+          fetchClientCode(clientCode);
+          // 거래처 원장 모달
+          ledgeModal.show();
+        }
+      })
+      // 계좌 목록 조회 모달
+      fetchBacctList();
     })
     .catch(err => console.error("json 로딩 에러 발생", err));
 
