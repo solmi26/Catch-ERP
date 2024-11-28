@@ -50,8 +50,20 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "전자세금계산서 전송 상태", // 전자세금계산서
         name: "eTaxInvoice",
         align: "center",
-      },
-    ],
+		formatter: ({ value }) => {
+		        // 값에 따라 다른 색상 스타일 적용
+		        let colorClass = "";
+		        if (value === "미전송") {
+		          colorClass = "r1";
+		        } else if (value === "국세청 전송 완료") {
+		          colorClass = "r3"; 
+		        } else {
+		          colorClass = "r2"; 
+		        }
+		        return `<span class="${colorClass}">${value}</span>`;
+		      },
+		    },
+		  ],
     rowHeaders: [
       {
         type: "checkbox",
@@ -66,52 +78,43 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
   });
 
-  /**grid.getData().forEach((row) => {
-    console.log(row.transactionType === "매출전표");
-    let check = row.transactionType === "매출전표";
-    if (check) {
-      grid.addRowClassName(row.rowKey, "sales");
-    } else {
-      grid.addRowClassName(row.rowKey, "purchase");
-    }
-  });
-**/
+  // 데이터 로드 함수
+  function loadGridData() {
+    fetch("/sales/selectSlip")
+      .then((result) => result.json())
+      .then((result) => {
+        let dataArr = result.map((ele) => ({
+          voucherNumber: ele.salesChitNo, // 전표번호
+          transactionType: ele.type, // 전표유형
+          date: ele.chitDate, // 전표일자
+          amount: ele.supplyPrice, // 공급가액
+          clientName: ele.clientCode, // 거래처코드
+          description: ele.summary, // 적요
+          eTaxInvoice: ele.invoiceStatus, // 세금계산서 발행 상태
+        }));
 
-  // 그리드 클릭 이벤트 -> 추후 수정
-  grid.on("click", (event) => {
-    if (event.columnName === "debentureNo" && event.rowKey >= 0) {
-      console.log("클릭이벤트 발생");
-      console.log(event.rowKey);
-    }
-  });
+        grid.resetData(dataArr);
 
-  // 데이터 로드
-  fetch("/sales/selectSlip")
-    .then((result) => result.json())
-    .then((result) => {
-      let dataArr = result.map((ele) => ({
-        voucherNumber: ele.salesChitNo,
-        transactionType: ele.type,
-        date: ele.chitDate,
-        amount: ele.supplyPrice,
-        clientName: ele.clientCode,
-        description: ele.summary,
-        eTaxInvoice: ele.invoiceStatus,
-      }));
-
-      grid.resetData(dataArr);
-
-      // 데이터 로드 후 스타일 적용
-      grid.getData().forEach((row) => {
-        console.log(row.transactionType === "매출전표");
-        let check = row.transactionType === "매출전표";
-        if (check) {
-          grid.addRowClassName(row.rowKey, "sales");
-        } else {
-          grid.addRowClassName(row.rowKey, "purchase");
-        }
+        // 데이터 로드 후 스타일 적용
+		// 클래스 이름을 지정해서 CSS 스타일 적용
+        grid.getData().forEach((row) => {
+          let check = row.transactionType === "매출전표";
+          if (check) {
+            grid.addRowClassName(row.rowKey, "sales");
+          } else {
+            grid.addRowClassName(row.rowKey, "purchase");
+          }
+		  
+        });
+      })
+      .catch((error) => {
+        console.error("데이터 로드 중 오류 발생:", error);
       });
-    });
+	 
+  }
+
+  // 초기 데이터 로드
+  loadGridData();
 
   // 선택 삭제 버튼
   document.querySelector("#deleteButton").addEventListener("click", function () {
@@ -148,12 +151,23 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify(deleteData),
     })
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("삭제 요청에 실패했습니다.");
+        }
+        return response.text();
+      })
       .then((result) => {
-        console.log("데이터 : ", result);
+        console.log("삭제 결과:", result);
+        alert("선택한 전표가 삭제되었습니다.");
+
+        // 삭제 시 그리드 다시 로드
+        loadGridData();
       })
       .catch((error) => {
-        console.log(error);
+        console.error("삭제 요청 중 오류 발생:", error);
+        alert("전표 삭제 중 오류가 발생했습니다.");
       });
   });
 });
+
