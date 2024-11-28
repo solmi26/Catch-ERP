@@ -3,12 +3,64 @@
 <mapper namespace="com.cherp.app.buss.mapper.SalesChitMapper">
 
 	<insert id="insertSalesChit" parameterType="com.cherp.app.buss.vo.SalesChitVO">
-		<selectKey keyProperty="saleslipNo" resultType="java.lang.String" order="BEFORE">
+		<selectKey keyProperty="saleslipNo" resultType="String" order="BEFORE">
 			SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') AS saleslip_no FROM DUAL
 		</selectKey>
-		INSERT INTO sales_chit(saleslip_no, insert_date, client_code,
-		client_name, acc_code, dep_bacct, employee_name, employee_code)
-		VALUES (#{saleslipNo}, sysdate, #{clientCode},
-		#{clientName}, #{accCode}, #{depBacct}, #{employeeName}, #{employeeCode})
+		INSERT
+		INTO sales_chit (
+			saleslip_no,
+			insert_date,
+			client_code,
+			client_name,
+			acc_code,
+			dep_bacct,
+			employee_name,
+			employee_code
+		)
+		VALUES (
+			#{saleslipNo},
+		    sysdate,
+			#{clientCode},
+			#{clientName},
+			#{accCode},
+			#{depBacct},
+			#{employeeName},
+			#{employeecode}
+		)
 	</insert>
+	
+	<!-- 판매전표 전체 조회 -->
+	<select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
+		SELECT saleslip_no
+            , insert_date
+            , client_code
+            ,client_name
+            , acc_code
+            , dep_bacct
+            ,supply_price
+            ,sales_summary
+            , employee_name
+            , employee_code
+            ,vat
+            ,find_code(slip_state) as slip_state
+		FROM sales_chit
+	</select>
+	
+	<!-- 판매전표 전표 상태별 조회 -->
+	<select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
+		SELECT saleslip_no
+            , insert_date
+            , client_code
+            ,client_name
+            , acc_code
+            , dep_bacct
+            ,supply_price
+            ,sales_summary
+            , employee_name
+            , employee_code
+            ,vat
+            ,find_code(slip_state) as slip_state
+		FROM sales_chit
+		WHERE slip_state = #{slipState}
+	</select>
 </mapper>

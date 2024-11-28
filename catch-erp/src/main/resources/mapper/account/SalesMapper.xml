@@ -8,37 +8,42 @@
 		FROM receivables_log
 	</select>-->
 	
-	<select id="receivablesList" resultType="com.cherp.app.acct.vo.SalesVO">
+	<select id="receivablesList" resultType="com.cherp.app.acct.vo.ClientPsVO">
 		SELECT
-		    p.log_id,
-		    p.sales_chit_no,
-		    p.rec_date,
-		    p.bacct_code,
-		    c.client_bacct,
-		    p.client_code,
-		    (
-		        SELECT
-		            client_name
-		        FROM
-		            client
-		        WHERE
-		            client_code = p.client
-		    )             AS client_name,
-		    s.rec_balance AS rec_balance,
-		    s.rec_status  AS rec_status
-		FROM
-		         receivables_log p
-		    JOIN sales s ON p.sales_chit_no = s.sales_chit_no
-		    JOIN client c ON c.client_code = p.client_code
+		    client_bacct,
+		    client_code,
+		    client_name,
+		    balancek,
+		    state
+		FROM client
 	</select>
 	<select id="payablesList" resultType="com.cherp.app.acct.vo.ClientPsVO">
 		SELECT
 		    client_bacct,
 		    client_code,
+		    client_name,
 		    balancem,
 		    state
 		FROM client
 	</select>
+	<insert id="insertPayable" parameterType="com.cherp.app.acct.vo.InsertPayableVO" statementType="CALLABLE">
+		{ 
+			CALL decrease_payables
+				(#{decreasePrice}
+				,#{bacctCode}
+				,#{clientCode}
+				,#{result, mode=INOUT, jdbcType=VARCHAR, javaType=java.lang.String})
+		}
+	</insert>
+	<insert id="insertDecreaseReceivable" parameterType="com.cherp.app.acct.vo.InsertReceivableVO" statementType="CALLABLE">
+		{
+			CALL decrease_receivable
+				(#{recPrice}
+				,#{bacctCode}
+				,#{clientCode}
+				,#{result, mode=OUT, jdbcType=VARCHAR})
+		}
+	</insert>
 	<!-- <select id="payablesList" resultType="com.cherp.app.acct.vo.PayablesVO">
 		SELECT
 		    p.rec_log_id,
@@ -76,7 +81,6 @@
 		        JOIN payables_log pl ON c.client_code = pl.client_code
 		        JOIN purchase p ON p.purchase_chit_no = pl.purchase_chit_no
 		WHERE   c.client_code = #{clientCode}
-		AND c.trade_type = '채무'
 		
 	</select>
 	
@@ -95,8 +99,56 @@
         WHERE   rl.client_code = #{clinetCode}
 	</select>
 	
+	<!-- 매출전표 전체 조회 -->
+	<select id="selectAllSalesList" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT  m.sales_chit_no
+		       ,m.chit_date
+		       ,m.supply_price
+		       ,m.client_code
+		       ,m.summary
+		       ,FIND_CODE(i.invoice_status) invoice_status
+		FROM 
+		     sales m
+		JOIN 
+		    invoice i
+		ON 
+		    m.invoice_no = i.invoice_no
+	</select>
+	
+	<!-- 매출, 매입전표 전체 조회 -->
+	<select id="selectAllSlip" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT '매출전표' as type ,m.sales_chit_no
+		       ,m.chit_date
+		       ,m.supply_price
+		       ,m.client_code
+		       ,m.summary
+		       ,FIND_CODE(i.invoice_status) invoice_status
+		FROM 
+		     sales m
+		JOIN 
+		    invoice i
+		ON 
+		    m.invoice_no = i.invoice_no
+		
+		UNION
+		    
+		SELECT '매입전표', purchase_chit_no
+		       ,chit_date
+		       ,supply_price
+		       ,client_code
+		       ,summary
+		       ,FIND_CODE(invoice_status) invoice_status
+		FROM purchase
+		
+		ORDER BY chit_date desc
+	</select>
+	
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSale" parameterType="com.cherp.app.acct.vo.SalesVO">
+	<selectKey keyProperty="salesChitNo" order="BEFORE" resultType="string">
+			SELECT domain('sales_chit_no')
+			FROM dual
+	</selectKey>
 		INSERT INTO sales (
                      sales_chit_no <!-- 전표번호 -->
            			 ,chit_date <!-- 전표일자 -->
@@ -111,7 +163,7 @@
            			 ,saleslip_no <!-- 판매전표 번호 -->
                     )
 			  VALUES(
-		           domain('sales_chit_no')
+		           #{salesChitNo}
 		          ,#{chitDate}
 		          ,#{clientCode}
 		          ,#{acctName}
@@ -119,22 +171,27 @@
 		          ,#{vat}
 	              ,#{totalPrice}
 	              ,#{writer}
-                  ,#{recBalance}
+                  ,0
                   ,#{summary}
                   ,#{saleslipNo}
 		        )
 	</insert>
 	
+	<!-- 전자세금계산서 발행(invoice 테이블) -->
 	<insert id="insertInvoice" parameterType="com.cherp.app.acct.vo.SalesVO">
+	<selectKey keyProperty="invoiceNo" order="BEFORE" resultType="string">
+			SELECT domain('invoice_no')
+			FROM dual
+	</selectKey>
 		INSERT INTO invoice(
 	            invoice_no <!-- 인보이스 번호 -->
 	            ,invoice_date <!-- 발행일 -->
-	            ,saleslip_no <!-- 판매전표 번호 -->
+	            ,saleslip_no <!-- 매출전표 번호 -->
 	       )
 	       VALUES(
-	            domain('invoice_no')
+	            #{invoiceNo}
 	            ,#{chitDate}
-	            ,#{saleslipNo}
+	            ,#{salesChitNo}
 	       )
 	</insert>
 
@@ -148,14 +205,14 @@
 		INSERT INTO  receivables_log(
 	            log_id <!-- 번호 --> 
 	            ,rec_date <!-- == 매출전표 --> 
-	            ,increase_price  <!-- 채권증가금액 --> 
+	            ,increase_price  <!-- 해당 전표의 채권 잔액 -->
 	            ,client_code  <!-- 거래처코드 --> 
 	            ,sales_chit_no <!-- 매출전표번호 --> 
 
 	        ) VALUES(
 	           #{logId}
 	           ,#{chitDate}
-	           ,#{increasePrice}
+	           ,#{totalPrice}
 	           ,#{clientCode}
 	           ,#{salesChitNo}
 	           )
@@ -176,4 +233,99 @@
 		FROM  acnt_acct
 		WHERE debit_side = #{debitSide}
 	</select>
+	
+	<!-- 판매전표 전표 상태 변경 -->
+	<update id="updateSalesSlipState">
+		UPDATE  sales_chit
+		SET slip_state = 'r2'
+		WHERE saleslip_no = #{saleslipNo}
+	</update>
+	
+	<!-- purchase 테이블 insert(매입전표 등록) -->
+	<insert id="insertPurchase" parameterType="com.cherp.app.acct.vo.PayablesVO">
+	<selectKey keyProperty="purchaseChitNo" order="BEFORE" resultType="string">
+			SELECT domain('purchase_chit_no')
+			FROM dual
+	</selectKey>
+		INSERT INTO purchase(
+		        purchase_chit_no <!-- 매입전표번호 -->
+		        ,chit_date <!-- 전표일자 -->
+		        ,client_code <!-- 거래처 -->
+		        ,acct_name <!-- 계정과목 -->
+		        ,supply_price <!-- 공급가액 -->
+		        ,vat <!-- 부가세 -->
+		        ,total_price <!-- 합계 -->
+		        ,writer <!-- 작성자 -->
+		        ,decrease_balance <!-- 채무잔액 -->
+		        ,summary <!-- 적요 -->
+		        ,purcslip_no <!-- 구매전표 번호 -->
+		    )
+		    VALUES(
+		        #{purchaseChitNo}
+		        ,#{chitDate}
+		        ,#{clientCode}
+		        ,#{acctName}
+		        ,#{supplyPrice}
+		        ,#{vat}
+		        ,#{totalPrice}
+		        ,#{writer}
+		        ,0
+		        ,#{summary}
+		        ,#{purcslipNo}
+		    )
+	</insert>
+	
+	<!-- payables_log 테이블 insert(채무 거래 내역 등록) -->  
+	<insert id="insertReceivableSM" parameterType="com.cherp.app.acct.vo.PayablesVO">
+	<selectKey keyProperty="recLogId" order="BEFORE" resultType="int">
+			SELECT NVL(MAX(rec_log_id),0) + 1
+			FROM payables_log
+	</selectKey>
+		INSERT INTO payables_log(
+	            rec_log_id <!-- 번호 --> 
+	            ,rec_date <!-- == 매입전표 -->
+	            ,decrease_price <!-- 해당 전표의 채무잔액 --> 
+	            ,client_code <!-- 거래처코드 --> 
+	            ,purchase_chit_no <!-- 매입전표번호 -->
+	        ) VALUES(
+	           #{recLogId}
+	           ,#{chitDate}
+	           ,#{totalPrice}
+	           ,#{clientCode}
+	           ,#{purchaseChitNo}
+	       )
+	</insert>
+	
+	<!-- CLIENT(거래처) 테이블 BALANCEK(총 채무 잔액) 업데이트 -->
+    <update id="updateClientBalancem" >
+    	UPDATE client
+		SET balancem = balancem + #{balancem}
+		WHERE client_code = #{clientCode}
+    </update>
+	
+	<!-- 구매전표 전표 상태 변경 -->
+	<update id="updatePurchaseSlipState">
+		UPDATE  purchase_chit
+		SET slip_state = 'r2'
+		WHERE purcslip_no = #{purcslipNo}
+	</update>
+	
+	<!-- 매출전표에 인보이스 번호 업데이트 -->
+	<update id="updateSalesInvoiceNo">
+		UPDATE sales
+		SET invoice_no = #{invoiceNo}
+		WHERE sales_chit_no = #{salesChitNo}
+	</update>
+	
+	<!-- 매출전표 삭제 -->
+	<delete id="deleteSales">
+		DELETE FROM sales
+		WHERE sales_chit_no = #{salesChitNo}
+	</delete>
+	
+	<!-- 매입전표 삭제 -->
+	<delete id="deletePurchase">
+		DELETE FROM purchase
+		WHERE purchase_chit_no = #{purchaseChitNo}
+	</delete>
 </mapper>

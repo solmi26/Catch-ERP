@@ -1,4 +1,4 @@
-// 매출전표 등록 페이지 js
+// 매입전표 등록 페이지 js
 
 // 페이지 로드 완료 시 실행
 document.addEventListener("DOMContentLoaded", function () {
@@ -96,86 +96,109 @@ document.addEventListener("DOMContentLoaded", function () {
   vatTypeSelect.addEventListener("change", calculateVat);
 
   // 저장 버튼 클릭 이벤트
-  const target = document.getElementById("save-btn").addEventListener("click", function (event) {
-	 // 필수 입력값
-    // name은 alert 창에 띄울 내용, ele는 html 요소
-    const requiredFields = [
-      { name: "전표일자", element: document.querySelector("input[name='date']") },
-      { name: "거래처", element: document.querySelector("input[name='clientName']") },
-      { name: "계정명", element: document.querySelector("input[name='acctCode']") },
-      { name: "공급가액", element: document.querySelector("input[name='price']") },
-      { name: "부가세", element: document.querySelector("input[name='vat']") },
-      { name: "합계", element: document.querySelector("input[name='amount']") },
-    ];
+  document
+    .getElementById("save-btn")
+    .addEventListener("click", function (event) {
+      // 필수 입력값
+      // name은 alert 창에 띄울 내용, ele는 html 요소
+      const requiredFields = [
+        {
+          name: "전표일자",
+          element: document.querySelector("input[name='date']"),
+        },
+        {
+          name: "거래처",
+          element: document.querySelector("input[name='clientName']"),
+        },
+        {
+          name: "계정명",
+          element: document.querySelector("input[name='acctCode']"),
+        },
+        {
+          name: "공급가액",
+          element: document.querySelector("input[name='price']"),
+        },
+        {
+          name: "부가세",
+          element: document.querySelector("input[name='vat']"),
+        },
+        {
+          name: "합계",
+          element: document.querySelector("input[name='amount']"),
+        },
+      ];
 
-    let isAllow = true;
-    let noValueFields = [];
+      // 버튼 동작 허용
+      let isAllow = true;
+      // 값이 빈 필드
+      let noValueFields = [];
 
-    // 입력되었는지 확인
-    requiredFields.forEach((field) => {
-      if (!field.element.value.trim()) {
-        isAllow = false;
-        noValueFields.push(field.name);
-      }
-    });
-
-    // 경고창 표시
-    if (!isAllow) {
-      // 버튼 기본 동작 중단
-      event.preventDefault()
-      // 비활성화
-      // target = true;
-      alert(`${noValueFields.join(", ")}를 입력해주세요.`);
-      return;
-    }
-
-
-    // 저장 로직
-    const chitDate = document.querySelector("input[name='date']").value; // 전표일자
-    const client = document.querySelector("input[name='clientCode']").value; // 거래처 코드
-    const acct = document.querySelector("input[name='acctName']").value; // 계정명
-    const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
-    const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
-    const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
-    const writer = "김도영"; // 작성자
-    const balance = amount; // 채권 잔액
-    const summary = document.querySelector("input[name='summary']").value; // 적요
-    const saleslip = document.querySelector("input[name='saleslip']").value; // 판매전표 번호
-
-    const salesData = {
-      chitDate: chitDate,
-      clientCode: client,
-      acctName: acct,
-      supplyPrice: price,
-      vat: vat,
-      totalPrice: amount,
-      writer: writer,
-      recBalance: balance,
-      summary: summary,
-      saleslipNo: saleslip,
-    };
-
-    // 디버깅용
-    console.log(salesData);
-
-    // AJAX 요청
-    fetch("/sales/insertSales", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(salesData),
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log(data);
-        alert("저장이 완료되었습니다.");
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-        alert("서버와 연결에 실패했습니다.");
+      // 입력되었는지 확인
+      requiredFields.forEach((field) => {
+        if (!field.element.value.trim()) {
+          isAllow = false;
+          noValueFields.push(field.name);
+        }
       });
-  });
+
+      // 경고창 표시
+      if (!isAllow) {
+        // 버튼 기본 동작 중단
+        event.preventDefault();
+        // 비활성화
+        // target = true;
+        alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+        return;
+      }
+
+      // 저장 로직
+      const chitDate = document.querySelector("input[name='date']").value; // 전표일자
+      const client = document.querySelector("input[name='clientCode']").value; // 거래처 코드
+      const acct = document.querySelector("input[name='acctName']").value; // 계정명
+      const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
+      const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
+      const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
+      const writer = "정재현"; // 작성자
+      //const balance = amount; // 채무 잔액
+      const summary = document.querySelector("input[name='summary']").value; // 적요
+      const purchaseSlip = document.querySelector(
+        "input[name='purchaseslip']"
+      ).value; // 구매전표 번호
+
+      const purchaseData = {
+        chitDate: chitDate,
+        clientCode: client,
+        acctName: acct,
+        supplyPrice: price,
+        vat: vat,
+        totalPrice: amount,
+        writer: writer,
+        //recBalance: balance,
+        summary: summary,
+        purcslipNo: purchaseSlip,
+      };
+
+      // 디버깅용
+      console.log(purchaseData);
+
+      // AJAX 요청
+      fetch("/sales/insertPurchase", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(purchaseData),
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data);
+          alert("저장이 완료되었습니다.");
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+          alert("서버와 연결에 실패했습니다.");
+        });
+    });
 
   // 전체 모달 관련
   class ButtonRenderer {
@@ -228,11 +251,13 @@ document.addEventListener("DOMContentLoaded", function () {
   ==============================*/
 
   //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openAcctModal").addEventListener("click", function () {
-    window.setTimeout(function () {
-      grid1.refreshLayout();
-    }, 200);
-  });
+  document
+    .getElementById("openAcctModal")
+    .addEventListener("click", function () {
+      window.setTimeout(function () {
+        grid1.refreshLayout();
+      }, 200);
+    });
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid1 = new Grid({
@@ -314,11 +339,13 @@ document.addEventListener("DOMContentLoaded", function () {
   //const clientModal = document.getElementById('clientModal');
 
   //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openClientModal").addEventListener("click", function () {
-    window.setTimeout(function () {
-      grid3.refreshLayout();
-    }, 200);
-  });
+  document
+    .getElementById("openClientModal")
+    .addEventListener("click", function () {
+      window.setTimeout(function () {
+        grid3.refreshLayout();
+      }, 200);
+    });
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid3 = new Grid({
@@ -460,14 +487,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	==============================*/
 
   //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openSalesModal").addEventListener("click", function () {
-    window.setTimeout(function () {
-      grid2.refreshLayout();
-    }, 200);
-  });
+  document
+    .getElementById("openPurchaseModal")
+    .addEventListener("click", function () {
+      window.setTimeout(function () {
+        grid2.refreshLayout();
+      }, 200);
+    });
 
   let grid2 = new Grid({
-    el: document.getElementById("salesGrid"),
+    el: document.getElementById("purchaseGrid"),
     scrollX: true,
     scrollY: true,
     header: { height: 40 },
@@ -492,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
         className: "border",
       },
       {
-        header: "판매전표 No.",
+        header: "구매전표 No.",
         name: "c1",
         align: "center",
         width: 120,
@@ -504,7 +533,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       },
       {
-        header: "판매일자",
+        header: "구매일자",
         name: "c2",
         align: "center",
         width: 120,
@@ -591,7 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "c1") {
       rowKeyNum = ev.rowKey;
-      let inputTag1 = document.getElementById("salesInput");
+      let inputTag1 = document.getElementById("purchaseInput");
       let inputTag2 = document.getElementById("clientInput");
       let inputTag3 = document.getElementById("clientInput2");
       let inputTag4 = document.getElementById("price");
@@ -619,19 +648,19 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 그리드에 데이터 넣기(출력)
-  fetch("/sales/selectSalesChitState?state=r1")
+  fetch("/sales/selectPurchaseChitState?state=r1")
     .then((result) => result.json())
     .then((result) => {
       let dataArr = [];
       result.forEach((ele) => {
         let dataRow = {};
-        dataRow.c1 = ele.saleslipNo;
+        dataRow.c1 = ele.purcslipNo;
         dataRow.c2 = ele.insertDate;
         dataRow.c3 = ele.clientCode;
         dataRow.c4 = ele.clientName;
         dataRow.c5 = ele.supplyPrice;
         dataRow.c6 = ele.vat;
-        dataRow.c7 = ele.salesSummary;
+        dataRow.c7 = ele.purSummary;
         dataRow.c8 = ele.employeeCode;
         dataRow.c9 = ele.employeeName;
         dataRow.c10 = ele.slipState;
@@ -644,19 +673,19 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".filter-item").forEach((button) => {
     button.addEventListener("click", function () {
       const state = this.dataset.state; // 버튼의 data-state 속성 값 가져오기
-      fetch(`/sales/selectSalesChitState?state=${state}`)
+      fetch(`/sales/selectPurchaseChitState?state=${state}`)
         .then((result) => result.json())
         .then((result) => {
           let dataArr = [];
           result.forEach((ele) => {
             let dataRow = {};
-            dataRow.c1 = ele.saleslipNo;
+            dataRow.c1 = ele.purcslipNo;
             dataRow.c2 = ele.insertDate;
             dataRow.c3 = ele.clientCode;
             dataRow.c4 = ele.clientName;
             dataRow.c5 = ele.supplyPrice;
             dataRow.c6 = ele.vat;
-            dataRow.c7 = ele.salesSummary;
+            dataRow.c7 = ele.purSummary;
             dataRow.c8 = ele.employeeCode;
             dataRow.c9 = ele.employeeName;
             dataRow.c10 = ele.slipState;

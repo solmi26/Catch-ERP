@@ -1,19 +1,19 @@
 package com.cherp.app.buss.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.cherp.app.acct.vo.ClientPsVO;
 import com.cherp.app.buss.mapper.ClientMapper;
 import com.cherp.app.buss.service.ClientService;
 import com.cherp.app.buss.vo.ClientVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService {
 
     private ClientMapper clientMapper;
 
-    @Autowired
     public ClientServiceImpl(ClientMapper clientMapper) {
         this.clientMapper = clientMapper;
     }
@@ -26,8 +26,19 @@ public class ClientServiceImpl implements ClientService {
     }
 
 	@Override
-	public List<ClientVO> clientSearchList(String clientCode) {
-		List<ClientVO> list = clientMapper.selectClientSearchList(clientCode);
-		return list;
+	public List<ClientPsVO> gwClientList() {
+		return clientMapper.gwSelectAllClientList();
 	}
+
+	@Override
+	public int insertClient(ClientPsVO clientPsVO) {
+		clientPsVO.setTradeStatus("거래중");
+		return clientMapper.insertClient(clientPsVO);
+	}
+
+	@Override
+	public ClientPsVO getClientInfo(String clientCode) {
+		return clientMapper.selectClientInfo(clientCode);
+	}
+
 }

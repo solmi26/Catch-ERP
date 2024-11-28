@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cherp.app.buss.vo.PurchaseChitVO;
 import com.cherp.app.buss.vo.PurchaseHistoryVO;
+import com.cherp.app.buss.vo.SalesHistoryVO;
 import com.cherp.app.stck.vo.ContractItemVO;
 
 public interface StockMapper {
@@ -15,4 +16,5 @@ public interface StockMapper {
 			, @Param("client") String client, @Param("employee") String employee);
 	public List<PurchaseHistoryVO> selectPurcHistoryList(Map<String, Object> map);
 	public ContractItemVO selectStocks(String itemCode);
+	public List<SalesHistoryVO> selectSalesHistoryList(Map<String, Object> map);
 }

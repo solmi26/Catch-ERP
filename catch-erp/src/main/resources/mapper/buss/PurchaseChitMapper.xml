@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cherp.app.buss.mapper.PurchaseChitMapper">
+	
+	<!-- 구매전표 전표 상태별 조회 -->
+	<select id="selectPurchaseChitState" resultType="com.cherp.app.buss.vo.PurchaseChitVO">
+		SELECT purcslip_no
+            , insert_date
+            , client_code
+            ,client_name
+            , wit_bacct
+            ,supply_price
+            ,vat
+            ,pur_summary
+            , employee_name
+            , employee_code
+            ,find_code(slip_state) as slip_state
+		FROM purchase_chit
+		WHERE slip_state = #{slipState}
+	</select>
+	
+</mapper>

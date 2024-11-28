@@ -13,10 +13,88 @@
 		FROM client
 	</select>
 	
-	<!-- 거래처 조건 조회 -->
-	<select id="selectClientSearchList" resultType="ClientVO">
-		SELECT client_code
-		FROM   client
-		WHERE  client_name = '#{clientName}'
+	<select id="gwSelectAllClientList" resultType="com.cherp.app.acct.vo.ClientPsVO">
+		SELECT 	CLIENT_CODE
+				,CLIENT_NAME
+				,CEO_NAME
+				,TRADE_TYPE
+				,TRADE_STATUS
+				,COMPANY_TEL
+				,FAX
+				,ZIPCODE
+				,ADDRESS
+				,DETAIL_ADDRESS
+				,EMPLOYEE_NAME
+				,EMPLOYEE_TEL
+				,EMPLOYEE_EMAIL
+				,CLIENT_BACCT
+				,CLIENT_DATE
+				,BALANCEK
+				,BALANCEM
+				,STATE
+				,EVENT
+				,SUMMARY
+		FROM    client
 	</select>
+
+	<select id="selectClientInfo" parameterType="com.cherp.app.acct.vo.ClientPsVO">
+		SELECT 	CLIENT_CODE
+				,CLIENT_NAME
+				,CEO_NAME
+				,TRADE_TYPE
+				,TRADE_STATUS
+				,COMPANY_TEL
+				,FAX
+				,ZIPCODE
+				,ADDRESS
+				,DETAIL_ADDRESS
+				,EMPLOYEE_NAME
+				,EMPLOYEE_TEL
+				,EMPLOYEE_EMAIL
+				,CLIENT_BACCT
+				,CLIENT_DATE
+				,BALANCEK
+				,BALANCEM
+				,STATE
+				,EVENT
+				,SUMMARY
+		FROM    client
+		WHERE   client_code = #{clientCode}
+	</select>
+	
+	<insert id="insertClient" parameterType="com.cherp.app.acct.vo.ClientPsVO">
+		INSERT INTO client
+				(CLIENT_CODE
+				,CLIENT_NAME
+				,CEO_NAME
+				,TRADE_TYPE
+				,TRADE_STATUS
+				,COMPANY_TEL
+				,FAX
+				,ZIPCODE
+				,ADDRESS
+				,DETAIL_ADDRESS
+				,EMPLOYEE_NAME
+				,CLIENT_BACCT
+				,CLIENT_DATE
+				,STATE
+				,EVENT
+				)
+		VALUES  ('client'||client_SEQ.nextVAL
+				,#{clientName}
+				,#{ceoName}
+				,#{tradeType}
+				,#{tradeStatus}
+				,#{companyTel}
+				,#{fax}
+				,#{zipcode}
+				,#{address}
+				,#{detailAddress}
+				,#{employeeName}
+				,#{clientBacct}
+				,SYSDATE
+				,#{state}
+				,#{event}
+				)
+	</insert>
 </mapper>

@@ -4,84 +4,84 @@
       layout:decorate="~{common/layouts/account_layout}"
       layout:fragment="Content">
 <head>
-  <link rel="tableStyle.css" />
-  <style>
-    .modal-header {
-        background-color: #AACB73;
-        color: white;
-    }
-    .modal-dialog {
-        max-width: 800px;
-    }
-</style>
+  <link rel="stylesheet" th:href="@{/css/sales/recReduction.css}"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>채권조회</title>
 </head>
 <body>
   <div class="bg-white shadow-sm rounded" style="padding: 20px;">
     <!-- Search Section -->
     <div class="border-bottom pb-3 mb-4">
-      <h2>채무감소등록</h2>
+      <h2>채권감소등록</h2>
     </div>
     <div class="gridWrapper">
+      <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountSearchModal" style="margin-bottom: 10px;">입금등록</button>
       <div id="grid"></div>
       <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
     </div>
-    <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountSearchModal">입금등록(F2)</button>
     <!-- 모달 -->
     <div class="modal fade" id="accountSearchModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #aacb73;">
                 <h5 class="modal-title" id="accountSearchModalLabel">계좌검색</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div id="example-table"></div> <!-- modal tabulator 사용 -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#accountAddModal">신규(F2)</button>
             </div>
         </div>
       </div>
     </div>
-    <!-- 통장계좌등록 모달 -->
-    <div class="modal fade" id="accountAddModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
+    <!-- 거래처 원장 모달 -->
+    <div class="modal fade" id="ledgerModal" tabindex="-1">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content" style="width: 1200px;">
               <div class="modal-header">
-                  <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌등록</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <h5 class="modal-title">거래처원장</h5>                    
               </div>
               <div class="modal-body">
-                  <form>
-                      <div class="mb-3">
-                          <label for="accountCode" class="form-label">계좌코드</label>
-                          <input type="text" class="form-control" id="accountCode" placeholder="계좌코드">
+                  <div id="reportContent" class="ledger-form">
+                      <div class="container-fluid p-4">
+                          <div class="row mb-3">
+                              <div class="col">
+                                  <p id="payClientName"></p>
+                              </div>
+                              <div class="col text-end">
+                                  <strong>Page #</strong> 1
+                              </div>
+                          </div>
+                          <table class="table table-bordered ledger-table">
+                              <thead>
+                                  <tr>
+                                      <th class="ledger-date-column">일자</th>
+                                      <th class="ledger-description-column">계정</th>
+                                      <th>적요</th>
+                                      <th class="ledger-amount-column">증가</th>
+                                      <th class="ledger-amount-column">감소</th>
+                                      <th class="ledger-amount-column">잔고</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="ledgeBody">
+                                  <!-- 거래처별 채무거래내역 -->
+                              </tbody>
+                              <tfoot class="ledge-footer">
+                                  <tr>
+                                    <td colspan="3" style="text-align: center; font-weight: bold; color: red; font-size: 15px;" >누계</td>
+                                    <td id="totIncrease"></td>
+                                    <td id="totDecrease"></td>
+                                    <td id="totBalance"></td>
+                                  </tr>
+                                </tfoot>
+                          </table>
                       </div>
-                      <div class="mb-3">
-                          <label for="accountName" class="form-label">계좌명</label>
-                          <input type="text" class="form-control" id="accountName" placeholder="계좌명">
-                      </div>
-                      <div class="mb-3">
-                          <label for="accountType" class="form-label">계정</label>
-                          <select class="form-select" id="accountType">
-                              <option selected>1039 보통예금</option>
-                              <!-- Add more options as needed -->
-                          </select>
-                      </div>
-                      <div class="mb-3">
-                          <label for="transactionDetails" class="form-label">거래처내용</label>
-                          <input type="text" class="form-control" id="transactionDetails" placeholder="거래처내용">
-                      </div>
-                      <div class="mb-3">
-                          <label for="remarks" class="form-label">적요</label>
-                          <textarea class="form-control" id="remarks" rows="3" placeholder="적요"></textarea>
-                      </div>
-                  </form>
+                  </div>
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="saveButton">저장(F8)</button>
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                  <button type="button" class="btn btn-primary" id="pdfButton">PDF 저장</button>
               </div>
           </div>
       </div>
@@ -92,112 +92,243 @@
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
+	  let grid;
+    function makeClientGrid(result) { 
+      let grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
+          el: document.querySelector('#grid'),
+          data: result, // toast ui table 에 입력할 데이터값
+          scrollX: true,
+          scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
+          pageOptions: {
+            useClient: true,
+            perPage: 5
+          },
+          rowHeaders: [
+              {
+                type: 'checkbox',
+                header: `
+                  <span class="custom-input">
+                  <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+                </span>
+              `,
+                renderer: {
+                  type: gridCheckbox
+                }
+              }
+          ],
+          columns: [
+          {
+                        header: '거래처코드',
+                        name: 'clientCode',
+                        sortable: true,
+                        filter: 'select',
+                        align: 'center'
+                    },
+                    {
+                        header: '거래처명',
+                        name: 'clientName',
+                        filter: 'select',
+                        sortable: true,
+                        align: 'left'
+                    },
+                    {
+                        header: '거래처 계좌',
+                        name: 'clientBacct',
+                        filter: 'select',
+                        sortable: true,
+                        align: 'left'
+                    },      
+                    {
+                        header: '잔액',
+                        name: 'balancek',
+                        sortable: true,
+                        align: 'left'
+                    },
+                    {
+                        header: '입금금액',
+                        name: 'decreasePrice',
+                        editor: 'text',
+                        sortable: true,
+                        align: 'left'
+                    },
+                    {
+                      header: '채무상태',
+                      name: 'state',
+                      sortable: true,
+                      align: 'left'
+                    }
+                ],
+        });                                                                                                                                                                                                                                                      
+        return grid;
+    }
+    
+    function makeReceivableTabulator(accountList) {
+      let grid = new Tabulator("#example-table", {
+        layout:"fitColumns",
+        pagination:"local",
+        data: accountList,
+        paginationSize:8,
+        movableColumns:true,
+        paginationCounter:"rows",
+        paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+            return "";
+        },
+        langs:{
+            "default":{
+                "pagination":{
+                    "first":"처음",
+                    "first_title":"처음으로",
+                    "last":"끝",
+                    "last_title":"마지막으로",
+                    "prev":"이전",
+                    "prev_title":"이전으로",
+                    "next":"다음",
+                    "next_title":"다음으로",
+                    "all":"전체",
+                }
+            }
+        },
+        columns:[
+            {title:"계좌코드", field:"bacctCode", visible:false},
+            {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
+            {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
+            {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
+        ],
+      });
+      return grid;
+    }
+    
+    function fetchClientCode(clientCode) {
+      let clientData = {
+        method: 'POST',
+        body: JSON.stringify({"clientCode":clientCode}),
+        headers: {
+          'Content-Type' : 'application/json'
+        }
+      };
+      fetch('/api/account/clientReceivables', clientData)
+      .then(result => result.json())
+      .then(clientReceivableList => {
+        let ledgeBody = document.querySelector('#ledgeBody');
+        ledgeBody.innerHTML = '';
+        let layout = '';
+        let balanceTot = 0;
+        let increaseTot = 0; // 증가금액 누계
+        let decreaseTot = 0; // 감소금액 누계
+        for (const rec of clientReceivableList) {
+          document.querySelector('#payClientName').innerHTML = `<strong>거래처:</strong> ${rec.clientName}`;
+          balanceTot += rec.increasePrice - rec.decreasePrice;
+          layout += `<tr>
+                        <td>${rec.recDate}</td>
+                        <td>${rec.acctName}</td>
+                        <td>${rec.summary}</td>
+                        <td>${rec.increasePrice}</td>
+                        <td>${rec.decreasePrice}</td>
+                        <td>${balanceTot}</td>
+                      </tr>`;
+        }
+        document.querySelector('#totIncrease').innerHTML = increaseTot;
+        document.querySelector('#totDecrease').innerHTML = decreaseTot;
+        document.querySelector('#totBalance').innerHTML = increaseTot - decreaseTot;
+        ledgeBody.insertAdjacentHTML('beforeend', layout);
+      })
+    }
 
-    fetch("http://localhost:8026/receList") // 추후 url수정되면 수정된 url으로 수정
+    function fetchBacctList() {
+      fetch('/api/account/bacct')
+      .then(result => result.json())
+      .then(accountList => {
+        //Build Tabulator
+        let accList = makeReceivableTabulator(accountList);
+        accList.on("rowClick", function(event, row) {
+          let receivableList = grid.getCheckedRows(); // toast grid 체크목록 받아오는 함수 getCheckedRows()
+          console.log(grid.getCheckedRows());
+          console.log(receivableList.balancek + " " + receivableList.decreasePrice);
+          Swal.fire({
+            title: "결제하시겠습니까?",
+            text: `계좌번호 : ${row.getData().bacctNo} 은행명: ${row.getData().bankName}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "결제",
+            cancelButtonText: "취소"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "결제되었습니다",
+                text: `계좌번호 : ${row.getData().bacctNo} 결제완료`,
+                icon: "success",
+                confirmButtonText: "완료"
+              }).then((result => {
+                if(result.isConfirmed) {
+                  // 여기서 DB업데이트가 실행되어야함
+                  // 채무거래 테이블
+                  
+                  let bacctInfo = row.getData();
+                  let arr = {
+                    receivableList, bacctInfo
+                  }
+                  let receivables = {
+                    method: 'POST',
+                    body: JSON.stringify(arr),
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    }
+                  };
+                  fetch('/account/insertReceivableBalance', receivables)
+                  // .then(result => result.json())
+                  .then(result => {
+                    console.log(result);
+                    if(result==='success') {
+                      location.reload(true);
+                    } else {
+                      alert("결제가 취소되었습니다.")
+                    }
+                  })
+                }
+              }))
+            }
+          });
+        })
+      })
+    }
+    
+    // 클라이언트별 총 채권 페이지
+    fetch("/api/account/receivables") 
     .then(result => result.json())
     .then(result => {
-      console.log(result);
-      //toast ui table 기본 틀 작성
-      const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
-        el: document.querySelector('#grid'),
-        data: result, // toast ui table 에 입력할 데이터값
-        scrollX: true,
-        scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
-        pageOptions: {
-          useClient: true,
-          perPage: 5
-        },
-        columns: [
-                  {
-                      header: '채권번호',
-                      name: 'logId',
-                      sortable: true,
-                      filter: 'select',
-                      editor: 'text',
-                      align: 'center'
-                  },
-                  {
-                      header: '발생일자',
-                      name: 'recDate',
-                      editor: 'text',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '거래처코드',
-                      name: 'bacctCode',
-                      editor: 'text',
-                      filter: 'select',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '거래처명',
-                      name: 'clientName',
-                      editor: 'text',
-                      filter: 'select',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '잔액',
-                      name: 'recBalance',
-                      editor: 'text',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '입금금액',
-                      name: 'decreasePrice',
-                      editor: 'text',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                    header: '채무상태',
-                    name: 'recStatus',
-                    editor: 'text',
-                    sortable: true,
-                    align: 'left'
-                  }
-              ],
-        rowHeaders: ['rowNum', 'checkbox']// 테이블 좌측에 No와 체크박스를 나타냄
-      });
-      
+      grid = makeClientGrid(result);
+      // 거래처의 채권 내역을 출력하는 거래처 원장 모달
       grid.on('click', (event) => { // grid 클릭이벤트 발생
-        if(event.columnName === 'debentureNo' && event.rowKey>=0) {
-          console.log("클릭이벤트 발생");
-          console.log(event.rowKey);
+        if(event.columnName === 'clientCode' && event.rowKey>=0) {
+          let ledgeModal = new bootstrap.Modal(document.querySelector('#ledgerModal'));
+          let clientCode = grid.getValue(event.rowKey,"clientCode");
+
+          fetchClientCode(clientCode);
+          // 거래처 원장 모달
+          ledgeModal.show();
         }
       })
       // 계좌 목록 조회 모달
-      let accountList = [
-        {accCode:"123124",accName:"예담담"},
-      ];
-      //Build Tabulator
-      let accList = new Tabulator("#example-table", {
-          layout:"fitColumns",
-          pagination:"local",
-          data: accountList,
-          paginationSize:6,
-          paginationSizeSelector:[3, 6, 8, 10],
-          movableColumns:true,
-          paginationCounter:"rows",
-          columns:[
-              {title:"계좌코드", field:"accCode", width:320, sorter:"string", headerFilter:"input"},
-              {title:"계좌명", field:"accName", width:440, sorter:"string", headerFilter:"input"},
-          ],
-      });
-      accList.on("rowClick", function(event) {
-        alert("계좌 상세 이동 기능 구현");
-      })
-      // 신규 계좌 생성 모달
-      // 저장 버튼 클릭 이벤트
-      saveButton.addEventListener('click', function() {
-          // 여기에 저장 로직 추가
-          alert('저장 기능 구현중.');
-      });
+      fetchBacctList();
     })
+    .catch(err => console.error("json 로딩 에러 발생", err));
+
+    // PDF 저장 기능
+    document.getElementById('pdfButton').addEventListener('click', function() {
+        const element = document.getElementById('reportContent');
+        html2canvas(element).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jspdf.jsPDF();
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('거래처원장.pdf');
+        });
+    });
   })
     
   </script>
