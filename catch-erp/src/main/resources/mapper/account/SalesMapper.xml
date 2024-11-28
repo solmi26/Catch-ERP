@@ -99,6 +99,50 @@
         WHERE   rl.client_code = #{clinetCode}
 	</select>
 	
+	<!-- 매출전표 전체 조회 -->
+	<select id="selectAllSalesList" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT  m.sales_chit_no
+		       ,m.chit_date
+		       ,m.supply_price
+		       ,m.client_code
+		       ,m.summary
+		       ,FIND_CODE(i.invoice_status) invoice_status
+		FROM 
+		     sales m
+		JOIN 
+		    invoice i
+		ON 
+		    m.invoice_no = i.invoice_no
+	</select>
+	
+	<!-- 매출, 매입전표 전체 조회 -->
+	<select id="selectAllSlip" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT '매출전표' as type ,m.sales_chit_no
+		       ,m.chit_date
+		       ,m.supply_price
+		       ,m.client_code
+		       ,m.summary
+		       ,FIND_CODE(i.invoice_status) invoice_status
+		FROM 
+		     sales m
+		JOIN 
+		    invoice i
+		ON 
+		    m.invoice_no = i.invoice_no
+		
+		UNION
+		    
+		SELECT '매입전표', purchase_chit_no
+		       ,chit_date
+		       ,supply_price
+		       ,client_code
+		       ,summary
+		       ,FIND_CODE(invoice_status) invoice_status
+		FROM purchase
+		
+		ORDER BY chit_date desc
+	</select>
+	
 	<!-- sales 테이블 insert(매출전표 등록) -->
 	<insert id="insertSale" parameterType="com.cherp.app.acct.vo.SalesVO">
 	<selectKey keyProperty="salesChitNo" order="BEFORE" resultType="string">
@@ -135,15 +179,19 @@
 	
 	<!-- 전자세금계산서 발행(invoice 테이블) -->
 	<insert id="insertInvoice" parameterType="com.cherp.app.acct.vo.SalesVO">
+	<selectKey keyProperty="invoiceNo" order="BEFORE" resultType="string">
+			SELECT domain('invoice_no')
+			FROM dual
+	</selectKey>
 		INSERT INTO invoice(
 	            invoice_no <!-- 인보이스 번호 -->
 	            ,invoice_date <!-- 발행일 -->
-	            ,saleslip_no <!-- 판매전표 번호 -->
+	            ,saleslip_no <!-- 매출전표 번호 -->
 	       )
 	       VALUES(
-	            domain('invoice_no')
+	            #{invoiceNo}
 	            ,#{chitDate}
-	            ,#{saleslipNo}
+	            ,#{salesChitNo}
 	       )
 	</insert>
 
@@ -262,4 +310,10 @@
 		WHERE purcslip_no = #{saleslipNo}
 	</update>
 	
+	<!-- 매출전표에 인보이스 번호 업데이트 -->
+	<update id="updateSalesInvoiceNo">
+		UPDATE sales
+		SET invoice_no = #{invoiceNo}
+		WHERE sales_chit_no = #{salesChitNo}
+	</update>
 </mapper>
