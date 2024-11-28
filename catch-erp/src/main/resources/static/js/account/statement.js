@@ -169,5 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("전표 삭제 중 오류가 발생했습니다.");
       });
   });
+  
 });
 
