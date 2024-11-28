@@ -1,6 +1,11 @@
 /**
  * 
  */
+
+
+
+
+
 //기본변수선언
 let currentTarget = null;
 //모달선언
