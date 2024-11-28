@@ -54,7 +54,8 @@ public interface SalesMapper {
     public int updatePurchaseSlipState(String purcslipNo);
 	
 	//삭제
-	public int deleteSale(int salesChitNo);			// 매출 단건 삭제
+	public int deleteSales(String no); // 매출 삭제
+	public int deletePurchase(String no); // 매입 삭제
 	public int deletePayable(int recLogId);			// 채무거래 단건 삭제
 	public int deleteReceivable(int logId);			// 채권거래 단건 삭제
 	public int deleteInvoice(int invoiceNo);		// 세금 계산서 삭제
