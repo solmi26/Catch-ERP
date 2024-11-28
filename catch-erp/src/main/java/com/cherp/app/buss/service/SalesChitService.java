@@ -3,13 +3,18 @@ package com.cherp.app.buss.service;
 import java.util.List;
 
 import com.cherp.app.buss.vo.SalesChitVO;
+import com.cherp.app.buss.vo.SaleslipHistoryVO;
 
 public interface SalesChitService {
     // 판매전표 추가
     public void salesChitInsert(SalesChitVO salesChitVO);
     
     // 판매전표 전체 조회
-    public List<SalesChitVO> selectsalesChit();
+    public List<SalesChitVO> selectSalesChit();
+
+    // 판매전표별 판매내역 보기
+    public List<SaleslipHistoryVO> selectSelectSaleslip(SaleslipHistoryVO saleslipHistoryVO,
+                                                        String saleslipNo);
     
     // 판매전표 전표 발행 상태별 조회
     public List<SalesChitVO> selectsalesChitState(String slipState);

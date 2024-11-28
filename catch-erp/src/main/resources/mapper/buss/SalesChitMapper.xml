@@ -9,24 +9,24 @@
         </selectKey>
         INSERT
         INTO sales_chit (
-        saleslip_no,
-        insert_date,
-        client_code,
-        client_name,
-        acc_code,
-        dep_bacct,
-        employee_name,
-        employee_code
+            saleslip_no,
+            insert_date,
+            client_code,
+            client_name,
+            acc_code,
+            dep_bacct,
+            employee_name,
+            employee_code
         )
         VALUES (
-        #{saleslipNo},
-        sysdate,
-        #{clientCode},
-        #{clientName},
-        #{accCode},
-        #{depBacct},
-        #{employeeName},
-        #{employeeCode}
+            #{saleslipNo},
+            sysdate,
+            #{clientCode},
+            #{clientName},
+            #{accCode},
+            #{depBacct},
+            #{employeeName},
+            #{employeeCode}
         )
     </insert>
 
@@ -34,30 +34,30 @@
     <insert id="insertSaleslipHistory" parameterType="com.cherp.app.buss.vo.SaleslipHistoryVO">
         INSERT
         INTO saleslip_history (
-        saleslip_no,
-        sales_no,
-        wh_code,
-        wh_name,
-        item_code,
-        item_name,
-        quantity,
-        delivery_price,
-        delivery_status,
-        delivery_date,
-        incomplete_quantity
+            saleslip_no,
+            sales_no,
+            wh_code,
+            wh_name,
+            item_code,
+            item_name,
+            quantity,
+            delivery_price,
+            delivery_status,
+            delivery_date,
+            incomplete_quantity
         )
         VALUES (
-        #{saleslipNo},
-        DOMAIN('sales_no'),
-        #{whCode},
-        (SELECT wh_name FROM WAREHOUSE WHERE wh_code = #{whCode}),
-        #{itemCode},
-        #{itemName},
-        #{quantity},
-        #{deliveryPrice},
-        'b1',
-        #{deliveryDate},
-        #{quantity}
+            #{saleslipNo},
+            DOMAIN('sales_no'),
+            #{whCode},
+            (SELECT wh_name FROM WAREHOUSE WHERE wh_code = #{whCode}),
+            #{itemCode},
+            #{itemName},
+            #{quantity},
+            #{deliveryPrice},
+            'b1',
+            #{deliveryDate},
+            #{quantity}
         )
     </insert>
 
@@ -67,34 +67,60 @@
         FROM  saleslip_history
         GROUP BY saleslip_no)
         SELECT a.saleslip_no
-        , insert_date
-        , client_code
-        ,client_name
-        , acc_code
-        , dep_bacct
-        ,supply_price
-        ,sales_summary
-        , employee_name
-        , employee_code
-        ,vat
-        ,slip_state
-        ,delivery_price
-        FROM sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
+                , insert_date
+                , client_code
+                ,client_name
+                , acc_code
+                , dep_bacct
+                ,supply_price
+                ,sales_summary
+                , employee_name
+                , employee_code
+                ,vat
+                ,slip_state
+                ,delivery_price
+        FROM    sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
+    </select>
+    
+    <!--  판매전표별 판매내역 보기  -->
+    <select id="selectSaleslip" resultType="com.cherp.app.buss.vo.SaleslipHistoryVO">
+        WITH e AS (
+        SELECT
+            a.item_code,
+            ( a.quantity * b.price )        price,
+            ( a.quantity * b.supply_price ) supply_price,
+            ( a.quantity * b.vat )          vat
+        FROM
+            order_item a
+            INNER JOIN contract_item b ON a.item_code = b.item_code
+            )
+        SELECT
+            d.saleslip_no,
+            d.wh_name,
+            d.item_name,
+            d.quantity,
+            d.delivery_price
+        FROM
+            sales_chit c
+        JOIN saleslip_history d ON c.saleslip_no = d.saleslip_no
+        JOIN e ON d.item_code = e.item_code
+        WHERE
+        d.saleslip_no = #{saleslipNo}
     </select>
 
     <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT saleslip_no
-        , insert_date
-        , client_code
-        ,client_name
-        , acc_code
-        , dep_bacct
-        ,supply_price
-        ,sales_summary
-        , employee_name
-        , employee_code
-        ,vat
-        ,slip_state
+            , insert_date
+            , client_code
+            , client_name
+            , acc_code
+            , dep_bacct
+            , supply_price
+            , sales_summary
+            , employee_name
+            , employee_code
+            , vat
+            , slip_state
         FROM sales_chit
         WHERE slip_state = #{slipState}
     </select>
