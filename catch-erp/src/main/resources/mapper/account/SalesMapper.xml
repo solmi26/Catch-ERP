@@ -201,7 +201,16 @@
               ,find_code(invoice_status) as invoice_status
               ,nts_invoice_date
               ,saleslip_no
-		FROM invoice
+              ,(select client_name
+                 from client c
+                 where c.client_code = (
+                    SELECT client_code
+                    FROM  sales s
+                    WHERE s.sales_chit_no = i.saleslip_no))  as client_name 
+            ,(SELECT supply_price
+              FROM sales s
+              WHERE s.sales_chit_no = i.saleslip_no) as supply_price
+		FROM invoice i
 	</select>
 
 
