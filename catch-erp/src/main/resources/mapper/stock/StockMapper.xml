@@ -5,16 +5,9 @@
 <mapper namespace="com.cherp.app.stck.mapper.StockMapper">
 	
 	<!-- 매입계약품목 전체조회 -->
-	<select id="selectAllItemList" resultType="com.cherp.app.stck.vo.ContractItemVO">
+	<select id="selectAllItemList" resultType="ContractItemVO">
 		SELECT *
 		FROM   contract_item	
-	</select>
-	
-	<!-- 구매내역 조건조회 --> <!-- 작성중.. -->
-	<select id="selectAllPurchaseSeachList" resultType="PurchaseHistoryVO">
-		SELECT *
-		FROM purchase_history
-		WHERE purchase
 	</select>
 	
 	<!-- 구매내역 조회시 필요한 조회 조건에 맞는 구매전표번호 조회 -->
@@ -159,6 +152,7 @@
 		    AND delivery_status != 'b3'
 		    ORDER BY hi.delivery_date DESC
 	</select>
+	
 	<!-- 재고조정 프로시저호출 -->
 	<insert id="insertAdjustment" statementType="CALLABLE"> 
 		CALL stocks_adjustment(
@@ -171,5 +165,4 @@
 		FROM   stocks
 	</select>
 	
-	<!-- 창고별 재고조회 -->
 </mapper>

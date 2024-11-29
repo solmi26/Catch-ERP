@@ -7,7 +7,6 @@ import com.cherp.app.buss.vo.SalesHistoryVO;
 import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
 import com.cherp.app.stck.vo.StocksAdjustVO;
-import com.cherp.app.stck.vo.StocksVO;
 
 public interface StockService {
 	

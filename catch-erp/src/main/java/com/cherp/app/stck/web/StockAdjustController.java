@@ -24,8 +24,8 @@ public class StockAdjustController {
 	public String stockAdjustment(){
 		return "stock/stockAdjustment";
 	}
-	@GetMapping("/stockInquery")
+	@GetMapping("/stockInquery") //재고조회&관리페이지
 	public String stockInquery() {
-		return "stock/stockInqeury";
+		return "stock/stockInquery";
 	}
 }
