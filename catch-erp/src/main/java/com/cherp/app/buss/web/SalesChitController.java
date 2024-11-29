@@ -25,6 +25,7 @@ public class SalesChitController {
     @PostMapping("insertSalesChit")
     public String insertSalesChit(SalesChitVO salesChitVO) {
         int rowInsert = salesChitService.salesChitInsert(salesChitVO);
+		
         return "sales/salesChit";
     }
     
