@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }]
         });
 
-        fetch('/emps')
+        fetch('/employees/emps')
             .then(result => result.json())
             .then(data => humanGrid.resetData(data))
             .catch(error => alert("사원 데이터를 조회하는데 실패"))
@@ -553,9 +553,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetch('/ordersList')
             .then(result => result.json())
             .then(data => ordersGrid.resetData(data))
-            .catch(error => alert("발주서 데이터를 조회하는데 실패"))
+            .catch(error => console.log(error))
     }, 200)
-
 
     let ordersGrid;
     const initordersGrid = () => {
