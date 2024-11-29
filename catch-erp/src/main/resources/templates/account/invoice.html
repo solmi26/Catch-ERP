@@ -52,6 +52,16 @@
 		font-weight: 600;
       }
       
+     .r1 {
+	  color: red;
+	 }
+	 .r2 {
+	  color: green;
+	 }
+	 .r3{
+		color: blue;
+	 }
+      
     </style>
     
   </head>
@@ -91,111 +101,7 @@
   	   
       </div> <!-- 페이지 전체 컨테이너 끝. -->
       
-    <script>
-    
-    // Grid 데이터 정의
-    const gridData = [
-      {
-        date: '2024/11/10',
-        clientName: '김치좋아',
-        supplyAmount: 100000,
-        vat: 10000,
-        totalAmount: 110000,
-        taxProgress: '완료',
-      },
-      // 추가 데이터는 여기 삽입
-    ];
-
-      // 그리드 초기화
-	  const grid = new tui.Grid({
-	    el: document.querySelector('#grid'), // 그리드를 표시할 DOM 요소의 id 지정
-	    data: gridData, // gridData를 불러와서 그리드로 렌더링
-	    scrollX: true,
-	    scrollY: true,
-	    pageOptions: {
-	      useClient: true,
-	      perPage: 5,
-	    },
-	    columns: [ // 각 열의 헤더 이름, 데이터 키, 정렬 가능 여부, 정렬 방향 등을 정의
-	        {
-	          header: '일자',
-	          name: 'date',
-	          sortable: true,
-	          align: 'center',
-	        },
-	        {
-	          header: '거래처명',
-	          name: 'clientName',
-	          sortable: true,
-	          align: 'center'
-	        },
-	        {
-	          header: '공급가액',
-	          name: 'supplyAmount',
-	          sortable: true,
-	          align: 'right',
-	        },
-	        {
-	          header: '부가세',
-	          name: 'vat',
-	          sortable: true,
-	          align: 'right',
-	        },
-	        {
-	          header: '합계금액',
-	          name: 'totalAmount',
-	          sortable: true,
-	          align: 'right',
-	        },
-	        {
-	          header: '전자세금계산서 진행단계',
-	          name: 'taxProgress',
-	          sortable: true,
-	          align: 'center',
-	        },],
-	    rowHeaders: [
-            {
-              type: 'checkbox',
-              header: 
-                `<span class="custom-input">
-                <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-                  <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-                </span>`
-            ,
-              renderer: {
-                type: gridCheckbox
-              }
-            }
-      ],
-	  });
-
-      // 그리드 내 클릭이벤트 -> 추후 내가 필요할 때 수정해서 사용
-	  grid.on('click', (event) => {
-	    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
-	      console.log('클릭이벤트 발생');
-	      console.log(event.rowKey);
-	    }
-	  });
-	  
-    
-      // 전체, 미전송, 전송완료 클릭하면 해당 정보 표시 기능 (추후 수정해서 사용)
-      document.addEventListener("DOMContentLoaded", function () {
-        const statusBoxes = document.querySelectorAll(".status-box");
-
-        statusBoxes.forEach((box) => {
-          box.addEventListener("click", function () {
-            const status = box.querySelector(".status-label").textContent;
-            filterByStatus(status);
-          });
-        });
-
-        function filterByStatus(status) {
-          console.log(`${status} 상태의 데이터만 표시합니다.`);
-          // 실제 필터링 로직을 추가하여 테이블이나 데이터를 갱신할 수 있습니다.
-        }
-      });
-      
-    </script>
+      <script th:src="@{/js/account/invoice.js}"></script>
     
   </body>
   

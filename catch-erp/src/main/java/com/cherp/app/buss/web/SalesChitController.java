@@ -22,7 +22,7 @@ public class SalesChitController {
         this.salesChitService = salesChitService;
     }
     
-    // 매출전표 전체 조회
+    // 판매전표 전체 조회
 	@ResponseBody
     @GetMapping("sales/selectSalesChit")
 	public List<SalesChitVO> selectSalesShit(Model model){

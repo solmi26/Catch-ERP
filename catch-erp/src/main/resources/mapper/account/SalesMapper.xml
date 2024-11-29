@@ -194,6 +194,24 @@
 	            ,#{salesChitNo}
 	       )
 	</insert>
+	
+	<select id="invoiceList" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT invoice_no
+              ,invoice_date
+              ,find_code(invoice_status) as invoice_status
+              ,nts_invoice_date
+              ,saleslip_no
+              ,(select client_name
+                 from client c
+                 where c.client_code = (
+                    SELECT client_code
+                    FROM  sales s
+                    WHERE s.sales_chit_no = i.saleslip_no))  as client_name 
+            ,(SELECT supply_price
+              FROM sales s
+              WHERE s.sales_chit_no = i.saleslip_no) as supply_price
+		FROM invoice i
+	</select>
 
 
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  

@@ -19,7 +19,7 @@ public class PurchaseChitController {
         this.purchaseChitService = purchaseChitService;
     }
 	
-	// 매출전표 전표상태별 조회 by sm
+	// 매입전표 전표상태별 조회 by sm
 	@ResponseBody
     @GetMapping("sales/selectPurchaseChitState")
 	public List<PurchaseChitVO> selectPurchaseChitState(@RequestParam("state") String state){

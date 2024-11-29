@@ -23,26 +23,30 @@ public class SalesServiceImpl implements SalesService{
 		this.salesMapper = salesMapper;
 	}
 	
+	// 매출 전표 전체 조회
 	@Override
 	public List<SalesVO> salesList() {
 		return salesMapper.selectAllSalesList();
 	}
-
+	
+	// 매입전표 전체 조회
 	@Override
 	public List<PayablesVO> payablesList() {
 		return salesMapper.payablesList();
 	}
-
+	
 	@Override
 	public List<SalesVO> receivablesList() {
 		return salesMapper.receivablesList();
 	}
-
+	
+	// 전자세금계산서 전체 조회
 	@Override
 	public List<SalesVO> invoiceList() {
 		return salesMapper.invoiceList();
 	}
 	
+	// 매출, 매입전표 전체 조회
 	@Override
 	public List<SalesVO> selectAllSlip() {
 		return salesMapper.selectAllSlip();
@@ -109,6 +113,7 @@ public class SalesServiceImpl implements SalesService{
 		
 	}
 	
+	// 매입, 매출전표 상세 조회
 	@Override
 	public SalesVO slipInfo(SalesVO salesVO) {
 		if(salesVO.getType().equals("매출전표")) {
