@@ -25,11 +25,7 @@ public class EmployeeController {
 	}
 	
 	
-	//부서목록 페이지
-	@GetMapping("employees/department")
-	public String departmentList() {
-		return "human/departmentList";
-	}
+
 
 	//근태조회페이지
 	@GetMapping("employees/attendance")
@@ -42,6 +38,23 @@ public class EmployeeController {
 	public String attendanceInput () {
 		return "human/attendanceInput";
 	}
+	
+
+	
+	
+	//급여조회 페이지
+	@GetMapping("employees/payment")
+	public String patmentList () {
+		return "human/paymentList";
+	}
+	
+	//기초등록
+	
+	//부서목록 페이지
+	@GetMapping("employees/department")
+	public String departmentList() {
+		return "human/departmentList";
+	}	
 	
 	//근태항목등록페이지
 	@GetMapping("employees/attendanceElementInput")
