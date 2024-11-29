@@ -110,8 +110,12 @@ public class SalesServiceImpl implements SalesService{
 	}
 	
 	@Override
-	public SalesVO saleInfo(SalesVO salesVO) {
-		return null;
+	public SalesVO slipInfo(SalesVO salesVO) {
+		if(salesVO.getType().equals("매출전표")) {
+			return salesMapper.selectSales(salesVO.getSalesChitNo());
+		}else {
+			return salesMapper.selectPurchase(salesVO.getSalesChitNo());
+		}
 	}
 
 	@Override

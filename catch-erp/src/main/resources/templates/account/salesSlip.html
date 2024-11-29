@@ -79,7 +79,7 @@
   <!-- 전체 컨테이너 -->
     <h1>매출전표</h1>
     <div class="content">
-      <form>
+      <form name="salesForm">
       
         <!-- 전표일자 및 전표No -->
         <div class="row mb-3">
@@ -226,7 +226,7 @@
       <div class="btn-group rigth">
       	<button type="reset" class="btn btn-secondary">다시 작성</button>
         <!-- 리스트로 이동하는 버튼 -->
-        <button type="button" class="btn btn-secondary">전표관리</button>
+        <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/sales/selectSlipView}'|">전표관리</button>
         <button type="button" class="btn btn-success" id="save-btn">저장</button>
       </div>
   </div>
@@ -249,7 +249,7 @@
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+	                    <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
@@ -296,8 +296,8 @@
                     <div id="salesGrid"></div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <div><small>
-                        <p>※ 매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</p></small>
+                    <div>
+                        <p class="msg"><small>※ 매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</small></p>
                     </div>
                     <div>
                     	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>

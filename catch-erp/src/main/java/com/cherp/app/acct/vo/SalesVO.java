@@ -36,6 +36,8 @@ public class SalesVO {
 	private String recStatus; 		// 채권 상태
 	private String summary; 		// 적요
 	private String type;            // 전표유형
+	private String purcslipNo; // 구매전표번호
+	private String purchaseChitNo; //매입전표번호
 	
 	/*---------------채권/채무거래 내역----------------*/
 	private Integer logId; 			// 로그 아이디
