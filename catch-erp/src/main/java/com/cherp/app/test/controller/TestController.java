@@ -9,7 +9,7 @@ public class TestController {
 	//YSJ TEST
 	@GetMapping("test")
 	public String testView() {
-		return "human/employeeHistoryInput";
+		return "human/employeeHistory";
 	}
 	// JSM TEST
 	@GetMapping("testac")
