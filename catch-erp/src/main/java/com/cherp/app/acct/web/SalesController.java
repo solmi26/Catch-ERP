@@ -68,6 +68,13 @@ public class SalesController {
 		return "삭제 성공";
 	}
 	
+	// 매입, 매출전표 상세조회(기능) by sm
+	@GetMapping("sales/selectSlipInfo")
+	@ResponseBody
+	public SalesVO selectSlip(SalesVO salesVO) {
+		return salesService.slipInfo(salesVO);
+	}
+	
 	// 매출 전표 등록(화면) by sm
 	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {

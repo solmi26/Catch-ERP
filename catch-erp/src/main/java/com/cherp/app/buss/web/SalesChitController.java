@@ -20,27 +20,26 @@ public class SalesChitController {
     public SalesChitController(SalesChitService salesChitService) {
         this.salesChitService = salesChitService;
     }
-
-    // 판매전표 등록
-    @PostMapping("insertSalesChit")
-    public String insertSalesChit(SalesChitVO salesChitVO) {
-        int rowInsert = salesChitService.salesChitInsert(salesChitVO);
-        return "sales/salesChit";
-    }
     
-    // 판매전표 전체 조회 by sm
+    // 매출전표 전체 조회
 	@ResponseBody
     @GetMapping("sales/selectSalesChit")
 	public List<SalesChitVO> selectSalesShit(Model model){
 		return salesChitService.selectsalesChit();
 	}
 	
-	// 판매전표 전표상태별 조회 by sm
+	// 매출전표 전표상태별 조회
 	@ResponseBody
     @GetMapping("sales/selectSalesChitState")
 	public List<SalesChitVO> selectSalesChitState(@RequestParam("state") String state){
 		System.out.println(state);
 		return salesChitService.selectsalesChitState(state);
+	}
+
+	@ResponseBody
+	@GetMapping("sales/selectSalesTotalPrice")
+	public List<SalesChitVO> selectSalesTotalPrice() {
+		return salesChitService.selectSalesTotalPrice();
 	}
     
 
