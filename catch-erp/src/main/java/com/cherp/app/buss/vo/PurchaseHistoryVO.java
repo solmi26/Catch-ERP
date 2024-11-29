@@ -29,8 +29,12 @@ public class PurchaseHistoryVO {
 	/* 구매전표 [purchase_chit] 컬럼*/
 	private String clientCode; 	  // 거래처 코드
 	private String clientName; 	  // 거래처 명
+	private String employeeCode;  // 사원코드
+	private String employeeName;  // 사원이름
 	
 	/* 매입계약 품목 [contract_item] 컬럼*/
 	private int stocksQuantity; // 재고 수량
 	
+	/* 창고별 재고수량 [stocks] 테이블에서 서브쿼리로 얻을 AS 컬럼*/
+	private int currentQuantity; // 현 재고 수량
 }

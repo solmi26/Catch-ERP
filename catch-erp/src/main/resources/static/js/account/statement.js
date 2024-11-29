@@ -5,6 +5,26 @@
 
 let grid = null;
 document.addEventListener("DOMContentLoaded", function () {
+  // Modal 요소를 가져와 Modal 인스턴스를 생성
+  const purchaseModalElement = document.getElementById("purchaseModal");
+  const salesModalElement = document.getElementById("salesModal");
+
+  let purchaseModal, salesModal;
+
+  // purchaseModal이 존재하는 경우 Modal 인스턴스 생성
+  if (purchaseModalElement) {
+    purchaseModal = new bootstrap.Modal(purchaseModalElement);
+  } else {
+    console.error("purchaseModal 요소가 없습니다.");
+  }
+
+  // salesModal이 존재하는 경우 Modal 인스턴스 생성
+  if (salesModalElement) {
+    salesModal = new bootstrap.Modal(salesModalElement);
+  } else {
+    console.error("salesModal 요소가 없습니다.");
+  }
+
   // 그리드 초기화
   grid = new tui.Grid({
     el: document.querySelector("#grid"),
@@ -35,6 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "금액(vat 별도)", // 금액
         name: "amount",
         align: "right",
+        formatter: function (e) {
+          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+        },
       },
       {
         header: "거래처", // 거래처명
@@ -50,6 +74,18 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "전자세금계산서 전송 상태", // 전자세금계산서
         name: "eTaxInvoice",
         align: "center",
+        formatter: ({ value }) => {
+          // 값에 따라 다른 색상 스타일 적용
+          let colorClass = "";
+          if (value === "미전송") {
+            colorClass = "r1";
+          } else if (value === "국세청 전송 완료") {
+            colorClass = "r3";
+          } else {
+            colorClass = "r2";
+          }
+          return `<span class="${colorClass}">${value}</span>`;
+        },
       },
     ],
     rowHeaders: [
@@ -66,52 +102,89 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
   });
 
-  /**grid.getData().forEach((row) => {
-    console.log(row.transactionType === "매출전표");
-    let check = row.transactionType === "매출전표";
-    if (check) {
-      grid.addRowClassName(row.rowKey, "sales");
-    } else {
-      grid.addRowClassName(row.rowKey, "purchase");
-    }
-  });
-**/
+  let currentTarget = null;
 
-  // 그리드 클릭 이벤트 -> 추후 수정
-  grid.on("click", (event) => {
-    if (event.columnName === "debentureNo" && event.rowKey >= 0) {
-      console.log("클릭이벤트 발생");
-      console.log(event.rowKey);
-    }
-  });
+  grid.on("click", (ev) => {
+    console.log("check!", ev);
+    const row = grid.getRow(ev.rowKey);
 
-  // 데이터 로드
-  fetch("/sales/selectSlip")
-    .then((result) => result.json())
-    .then((result) => {
-      let dataArr = result.map((ele) => ({
-        voucherNumber: ele.salesChitNo,
-        transactionType: ele.type,
-        date: ele.chitDate,
-        amount: ele.supplyPrice,
-        clientName: ele.clientCode,
-        description: ele.summary,
-        eTaxInvoice: ele.invoiceStatus,
-      }));
+    let selectData = {
+      salesChitNo: row.voucherNumber,
+      type: row.transactionType,
+    };
+    
+    console.log(selectData.salesChitNo)
+    console.log(selectData.type)
 
-      grid.resetData(dataArr);
-
-      // 데이터 로드 후 스타일 적용
-      grid.getData().forEach((row) => {
-        console.log(row.transactionType === "매출전표");
-        let check = row.transactionType === "매출전표";
-        if (check) {
-          grid.addRowClassName(row.rowKey, "sales");
-        } else {
-          grid.addRowClassName(row.rowKey, "purchase");
-        }
+    fetch(`/sales/selectSlipInfo?salesChitNo=${selectData.salesChitNo}&type=${selectData.type}`)
+      .then((response) => response.json())
+      .then((result) => {
+        let data = result
+        
+        document.getElementById("date").value = result.chitDate;
+		document.getElementById("no").value = result.salesChitNo || result.purchaseChitNo;
+		document.getElementById("salesInput").value = result.saleslipNo || result.purcslipNo;
+		document.getElementById("clientInput").value = result.clientCode;
+		document.getElementById("acctInput").value = result.acctName;
+	 	document.getElementById("price").value = result.supplyPrice;
+		document.getElementById("vat").value = result.vat;
+	 	document.getElementById("amount").value = result.totalPrice;
+	 	document.getElementById("summary").value = result.summary;
+		
+		
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log("에러 : " + err);
       });
-    });
+
+    if (ev.columnName === "voucherNumber") {
+      currentTarget = ev;
+      console.log(grid.getFormattedValue(ev.rowKey, "transactionType"));
+      const type = grid.getFormattedValue(ev.rowKey, "transactionType");
+      if (type === "매출전표") {
+        salesModal.show();
+      } else {
+        purchaseModal.show();
+      }
+    }
+  });
+
+  // 데이터 로드 함수
+  function loadGridData() {
+    fetch("/sales/selectSlip")
+      .then((result) => result.json())
+      .then((result) => {
+        let dataArr = result.map((ele) => ({
+          voucherNumber: ele.salesChitNo, // 전표번호
+          transactionType: ele.type, // 전표유형
+          date: ele.chitDate, // 전표일자
+          amount: ele.supplyPrice, // 공급가액
+          clientName: ele.clientCode, // 거래처코드
+          description: ele.summary, // 적요
+          eTaxInvoice: ele.invoiceStatus, // 세금계산서 발행 상태
+        }));
+
+        grid.resetData(dataArr);
+
+        // 데이터 로드 후 스타일 적용
+        // 클래스 이름을 지정해서 CSS 스타일 적용
+        grid.getData().forEach((row) => {
+          let check = row.transactionType === "매출전표";
+          if (check) {
+            grid.addRowClassName(row.rowKey, "sales");
+          } else {
+            grid.addRowClassName(row.rowKey, "purchase");
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("데이터 로드 중 오류 발생:", error);
+      });
+  }
+
+  // 초기 데이터 로드
+  loadGridData();
 
   // 선택 삭제 버튼
   document.querySelector("#deleteButton").addEventListener("click", function () {
@@ -148,12 +221,50 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify(deleteData),
     })
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("삭제 요청에 실패했습니다.");
+        }
+        return response.text();
+      })
       .then((result) => {
-        console.log("데이터 : ", result);
+        console.log("삭제 결과:", result);
+        alert("선택한 전표가 삭제되었습니다.");
+
+        // 삭제 시 그리드 다시 로드
+        loadGridData();
       })
       .catch((error) => {
-        console.log(error);
+        console.error("삭제 요청 중 오류 발생:", error);
+        alert("전표 삭제 중 오류가 발생했습니다.");
       });
+  });
+
+  // "신규 등록" 버튼 클릭 시 드롭다운 메뉴 표시/숨기기
+  document.getElementById("new").addEventListener("click", function () {
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    // 보이는 상태(block) 숨겨진 상태(none)
+    dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+  });
+
+  // 드롭다운 항목 클릭 이벤트
+  document.querySelector(".sales-item").addEventListener("click", function () {
+    //alert('매출전표 등록 선택됨');
+    document.getElementById("dropdownMenu").style.display = "none";
+  });
+
+  document.querySelector(".purchase-item").addEventListener("click", function () {
+    //alert('매입전표 등록 선택됨');
+    document.getElementById("dropdownMenu").style.display = "none";
+  });
+
+  // 메뉴 외부 클릭 시 드롭다운 메뉴 숨기기
+  document.addEventListener("click", function (event) {
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const newButton = document.getElementById("new");
+
+    if (!newButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+      dropdownMenu.style.display = "none";
+    }
   });
 });

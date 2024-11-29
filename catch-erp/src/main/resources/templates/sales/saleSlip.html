@@ -24,7 +24,7 @@
             <div class="col-md-12">
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <label class="form-label">작성일자</label>
+                        <label class="form-label">발주일자</label>
                         <div class="input-group">
                             <input type="date" class="form-control">
                         </div>
@@ -40,7 +40,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
-                                    data-bs-toggle="modal" data-bs-target="" ></button>
+                                    data-bs-toggle="modal" data-bs-target=""></button>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -48,7 +48,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
-                                    data-bs-toggle="modal" data-bs-target="" ></button>
+                                    data-bs-toggle="modal" data-bs-target=""></button>
                         </div>
                     </div>
                 </div>
@@ -61,11 +61,28 @@
     </form>
 </div>
 
-<!-- Transaction History Select -->
-
 <!-- Table -->
 <div id="wrap">
     <div id="salesChit"> <!--gird html이 들어가는 div태그-->
+    </div>
+</div>
+
+<!-- 판매목록 전표 모달 -->
+<div class="modal fade" id="saleslipHistoryModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">거래처검색</h5>
+            </div>
+            <div class="modal-body p-0">
+                <div id="saleslipHistory">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <p><small>※거래처명을 클릭하여 입력하세요.</small></p>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Bottom Button -->

@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           console.log(data);
           alert("저장이 완료되었습니다.");
+          document.purchaseForm.reset();
         })
         .catch((error) => {
           console.error("Error: ", error);

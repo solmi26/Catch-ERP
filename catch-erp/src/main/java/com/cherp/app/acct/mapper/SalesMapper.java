@@ -23,6 +23,8 @@ public interface SalesMapper {
 	public List<SalesVO> SelectAllClientReceivableList(String clientCode);// 채권 거래처 전체 조회
 	public List<SalesVO> selectAcctList(String debitSide); // 회계 계정 전체 조회
 	public List<SalesVO> selectAllSlip(); // 매출, 매입전표 조회
+	public SalesVO selectSales(String no); // 매출 단건 조회
+	public SalesVO selectPurchase(String no); // 매입 단건 조회
 	
 	//단건 조회
 	public SalesVO selectSaleInfo(SalesVO salesVO);			// 매출 단건 조회
@@ -40,7 +42,9 @@ public interface SalesMapper {
 	public int insertInvoice(SalesVO salesVO);		// 세금 계산서 추가
 	
 	//수정
-	public int updateSalesInvoiceNo(SalesVO salesVO); // 매출 단건 수정
+	public int updateSalesInvoiceNo(SalesVO salesVO); // 매출 인보이스 번호 추가
+	public int updateSales(SalesVO salesVO); // 매출전표 수정
+	public int updatePurchase(PayablesVO payablesVO); // 매입전표 수정
 	public int updatePayable(PayablesVO payablesVO); // 채무거래 단건 수정
 	public int updateReceivable(SalesVO salesVO);	 // 채권거래 단건 수정
 	public int updateInvoice(SalesVO salesVO);		 // 세금 계산서 수정

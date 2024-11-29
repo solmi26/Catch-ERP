@@ -74,7 +74,6 @@
                 <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌상세</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- 추후 db에서 값 불러와서 자동입력 구현하기 -->
             <div class="modal-body">
             	<div class="mb-3">
                   <input type="text" class="form-control" id="bankName" name="bankName" placeholder="은행명" readonly="readonly">
@@ -111,7 +110,7 @@
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
-    fetch('http://localhost:8026/bacctList')
+    fetch('/api/account/bacct')
     .then(result => result.json())
     .then(result => {
       //toast ui table 기본 틀 작성
@@ -202,9 +201,6 @@
 
       grid.on('click', (event) => { // grid 클릭이벤트 발생 -> 계좌수정모달
         if(event.columnName === 'bacctNo' && event.rowKey>=0) {
-          console.log("클릭이벤트 발생");
-          //console.log(event.rowKey);
-          //console.log(grid.getValue(event.rowKey,"bacctCode"));
           document.updateForm.querySelector('#bacctNo').value = grid.getValue(event.rowKey,"bacctNo");
           document.updateForm.querySelector('#bacctName').value = grid.getValue(event.rowKey,"bacctName");
           document.updateForm.querySelector('#bankName').value = grid.getValue(event.rowKey,"bankName");
@@ -217,8 +213,7 @@
       saveButton.addEventListener('click', function() {
         console.log('계좌 등록 시작');
         //event.preventDefault(); // 이벤트 일시 정지
-          // 여기에 저장 로직 추가
-          //alert('저장 기능 구현중.');
+
           let bankName = document.insertForm.querySelector('#bankName');
           if(bankName.value == '') {
             alert('은행을 선택해주세요.');
@@ -246,7 +241,7 @@
       });
     })
 
-    fetch('http://localhost:8026/bankList')
+    fetch('/api/account/bank')
     .then(result => result.json())
     .then(result=> {
       let selectBank = insertForm.querySelector('#bankName');
