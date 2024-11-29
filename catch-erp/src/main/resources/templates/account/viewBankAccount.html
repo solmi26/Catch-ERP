@@ -111,7 +111,7 @@
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
-    fetch('http://localhost:8026/bacctList')
+    fetch('/api/account/bacct')
     .then(result => result.json())
     .then(result => {
       //toast ui table 기본 틀 작성
@@ -246,7 +246,7 @@
       });
     })
 
-    fetch('http://localhost:8026/bankList')
+    fetch('/api/account/bank')
     .then(result => result.json())
     .then(result=> {
       let selectBank = insertForm.querySelector('#bankName');
