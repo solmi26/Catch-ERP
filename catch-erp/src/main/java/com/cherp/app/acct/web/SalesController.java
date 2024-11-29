@@ -73,8 +73,8 @@ public class SalesController {
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
-	
-	// 매출 전표 등록(기능) by sm
+
+	// 매출 전표 등록(기능)
 	@PostMapping("sales/insertSales")
 	@ResponseBody
 	public String insertSales(@RequestBody SalesVO salesVO) {
@@ -82,7 +82,37 @@ public class SalesController {
 		return "저장 성공";
 	}
 	
-	// 회계 계정 조회 by sm
+
+	@PostMapping("insertPayablesBalance")
+	@ResponseBody
+	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
+		String message = "success";
+		Iterator<Entry<String, JsonNode>> fields = payables.fields();
+		fields.forEachRemaining(field -> {
+			int cnt = 0;
+			System.out.println("field : " + field.getValue());
+			System.out.println("field length : " + field.getValue().size());
+			for (int i = 0; i < field.getValue().size(); i++) {
+				System.out.println("i:"+field.getValue().get("clientCode"));
+			}
+			if(cnt == 1) {
+				System.out.println(field.getValue().get("bacctCode"));
+			}
+			cnt++;
+		});
+		for (JsonNode node : payables) {
+			InsertPayableVO payable = new InsertPayableVO();
+//			payable.setBacctCode(payables.get("bacctInfo").get("bacctCode").toString());
+//			payable.setClientCode(node.get("clientCode").toString());
+//			payable.setDecreasePrice(node.get("decreasePrice").asInt());
+//			System.out.println(node.get("clientCode").toPrettyString());
+//			System.out.println(node.get("clientCode").toString());
+//			salesService.insertPayable(payable);
+		}
+
+		return message;
+	}
+	// 회계 계정 조회
 	@ResponseBody
 	@GetMapping("sales/selectAcct")
 	public List<SalesVO> selectAcct(Model model){

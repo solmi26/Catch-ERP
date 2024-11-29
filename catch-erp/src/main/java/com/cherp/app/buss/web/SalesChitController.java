@@ -25,6 +25,7 @@ public class SalesChitController {
     @PostMapping("insertSalesChit")
     public String insertSalesChit(SalesChitVO salesChitVO) {
         int rowInsert = salesChitService.salesChitInsert(salesChitVO);
+		
         return "sales/salesChit";
     }
     
@@ -41,6 +42,12 @@ public class SalesChitController {
 	public List<SalesChitVO> selectSalesChitState(@RequestParam("state") String state){
 		System.out.println(state);
 		return salesChitService.selectsalesChitState(state);
+	}
+
+	@ResponseBody
+	@GetMapping("sales/selectSalesTotalPrice")
+	public List<SalesChitVO> selectSalesTotalPrice() {
+		return salesChitService.selectSalesTotalPrice();
 	}
     
 
