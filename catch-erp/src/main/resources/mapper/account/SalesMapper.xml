@@ -328,4 +328,51 @@
 		DELETE FROM purchase
 		WHERE purchase_chit_no = #{purchaseChitNo}
 	</delete>
+	
+	<!-- 매출전표 수정 -->
+	<update id="updateSales" parameterType="com.cherp.app.acct.vo.SalesVO"></update>
+	
+	<!-- 매입전표 수정 -->
+	<update id="updatePurchase" parameterType="com.cherp.app.acct.vo.PayablesVO"></update>
+	
+	<!-- 매출전표 단건 조회 -->
+	<select id="selectSales">
+		SELECT sales_chit_no
+		       ,chit_date
+		       ,(select client_name
+                 from client c
+                 where c.client_code = s.client_code)as client_code
+		       ,acct_name
+		       ,supply_price
+		       ,vat
+		       ,total_price
+		       ,summary
+		       ,saleslip_no
+		       ,invoice_no
+		       ,writer
+		       ,rec_balance
+		       ,rec_status
+		FROM sales s
+		WHERE sales_chit_no = #{salesChitNo}
+	</select>
+	
+	<!-- 매입전표 단건 조회 -->
+	<select id="selectPurchase" >
+		SELECT purchase_chit_no
+		       ,chit_date
+		       ,(select client_name
+                 from client c
+                 where c.client_code = p.client_code)as client_code
+               ,acct_name
+               ,supply_price
+               ,vat
+               ,total_price
+               ,writer
+               ,decrease_balance
+               ,summary
+               ,purcslip_no
+		FROM purchase p
+		WHERE purchase_chit_no = #{purchaseChitNo}
+	</select>
+
 </mapper>
