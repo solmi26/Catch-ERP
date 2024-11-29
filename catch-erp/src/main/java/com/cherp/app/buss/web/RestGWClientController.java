@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class RestGWClientController {
 	
 	private final ClientService clientService;
-	
+	// 클라이언트 리스트 전체 조회
 	@GetMapping("api/business/client")
 	public List<ClientPsVO> clientList() {
 		return clientService.gwClientList();
