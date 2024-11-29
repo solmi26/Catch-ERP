@@ -97,7 +97,7 @@
                                     <div class="mb-3 row">
                                         <label for="phone" class="col-sm-3 col-form-label">회사 전화</label>
                                         <div class="col-sm-9">
-                                            <input type="tel" class="form-control" id="employeeTel" name="employeeTel" placeholder="회사 전화" required>
+                                            <input type="tel" class="form-control" id="companyTel" name="companyTel" placeholder="회사 전화" required>
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
@@ -119,12 +119,6 @@
                                         <label for="searchContents" class="col-sm-3 col-form-label">계좌</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" id="clientBacct" name="clientBacct" placeholder="계좌" required>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="mobilePhone" class="col-sm-3 col-form-label">모바일</label>
-                                        <div class="col-sm-9">
-                                            <input type="tel" class="form-control" id="mobilePhone" name="mobilePhone" placeholder="모바일" required>
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
@@ -156,6 +150,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mb-3 row">
+                                        <label for="mobilePhone" class="col-sm-3 col-form-label">담당자 연락처</label>
+                                        <div class="col-sm-9">
+                                            <input type="tel" class="form-control" id="employeeTel" name="employeeTel" placeholder="모바일" required>
+                                        </div>
+                                    </div>
                                 </div>
                                 
                                 <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">
@@ -164,8 +164,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                             <button type="submit" class="btn btn-success">저장</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>
                     </div>
                 </form>
@@ -296,8 +296,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                             <button type="submit" class="btn btn-success">수정</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>
                     </div>
                 </form>
@@ -422,7 +422,6 @@
             fetch('/api/business/clientDetail/' + clientCode)
             .then(result => result.json())
             .then(clientInfo => {
-                console.log(clientInfo);
                 //#region 상세 정보창의 input => value 에 들어갈 클라이언트 정보들
                 /**
                  * @ clientName / ceoName / state / event / employeeTel / tradeType
@@ -432,15 +431,15 @@
                 document.updateClientForm.querySelector('#ceoName').value = clientInfo.ceoName;
                 document.updateClientForm.querySelector('#state').value = clientInfo.state;
                 document.updateClientForm.querySelector('#event').value = clientInfo.event;
-                document.updateClientForm.querySelector('#employeeTel').value = clientInfo.employeeTel;
+                document.updateClientForm.querySelector('#companyTel').value = clientInfo.companyTel;
                 document.updateClientForm.querySelector('#tradeType').value = clientInfo.tradeType;
                 document.updateClientForm.querySelector('#fax').value = clientInfo.fax;
                 document.updateClientForm.querySelector('#clientBacct').value = clientInfo.clientBacct;
-                document.updateClientForm.querySelector('#mobilePhone').value = clientInfo.mobilePhone;
                 document.updateClientForm.querySelector('#sample6_postcode').value = clientInfo.zipCode;
                 document.updateClientForm.querySelector('#address').value = clientInfo.address;
                 document.updateClientForm.querySelector('#detailAddress').value = clientInfo.detailAddress;
                 document.updateClientForm.querySelector('#manager').value = clientInfo.employeeName;
+                document.updateClientForm.querySelector('#employeeTel').value = clientInfo.employeeTel;
                 //#endregion
             });
 
