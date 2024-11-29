@@ -5,7 +5,6 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class SalesChitVO {
@@ -23,8 +22,4 @@ public class SalesChitVO {
     private String employeeCode; // 사원 코드
     private Integer vat; // 부가세
     private String slipState; // 발행상태
-
-    private int deliveryPrice; // 총 단가 금액
-
-    List<SaleslipHistoryVO> saleslipHistories;
 }
