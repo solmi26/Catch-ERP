@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             label.innerText = `${grid.getIndexOfRow(rowKey) + 1}`;
             const hiddenInput = document.createElement('input');
             hiddenInput.className = 'hidden-input';
-            hiddenInput.id = 'selectCheck' + String(rowKey);
+            hiddenInput.id = 'selectCheck'  + String(rowKey);
 
             console.log(grid.el.id);
             const customInput = document.createElement('span');
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             data: [],
             columns: [{
                 header: '판매전표번호',
-                name: 'saleslipNo',
+                name: 'salesslip_no',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -180,137 +180,34 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
-                className: 'border'
-            }, {
-                header: '매출계정명',
-                name: 'accCode',
-                editor: 'text',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortingType: 'desc',
-                className: 'border'
-            }, {
-                header: '금액합계',
-                name: 'deliveryPrice',
-                editor: 'text',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
                 className: 'border'
             }, {
-                header: '공급가액',
-                name: 'supplyPrice',
-                editor: 'text',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className: 'border'
-            }, {
-                header: '부가세',
-                name: 'vat',
-                editor: 'text',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className: 'border'
-            },],
-        });
-
-        // 모든 판매전표 조회
-        fetch('/sales/selectSalesChit')
-            .then(result => result.json())
-            .then(data => salesChit.resetData(data))
-            .catch(error => alert("전표 조회 실패했습니다."))
-
-        // 판매내역 전표 모달
-        salesChit.on("click", (ev) => {
-
-            const salesChitColumn = ev.columnName
-
-            if(salesChitColumn === 'saleslipNo'){
-                var saleslipHistoryModal = new bootstrap.Modal(document.getElementById('saleslipHistoryModal'), {
-                    keyboard: false
-                })
-                saleslipHistoryModal.show();
-            }
-        })
-        return salesChit;
-    }
-    initSalesChitGrid();
-
-
-
-
-    //모달실행 시 grid refresh를 위한 코드
-    document.getElementById('saleslipHistoryModal').addEventListener('click', function () {
-        window.setTimeout(function () {
-            saleslipHistory.refreshLayout();
-        }, 200)
-    });
-
-    let saleslipHistory;
-    const initSaleslipHistory = () => {
-
-        saleslipHistory = new Grid({
-            el: document.getElementById('saleslipHistory'),
-            scrollX: true,
-            scrollY: true,
-            header: {height: 40},
-            bodyHeight: 400,
-            rowHeight: 40,
-            width: 'auto',
-            contextMenu: null,
-            rowHeaders: [{
-                type: 'checkbox', header: `
-                        <span class="custom-input">
-                            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-                            <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-                        </span>`, renderer: {
-                    type: gridCheckbox
-                }
-            }],
-            data: [],
-            columns: [{
-                header: '판매번호',
-                name: 'salesNo',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                className: 'border'
-            }, {
-                header: '창고명',
+                header: '창고',
                 name: 'whName',
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
-                editor: 'text',
+                formatter: 'listItemText',
                 className: 'border'
-            }, {
-                header: '품목명',
-                name: 'itemName',
-                editor: 'text',
+            },{
+                header: '재고수량',
+                name: 'stocksQuantity',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
-                header: '수량',
-                name: 'quantity',
-                editor: 'text',
+                header: '부족수량',
+                name: 'deficiencyQuantity',
                 align: "center",
-                width: 150,
+                width: 100,
                 whiteSpace: 'normal',
                 sortingType: 'desc',
                 className: 'border'
             }, {
-                header: '출고단가',
+                header: '단가',
                 name: 'deliveryPrice',
                 editor: 'text',
                 align: "center",
@@ -320,15 +217,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortingType: 'desc',
                 className: 'border'
             }, {
-                header: '출고상태',
-                name: 'deliveryStatus',
-                editor: 'text',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortable: true,
-                className: 'border'
-            },{
                 header: '공급가액',
                 name: 'supplyPrice',
                 editor: 'text',
@@ -350,10 +238,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                 className: 'border'
             },],
         });
-
-        return saleslipHistory;
+        return salesChit;
     }
-    initSaleslipHistory();
+
+    // 샘플 데이터
+
+    initSalesChitGrid();
 
 });
 

@@ -12,15 +12,11 @@
 
 	<select id="selectWhQuantity" resultType="com.cherp.app.buss.vo.WarehouseVO">
 		SELECT
-			SUM(a.stocks_quantity) stocks_quantity
+			a.stocks_quantity
 		FROM
 			contract_item a
 		INNER JOIN stocks b ON a.item_code = b.item_code
-		WHERE b.wh_code = #{whCode}
-		      AND
+		WHERE b.wh_code = #{whCode} and
 		      a.item_code = #{itemCode}
-			  AND
-		      b.stocks_stocks_check = 'd1'
-		GROUP BY b.stocks_stocks_check
 	</select>
 </mapper>
