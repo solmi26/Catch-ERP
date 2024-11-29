@@ -42,6 +42,11 @@
 	
 	<!-- 조건검색된 구매전표번호로 구매내역을 조회 -->
 	<select id ="selectPurcHistoryList" parameterType ="map" resultType="PurchaseHistoryVO">
+		WITH b as (SELECT wh_code,item_code, 
+			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
+			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
+		FROM stocks
+		GROUP BY wh_code, item_code)
 		SELECT hi.pur_no
 			   ,hi.wh_code
 			   ,hi.wh_name
@@ -58,8 +63,11 @@
 			   ,ch.employee_code
 			   ,ch.employee_name
 			   ,ct.stocks_quantity
+			   ,b.current_quantity
 		FROM   purchase_history hi JOIN purchase_chit ch 
-			ON (hi.purcslip_no = ch.purcslip_no) JOIN contract_item ct ON (hi.item_code = ct.item_code)
+			ON (hi.purcslip_no = ch.purcslip_no) 
+			JOIN contract_item ct ON (hi.item_code = ct.item_code)
+			JOIN b ON (hi.item_code = b.item_code AND hi.wh_code = b.wh_code)
 		WHERE hi.purcslip_no IN
 	    <foreach item="purcNo" collection="chitNoArr" open="(" separator="," close=")">
 	        #{purcNo}
@@ -86,6 +94,11 @@
 	
 	<!-- 판매내역조회 -->
 	<select id="selectSalesHistoryList" parameterType="map" resultType="SalesHistoryVO">
+		WITH b as (SELECT wh_code,item_code, 
+			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
+			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
+		FROM stocks
+		GROUP BY wh_code, item_code)
 		SELECT hi.sales_no
 			  ,hi.wh_code
 			  ,hi.wh_name
@@ -102,11 +115,12 @@
 			  ,ch.employee_code
 			  ,ch.employee_name
 			  ,ct.stocks_quantity
-		FROM   saleslip_history hi JOIN sales_chit ch 
-			ON (hi.saleslip_no = ch.saleslip_no)
-			   JOIN contract_item ct 
-			ON (hi.item_code = ct.item_code)	
-		WHERE  hi.saleslip_no IN		
+			  ,b.current_quantity
+		FROM   saleslip_history hi 
+			JOIN sales_chit ch ON (hi.saleslip_no = ch.saleslip_no)
+			JOIN contract_item ct ON (hi.item_code = ct.item_code) 
+			JOIN b ON (hi.item_code = b.item_code AND hi.wh_code = b.wh_code)
+		WHERE  hi.saleslip_no IN
 			(SELECT  saleslip_no
 			 FROM   sales_chit
 			 WHERE  1 != 2
@@ -145,13 +159,17 @@
 		    AND delivery_status != 'b3'
 		    ORDER BY hi.delivery_date DESC   
 	</select>
+	<!-- 재고조정 프로시저호출 -->
 	<insert id="insertAdjustment" statementType="CALLABLE"> 
 		CALL stocks_adjustment(
 							#{StocksAdjustVO, mode=IN, typeHandler=com.cherp.app.stck.vo.StockAdjustArrayStructHandler}													
 							)
 	</insert>
+	<!-- 최상단 재고조정번호 조회 --> 
 	<select id="selectAdjustNo" resultType="StocksVO">
-		SELECT MAX(real_no) AS real_no
+		SELECT MAX(real_no) + 1 AS real_no
 		FROM   stocks
 	</select>
+	
+	<!-- 창고별 재고조회 -->
 </mapper>

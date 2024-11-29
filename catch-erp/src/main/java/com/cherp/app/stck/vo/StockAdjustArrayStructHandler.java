@@ -22,7 +22,7 @@ public class StockAdjustArrayStructHandler implements TypeHandler<Object>{
 		//Object타입에 담아 인자로 받은 VO객체 List를 자바 List에 담는다.
 		List<StocksAdjustVO> list = (List<StocksAdjustVO>) parameter;
 		//Object 배열 생성
-		Object[] StocksAdjustVO = new Object[6];
+		Object[] StocksAdjustVO = new Object[7];
 		if(list == null || list.size() == 0) {
 			//DB에 선언한 유형의 오라클 배열 생성
 			Array stockadjustvoarray = (Array)conn.createOracleArray("STOCKADJUSTVOARRAY", null);
@@ -40,7 +40,8 @@ public class StockAdjustArrayStructHandler implements TypeHandler<Object>{
 			StocksAdjustVO[2] = vo.getEmployeeCode();
 			StocksAdjustVO[3] = vo.getStocksStocks();
 			StocksAdjustVO[4] = vo.getItemCode();
-			StocksAdjustVO[5] = vo.getUpdateReason(); 
+			StocksAdjustVO[5] = vo.getUpdateReason();
+			StocksAdjustVO[6] = vo.getCurrentQuantity();
 			//Struct 객체를 생성하고 DB에 만든 VO타입으로 Struct만든다.
 			Struct struct = conn.createStruct("STOCKADJUSTVO", StocksAdjustVO);
 			//선언 및 초기화된 struct객체를 Struct배열인 array에 넣는다.

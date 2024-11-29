@@ -1,7 +1,7 @@
 /**
  * (stackInquery.html) - 재고조회조정 페이지에 적용되는 JS
  */
- 
+ //#region 토스트 렌더러
 /*==========================================
 	  공통사용되는 토스트 UI Grid 렌더러 Class
 ============================================*/
@@ -62,33 +62,21 @@
                 return this.el;
             }
     }
-    //구매현황, 출하지시서 모달에 사용되는 버튼 렌더러
-    class BtnForOrder {
-            constructor(props) {			
-                this.el = document.createElement('button');
-                this.el.innerText = props.value;
-                this.el.style.border = '1px solid gray';
-                this.el.style.borderRadius ='3px';
-                this.el.style.backgroundColor = 'white';
-                this.el.classList.add('gridBtn')
-                                    
-            }
-            getElement() {
-                return this.el;
-            }
-    }
+    
     
    
   //숫자타입 인풋 렌더러 (석진제작) => 공통코드파일에 병합
   //숫자있는 체크박스 (석진제작) => 공통코드파일에 병합
   
- let grid6 = null; 
+//#endregion  
+let grid6 = null; 
   
 /*================================================================
 		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
 ==================================================================*/
 document.addEventListener("DOMContentLoaded", function () {
     
+    //#region 재고조정페이지
     //모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용.
 	const Grid = tui.Grid;
 	/*const filterOptions = {
@@ -176,12 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
         rowHeight: 40,
         width: 'auto',
         contextMenu: null,
-        /*rowHeaders: [{
-                type: 'checkbox',
-                header: "No.",
-                width: 50,
-                className:'border'
-        }],*/
         columns: [
             {
                 header: '구매/판매내역 No.',
@@ -257,7 +239,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 width: 100,
                 whiteSpace: 'normal',
                 className:'border'
-            },
+            }
+            ,
+            {
+	             header: '창고명',
+	             name: 'c11',
+	             align: "center",
+	             width: 150,
+	             whiteSpace: 'normal',
+	             className:'border'
+             },
 	           {
 	            header: '사원명',
 	            name: 'c9',
@@ -276,14 +267,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }       
         ]
     });
+    
+    //#endregion 사원조회모달
 
-
+	//#region 거래처조회모달
 	/*============================
-    	StackInquery 거래처 모달 JS
+    	StackAdjust 거래처 모달 JS
     ==============================*/
     
     // 모달 관련 JavaScript
-        //const clientModal = document.getElementById('clientModal');
 
         //모달실행 시 grid refresh를 위한 코드
         document.getElementById('openClientModal').addEventListener('click', function() {
@@ -389,27 +381,10 @@ document.addEventListener("DOMContentLoaded", function () {
 			let inputTag2 = document.getElementById('clientInput2')
 			inputTag.value = '';		
 			inputTag.value = grid3.getValue(rowKeyNum, 'c1');
-			inputTag2.value = grid3.getValue(rowKeyNum, 'c7'); //거래처코드가 들어갈 hidden input
-									
-			console.log(inputTag.value);
+			inputTag2.value = grid3.getValue(rowKeyNum, 'c7'); //거래처코드가 들어갈 hidden input									
 			
 		}
-	})   
-	
-	//거래처입력창에 수동으로 입력시 해당 거래처명과 동일한 거래처코드를 hidden input창에 자동입력, 없을 시 공백 => !보류 ->구현이 곤란
-	/*let inputTag = document.getElementById('clientInput');
-	inputTag.addEventListener('change', function(){
-		let inputVal = inputTag.value;
-		fetch(`/stocks/clientSearchList/${inputVal}`)
-		.then(result=> result.json())
-		.then(result=>{ 
-			if(result.length == 0){
-				return;
-			} else {
-			let inputTag2 = document.getElementById('clientInput2')
-			inputTag2.value = 
-		})
-	})*/
+	})   	
 	
 	// 거래처모달 그리드에 데이터 넣기(출력)
 	fetch("/stocks/client")
@@ -430,11 +405,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		grid3.resetData(dataArr);
 		
 	})
+	//#endregion 거래처조회모달
 	
-	
-	
+	//#region 품목조회모달
     /*============================
-    	StackInquery 품목조회 모달 JS
+    	StackAdjust 품목조회 모달 JS
     ==============================*/
     // 모달 관련 JavaScript
     var purchaseOrderModal = document.getElementById('purchaseOrderModal')
@@ -517,9 +492,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		grid5.resetData(dataArr);
 	})
 	
-
+	//#endregion 품목조회모달
+	
+	//#region 구매내역모달 
     /*============================
-    	StackInquery 구매내역 모달 JS
+    	StackAdjust 구매내역 모달 JS
     ==============================*/
     var purchaseOrderModal = document.getElementById('purchaseOrderModal2')
 	
@@ -673,9 +650,18 @@ document.addEventListener("DOMContentLoaded", function () {
 		            width: 70,
 		            whiteSpace: 'normal',
 		            editor: 'text',
-		            className:'border',
-		            hidden: false,
+		            className:'border',		            
+		        },
+		        {
+		            header: '창고명',
+		            name: 'c13',
+		            align: "center",
+		            width: 70,
+		            whiteSpace: 'normal',
+		            editor: 'text',
+		            className:'border',		            
 		        }
+		        
 		        
 		    ]
 		});
@@ -760,12 +746,14 @@ document.addEventListener("DOMContentLoaded", function () {
 				data.c7 = String(ele.incompleteQuantity);
 				data.c8 = String(ele.restockingPrice);
 				data.c9 = ele.clientCode;
-				data.c10 = String(ele.stocksQuantity)
+				data.c10 = String(ele.currentQuantity);
 				data.c11 = ele.employeeName;
 				data.c12 = ele.employeeCode;
+				data.c13 = ele.whName;
 				arr.push(data);			
 			})
-			// 그리드에 데이터 넣기(출력)		
+			// 그리드에 데이터 넣기(출력)
+					
 			let purchaseFilteredData = exceptExitingRows(arr);
 			grid6.resetData(purchaseFilteredData);	
 		})
@@ -773,10 +761,12 @@ document.addEventListener("DOMContentLoaded", function () {
 				
 				
 	})
+	//#endregion 구매내역모달
 	
 	
+	//#region 출하지시내역 모달
     /*============================
-    	StackInquery 출하지시내역 모달 JS
+    	StackAdjust 출하지시내역 모달 JS
     ==============================*/
     
     var salesOrderModal = document.getElementById('salesOrderModal')
@@ -930,7 +920,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',
-		            hidden: false,
+		        },
+		        {
+		            header: '창고명',
+		            name: 'c13',
+		            align: "center",
+		            width: 70,
+		            whiteSpace: 'normal',
+		            editor: 'text',
+		            className:'border',
 		        }
 		    ]
 		});
@@ -956,9 +954,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				data.c7 = String(ele.incompleteQuantity);
 				data.c8 = String(ele.deliveryPrice);
 				data.c9 = ele.clientCode;
-				data.c10 = String(ele.stocksQuantity);
+				data.c10 = String(ele.currentQuantity);
 				data.c11 = ele.employeeName;
 				data.c12 = ele.employeeCode;
+				data.c13 = ele.whName;
 				dataArr.push(data);
 			})					
 			let salesFilteredData = exceptExitingRows(dataArr);
@@ -966,11 +965,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		})
 		
 	})
+    //#endregion 출하지시모달
     
-    
-    
+    //#region 재고조정보고서
     /*================================
-    	StackInquery 재고조정보고서 모달 JS
+    	StackAdjust 재고조정보고서 모달 JS
     ==================================*/
     
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
@@ -992,6 +991,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
           
     //재고조정 버튼 마우스오버
+    let overHandleCheck = false; // 출고수량의 재고초과 체크
     let reportBtn = document.getElementById("reportBtn");
     reportBtn.addEventListener("mouseover",function(){
 		if(grid.getRowCount()<1){		
@@ -1000,17 +1000,17 @@ document.addEventListener("DOMContentLoaded", function () {
 		if(grid.getRowCount()>0){
 			reportBtn.setAttribute("data-bs-toggle","modal")
 		}
-		let pageGrid = grid.getData();
-		//let itemCodeSet = new Set(); //페이지 그리드에 존재하는 행들의 item Set => 보류
-
+		let pageGrid = grid.getData();	
+				
+		let itemCodeArr = []; //페이지 그리드에 존재하는 행들의 itemCode모음
 		pageGrid.forEach(ele=>{
-			
-			//itemCodeSet.add(ele.c2); //페이지그리드에있는 상품코드 항목들 모은다. => 보류
-			
+						 
 			if(ele.c4 == '상품 출고'){ //1. 출하수량이 숫자가 아니거나 수량이 1보다작은경우 2. 출하수량이 재고수량보다 많은경우 3. 출하수량이 지시수량보다 많은경우 
-				if(isNaN(Number(ele.c6)) || Number(ele.c6) < 1 || Number(ele.c6) > Number(ele.c8) || Number(ele.c6) > Number(ele.c5)){
+				if(isNaN(Number(ele.c6)) || Number(ele.c6) < 1 || Number(ele.c6) > Number(ele.c8) 
+				|| Number(ele.c6) > Number(ele.c5) ){
 					reportBtn.removeAttribute("data-bs-toggle"); //출고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
 				}
+				itemCodeArr.push(ele.c2); //페이지에 있는 출고 row들의 품목코드 모으기!
 			}
 			if(ele.c4 == '상품 입고'){// 1. 입고수량이 숫자가 아니거나 수량이 1보다작은경우 2. 입고수량이 지시수량보다 많은경우
 				if(isNaN(Number(ele.c7)) || Number(ele.c7) < 1 || Number(ele.c7) > Number(ele.c5)){ //입고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
@@ -1019,43 +1019,51 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 			
 		})	
-		//페이지 그리드의 항목별 출하수량과 재고수량의 유효성검사를 위한부분 => 보류
-		/*let itemCodeArr = Array.from(itemCodeSet)
-		let numCheckObj = {};
 		
-		grid.getData().forEach(ele=>{
-			
-			itemCodeArr.forEach(ele2=>{
-				if(ele.c2 == ele2){
-					let obj = {};
-					`obj.${ele}` = ele.c8;
-					numCheckObj.push(obj)
-					console.log(numCheckObj)
-				}	
+		//페이지 그리드의 항목별 출하수량과 재고수량의 유효성검사를 위한부분 	
+		overHandleCheck = false;
+			//상품 출고 행들 중 중복제거
+		let filteredItemCodeArr = itemCodeArr.filter((ele, index)=>{
+			return itemCodeArr.indexOf(ele) === index;
+		})
+		//출고하는 품목들 중에서 같은 품목에 대해 출고수량의 합이 재고수량보다 많은경우 모달호출 클래스제거
+		filteredItemCodeArr.forEach(ele =>{
+			let total = 0;
+			let stock = 0;
+			pageGrid.forEach(ele2=>{
+				let checking = ele2.c2 = ele ? parseInt(ele2.c6) : 0;
+				total += checking;
+				stock = ele2.c2 = ele ? parseInt(ele2.c8) : 0;
 			})
-				
-		})*/
-			
+			overHandleCheck = stock < total ? true : false; 
+		})
+		if(overHandleCheck){
+			reportBtn.removeAttribute("data-bs-toggle");;
+		}
 	})   
+	
     let adjustTargetList = []; //이정보는 재고조정에 사용될 StocksAdjustVO객체(DB에 등록한거) 형태의 배열
     reportBtn.addEventListener("click", function(){		
 		if(grid.getRowCount()<1){						
 				alert('재고조정을 실시할 작업 건을 추가하세요.');						
 		}
-		
+		if(overHandleCheck){
+			alert('동일 품목에 대한 출하수량이 재고수량을 초과합니다.');
+			throw new Error("(출하수량 오버)재고조정 중지시키기!")
+		}
 		let pageGrid = grid.getData();
 		pageGrid.forEach(ele=>{
 			if(ele.c4 == '상품 출고'){	
 				if(isNaN(Number(ele.c6)) || Number(ele.c6) < 1 || Number(ele.c6) > Number(ele.c8) || Number(ele.c6) > Number(ele.c5)){ //c.5 지시수량 / c.6 실출하수량
 					alert('유효한 작업수량을 입력하세요.') //출고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
-					throw new Error("재고조정 중지시키기!");
+					throw new Error("(출고)재고조정 중지시키기!");
 				}
 			}
 			
 			if(ele.c4 == '상품 입고'){
 				if(isNaN(Number(ele.c7)) || Number(ele.c7) < 1 || Number(ele.c7) > Number(ele.c5)){ //입고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
 					alert('유효한 작업수량을 입력하세요.')				
-					throw new Error("재고조정 중지시키기!");
+					throw new Error("(입고)재고조정 중지시키기!");
 				}
 			}
 			
@@ -1073,23 +1081,24 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.a2 = ele.c2;
 			data.a3 = ele.c3;
 			data.a4 = ele.c8;
-			let filtedC6 = ele.c6.replace(/^0+/, '');
-			let filtedC7 = ele.c7.replace(/^0+/, '');
+			let filteredC6 = ele.c6.replace(/^0+/, '');
+			let filteredC7 = ele.c7.replace(/^0+/, '');
 			
 			if(ele.c4 == '상품 출고'){
-				data.a5 = "-" + filtedC6; //입고c7 / 출하 c6
+				data.a5 = "-" + filteredC6; //입고c7 / 출하 c6
 			} else {
-				data.a5 = filtedC7
+				data.a5 = filteredC7
 			}
-			data.a6 = ele.c4;
-			data.a7 = ele.c10;
+			data.a6 = ele.c11; //창고명
+			data.a7 = ele.c4; //조정사유
+			data.a8 = ele.c10; //hidden으로 넘길 사원코드
 			dataArr.push(data) 
 			
-			//프로시저 인자에 들어갈 데이터배열
+			//프로시저 인자에 들어갈 데이터배열 ->페이지그리드에서 정보 긁어옴., 이거 수정할거면 DB에 등록한 객체랑 자바 VO객체클래스랑 싹다 수정해야함. 반대도 마찬가지
 			let adjustTarget = {};
 			if(ele.c4 == '상품 출고'){
 				adjustTarget.salesNo = ele.c1; //입고c7 / 출하 c6
-				adjustTarget.purNo = null;
+				adjustTarget.purNo = null;   
 				adjustTarget.stocksStocks = ele.c6;		
 			} else {
 				adjustTarget.purNo = ele.c1
@@ -1111,9 +1120,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		//보고서 cell에 값 넣기
 		dataArr.forEach((ele,index)=>{
 			let tr = document.querySelector(`#adjustTbody tr:nth-child(${index+1})`)
-			for(let i=1; i<8; i++){
-				tr.querySelector(`td:nth-child(${i})`).innerHTML = ele[Object.keys(ele)[i-1]];
+			for(let i=1; i<9; i++){ //마지막 td는 hidden
+				tr.querySelector(`td:nth-child(${i})`).innerHTML = ele[Object.keys(ele)[i-1]];			
 			}
+			
 		})
 		
 		//일자에 값넣기
@@ -1158,9 +1168,13 @@ document.addEventListener("DOMContentLoaded", function () {
 				grid.resetData(data);
 			}
        })
+    //#endregion
+    
+    
+    //#region 사원조회   
        
     /*============================
-    	StackInquery 사원조회 모달 JS
+    	StackAdjust 사원조회 모달 JS
     ==============================*/
     // 모달 관련 JavaScript
     let humanModalBtn = document.getElementById('humanModal')
@@ -1233,8 +1247,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			let inputTag2 = document.getElementById('humanInput2');
 			inputTag.value = '';		
 			inputTag.value = grid8.getValue(rowKeyNum, 'c2');					
-			inputTag2.value = grid8.getValue(rowKeyNum, 'c1'); //사원코드가 들어갈 hidden input
-			console.log(inputTag.value);
+			inputTag2.value = grid8.getValue(rowKeyNum, 'c1'); //사원코드가 들어갈 hidden input			
 		}
 	})   
 	
@@ -1252,9 +1265,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		})
 		grid8.resetData(dataArr);
 	})
+	//#endregion 사원조회
+	
+	//#region 체크박스관련
 	
     /*===================================
-    	StackInquery 선택취소, 입력초기화 JS
+    	StackAdjust 선택취소, 입력초기화 JS
     =====================================*/ 
     
     //입력값 초기화버튼 이벤트
@@ -1289,7 +1305,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
     
     /*===================================
-    	StackInquery 그 외 JS
+    	StackAdjust 그 외 JS
     =====================================*/   
    
     //구매내역모달에서 선택버튼 클릭시 페이지그리드로 데이터이동      
@@ -1308,7 +1324,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c7 = '0';
 			data.c8 = ele.c10
 			data.c9 = ele.c11
-			data.c10 = ele.c12		
+			data.c10 = ele.c12
+			data.c11 = ele.c13 //창고명		
 			dataArr.push(data)
 		})
 		
@@ -1330,8 +1347,7 @@ document.addEventListener("DOMContentLoaded", function () {
     salesOrderInputBtn.addEventListener("click",function(){
 		let arr = grid7.getCheckedRows();
 		let dataArr = [];
-		
-		//c8에 넣을 데이터를 위한 fetch함수 필요
+				
 		arr.forEach(ele=>{
 			let data = {};
 			data.c1 = ele.c2;
@@ -1344,6 +1360,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c8 = ele.c10
 			data.c9 = ele.c11
 			data.c10 = ele.c12
+			data.c11 = ele.c13 //창고명
 			dataArr.push(data)
 		})
 		let selectedCtn = arr.length;
@@ -1401,9 +1418,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			row.c10 = ele.c10;	
 			row.c11 = ele.c11;
 			row.c12 = ele.c12;
+			row.c13 = ele.c13; //창고명
 			resultArr.push(row);
 		})		
 		return resultArr
 	}
 	
+	//#endregion 체크박스관련 & 그 외
 }); //End Point

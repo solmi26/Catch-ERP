@@ -94,9 +94,7 @@ public class StockServiceImpl implements StockService{
 	//재고조정 프로시저 
 	@Override
 	public int insertStocksAdjustment(List<StocksAdjustVO> stocksAdjustVO) {
-		System.out.println(stocksAdjustVO.get(0));
-		System.out.println(stocksAdjustVO.get(0).getPurNo());
-		System.out.println(stocksAdjustVO.get(0).getPurNo());
+
 		return stockMapper.insertAdjustment(stocksAdjustVO);
 	}
 	//최신 재고조정번호 조회
