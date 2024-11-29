@@ -10,34 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>거래처 조회</title>
 </head>
-    <style>
-        .price-input {
-            position: relative;
-        }
-
-        .price-input::after {
-            content: '원';
-            position: absolute;
-            right: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-        }
-
-        .sort-icon {
-            cursor: pointer;
-            padding: 2px;
-        }
-
-        .sort-icon:hover {
-            color: #0d6efd;
-        }
-
-        .list {
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
 
 <body>
     <div class="bg-white shadow-sm rounded" style="padding: 20px;">
@@ -68,7 +40,7 @@
                             </ul>
                             <div class="tab-content mt-3" id="customerTabContent">
                                 <!-- 기본 거래처 입력 내용 -->
-                                <div class="tab-pane fade  show active" id="basic" role="tabpanel"
+                                <div class="tab-pane fade show active" id="basic" role="tabpanel"
                                     aria-labelledby="basic-tab">
                                     <div class="mb-3 row">
                                         <label for="customerName" class="col-sm-3 col-form-label">상호(이름)</label>
@@ -157,10 +129,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">
-                                    <!-- 부가정보 탭 내용 -->
-                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -174,34 +142,35 @@
 
         <!-- 거래처 상세(수정) 모달창 -->
         <div class="modal fade" id="updateClientModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <form method="post" th:action="@{/business/updateClient}" name="updateClientForm">
-                    <div class="modal-content">
+                    <div class="modal-content" >
                         <div class="modal-header">
                             <h5 class="modal-title" id="customerModalLabel">거래처상세(수정)</h5>
                         </div>
                         <div class="modal-body">
                             <ul class="nav nav-tabs" id="customerTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="basic-tab" data-bs-toggle="tab"
-                                        data-bs-target="#basic" type="button" role="tab" aria-controls="basic"
+                                    <button class="nav-link active" id="detail-tab" data-bs-toggle="tab"
+                                        data-bs-target="#detail" type="button" role="tab" aria-controls="detail"
                                         aria-selected="true">기본</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="credit-price-tab" data-bs-toggle="tab"
-                                        data-bs-target="#credit-price" type="button" role="tab" aria-controls="credit-price"
-                                        aria-selected="false">품목</button>
+                                    <button class="nav-link" id="contract-tab" data-bs-toggle="tab"
+                                        data-bs-target="#contract-list" type="button" role="tab" aria-controls="contract-list"
+                                        aria-selected="false">계약목록</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="additional-tab" data-bs-toggle="tab"
-                                        data-bs-target="#additional" type="button" role="tab" aria-controls="additional"
-                                        aria-selected="false">부가정보</button>
+                                    <button class="nav-link" id="contractItem-tab" data-bs-toggle="tab"
+                                        data-bs-target="#contractItem" type="button" role="tab" aria-controls="contractItem"
+                                        aria-selected="false">계약품목</button>
                                 </li>
                             </ul>
                             <div class="tab-content mt-3" id="customerTabContent">
                                 <!-- 기본 거래처 입력 내용 -->
-                                <div class="tab-pane fade  show active" id="basic" role="tabpanel"
-                                    aria-labelledby="basic-tab">
+                                <div class="tab-pane fade show active" id="detail" role="tabpanel"
+                                    aria-labelledby="detail-tab">
+                                    <input type="hidden" id="clientCode" name="clientCode">
                                     <div class="mb-3 row">
                                         <label for="customerName" class="col-sm-3 col-form-label">상호(이름)</label>
                                         <div class="col-sm-9">
@@ -217,19 +186,19 @@
                                     <div class="mb-3 row">
                                         <label for="industry" class="col-sm-3 col-form-label">업태</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="state" name="state" placeholder="업태" required>
+                                            <input type="text" class="form-control" id="state" name="state" placeholder="업태"  readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
                                         <label for="category" class="col-sm-3 col-form-label">종목</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="event" name="event" placeholder="종목" required>
+                                            <input type="text" class="form-control" id="event" name="event" placeholder="종목"  readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
                                         <label for="phone" class="col-sm-3 col-form-label">회사 전화</label>
                                         <div class="col-sm-9">
-                                            <input type="tel" class="form-control" id="employeeTel" name="employeeTel" placeholder="회사 전화" required>
+                                            <input type="tel" class="form-control" id="companyTel" name="companyTel" placeholder="회사 전화" required>
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
@@ -254,16 +223,10 @@
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
-                                        <label for="mobilePhone" class="col-sm-3 col-form-label">모바일</label>
-                                        <div class="col-sm-9">
-                                            <input type="tel" class="form-control" id="mobilePhone" name="mobilePhone" placeholder="모바일" required>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
                                         <label for="zipCode" class="col-sm-3 col-form-label">우편번호</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="sample6_postcode" name="zipcode" placeholder="우편번호">
+                                                <input type="text" class="form-control" id="zipcode2" name="zipcode" placeholder="우편번호">
                                                 <button class="btn btn-outline-secondary" id="findZipCode" type="button">우편번호 검색</button>
                                             </div>
                                         </div>
@@ -271,32 +234,61 @@
                                     <div class="mb-3 row">
                                         <label for="address" class="col-sm-3 col-form-label">주소</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="address" name="address" placeholder="주소" required>
+                                            <input type="text" class="form-control" id="address2" name="address" placeholder="주소" required>
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
                                         <label for="address2" class="col-sm-3 col-form-label">상세주소</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소" required>
+                                            <input type="text" class="form-control" id="detailAddress2" name="detailAddress" placeholder="상세주소" required>
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
                                         <label for="manager" class="col-sm-3 col-form-label">담당자</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="manager" name="employeeName" placeholder="담당자">
+                                                <input type="text" class="form-control" id="employeeName" name="employeeName" placeholder="담당자">
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mb-3 row">
+                                        <label for="mobilePhone" class="col-sm-3 col-form-label">담당자연락처</label>
+                                        <div class="col-sm-9">
+                                            <input type="tel" class="form-control" id="employeeTel" name="employeeTel" placeholder="모바일">
+                                        </div>
+                                    </div>
                                 </div>
-                                
-                                <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">
-                                    <!-- 부가정보 탭 내용 -->
+                                <div class="mb-3 row tab-pane fade" id="contract-list" role="tabpanel" aria-labelledby="contract-tab">
+                                    <!-- 계약품목 탭 내용 -->
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <select class="form-select form-control" id="sort-field">
+                                                <option value="conName" selected>계약 명</option>
+                                                <option value="conDate">계약 일자</option>
+                                                <option value="conSdate">계약 시작일</option>
+                                                <option value="conEdate">계약 종료일</option>
+                                                <option value="totalAmount">총 계약금액</option>
+                                                <option value="status">계약상태</option>
+                                            </select>
+                                    
+                                            <select class="form-select form-control" id="sort-direction">
+                                                <option value="asc" selected>오름차순</option>
+                                                <option value="desc">내림차순</option>
+                                            </select>
+                                    
+                                            <button class="btn btn-outline-secondary" id="sort-trigger">정렬</button>
+                                        </div>
+                                    </div>
+                                    <div id="contractGrid"></div> <!-- modal tabulator 사용 -->
+                                </div>
+                                <div class="tab-pane fade" id="contractItem" role="tabpanel" aria-labelledby="contractItem-tab">
+                                    <!-- 계약품목 탭 내용 -->
+                                    <div id="contractItemGrid"></div> <!-- modal tabulator 사용 -->
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">수정</button>
+                            <button type="submit" id="updateClientInfo" class="btn btn-success">수정</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>
                     </div>
@@ -304,8 +296,10 @@
             </div>
         </div>
     </div>
+
     <script>
-        let grid;
+        let contractGrid;
+        let contractItemGrid;
         // 거래처 상세 모달
         let clientDetailModal = new bootstrap.Modal(document.querySelector('#updateClientModal'));
         function makeClientToastGrid(clientList) {
@@ -370,17 +364,17 @@
             return grid;
         }
 
-        function makeClientListTabulator(clientList) {
-            let grid = new Tabulator("#tabulatorGrid", {
+        function makeClientContractTabulator(clientContractList) {
+            let grid = new Tabulator("#contractGrid", {
             layout:"fitColumns",
             pagination:"local",
-            data: clientList,
-            paginationSize:12,
+            data: clientContractList,
+            paginationSize:8,
             movableColumns:true,
             paginationCounter:"rows",
             resizableColumnFit:true,
             paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
-                return "등록된 거래처 : "+totalRows+"개";
+                return "계약 건수 : "+totalRows+"건";
             },
             rowFormatter:function(row){
                 row.getElement().classList.add(".table-light"); //mark rows with age greater than or equal to 18 as successful;
@@ -401,14 +395,93 @@
                 }
             },
             columns:[
-                {title:"거래처코드", field:"clientCode", width:150, sorter:"string", headerFilter:"input"},
-                {title:"거래처명", field:"clientName", width:200, sorter:"string", headerFilter:"input"},
-                {title:"거래유형", field:"tradeType", width:120, sorter:"string", headerFilter:"input"},
-                {title:"연락처", field:"companyTel", width:200, sorter:"string", headerFilter:"input"},
-                {title:"주소", field:"address", width:400, sorter:"string", headerFilter:"input"},
-                {title:"적요", field:"summary", width:470, sorter:"string", headerFilter:"input"},
+                {title:"거래처명", field:"clientName", width:120},
+                {title:"계약 명", field:"conName", width:210, sorter:"string"},
+                {title:"계약 일자", field:"conDate", width:160, sorter:"date"},
+                {title:"계약 시작일", field:"conSdate", width:160, sorter:"date"},
+                {title:"계약 종료일", field:"conEdate", width:160, sorter:"date"},
+                {title:"총 계약금액", field:"totalAmount", width:170, sorter:"number", bottomCalc:"sum", sorterParams:{
+                    thousandSeparator:",",
+                    decimalSeparator:",",
+                    alignEmptyValues:"top",
+                }},
+                {title:"계약상태", field:"status", width:140, sorter:"string"}
             ],
             });
+            return grid;
+        }
+        
+        //makeClientContractTabulator Sort Trigger
+        document.getElementById("sort-trigger").addEventListener("click", function(){
+            table.setSort(fieldEl.options[fieldEl.selectedIndex].value, dirEl.options[dirEl.selectedIndex].value);
+        });
+
+        function makeClientItemToastGrid(clientContractItemList) {
+            let grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
+            el: document.querySelector('#contractItemGrid'),
+            data: clientContractItemList, // toast ui table 에 입력할 데이터값
+            scrollX: true,
+            scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
+            pageOptions: {
+                useClient: true,
+                perPage: 13
+            },
+            columns: [
+                        {
+                            header: '계약 번호',
+                            name: 'conNo',
+                            sortable: true,
+                            align: 'left'
+                        },  
+                        {
+                            header: '품목 코드',
+                            name: 'itemCode',
+                            sortable: true,
+                            filter: 'select',
+                            align: 'center',
+                            hidden: true
+                        },
+                        {
+                            header: '품목 명',
+                            name: 'itemName',
+                            filter: 'select',
+                            sortable: true,
+                            align: 'left'
+                        },
+                            
+                        {
+                            header: '단가',
+                            name: 'price',
+                            filter: 'select',
+                            sortable: true,
+                            align: 'left'
+                        },
+                        {
+                            header: '부가세',
+                            name: 'vat',
+                            sortable: true,
+                            align: 'left'
+                        },
+                        {
+                            header: '총 금액',
+                            name: 'totalPrice',
+                            sortable: true,
+                            align: 'left'
+                        },
+                        {
+                            header: '재고 수량',
+                            name: 'stocksQuantity',
+                            sortable: true,
+                            align: 'left'
+                        },
+                        {
+                            header: '이미지',
+                            name: 'image',
+                            sortable: true,
+                            align: 'left'
+                        },
+                    ],
+            });                                                                                                                                                                                                                                                      
             return grid;
         }
         
@@ -421,79 +494,127 @@
             console.log(clientCode);
             fetch('/api/business/clientDetail/' + clientCode)
             .then(result => result.json())
-            .then(clientInfo => {
-                //#region 상세 정보창의 input => value 에 들어갈 클라이언트 정보들
+            .then(clientTotalInfo => {
+                let clientContractList = clientTotalInfo.clientContractList; // 클라이언트 계약 목록
+                let clientContractItemList = clientTotalInfo.clientContractItemList; // 클라이언트 계약 품목 목록
+                console.log(clientContractItemList);
+
+                contractGrid = makeClientContractTabulator(clientContractList);
+                contractItemGrid = makeClientItemToastGrid(clientContractItemList);
+
+                //#region 상세 정보창의 input => value 에 들어갈 클라이언트 정보들(clientTotalInfo.(clientInfo/clientContractList/clientContractItemList))
                 /**
-                 * @ clientName / ceoName / state / event / employeeTel / tradeType
-                 * @ fax / clientBacct / mobilePhone / address / detailAddress / managerName
+                 * @clientTotalInfo : 클라이언트 단건 상세 정보
+                 * @clientInfo : 클라이언트테이블 단건 상세 조회
+                 * @clientContractList  : 단일 클라이언트의 계약 정보 전체 조회
+                 * @clientContractItemList : 단일 클라이언트의 단건 계약의 계약 품목 전체 조회
                 */
-                document.updateClientForm.querySelector('#clientName').value = clientInfo.clientName;
-                document.updateClientForm.querySelector('#ceoName').value = clientInfo.ceoName;
-                document.updateClientForm.querySelector('#state').value = clientInfo.state;
-                document.updateClientForm.querySelector('#event').value = clientInfo.event;
-                document.updateClientForm.querySelector('#companyTel').value = clientInfo.companyTel;
-                document.updateClientForm.querySelector('#tradeType').value = clientInfo.tradeType;
-                document.updateClientForm.querySelector('#fax').value = clientInfo.fax;
-                document.updateClientForm.querySelector('#clientBacct').value = clientInfo.clientBacct;
-                document.updateClientForm.querySelector('#sample6_postcode').value = clientInfo.zipCode;
-                document.updateClientForm.querySelector('#address').value = clientInfo.address;
-                document.updateClientForm.querySelector('#detailAddress').value = clientInfo.detailAddress;
-                document.updateClientForm.querySelector('#manager').value = clientInfo.employeeName;
-                document.updateClientForm.querySelector('#employeeTel').value = clientInfo.employeeTel;
-                //#endregion
-            });
-
-            
+                document.updateClientForm.querySelector('#clientCode').value = clientTotalInfo.clientInfo.clientCode;
+                document.updateClientForm.querySelector('#clientName').value = clientTotalInfo.clientInfo.clientName;
+                document.updateClientForm.querySelector('#ceoName').value = clientTotalInfo.clientInfo.ceoName;
+                document.updateClientForm.querySelector('#state').value = clientTotalInfo.clientInfo.state;
+                document.updateClientForm.querySelector('#event').value = clientTotalInfo.clientInfo.event;
+                document.updateClientForm.querySelector('#companyTel').value = clientTotalInfo.clientInfo.companyTel;
+                document.updateClientForm.querySelector('#tradeType').value = clientTotalInfo.clientInfo.tradeType;
+                document.updateClientForm.querySelector('#fax').value = clientTotalInfo.clientInfo.fax;
+                document.updateClientForm.querySelector('#clientBacct').value = clientTotalInfo.clientInfo.clientBacct;
+                document.updateClientForm.querySelector('#zipcode2').value = clientTotalInfo.clientInfo.zipcode;
+                document.updateClientForm.querySelector('#address2').value = clientTotalInfo.clientInfo.address;
+                document.updateClientForm.querySelector('#detailAddress2').value = clientTotalInfo.clientInfo.detailAddress;
+                document.updateClientForm.querySelector('#employeeName').value = clientTotalInfo.clientInfo.employeeName;
+                document.updateClientForm.querySelector('#employeeTel').value = clientTotalInfo.clientInfo.employeeTel;
+                //#endregion                
+            });            
         }
-        document.addEventListener('DOMContentLoaded', function () {
-            // 우편번호 검색
-            document.querySelector('#findZipCode').addEventListener('click', function () {
-                new daum.Postcode({
-                    oncomplete: function(data) {
-                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+        // DaumMapApi 우편번호 찾기 state 0 : 등록 / 1: 수정
+        function daumMapApi(state) {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                        var addr = ''; // 주소 변수
-                        var extraAddr = ''; // 참고항목 변수
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    let addr = ''; // 주소 변수
+                    let extraAddr = ''; // 참고항목 변수
 
-                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                            addr = data.roadAddress;
-                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                            addr = data.jibunAddress;
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
                         }
-
-                        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                        if(data.userSelectedType === 'R'){
-                            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                                extraAddr += data.bname;
-                            }
-                            // 건물명이 있고, 공동주택일 경우 추가한다.
-                            if(data.buildingName !== '' && data.apartment === 'Y'){
-                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                            }
-                            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                            if(extraAddr !== ''){
-                                extraAddr = ' (' + extraAddr + ')';
-                            }
-                            // 조합된 참고항목을 해당 필드에 넣는다.
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        if(state == 0) {
                             document.getElementById("detailAddress").value = extraAddr;
-                        
                         } else {
-                            document.getElementById("detailAddress").value = '';
+                            document.getElementById("detailAddress2").value = extraAddr;
                         }
-
-                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                        document.getElementById('sample6_postcode').value = data.zonecode;
+                        
+                    
+                    } else {
+                        document.getElementById("detailAddress").value = '';
+                    }
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    if(state == 0) {
+                        document.getElementById('zipcode').value = data.zonecode;
                         document.getElementById("address").value = addr;
                         // 커서를 상세주소 필드로 이동한다.
                         document.getElementById("detailAddress").focus();
+                    } else {
+                        document.getElementById('zipcode2').value = data.zonecode;
+                        document.getElementById("address2").value = addr;
+                        // 커서를 상세주소 필드로 이동한다.
+                        document.getElementById("detailAddress2").focus();
                     }
-                }).open();
-            }) 
+                }
+            }).open();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // 우편번호 검색 이벤트(Daum Api)
+            document.querySelector('#insertClientModal').querySelector('#findZipCode').addEventListener('click', function () {
+                daumMapApi(0);
+            })
+            document.querySelector('#updateClientModal').querySelector('#findZipCode').addEventListener('click',function () {
+                daumMapApi(1)
+            })
+            // 기본 탭 클릭할 시 수정 버튼 보여주기
+            document.querySelector('#detail-tab').addEventListener('click',function () {
+                document.querySelector('#updateClientInfo').removeAttribute('hidden','');
+            })
+
+            // 계약 탭 클릭할 시 수정 버튼 hidden처리
+            document.querySelector('#contract-tab').addEventListener('click',function () {
+                window.setTimeout(function(){
+                    contractItemGrid.refreshLayout();
+                }, 200)
+                document.querySelector('#updateClientInfo').setAttribute('hidden','');
+            })
+
+            // 모달 - 품목 탭 클릭 -> toastGrid 새로고침 , button type hidden
+            document.querySelector('#contractItem-tab').addEventListener('click',function () {
+                window.setTimeout(function(){
+                    contractItemGrid.refreshLayout();
+                }, 200)
+                document.querySelector('#updateClientInfo').setAttribute('hidden','');
+            })
 
             // 유효성 검사
             function validation() {
@@ -531,25 +652,12 @@
                         let clientCode = grid.getValue(event.rowKey,"clientCode");
                         // 거래처 상세 조회 모달
                         fetchClientCode(clientCode);
-                        // 거래처 원장 모달
+                        // 클라이언트 상세 정보 모달
                         clientDetailModal.show();
                     }
                 })
-                //makeClientListTabulator(clientList);
             });
 
-            var saveButton = document.getElementById('saveButton');
-            saveButton.addEventListener('click', function () {
-                // 저장 로직을 여기에 구현
-                console.log('저장 버튼이 클릭되었습니다.');
-            });
-
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'F8') {
-                    event.preventDefault();
-                    saveButton.click();
-                }
-            });
         });
 
         

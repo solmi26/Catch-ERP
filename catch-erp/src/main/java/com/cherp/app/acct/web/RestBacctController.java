@@ -2,7 +2,6 @@ package com.cherp.app.acct.web;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +10,6 @@ import com.cherp.app.acct.vo.BacctVO;
 import com.cherp.app.common.vo.CommonCodeVO;
 
 @RestController
-@CrossOrigin
 /**
  * RestBacct 컨트롤러
  */
@@ -29,7 +27,7 @@ public class RestBacctController {
 	}
 	
 	// JSON 은행목록 데이터
-	@GetMapping("bankList")
+	@GetMapping("api/account/bank")
 	public List<CommonCodeVO> bankList() {
 		return bacctService.commonBankList();
 	}
