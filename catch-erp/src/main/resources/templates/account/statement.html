@@ -66,6 +66,66 @@
 	      background-color: #ffebee;
 	  }
 	  
+	  /* 전체 컨테이너*/    
+      .content {
+        background-color: #fff;
+        padding: 1rem;
+      }
+
+	  /* 그리드 전 form 관련 높이, 글자크기 */
+      .form-control,
+      .form-select,
+      .input-group-text {
+        height: 48px;
+        font-size: 1rem !important;
+      }
+      
+	/* 그리드 전 form 제목 길이 지정 */
+      .input-group-text {
+        width: 130px;
+      }
+
+       /* 버튼 그룹 기본 설정 */
+	  .btn-group {
+	    display: flex;
+	    gap: 5px; /* 버튼 간 간격 */
+	    font-size: 18px;
+	    margin-bottom: 10px;
+	  }
+	
+	  /* 그리드 위 영역 */
+	  .grid-controls {
+	    display: flex;
+	    justify-content: flex-start; /* 양쪽 끝으로 버튼 그룹 배치 */
+	    align-items: center;
+	    margin-top:50px;
+	  }
+	  
+	  
+	  .input-group-text{
+        font-weight: bold;
+        color: #5a5c69;
+        /*background-color: #f0f4ff;*/
+	  }
+	  
+	  .btn img {
+	    width: 20px;
+	    height: 20px;
+	  }
+	  
+	  .color{
+	  	background-color: #fff7e6;
+	  }
+	  
+	  input:read-only{
+	  	background-color: #eee !important;
+	  }
+	  
+	  .stm{
+	  	padding-left: 20px !important;
+	  	padding-top: 20px !important;
+	  }
+	  
 	</style>
 	
   </head>
@@ -80,10 +140,11 @@
 		
 		<!-- 버튼 그룹 -->
 		<div class="button-group mt-3 position-relative">
+			<!-- 신규등록 버튼 드롭다운 기능 -->
 		    <button type="button" class="btn btn-success btn" id="new">신규 등록</button>
 		    <div id="dropdownMenu" class="dropdown-menu-custom">
-		        <button class="dropdown-item sales-item">매출전표 등록</button>
-		        <button class="dropdown-item purchase-item">매입전표 등록</button>
+		        <button class="dropdown-item sales-item" th:onclick="|location.href='@{/sales/insertSales}'|">매출전표 등록</button>
+		        <button class="dropdown-item purchase-item" th:onclick="|location.href='@{/sales/insertPurchase}'|">매입전표 등록</button>
 		    </div>
 		    <button type="button" class="btn btn-danger btn" id="deleteButton">선택 삭제</button>
 		    <button type="button" class="btn btn-secondary btn" id="print">인쇄</button>
@@ -104,53 +165,245 @@
       
     </div> <!-- 전체 페이지 컨테이너 끝. -->
 
-	<!-- 매출전표 신규 등록 모달 -->
-    <div class="modal fade" id="mkModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md">
+	<!-- 매입전표 신규 등록 모달, 수정, 삭제 -->
+    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">매출 전표 등록</h5>
+                    <h5 class="modal-title" id="modalLabel">매입 전표</h5>
                 </div>               
-                <div class="modal-body p-0">
-                    <div id="acctGrid">
-                    </div>
+                <div class="modal-body p-0 stm">
+               <form>
+
+        <!-- 전표일자 및 전표No -->
+        <div class="row mb-3">
+        <!-- 전표일자 -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">전표일자</span>
+              <input type="date" class="form-control" name="date" id="date"/>
+            </div>
+          </div>
+          <!-- 전표No -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">전표 No.</span>
+              <input type="text" class="form-control" readonly="readonly" name="no" value="-" id="no"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- 연결전표 및 거래처 -->
+        <div class="row mb-3">
+        <!-- 연결전표 -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">연결전표</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="판매전표 내역보기"
+                name="saleslip"
+                id="salesInput"
+              />
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#salesModal" id="openSalesModal">
+                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+              </button>
+            </div>
+          </div>
+          <!-- 거래처 -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">거래처</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="거래처 선택"
+                name="clientName"
+                id="clientInput"
+                readonly="readonly"
+              />
+	           <input type="text" style="display:none" id="clientInput2" name="clientCode">
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal">
+                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 부가세 유형 및 세금계산서 구분 -->
+        <div class="row mb-3">
+        <!-- 부가세 유형 -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">부가세 유형</span>
+              <select class="form-select">
+                <option value="과세" selected="selected">과세</option>
+                <option value="면세">면세</option>
+                <option value="영세">영세</option>
+              </select>
+            </div>
+          </div>
+          <!-- 계정명 -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">계정명</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="회계계정 선택"
+                name="acctName"
+                id="acctInput"
+                readonly="readonly"
+              />
+              <input type="text" style="display:none" id="acctInput2" name="acctCode">
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="openAcctModal">
+                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 공급가액/부가세 -->
+        <div class="row mb-3">
+        <!-- 공급가액 -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text color">공급가액</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="공급가액"
+                name="price"
+                id="price"
+              />
+            </div>
+          </div>
+          <!-- 부가세 -->
+          <div class="col-md-4">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text color">부가세</span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="부가세"
+                name="vat"
+              />
+            </div>
+          </div>
+        </div>
+        
+		<!-- 총 금액 -->
+        <div class="row mb-3">
+          <div class="col-md-8">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text color">합계</span>
+              <input type="text" class="form-control" name="amount" id="amount" placeholder="합계"/>
+            </div>
+          </div>
+          </div>
+
+        <!-- 적요 -->
+        <div class="row mb-3">
+          <div class="col-md-8">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">적요</span>
+              <input type="text" id="summary" class="form-control" name="summary" placeholder="적요"/>
+            </div>
+          </div>
+          </div>
+    </form>
                 </div>
                 <div class="modal-footer justify-content-between" >
-                    <p><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+                    <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
+                 <div>
+			        <!-- 리스트로 이동하는 버튼 -->
+			        <button type="button" class="btn btn-success" id="save-btn">수정</button>
+			        <button type="button" class="btn btn-danger">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+        
+                </div>
+            </div>
+                
+        </div>
+       
+    </div>
+    
+        <!-- 거래처 검색 모달 HTML -->
+	    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-lg">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">거래처검색</h5>
+	                   
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="clientGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	     <!-- 회계 계정 검색 모달 HTML -->
+	    <div class="modal fade" id="acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-md">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">회계 계정 검색</h5>
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="acctGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	 <!-- 판매전표 모달 HTML -->
+	<div class="modal fade" id="salesModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">판매전표</h5>
+                    
+                </div>
+                <div class="modal-body">
+                   
+                    <div class="d-flex justify-content-left mb-3">
+                        
+                        <div>
+                        	<button class="btn btn-secondary filter-item" data-state="r1">미발행 건 보기</button>
+                            <button class="btn btn-success filter-item"  data-state="r2">발행완료 건 보기</button>
+                        </div>
+                    </div>
+                    
+                    <div id="salesGrid"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div>
+                       <p class="msg"><small>※ 매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</small></p>
+                    </div>
+                    <div>
+                    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+     
 	
-<script>
-    // "신규 등록" 버튼 클릭 시 드롭다운 메뉴 표시/숨기기
-    document.getElementById('new').addEventListener('click', function () {
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-    });
-
-    // 드롭다운 항목 클릭 이벤트
-    document.querySelector('.sales-item').addEventListener('click', function () {
-        alert('매출전표 등록 선택됨');
-        document.getElementById('dropdownMenu').style.display = 'none';
-    });
-
-    document.querySelector('.purchase-item').addEventListener('click', function () {
-        alert('매입전표 등록 선택됨');
-        document.getElementById('dropdownMenu').style.display = 'none';
-    });
-
-    // 메뉴 외부 클릭 시 드롭다운 메뉴 숨기기
-    document.addEventListener('click', function (event) {
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        const newButton = document.getElementById('new');
-
-        if (!newButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-            dropdownMenu.style.display = 'none';
-        }
-    });
-</script>
+	<script th:src="@{/js/account/salesSlip.js}"></script>
+	<script th:src="@{/js/account/purchaseSlip.js}"></script>
 	<script th:src="@{/js/account/statement.js}"></script>
     
   </body>

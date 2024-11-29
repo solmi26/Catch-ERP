@@ -62,6 +62,37 @@
 		WHERE   client_code = #{clientCode}
 	</select>
 	
+	<select id="selectAllClientContract" resultType="com.cherp.app.buss.vo.ContractVO">
+		SELECT   ct.CON_NO
+		        ,ct.CLIENT_CODE
+		        ,c.CLIENT_NAME
+		        ,ct.EMOLOYEE_NAME
+		        ,ct.CON_NAME
+		        ,ct.CON_SDATE
+		        ,ct.CON_EDATE
+		        ,ct.CON_DATE
+		        ,ct.TOTAL_AMOUNT
+		        ,ct.STATUS
+		        ,ct.URL
+		        ,ct.WRITER
+		FROM    CONTRACT ct JOIN CLIENT c 
+		                    ON ct.client_code = c.client_code
+		WHERE   ct.CLIENT_CODE = #{clientCode}
+	</select>
+	
+	<select id="selectAllClientContractItem" resultType="com.cherp.app.buss.vo.ContractVO">
+		SELECT   ITEM_NAME
+				,PRICE
+				,STOCKS_QUANTITY
+				,SUPPLY_PRICE
+				,VAT
+				,CON_NO
+				,ITEM_CODE
+				,TOTAL_PRICE
+				,IMAGE
+		FROM    CONTRACT_ITEM
+		WHERE   CON_NO = #{conNO}
+	</select>
 	<insert id="insertClient" parameterType="com.cherp.app.acct.vo.ClientPsVO">
 		INSERT INTO client
 				(CLIENT_CODE
@@ -75,6 +106,7 @@
 				,ADDRESS
 				,DETAIL_ADDRESS
 				,EMPLOYEE_NAME
+				,EMPLOYEE_TEL
 				,CLIENT_BACCT
 				,CLIENT_DATE
 				,STATE
@@ -91,10 +123,28 @@
 				,#{address}
 				,#{detailAddress}
 				,#{employeeName}
+				,#{employeeTel}
 				,#{clientBacct}
 				,SYSDATE
 				,#{state}
 				,#{event}
 				)
 	</insert>
+	
+	<update id="updateClient" parameterType="com.cherp.app.acct.vo.ClientPsVO">
+		UPDATE   CLIENT
+		SET		 CEO_NAME 		= #{ceoName}
+				,CLIENT_NAME	= #{clientName}
+				,TRADE_TYPE 	= #{tradeType}
+				,TRADE_STATUS 	= #{tradeStatus}
+				,COMPANY_TEL 	= #{companyTel}
+				,FAX 			= #{fax}
+				,ZIPCODE 		= #{zipcode}
+				,ADDRESS 		= #{address}
+				,DETAIL_ADDRESS = #{detailAddress}
+				,EMPLOYEE_NAME 	= #{employeeName}
+				,EMPLOYEE_TEL 	= #{employeeTel}
+				,CLIENT_BACCT 	= #{clientBacct}
+		WHERE    CLIENT_CODE	= #{clientCode}
+	</update>
 </mapper>

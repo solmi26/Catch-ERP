@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    //숫자타입 인풋 렌더러 (석진제작)
+    //숫자타입 인풋 렌더러 (석진제작1)
     class gridNumber {
         constructor(props) {
             const el = document.createElement('input');
@@ -75,9 +75,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             label.innerText = `${grid.getIndexOfRow(rowKey) + 1}`;
             const hiddenInput = document.createElement('input');
             hiddenInput.className = 'hidden-input';
-            hiddenInput.id = 'selectCheck'  + String(rowKey);
+            hiddenInput.id = 'selectCheck' + String(rowKey);
 
-            console.log(grid.el.id);
+            // console.log(grid.el.id);
             const customInput = document.createElement('span');
             customInput.className = 'custom-input';
 
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             data: [],
             columns: [{
                 header: '판매전표번호',
-                name: 'salesslip_no',
+                name: 'saleslipNo',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -180,34 +180,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
                 className: 'border'
             }, {
-                header: '창고',
-                name: 'whName',
+                header: '매출계정명',
+                name: 'accCode',
+                editor: 'text',
                 align: "center",
-                width: 200,
-                whiteSpace: 'normal',
-                formatter: 'listItemText',
-                className: 'border'
-            },{
-                header: '재고수량',
-                name: 'stocksQuantity',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border'
-            }, {
-                header: '부족수량',
-                name: 'deficiencyQuantity',
-                align: "center",
-                width: 100,
+                width: 150,
                 whiteSpace: 'normal',
                 sortingType: 'desc',
                 className: 'border'
             }, {
-                header: '단가',
+                header: '금액합계',
                 name: 'deliveryPrice',
                 editor: 'text',
                 align: "center",
@@ -215,6 +199,162 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '공급가액',
+                name: 'supplyPrice',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+
+            }, {
+                header: '부가세',
+                name: 'vat',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            },],
+        });
+
+        // 모든 판매전표 조회
+        fetch('/sales/selectSalesChit')
+            .then(result => result.json())
+            .then(data => salesChit.resetData(data))
+            .catch(error => console.log(error))
+
+        // 판매내역 전표 모달
+        salesChit.on("click", (ev) => {
+
+            const salesChitColumn = ev.columnName
+
+            if (salesChitColumn === 'saleslipNo') {
+                var saleslipHistoryModal = new bootstrap.Modal(document.getElementById('saleslipHistoryModal'), {
+                    keyboard: false
+                })
+
+                saleslipHistoryModal.show();
+            }
+
+            let saleSlip = salesChit.getValue(ev.rowKey, 'saleslipNo');
+
+            fetch('/sales/selectSaleslip/' + saleSlip)
+                .then(result => result.json())
+                .then(data => saleslipHistory.resetData(data))
+                .catch(error => alert('판매전표별 내역을 불러오지 못했습니다.'))
+
+            window.setTimeout(function () {
+                saleslipHistory.refreshLayout();
+            }, 300)
+        })
+        return salesChit;
+    }
+    initSalesChitGrid();
+
+    let saleslipHistory;
+    const initSaleslipHistory = () => {
+
+        saleslipHistory = new Grid({
+            el: document.getElementById('saleslipHistory'),
+            scrollX: true,
+            scrollY: true,
+            header: {height: 40},
+            bodyHeight: 400,
+            rowHeight: 40,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                type: 'checkbox', header: `
+                        <span class="custom-input">
+                            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+                            <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+                        </span>`, renderer: {
+                    type: gridCheckbox
+                }
+            }],
+            data: [],
+            columns: [{
+                header: '판매번호',
+                name: 'salesNo',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '창고명',
+                name: 'whName',
+                align: "center",
+                width: 200,
+                whiteSpace: 'normal',
+                editor: 'text',
+                className: 'border'
+            }, {
+                header: '품목명',
+                name: 'itemName',
+                editor: 'text',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '수량',
+                name: 'quantity',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // 숫자에 콤마 추가
+                }
+
+            }, {
+                header: '출고단가',
+                name: 'deliveryPrice',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '출고상태',
+                name: 'deliveryStatus',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                className: 'border'
+            }, {
+                header: '출하예정일',
+                name: 'deliveryDate',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
                 className: 'border'
             }, {
                 header: '공급가액',
@@ -225,7 +365,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             }, {
                 header: '부가세',
                 name: 'vat',
@@ -235,15 +378,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             },],
         });
-        return salesChit;
+
+        return saleslipHistory;
     }
-
-    // 샘플 데이터
-
-    initSalesChitGrid();
-
+    initSaleslipHistory();
 });
 

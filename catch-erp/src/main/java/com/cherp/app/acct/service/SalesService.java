@@ -22,7 +22,7 @@ public interface SalesService {
 	public List<SalesVO> selectAllSlip();
 	
 	//단건 조회
-	public SalesVO saleInfo(SalesVO salesVO);		// 매출 단건 조회
+	public SalesVO slipInfo(SalesVO salesVO);		// 매출, 매입 단건 조회
 	public PayablesVO payableInfo(PayablesVO payablesVO); // 채무거래 단건 조회
 	public SalesVO receivableInfo(SalesVO salesVO); // 채권거래 단건 조회
 	public SalesVO invoiceInfo(SalesVO salesVO);	// 세금계산서 내역 단건 조회

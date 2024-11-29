@@ -68,3 +68,7 @@
 	  .btn-group.right {
 	    justify-content: flex-end; /* 오른쪽 정렬 */
 	  }
+	  
+	  .msg{
+	  color : red;
+	  }

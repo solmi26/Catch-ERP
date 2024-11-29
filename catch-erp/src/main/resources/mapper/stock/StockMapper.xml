@@ -157,7 +157,7 @@
 		     	 ]]>
 		    </if>
 		    AND delivery_status != 'b3'
-		    ORDER BY hi.delivery_date DESC   
+		    ORDER BY hi.delivery_date DESC
 	</select>
 	<!-- 재고조정 프로시저호출 -->
 	<insert id="insertAdjustment" statementType="CALLABLE"> 

@@ -61,7 +61,6 @@ public class RestStockAdjustController {
 	//판매내역조회 
 	@GetMapping("/salesChitNo")
 	public List<SalesHistoryVO> getSalesChitNo(HistorySearchVO searchVO){
-		
 		return stockAdjustService.getSalesHistoryList(searchVO);
 	}
 	
