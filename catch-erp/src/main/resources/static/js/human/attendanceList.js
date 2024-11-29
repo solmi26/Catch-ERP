@@ -6,6 +6,7 @@
 datoToGrid ()
 //그리드 클릭 이벤트
  grid.on('click',function (ev) {
+	console.log(ev)
 	if (ev.targetType == 'cell') {
 		window.setTimeout(function(){
         atModifyGrid.refreshLayout();
@@ -34,8 +35,22 @@ document.querySelector('.save-Btn').addEventListener('click',function () {
 //#endregion
 
 //#region 삭제버튼 클릭이벤트
-document.querySelector('delete-Btn').addEventListener('click',function () {
-	let 
+document.querySelector('.delete-Btn').addEventListener('click',function () {
+	let checkRow = grid.getCheckedRows()
+	if  (checkRow.length == 0 ) {
+		return;
+	}
+	let str = ''
+	checkRow.forEach(ele => {
+		str += ','
+		str += ele.attHistoryCode
+	})
+	fetch('/employees/att?attHistoryCode='+str.substring(1),
+	      {method:'delete'})
+	.then(data => data.json())
+	.then(data => {
+		datoToGrid()
+	})
 })
 //#endregion 삭제버튼
 
