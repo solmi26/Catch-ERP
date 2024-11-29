@@ -110,6 +110,19 @@ public class SalesController {
 		return "저장 성공";
 	}
 
+	// 전자세금계산서 조회 페이지(화면) by sm
+	@GetMapping("sales/invoiceListView")
+	public String invoiceListView(Model model) {
+		return "account/invoice";
+	}
+	
+	// 전자세금계산서 조회 페이지(기능) by sm
+	@GetMapping("sales/invoiceList")
+	@ResponseBody
+	public List<SalesVO> invoiceList(){
+		return salesService.invoiceList();
+	}
+	
 	/**
 	 * 채무감소 등록을 위한 컨트롤러
 	 * 

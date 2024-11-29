@@ -77,7 +77,7 @@
             , employee_name
             , employee_code
             , vat
-            , slip_state
+            , find_code(slip_state) as slip_state
             , delivery_price
         FROM sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
     </select>
@@ -111,7 +111,7 @@
     </select>
 
 
-
+	<!-- 매출전표 전표상태별 판매 전표 조회 -->
     <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT saleslip_no
             , insert_date
@@ -124,7 +124,7 @@
             , employee_name
             , employee_code
             , vat
-            , slip_state
+            ,find_code(slip_state) as slip_state
         FROM sales_chit
         WHERE slip_state = #{slipState}
     </select>

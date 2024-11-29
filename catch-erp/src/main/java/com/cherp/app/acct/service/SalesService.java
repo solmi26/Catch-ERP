@@ -19,7 +19,7 @@ public interface SalesService {
 	public List<PayablesVO> ClientPayableList(String clientCode);	// 채무 거래처 전체 조회
 	public List<SalesVO> ClientReceivableList(String clientCode);	// 채권 거래처 전체 조회
 	public List<SalesVO> acctList(String debitSide);
-	public List<SalesVO> selectAllSlip();
+	public List<SalesVO> selectAllSlip(); // 매출, 매입전표 전체 조회
 	
 	//단건 조회
 	public SalesVO slipInfo(SalesVO salesVO);		// 매출, 매입 단건 조회

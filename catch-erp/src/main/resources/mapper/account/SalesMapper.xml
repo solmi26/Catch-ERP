@@ -194,6 +194,15 @@
 	            ,#{salesChitNo}
 	       )
 	</insert>
+	
+	<select id="invoiceList" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT invoice_no
+              ,invoice_date
+              ,find_code(invoice_status) as invoice_status
+              ,nts_invoice_date
+              ,saleslip_no
+		FROM invoice
+	</select>
 
 
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
