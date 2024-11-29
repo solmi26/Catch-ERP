@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    //숫자타입 인풋 렌더러 (석진제작)
+    //숫자타입 인풋 렌더러 (석진제작1)
     class gridNumber {
         constructor(props) {
             const el = document.createElement('input');
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             hiddenInput.className = 'hidden-input';
             hiddenInput.id = 'selectCheck' + String(rowKey);
 
-            console.log(grid.el.id);
+            // console.log(grid.el.id);
             const customInput = document.createElement('span');
             customInput.className = 'custom-input';
 
@@ -199,7 +199,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
@@ -209,7 +212,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+
             }, {
                 header: '부가세',
                 name: 'vat',
@@ -219,7 +226,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             },],
         });
 
@@ -227,33 +237,35 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetch('/sales/selectSalesChit')
             .then(result => result.json())
             .then(data => salesChit.resetData(data))
-            .catch(error => alert("전표 조회 실패했습니다."))
+            .catch(error => console.log(error))
 
         // 판매내역 전표 모달
         salesChit.on("click", (ev) => {
 
             const salesChitColumn = ev.columnName
 
-            if(salesChitColumn === 'saleslipNo'){
+            if (salesChitColumn === 'saleslipNo') {
                 var saleslipHistoryModal = new bootstrap.Modal(document.getElementById('saleslipHistoryModal'), {
                     keyboard: false
                 })
+
                 saleslipHistoryModal.show();
             }
+
+            let saleSlip = salesChit.getValue(ev.rowKey, 'saleslipNo');
+
+            fetch('/sales/selectSaleslip/' + saleSlip)
+                .then(result => result.json())
+                .then(data => saleslipHistory.resetData(data))
+                .catch(error => alert('판매전표별 내역을 불러오지 못했습니다.'))
+
+            window.setTimeout(function () {
+                saleslipHistory.refreshLayout();
+            }, 300)
         })
         return salesChit;
     }
     initSalesChitGrid();
-
-
-
-
-    //모달실행 시 grid refresh를 위한 코드
-    document.getElementById('saleslipHistoryModal').addEventListener('click', function () {
-        window.setTimeout(function () {
-            saleslipHistory.refreshLayout();
-        }, 200)
-    });
 
     let saleslipHistory;
     const initSaleslipHistory = () => {
@@ -308,7 +320,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 width: 150,
                 whiteSpace: 'normal',
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // 숫자에 콤마 추가
+                }
+
             }, {
                 header: '출고단가',
                 name: 'deliveryPrice',
@@ -318,7 +334,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             }, {
                 header: '출고상태',
                 name: 'deliveryStatus',
@@ -328,7 +347,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 className: 'border'
-            },{
+            }, {
+                header: '출하예정일',
+                name: 'deliveryDate',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                className: 'border'
+            }, {
                 header: '공급가액',
                 name: 'supplyPrice',
                 editor: 'text',
@@ -337,7 +365,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             }, {
                 header: '부가세',
                 name: 'vat',
@@ -347,13 +378,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
             },],
         });
 
         return saleslipHistory;
     }
     initSaleslipHistory();
-
 });
 

@@ -21,7 +21,5 @@ public class OrdersVO {
     private int quantity; // 수량
     private int price; // 단가
     private int supplyPrice; // 공급가액
-
-
-    // 출고 단가 포함 유무 고민..
+    private int vat; // 부가세
 }
