@@ -284,7 +284,7 @@
                                         <label for="manager" class="col-sm-3 col-form-label">담당자</label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="manager" name="manager" placeholder="담당자">
+                                                <input type="text" class="form-control" id="manager" name="employeeName" placeholder="담당자">
                                             </div>
                                         </div>
                                     </div>
@@ -423,23 +423,28 @@
             .then(result => result.json())
             .then(clientInfo => {
                 console.log(clientInfo);
+                //#region 상세 정보창의 input => value 에 들어갈 클라이언트 정보들
+                /**
+                 * @ clientName / ceoName / state / event / employeeTel / tradeType
+                 * @ fax / clientBacct / mobilePhone / address / detailAddress / managerName
+                */
+                document.updateClientForm.querySelector('#clientName').value = clientInfo.clientName;
+                document.updateClientForm.querySelector('#ceoName').value = clientInfo.ceoName;
+                document.updateClientForm.querySelector('#state').value = clientInfo.state;
+                document.updateClientForm.querySelector('#event').value = clientInfo.event;
+                document.updateClientForm.querySelector('#employeeTel').value = clientInfo.employeeTel;
+                document.updateClientForm.querySelector('#tradeType').value = clientInfo.tradeType;
+                document.updateClientForm.querySelector('#fax').value = clientInfo.fax;
+                document.updateClientForm.querySelector('#clientBacct').value = clientInfo.clientBacct;
+                document.updateClientForm.querySelector('#mobilePhone').value = clientInfo.mobilePhone;
+                document.updateClientForm.querySelector('#sample6_postcode').value = clientInfo.zipCode;
+                document.updateClientForm.querySelector('#address').value = clientInfo.address;
+                document.updateClientForm.querySelector('#detailAddress').value = clientInfo.detailAddress;
+                document.updateClientForm.querySelector('#manager').value = clientInfo.employeeName;
+                //#endregion
             });
 
-            //#region 상세 정보창의 input => value 에 들어갈 클라이언트 정보들
-            document.updateClientForm.querySelector('#clientName')
-            document.updateClientForm.querySelector('#ceoName')
-            document.updateClientForm.querySelector('#state')
-            document.updateClientForm.querySelector('#event')
-            document.updateClientForm.querySelector('#employeeTel')
-            document.updateClientForm.querySelector('#tradeType')
-            document.updateClientForm.querySelector('#fax')
-            document.updateClientForm.querySelector('#clientBacct')
-            document.updateClientForm.querySelector('#mobilePhone')
-            document.updateClientForm.querySelector('#sample6_postcode')
-            document.updateClientForm.querySelector('#address')
-            document.updateClientForm.querySelector('#detailAddress')
-            document.updateClientForm.querySelector('#manager')
-            //#endregion
+            
         }
         document.addEventListener('DOMContentLoaded', function () {
             // 우편번호 검색
