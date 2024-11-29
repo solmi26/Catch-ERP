@@ -639,9 +639,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',
-		            formatter: function(e){
-		                return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		            },
+			        formatter: function (e) {
+			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+			          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			        },
 		        },
 		        {
 		            header: '재고',
@@ -908,9 +909,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',
-		            formatter: function(e){
-		                return e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		            },
+		            formatter: function (e) {
+			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+			          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			        },
 		        },
 		        {
 		            header: '재고',

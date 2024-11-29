@@ -152,18 +152,21 @@ document.addEventListener("DOMContentLoaded", function () {
 	fetch("/stocks/item")
 	.then(result => result.json())
 	.then(result => {
+		
 		gridDataArr = [];
 		result.forEach(ele=>{
 			let dataRow = {}
 			dataRow.itemCode = ele.itemCode;
 			dataRow.itemName = ele.itemName;
+			gridDataArr.push(dataRow);
 		})
-		itemGrid.resetData(gridDataArr);
+		itemGrid.resetData(gridDataArr)
 	})
     
-    /*==========================================
-		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
-	============================================*/
+    //#region 재고조회 페이지 조회정보 그리드
+    /*========================
+		   재고조회 토스트 그리드
+	  ========================*/
     const initGrid = () => {
         // 그리드 객체
 
