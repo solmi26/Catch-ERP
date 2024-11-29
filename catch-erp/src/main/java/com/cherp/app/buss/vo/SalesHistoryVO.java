@@ -23,13 +23,13 @@ public class SalesHistoryVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date deliveryDate;     // 출하 예정일
 	private String saleslipNo;     // 판매전표 번호
-	private String acc; 		   // 매출계정
 	private int incompleteQuantity; // 미완료수량
 	
 	/* 판매전표 [sales_chit] 컬럼*/
 	private String clientCode; 	   // 거래처 코드
 	private String clientName; 	   // 거래처 명
-	
+	private String employeeCode;   // 사원 코드
+	private String employeeName;   // 사원 이름
 	/* 매입계약 품목 [contract_item] 컬럼*/
 	private int stocksQuantity; // 재고 수량
 }

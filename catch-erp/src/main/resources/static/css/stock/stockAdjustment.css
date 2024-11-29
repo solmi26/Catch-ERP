@@ -192,8 +192,9 @@
         .table-row-height {
             height: 40px;
         }
-
-        
+		#adjustTbody tr td:nth-child(7) {
+			display:none;
+		}
     /*============================
     StackInquery 구매내역 모달 CSS
     ==============================*/ 

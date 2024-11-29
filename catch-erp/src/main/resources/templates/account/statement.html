@@ -9,27 +9,62 @@
  
 	<style>
 	
-		/* 매출전표는 파랑색 */	
+	/* 매출전표는 파랑색 */	
 	  .sales {
 	    background-color: #e0f7fa !important; /* 밝은 파랑색 */
 	  }
 	
-		/* 매입전표는 빨간색 */	
+	/* 매입전표는 빨간색 */	
 	  .purchase {
 	    background-color: #ffebee !important; /* 밝은 빨강색 */
 	  
 	  }
 	  
-		.r1 {
-		  color: red;
-		}
-		.r2 {
-		  color: green;
-		}
-		.r3{
-			color: blue;
-		}
-
+	 .r1 {
+	  color: red;
+	 }
+	 .r2 {
+	  color: green;
+	 }
+	 .r3{
+		color: blue;
+	 }
+	 
+	  /* 드롭다운 기본 스타일 */
+	  .dropdown-menu-custom {
+	      display: none;
+	      position: absolute;
+	      top: 100%;
+	      left: 0;
+	      background-color: #ffffff;
+	      border: 1px solid #ccc;
+	      border-radius: 4px;
+	      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	      z-index: 1000;
+	  }
+	
+	  /* 드롭다운 항목 스타일 */
+	  .dropdown-item {
+	      padding: 10px 20px;
+	      cursor: pointer;
+	      text-align: left;
+	      border-bottom: 1px solid #f0f0f0;
+	      transition: background-color 0.2s ease, color 0.2s ease;
+	  }
+	
+	  .dropdown-item:last-child {
+	      border-bottom: none;
+	  }
+	
+	  /* 매출전표: 파란색으로 변경 */
+	  .sales-item:hover {
+	      background-color: #e0f7fa;
+	  }
+	
+	  /* 매입전표: 빨간색으로 변경 */
+	  .purchase-item:hover {
+	      background-color: #ffebee;
+	  }
 	  
 	</style>
 	
@@ -42,15 +77,18 @@
     
     	<!-- 그리드 위 구역 -->
       <div class="d-flex justify-content-between align-items-center mb-3">
-      
-      <!-- 버튼 그룹 -->
-      <div class="button-group mt-3">
-        <button type="button" class="btn btn-success btn" id="new">신규 등록</button>
-        <button type="button" class="btn btn-danger btn" id="deleteButton">선택 삭제</button>
-        <button type="button" class="btn btn-secondary btn" id="print">인쇄</button>
-        <button type="button" class="btn btn-secondary btn" id="excel">Excel</button>
-      </div>
-      
+		
+		<!-- 버튼 그룹 -->
+		<div class="button-group mt-3 position-relative">
+		    <button type="button" class="btn btn-success btn" id="new">신규 등록</button>
+		    <div id="dropdownMenu" class="dropdown-menu-custom">
+		        <button class="dropdown-item sales-item">매출전표 등록</button>
+		        <button class="dropdown-item purchase-item">매입전표 등록</button>
+		    </div>
+		    <button type="button" class="btn btn-danger btn" id="deleteButton">선택 삭제</button>
+		    <button type="button" class="btn btn-secondary btn" id="print">인쇄</button>
+		    <button type="button" class="btn btn-secondary btn" id="excel">Excel</button>
+		</div>
        <!-- 조회 기간 -->
         <!-- <span class="date-range">2024/05/01 ~ 2024/12/15</span> -->
       
@@ -66,6 +104,53 @@
       
     </div> <!-- 전체 페이지 컨테이너 끝. -->
 
+	<!-- 매출전표 신규 등록 모달 -->
+    <div class="modal fade" id="mkModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">매출 전표 등록</h5>
+                </div>               
+                <div class="modal-body p-0">
+                    <div id="acctGrid">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between" >
+                    <p><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+<script>
+    // "신규 등록" 버튼 클릭 시 드롭다운 메뉴 표시/숨기기
+    document.getElementById('new').addEventListener('click', function () {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // 드롭다운 항목 클릭 이벤트
+    document.querySelector('.sales-item').addEventListener('click', function () {
+        alert('매출전표 등록 선택됨');
+        document.getElementById('dropdownMenu').style.display = 'none';
+    });
+
+    document.querySelector('.purchase-item').addEventListener('click', function () {
+        alert('매입전표 등록 선택됨');
+        document.getElementById('dropdownMenu').style.display = 'none';
+    });
+
+    // 메뉴 외부 클릭 시 드롭다운 메뉴 숨기기
+    document.addEventListener('click', function (event) {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const newButton = document.getElementById('new');
+
+        if (!newButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+</script>
 	<script th:src="@{/js/account/statement.js}"></script>
     
   </body>
