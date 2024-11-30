@@ -460,6 +460,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 let params = {
                     whCode: whCode, itemCode: itemCode
                 }
+                console.log(whCode, itemCode)
 
                 if (whCode && itemCode) {
                     fetch('/quantity/' + whCode + '/' + itemCode)
@@ -475,7 +476,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 salesChit.setValue(ev.rowKey, 'deficiencyQuantity', deficiencyQuantity)
                             }
                         })
-                        .catch(error => console.log('창고 재고수량을 불러오지 못 했습니다.'))
+                        .catch(error => console.log(error))
                 }
             }
         });

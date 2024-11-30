@@ -67,19 +67,41 @@
                     FROM  saleslip_history
                     GROUP BY saleslip_no)
         SELECT a.saleslip_no
-            , insert_date
-            , client_code
-            , client_name
-            , acc_code
-            , dep_bacct
-            , supply_price
-            , sales_summary
-            , employee_name
-            , employee_code
-            , vat
-            , slip_state
-            , delivery_price
+                ,insert_date
+                ,client_code
+                ,client_name
+                ,acc_code
+                ,dep_bacct
+                ,supply_price
+                ,sales_summary
+                ,employee_name
+                ,employee_code
+                ,vat
+                ,slip_state
+                ,delivery_price
         FROM sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
+    </select>
+    <!-- 판매전표 검색 -->
+    <select id="searchSalesChit">
+        SELECT a.saleslip_no
+                ,insert_date
+                ,client_code
+                ,client_name
+                ,acc_code
+                ,dep_bacct
+                ,supply_price
+                ,sales_summary
+                ,employee_name
+                ,employee_code
+                ,vat
+                ,slip_state
+                ,delivery_price
+        FROM sales_chit a JOIN saleslip_history b
+        ON a.saleslip_no = b.saleslip_no
+        WHERE a.insert_date = #{insertDate}
+        AND b.delivery_date = #{deliveryDate}
+        AND a.client_name = #{clientName}
+        AND b.item_name = #{itemName};
     </select>
 
     <!--  판매전표별 판매내역 보기  -->
@@ -110,21 +132,19 @@
         d.saleslip_no = #{saleslipNo}
     </select>
 
-
-
     <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT saleslip_no
-            , insert_date
-            , client_code
-            , client_name
-            , acc_code
-            , dep_bacct
-            , supply_price
-            , sales_summary
-            , employee_name
-            , employee_code
-            , vat
-            , slip_state
+                ,insert_date
+                ,client_code
+                ,client_name
+                ,acc_code
+                ,dep_bacct
+                ,supply_price
+                ,sales_summary
+                ,employee_name
+                ,employee_code
+                ,vat
+                ,slip_state
         FROM sales_chit
         WHERE slip_state = #{slipState}
     </select>
