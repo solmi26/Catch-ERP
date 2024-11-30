@@ -9,6 +9,7 @@ import com.cherp.app.buss.vo.PurchaseChitVO;
 import com.cherp.app.buss.vo.PurchaseHistoryVO;
 import com.cherp.app.buss.vo.SalesHistoryVO;
 import com.cherp.app.stck.vo.ContractItemVO;
+import com.cherp.app.stck.vo.ItemSearchVO;
 import com.cherp.app.stck.vo.StocksAdjustVO;
 import com.cherp.app.stck.vo.StocksVO;
 
@@ -21,4 +22,5 @@ public interface StockMapper {
 	public List<SalesHistoryVO> selectSalesHistoryList(Map<String, Object> map); //판매내역조회
 	public int insertAdjustment(@Param("StocksAdjustVO") List<StocksAdjustVO> stocksadjustVO); // 재고조정 프로시저 호출
 	public StocksVO selectAdjustNo(); //최신 재고조정번호 조회
+	public List<ContractItemVO> selectAllSearchItemList(ItemSearchVO itemSearchVO); //제품정보 조건조회
 }

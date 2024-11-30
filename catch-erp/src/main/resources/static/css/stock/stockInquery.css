@@ -22,10 +22,10 @@
      .list {
        	margin-bottom : 10px;
      }
-     .tui-grid-layer-selection, .tui-grid-cell-selected {
-	    background-color: rgba(255, 0, 0, 0.2) !important; /* 예: 연한 빨간색 */
-	    border-color: rgba(255, 0, 0, 0.5) !important; /* 테두리 색상 */
-	 }   
+    /*  .tui-grid-layer-selection, .tui-grid-cell-selected {
+	    background-color: rgba(255, 0, 0, 0.2) !important; 예: 연한 빨간색
+	    border-color: rgba(255, 0, 0, 0.5) !important; 테두리 색상
+	 }  */  
 	 .hidden-input{
     	display: none;
 	 }
@@ -41,6 +41,12 @@
    	 .hidden-input:checked + label {
    		background-color: #2bd62b;
    	 }
+   	 /* input태그 number타입 화살표없애기 */
+   	 input::-webkit-outer-spin-button,
+	 input::-webkit-inner-spin-button {
+	    -webkit-appearance: none;
+	    margin: 0;
+	 }	
 	/*============================
     	StackInquery 거래처 모달 CSS
     ==============================*/

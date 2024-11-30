@@ -6,7 +6,7 @@
 	<head>
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <title>재고조회 및 조정</title>	    	    
+	    <title>재고조회 및 관리</title>	    	    
 	    <link rel="stylesheet" th:href="@{/css/stock/stockInquery.css}" />
 	</head>
 	<body>
@@ -16,43 +16,38 @@
 	            <h4>재고조회</h4>
 	        </div>
 	        <!-- Form -->
-	        <div class="card">
-	          <form class="bg-light p-4 rounded card-body">
+	        <div class="card col-md-12">
+	          <form class="bg-light p-4 rounded card-body" id="searchForm">
 	              <div class="row g-3">
 	                  <div class="col-md-12">
 	                      <div class="row g-3">
-	                          <div class="col-md-2">
-	                              <label class="form-label">조회시작일자</label>
-	                              <input type="date" class="form-control">
-	                          </div>
-	                          <div class="col-md-2">
-	                            <label class="form-label">조회종료일자</label>
-	                            <input type="date" class="form-control">
-	                        </div>
+	                          
 	                          <div class="col-md-3">
 	                              <label class="form-label">거래처</label>
 	                              <div class="input-group">
-	                                  <input type="text" class="form-control" id="clientInput">
+	                                  <input type="text" class="form-control" id="clientInput" name="clientInput">
+	                                  <input type="text" style="display:none;" class="form-control" id="clientHiddenInput" name="clientHiddenInput">
 	                                  <!-- 거래처 모달 트리거 버튼 -->
-	                                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                  <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 	                                  </svg></button>
 	                              </div>
 	                          </div>
-	                          <div class="col-md-2">
+	                          <!-- <div class="col-md-2">
 	                              <label class="form-label">창고</label>
 	                              <div class="input-group">
 	                                  <input type="text" class="form-control" id="whInput">
-	                                  <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#warehouseModal" id="openWarehouseModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                  <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#warehouseModal" id="openWarehouseModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 	                                  </svg></button>
 	                              </div>
-	                          </div>
+	                          </div> -->
 	                          <div class="col-md-3">
 	                            <label class="form-label">품목명</label>
 	                            <div class="input-group">
-	                                <input type="text" class="form-control" id="itemInput">
-	                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#purchaseOrderModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	                                <input type="text" class="form-control" id="itemInput" name="itemInput">
+	                                <input type="text" style="display:none;" class="form-control" id="itemHiddenInput" name="itemHiddenInput">
+	                                <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#purchaseOrderModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 	                                  </svg></button>
 	                            </div>
@@ -64,29 +59,17 @@
 	                      <label class="form-label">입력단가</label>
 	                      <div class="input-group">
 	                          <div class="price-input">
-	                              <input type="text" class="form-control" placeholder="0">
+	                              <input type="number" class="form-control" placeholder="0" name="minPrice">
 	                          </div>
 	                          <span class="input-group-text" style="border:none;">-</span>
 	                          <div class="price-input">
-	                              <input type="text" class="form-control" placeholder="0">
-	                          </div>
-	                      </div>
-	                  </div>
-	                  <div class="col-md-6">
-	                      <label class="form-label">출력단가</label>
-	                      <div class="input-group">
-	                          <div class="price-input">
-	                              <input type="text" class="form-control" placeholder="0">
-	                          </div>
-	                          <span class="input-group-text" style="border:none;">-</span>
-	                          <div class="price-input">
-	                              <input type="text" class="form-control" placeholder="0">
+	                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
 	                          </div>
 	                      </div>
 	                  </div>
 	              </div>
 	              <div style="margin-top: 10px;">
-	                <button class="btn btn-primary">조회하기</button>
+	                <button type="button" class="btn btn-primary" id="inqueryBtn">조회하기</button>
 	              </div>
 	          </form>
 	        </div>	
@@ -94,10 +77,8 @@
 	        <!-- 재고조회 및 조정 페이지의 출력 될 Table -->
 	        <div class="table-responsive">
 	            <div id="wrap">
-	                <div id="inqueryGrid">
-	        
-	                </div>
-	               
+	                <div id="inqueryGrid"> </div>
+	                <div id="pagination" class="tui-pagination"></div>
 	            </div>
 	        </div>
 		        
@@ -125,7 +106,7 @@
 	    </div>
 	    
 	    <!-- 창고 검색 모달 HTML -->
-	    <div class="modal fade" id="warehouseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <!-- <div class="modal fade" id="warehouseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-lg">
 	            <div class="modal-content">
 	                <div class="modal-header">
@@ -142,7 +123,7 @@
 	                </div>
 	            </div>
 	        </div>
-	    </div>
+	    </div> -->
 	    
 	   	<!-- 상품 검색 모달 HTML -->
 	    <div class="modal fade" id="purchaseOrderModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -165,7 +146,7 @@
 	            </div>
 	        </div>
 	    </div>	    	   	  	    
-	    	    
+	     	    
     <!-- 재고조회에 전체적용되는 JS -->
 	<script th:src="@{/js/stock/stockInquery.js}"></script>
 	</body>

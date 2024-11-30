@@ -194,6 +194,27 @@
 	            ,#{salesChitNo}
 	       )
 	</insert>
+	
+	<!-- 세금계산서 발행 목록 조회 -->
+	<select id="invoiceList" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT invoice_no
+              ,invoice_date
+              ,find_code(invoice_status) as invoice_status
+              ,nts_invoice_date
+              ,saleslip_no
+              ,(select client_name
+                 from client c
+                 where c.client_code = (
+                    SELECT client_code
+                    FROM  sales s
+                    WHERE s.sales_chit_no = i.saleslip_no))  as client_name 
+            ,(SELECT supply_price
+              FROM sales s
+              WHERE s.sales_chit_no = i.saleslip_no) as supply_price
+		FROM invoice i
+		ORDER BY invoice_date desc
+		
+	</select>
 
 
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
@@ -328,4 +349,51 @@
 		DELETE FROM purchase
 		WHERE purchase_chit_no = #{purchaseChitNo}
 	</delete>
+	
+	<!-- 매출전표 수정 -->
+	<update id="updateSales" parameterType="com.cherp.app.acct.vo.SalesVO"></update>
+	
+	<!-- 매입전표 수정 -->
+	<update id="updatePurchase" parameterType="com.cherp.app.acct.vo.PayablesVO"></update>
+	
+	<!-- 매출전표 단건 조회 -->
+	<select id="selectSales">
+		SELECT sales_chit_no
+		       ,chit_date
+		       ,(select client_name
+                 from client c
+                 where c.client_code = s.client_code)as client_code
+		       ,acct_name
+		       ,supply_price
+		       ,vat
+		       ,total_price
+		       ,summary
+		       ,saleslip_no
+		       ,invoice_no
+		       ,writer
+		       ,rec_balance
+		       ,rec_status
+		FROM sales s
+		WHERE sales_chit_no = #{salesChitNo}
+	</select>
+	
+	<!-- 매입전표 단건 조회 -->
+	<select id="selectPurchase" >
+		SELECT purchase_chit_no
+		       ,chit_date
+		       ,(select client_name
+                 from client c
+                 where c.client_code = p.client_code)as client_code
+               ,acct_name
+               ,supply_price
+               ,vat
+               ,total_price
+               ,writer
+               ,decrease_balance
+               ,summary
+               ,purcslip_no
+		FROM purchase p
+		WHERE purchase_chit_no = #{purchaseChitNo}
+	</select>
+
 </mapper>

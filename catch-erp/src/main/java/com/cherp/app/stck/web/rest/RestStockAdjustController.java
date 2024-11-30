@@ -18,6 +18,7 @@ import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
+import com.cherp.app.stck.vo.ItemSearchVO;
 import com.cherp.app.stck.vo.StocksAdjustVO;
 import com.cherp.app.stck.web.StockAdjustController;
 
@@ -74,6 +75,12 @@ public class RestStockAdjustController {
 	@GetMapping("/stocksAdjustNo")
 	public Long stocksAdjustNo() {
 		return stockAdjustService.getAdjustNo();
+	}
+	
+	//재고조회 
+	@GetMapping("/itemInfo")
+	public List<ContractItemVO> getItemInfo (ItemSearchVO itemSearchVO){
+		return stockAdjustService.getItemInfoList(itemSearchVO);
 	}
 	
 }

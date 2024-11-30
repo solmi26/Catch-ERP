@@ -22,10 +22,10 @@
      .list {
        	margin-bottom : 10px;
      }
-     .tui-grid-layer-selection, .tui-grid-cell-selected {
-	    background-color: rgba(255, 0, 0, 0.2) !important; /* 예: 연한 빨간색 */
-	    border-color: rgba(255, 0, 0, 0.5) !important; /* 테두리 색상 */
-	 }   
+     /* .tui-grid-layer-selection, .tui-grid-cell-selected {
+	    background-color: rgba(255, 0, 0, 0.2) !important; 예: 연한 빨간색
+	    border-color: rgba(255, 0, 0, 0.5) !important; 테두리 색상
+	 }  */  
 	 /*.hidden-input{
     	display: none;
 	 }
@@ -90,7 +90,13 @@
             color: #0052cc;
             width: 100px;
         }
-    
+    	
+    	.r1 {
+		  color: red;
+		}
+		.r2 {
+		  color: blue;
+		}
     /*============================
     	StackInquery 담당자검색 모달 CSS
     ==============================*/
@@ -192,7 +198,7 @@
         .table-row-height {
             height: 40px;
         }
-		#adjustTbody tr td:nth-child(7) {
+		#adjustTbody tr td:nth-child(8) {
 			display:none;
 		}
     /*============================

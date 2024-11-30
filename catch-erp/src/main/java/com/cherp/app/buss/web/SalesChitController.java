@@ -5,6 +5,9 @@ import java.util.List;
 import com.cherp.app.buss.vo.SaleslipHistoryVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.*;
 
 import com.cherp.app.buss.service.SalesChitService;
@@ -19,7 +22,7 @@ public class SalesChitController {
         this.salesChitService = salesChitService;
     }
     
-    // 매출전표 전체 조회
+    // 판매전표 전체 조회
 	@ResponseBody
     @GetMapping("sales/selectSalesChit")
 	public List<SalesChitVO> selectSalesShit(Model model){

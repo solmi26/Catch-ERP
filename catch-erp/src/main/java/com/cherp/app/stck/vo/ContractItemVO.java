@@ -15,5 +15,9 @@ public class ContractItemVO {
 	private String itemCode; 	// 품목코드
 	private int totalPrice; 	// 총금액
 	private String image; 		// 이미지
+	
+	/* 거래처 [CLIENT] 테이블 컬럼 */
+	private String clientName; // 거래처명
+	private String clientCode; // 거래처코드
 
 }

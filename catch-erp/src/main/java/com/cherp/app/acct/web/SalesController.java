@@ -45,7 +45,7 @@ public class SalesController {
 		return "account/regPayReduction";
 	}
 	
-	// 전표 관리 페이지(조회 화면) by sm
+	// 전표 관리 페이지(조회/화면) by sm
 	@GetMapping("sales/selectSlipView")
 	public String selectSlipView(Model model) {
 		List<SalesVO> salesList = salesService.selectAllSlip();
@@ -53,7 +53,7 @@ public class SalesController {
 		return "account/statement";
 	}
 	
-	// 전표 관리 페이지(조회 기능) by sm
+	// 전표 관리 페이지(조회/기능) by sm
 	@GetMapping("sales/selectSlip")
 	@ResponseBody
 	public List<SalesVO> selectSlip() {
@@ -66,6 +66,13 @@ public class SalesController {
 	public String deleteSlip(@RequestBody List<SalesVO> salesVO) {
 		salesService.deleteSlip(salesVO);
 		return "삭제 성공";
+	}
+	
+	// 매입, 매출전표 상세조회(기능) by sm
+	@GetMapping("sales/selectSlipInfo")
+	@ResponseBody
+	public SalesVO selectSlip(SalesVO salesVO) {
+		return salesService.slipInfo(salesVO);
 	}
 	
 	// 매출 전표 등록(화면) by sm
@@ -103,6 +110,31 @@ public class SalesController {
 		return "저장 성공";
 	}
 
+	// 전자세금계산서 조회 페이지(화면) by sm
+	@GetMapping("sales/invoiceListView")
+	public String invoiceListView(Model model) {
+		return "account/invoice";
+	}
+	
+	// 전자세금계산서 조회 페이지(기능) by sm
+	@GetMapping("sales/invoiceList")
+	@ResponseBody
+	public List<SalesVO> invoiceList(){
+		return salesService.invoiceList();
+	}
+	
+	// 매입 계약 등록 페이지
+	@GetMapping("sales/insertContractView")
+	public String insertContractView(Model model) {
+		return "account/contractInsert";
+	}
+	
+	// 매입 계약 조회 페이지
+	@GetMapping("sales/contractView")
+	public String contractView(Model model) {
+		return "account/contract";
+	}
+	
 	/**
 	 * 채무감소 등록을 위한 컨트롤러
 	 * 

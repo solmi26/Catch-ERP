@@ -170,12 +170,16 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         console.log(data);
         alert("저장이 완료되었습니다.");
+        document.salesForm.reset();
       })
       .catch((error) => {
         console.error("Error: ", error);
         alert("서버와 연결에 실패했습니다.");
       });
   });
+  
+
+
 
   // 전체 모달 관련
   class ButtonRenderer {
@@ -591,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "c1") {
       rowKeyNum = ev.rowKey;
-      let inputTag1 = document.getElementById("salesInput");
+      let inputTag1 = document.getElementById("joinInput");
       let inputTag2 = document.getElementById("clientInput");
       let inputTag3 = document.getElementById("clientInput2");
       let inputTag4 = document.getElementById("price");

@@ -65,41 +65,22 @@
     
     //숫자타입 인풋 렌더러 (석진제작)   -> 템플릿 공통코드로 병합 
   	//숫자있는 체크박스 (석진제작)	    -> 템플릿 공통코드로 병합
-  
-/*==========================================
-		재고조정과 관련된 토스트 그리드 객체와 함수 (첫번째 그리드)
-============================================*/
+ 
 document.addEventListener("DOMContentLoaded", function () {
-    
-    //모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용.
+        
+    /*!== TOAST UI GRID refresh & 공통 설정 ==!*/
+    let modalBtn = document.querySelectorAll(".mBtn");
+    for(btn of modalBtn){
+    	btn.addEventListener("click",()=>{
+			//그리드 refresh()
+			window.setTimeout(function(){
+            	clientGrid.refreshLayout();
+            	itemGrid.refreshLayout();
+        	}, 200);
+		})
+	}
+	/*!!==모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용. ==!!*/
 	const Grid = tui.Grid;
-	/*const filterOptions = {
-	  type: 'text', // 필터 타입 (text, number, date 등)
-	  operatorLabel: {
-	    // 조건 한글화
-	    Select All: '같음',
-	    notEquals: '같지 않음',
-	    contains: '포함',
-	    startsWith: '시작 문자',
-	    endsWith: '끝 문자',
-	    lessThan: '보다 작음',
-	    greaterThan: '보다 큼',
-	  }
-	};
-	const filterOptions = {
-		type: "text",
-		operatorLabel: {
-			 contains: '포함됨',
-                     eq: '같음',
-                     neq: '같지 않음',
-                     startsWith: '시작함',
-                     endsWith: '끝남',
-                     greaterThan: '이후',
-                     greaterThanOrEqualTo: '이후(포함)',
-                     lessThan: '이전',
-                     lessThanOrEqualTo: '이전(포함)'
-		}
-	}*/
     
 	Grid.applyTheme('default',  {
             outline:{
@@ -125,19 +106,28 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-    
-    const initGrid = () => {
-        // 그리드 객체
+	
+	
+	/*!!== 모달정보 초기화 ==!!*/
+	modalInfoInitailize();
+	
+    //#region 재고조회 페이지 조회정보 그리드
+    /*========================
+		   재고조회 토스트 그리드
+	  ========================*/
 
-    const grid = new Grid({
-        
+    let stockInqueryGrid = new Grid({      
         el: document.getElementById('inqueryGrid'),
 	        scrollX: true,
-	        scrollY: true,
+	        scrollY: false,
+	        pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
 	        header: { height: 40 },
-	        bodyHeight: 450,
+	        bodyHeight: 600,
 	        rowHeight: 40,
-	        width: 'auto',
+	        width: '100%',
 	        contextMenu: null,
 	       rowHeaders: [{
 	                type: 'rowNum',
@@ -147,25 +137,25 @@ document.addEventListener("DOMContentLoaded", function () {
 	        }],
 	        columns: [
 	            {
-	                header: '품목코드',
-	                name: 'd1',
+	                header: '계약번호',
+	                name: 'conNo',
 	                align: "center",
-	                width: 200,
+	                width: 250,
 	                whiteSpace: 'normal',
 	                className:'border'
 	                
 	            },
 	            {
+	                header: '품목코드',
+	                name: 'itemCode',
+	                align: "center",
+	                width: 200,
+	                whiteSpace: 'normal',
+	                filter: 'select'
+	            },
+	            {
 	                header: '품목명',
-	                name: 'd2',
-	                align: "center",
-	                width: 240,
-	                whiteSpace: 'normal',
-	                filter: 'select'
-	            },
-	            {
-	                header: '거래처',
-	                name: 'd3',
+	                name: 'itemName',
 	                align: "center",
 	                width: 200,
 	                whiteSpace: 'normal',
@@ -173,95 +163,74 @@ document.addEventListener("DOMContentLoaded", function () {
 	                filter: 'select'
 	            },
 	            {
-	                header: '입고단가',
-	                name: 'd4',
+	                header: '거래처코드',
+	                name: 'clientCode',
 	                align: "center",
-	                width: 100,
+	                width: 200,
 	                whiteSpace: 'normal',
-	                sortable: true,
-	                sortingType: 'desc',
 	                className:'border'
-	            },
-	            {
-	                header: '출고단가',
-	                name: 'd5',
-	                align: "center",
-	                width: 100,
-	                whiteSpace: 'normal',
-	                sortable: true,
-	                sortingType: 'desc',
-	                className:'border'
-	            },
-	            {
-	                header: '재고현황',
-	                name: 'd6',
+	            },{
+	                header: '거래처명',
+	                name: 'clientName',
 	                align: "center",
 	                width: 200,
 	                whiteSpace: 'normal',
 	                className:'border'
 	            },
 	            {
-	                header: '창고명',
-	                name: 'd7',
+	                header: '입고단가', //공급가액
+	                name: 'price',
 	                align: "center",
-	                width: 200,
+	                width: 150,
 	                whiteSpace: 'normal',
+	                sortable: true,
+	                sortingType: 'desc',
 	                className:'border',
-	                filter: 'select'
+	                formatter: function (e) {
+			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+			          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			        },
 	            }
         ]
     	});
+		
+		//제품 조건 조회
+		
+		let inqueryBtn = document.getElementById('inqueryBtn');
+		inqueryBtn.addEventListener("click", function(){
+			let data = $('#searchForm').serialize();
+			fetch(`/stocks/itemInfo?${data}`)
+			.then(result=> result.json())
+			.then(result=> {
+				let dataArr = [];
+				result.forEach(ele=>{
+					let data = {};
+					data.conNo = ele.conNo;
+					data.itemCode = ele.itemCode;
+					data.itemName = ele.itemName;
+					data.clientCode = ele.clientCode;
+					data.clientName = ele.clientName;
+					data.price = ele.price;
+					dataArr.push(data);	
+				})
+				stockInqueryGrid.resetData(dataArr);
+			})
+			.catch(ele=> `제품조회 실패! + ${ele}`)
+		})
 
-    	return grid;
-	}
 
-    // 그리드 설정
-    const createdGrid = initGrid();
-
-    // 샘플 데이터
-    const sampleData = [
-        {
-			d1: 'A0000045',
-            d2: '컵홀더',
-            d3: '태호물산',
-            d4: '100',
-            d5: '120',
-            d6: '10000',
-            d7: '천안아산'
-        }
-        
-    ];
-
-    // 그리드에 데이터 넣기(출력)
-    createdGrid.resetData(sampleData);
-
-
+	//#region 거래처 모달
 	/*============================
     	StackInquery 거래처 모달 JS
-    ==============================*/
-    
-    // 모달 관련 JavaScript
-        //const clientModal = document.getElementById('clientModal');
-
-        //모달실행 시 grid refresh를 위한 코드
-        document.getElementById('openClientModal').addEventListener('click', function() {
-            window.setTimeout(function(){
-                grid3.refreshLayout();
-            }, 200) 
-            window.setTimeout(function(){
-                grid4.refreshLayout();
-            }, 200)
-        });
-
-        let grid3; //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
-        
-        const initGrid3 = () => {
-            // 그리드 객체
-    
-        grid3 = new Grid({
+    ==============================*/    
+    let clientGrid = new Grid({
             el: document.getElementById("clientGrid"),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
             header: { height: 40 },
             bodyHeight: 500,
             width: 'auto',
@@ -275,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
             columns: [
                 {
                     header: '거래처명',
-                    name: 'c1',
+                    name: 'clientName',
                     align: "center",
                     width: 183,
                     whiteSpace: 'normal',
@@ -287,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 {
                     header: '대표자명',
-                    name: 'c2',
+                    name: 'ceoName',
                     align: "center",
                     width: 100,
                     whiteSpace: 'normal',
@@ -296,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 {
                     header: '회사 연락처',
-                    name: 'c3',
+                    name: 'companyTel',
                     align: "center",
                     width: 120,
                     whiteSpace: 'normal',
@@ -304,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 {
                     header: '담당자명',
-                    name: 'c4',
+                    name: 'employeeName',
                     align: "center",
                     width: 110,
                     whiteSpace: 'normal',
@@ -313,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 {
                     header: '담당자 연락처',
-                    name: 'c5',
+                    name: 'employeeTel',
                     align: "center",
                     width: 120,
                     whiteSpace: 'normal',
@@ -322,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 {
                     header: '종목',
-                    name: 'c6',
+                    name: 'event',
                     align: "center",
                     width: 100,
                     whiteSpace: 'normal',
@@ -331,163 +300,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             ]
         });
-        return grid3;
-    }
-
-    // 그리드 설정
-    const createdGrid3 = initGrid3();
-    // 샘플 데이터
-    const sampleData3 = [
-        {
-            c1: '태호물산',
-            c2: '김태호',
-            c3: '02-1234-5678',
-            c4: '김영준',
-            c5: '010-1234-1234',
-            c6: '식기류 제조업',
-        }
-    ];
-
-    // 그리드에 데이터 넣기(출력)
-    createdGrid3.resetData(sampleData3);
-    
-    grid3.on('click',function(ev){
+ 	//데이터 이동 이벤트함수
+    clientGrid.on('click',function(ev){
 		let rowKeyNum;
-		if (ev.columnName == 'c1'){
+		if (ev.columnName == 'clientName'){
 			rowKeyNum = ev.rowKey;	
 			let inputTag = document.getElementById('clientInput');
 			inputTag.value = '';		
-			inputTag.value = grid3.getValue(rowKeyNum, 'c1');											
-			
+			inputTag.value = clientGrid.getValue(rowKeyNum, 'clientName');													
 		}
 	})
-    
-    /*============================
-    	StackInquery 창고 모달 JS
-    ==============================*/
-    // 모달 관련 JavaScript
-    const warehouseModal = document.getElementById('warehouseModal')
-
-    //모달실행 시 grid refresh를 위한 코드
-    document.getElementById('openWarehouseModal').addEventListener('click', function() {
-        window.setTimeout(function(){
-            grid4.refreshLayout();
-        }, 200) 
-    });
-    
-    let grid4;
-    const initGrid4 = () => {
-		grid4 = new Grid({
-            el: document.getElementById('warehouseGrid'),
-            scrollX: true,
-            scrollY: true,
-            header: { height: 40 },
-            bodyHeight: 500,
-            width: 'auto',
-            contextMenu: null,
-            rowHeaders: [{
-                    type: 'rowNum',
-                    header: "No.",
-                    width: 50,
-                    className:'border'
-            }],
-            columns: [
-                {
-                    header: '창고명',
-                    name: 'c1',
-                    align: "center",
-                    width: 183,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    renderer: {
-                        type: ButtonRenderer
-                    },
-                    filter: 'select'
-                    
-                },
-                {
-                    header: '창고코드',
-                    name: 'c2',
-                    align: "center",
-                    width: 183,
-                    whiteSpace: 'normal',
-                    className:'border'
-                },
-                {
-                    header: '위치',
-                    name: 'c3',
-                    align: "center",
-                    width: 184,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
-                },
-                {
-                    header: '구분',
-                    name: 'c4',
-                    align: "center",
-                    width: 184,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
-                }
-            ]
-        });
-
-        return grid4;
-		
-	}
-    
-    const createdGrid4 = initGrid4();
-
-	// 샘플 데이터
-	const sampleData4 = [
-	    {
-	        c1: '물류창고',
-	        c2: 'A0000045',
-	        c3: '천안아산',
-	        c4: '소요량높음'
-	    }
-	];
 	
-	// 그리드에 데이터 넣기(출력)
-	createdGrid4.resetData(sampleData4);
-    
-    grid4.on('click',function(ev){
-		let rowKeyNum;
-		if (ev.columnName == 'c1'){
-			rowKeyNum = ev.rowKey;	
-			let inputTag = document.getElementById('whInput');
-			inputTag.value = '';		
-			inputTag.value = grid4.getValue(rowKeyNum, 'c1');									
-			
-		}
-	})
-    
-    
+	//#endregion 거래처 모달
+
+    //#region 품목조회 모달
     /*============================
     	StackInquery 품목조회 모달 JS
     ==============================*/
     // 모달 관련 JavaScript
-    var purchaseOrderModal = document.getElementById('purchaseOrderModal')
-    purchaseOrderModal.addEventListener('show.bs.modal', function (event) {
-        // 모달이 표시되기 전에 실행할 코드
-        console.log('모달이 열립니다');
-        window.setTimeout(function(){
-            grid5.refreshLayout();
-        }, 200) 
-    })
-
-    purchaseOrderModal.addEventListener('hidden.bs.modal', function (event) {
-        // 모달이 완전히 숨겨진 후 실행할 코드
-        console.log('모달이 닫혔습니다');
-    })
-    let grid5;
-    const initGrid5 = () => {
-		grid5 = new Grid({
+    
+    
+	let	itemGrid = new Grid({
             el: document.getElementById('itemGrid'),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
             header: { height: 40 },
             bodyHeight: 500,
             width: 'auto',
@@ -501,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
             columns: [
                 {
                     header: '품목 코드',
-                    name: 'c1',
+                    name: 'itemCode',
                     align: "center",
                     width: 203,
                     whiteSpace: 'normal',
@@ -514,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 {
                     header: '품목명',
-                    name: 'c2',
+                    name: 'itemName',
                     align: "center",
                     width: 203,
                     whiteSpace: 'normal',
@@ -522,35 +362,72 @@ document.addEventListener("DOMContentLoaded", function () {
                     filter: 'select'
                 }
             ]
-        });
-
-        return grid5;
-		
-	}
+    });
     
-    const createdGrid5 = initGrid5();
-
-	// 샘플 데이터
-	const sampleData5 = [
-	    {
-	        c1: 'A0000045',
-	        c2: '컵홀더'
-	    }
-	];
-	
-	// 그리드에 데이터 넣기(출력)
-	createdGrid5.resetData(sampleData5);
-    
-    grid5.on('click',function(ev){
+    itemGrid.on('click',function(ev){
 		let rowKeyNum;
-		if (ev.columnName == 'c1'){
+		if (ev.columnName == 'itemCode'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('itemInput');
 			inputTag.value = '';			
-			inputTag.value = grid5.getValue(rowKeyNum, 'c2');							
+			inputTag.value = itemGrid.getValue(rowKeyNum, 'itemName');							
 		
 		}
 	})        
-    
-       
+    //#endregion 품목조회 모달
+
+	
+	/*!== 모달 Data 정보 초기화 ==!*/
+	function modalInfoInitailize(){
+    	/*!!== 거래처 모달 데이터 fetch & resetData() ==!!*/
+		fetch("/stocks/client")
+		.then(result=>result.json())
+		.then(result=>{
+			gridDataArr = [];
+			result.forEach(ele=>{
+				let dataRow = {};
+				dataRow.clientName = ele.clientName;
+				dataRow.ceoName = ele.ceoName;
+				dataRow.companyTel = ele.companyTel;
+				dataRow.employeeName = ele.employeeName;
+				dataRow.employeeTel = ele.employeeTel;
+				dataRow.event = ele.event;
+				gridDataArr.push(dataRow);
+			})
+			clientGrid.resetData(gridDataArr);
+		})
+		.catch(err=> `거래처 모달 fetch 실패! ${err}`);
+		
+		/*!!== 창고 모달 데이터 fetch & restData() ==!!*/
+		/*fetch("/whList") //혁태꺼
+		.then(result => result.json())
+		.then(result => {
+			gridDataArr = [];
+			result.forEach(ele=>{
+				let dataRow = {};
+				dataRow.whName = ele.whName;
+				dataRow.whCode = ele.whCode;
+				dataRow.whPlace = ele.whPlace;
+				dataRow.whType = ele.whType;
+				gridDataArr.push(dataRow);
+			})          
+			warehouseGrid.resetData(gridDataArr);
+		})*/
+		
+		/*!!== 품목 모달 데이터 fetch & restData() ==!!*/
+		fetch("/stocks/item")
+		.then(result => result.json())
+		.then(result => {
+			
+			gridDataArr = [];
+			result.forEach(ele=>{
+				let dataRow = {}
+				dataRow.itemCode = ele.itemCode;
+				dataRow.itemName = ele.itemName;
+				gridDataArr.push(dataRow);
+			})
+			itemGrid.resetData(gridDataArr)
+		})
+		.catch(err=> `품목 모달 fetch 실패! ${err}`);
+    }
 }); //End Point
