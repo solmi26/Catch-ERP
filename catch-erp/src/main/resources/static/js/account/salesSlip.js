@@ -595,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "c1") {
       rowKeyNum = ev.rowKey;
-      let inputTag1 = document.getElementById("salesInput");
+      let inputTag1 = document.getElementById("joinInput");
       let inputTag2 = document.getElementById("clientInput");
       let inputTag3 = document.getElementById("clientInput2");
       let inputTag4 = document.getElementById("price");
