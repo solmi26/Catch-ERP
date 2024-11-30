@@ -231,12 +231,17 @@ document.addEventListener("DOMContentLoaded", function () {
   	회계계정 모달 JS
   ==============================*/
 
-  //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openAcctModal").addEventListener("click", function () {
-    window.setTimeout(function () {
-      grid1.refreshLayout();
-    }, 200);
-  });
+  const acctModal = new bootstrap.Modal(document.getElementById('acctModal'));
+  	
+  	//모달실행 시 grid refresh를 위한 코드
+  	document
+  		.getElementById("openAcctModal")
+  		.addEventListener("click", function() {
+  			acctModal.show();
+  			window.setTimeout(function() {
+  				grid1.refreshLayout();
+  			}, 200);
+  		});
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid1 = new Grid({
@@ -315,14 +320,17 @@ document.addEventListener("DOMContentLoaded", function () {
   ==============================*/
 
   // 모달 관련 JavaScript
-  //const clientModal = document.getElementById('clientModal');
+  const clientModal = new bootstrap.Modal(document.getElementById('clientModal'));
 
   //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openClientModal").addEventListener("click", function () {
-    window.setTimeout(function () {
-      grid3.refreshLayout();
-    }, 200);
-  });
+  document
+  	.getElementById("openClientModal")
+  	.addEventListener("click", function() {
+  		clientModal.show();
+  		window.setTimeout(function() {
+  			grid3.refreshLayout();
+  		}, 200);
+  	});
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid3 = new Grid({
@@ -462,10 +470,13 @@ document.addEventListener("DOMContentLoaded", function () {
   /*============================
 		구매전표 모달 JS
 	==============================*/
+	
+const salesModal = new bootstrap.Modal(document.getElementById('salesModal'));	
 
   //모달실행 시 grid refresh를 위한 코드
   document.getElementById("openSalesModal").addEventListener("click", function () {
     window.setTimeout(function () {
+	  salesModal.show();
       grid2.refreshLayout();
     }, 200);
   });

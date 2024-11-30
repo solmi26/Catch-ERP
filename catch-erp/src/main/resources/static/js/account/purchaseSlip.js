@@ -250,11 +250,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	/*============================
 		  회계계정 모달 JS
 	==============================*/
-
+	const acctModal = new bootstrap.Modal(document.getElementById('acctModal'));
+	
 	//모달실행 시 grid refresh를 위한 코드
 	document
 		.getElementById("openAcctModal")
 		.addEventListener("click", function() {
+			acctModal.show();
 			window.setTimeout(function() {
 				grid1.refreshLayout();
 			}, 200);
@@ -486,13 +488,15 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 
 	/*============================
-		  구매전표 모달 JS
+		  판매전표 모달 JS
 	  ==============================*/
+	  const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
 
 	//모달실행 시 grid refresh를 위한 코드
 	document
 		.getElementById("openPurchaseModal")
 		.addEventListener("click", function() {
+			purchaseModal.show();
 			window.setTimeout(function() {
 				grid2.refreshLayout();
 			}, 200);
