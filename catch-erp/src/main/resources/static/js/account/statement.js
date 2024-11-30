@@ -128,25 +128,56 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((result) => {
         let data = result;
-        console.log("매입전표::", data);
+        console.log("데이터 : ", data);
         // 가져온 데이터 필드에 삽입
-        document.getElementById("date").value = result.chitDate || "2024/11/01"; // 전표일자
-        document.getElementById("no").value =
-          result.salesChitNo || result.purchaseChitNo; // 전표번호
-        document.getElementById("joinInput").value =
-          result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
-        document.getElementById("clientInput").value = result.clientCode || "";
-        document.getElementById("acctInput").value = result.acctName || "";
-        document.getElementById("price").value = result.supplyPrice
-          ? Number(result.supplyPrice).toLocaleString()
-          : "0";
-        document.getElementById("vat").value = result.vat
-          ? Number(result.vat).toLocaleString()
-          : "0";
-        document.getElementById("amount").value = result.totalPrice
-          ? Number(result.totalPrice).toLocaleString()
-          : "0";
-        document.getElementById("summary").value = result.summary || "";
+		
+		
+		// 현재 선택한 전표가 매입인지 매출인지 구분
+		if(selectData.type === "매출전표") {
+			// 매출전표 관련 데이터 매핑		
+			document.getElementById("s_date").value = result.chitDate || "2024/11/01"; // 전표일자
+	      	document.getElementById("s_no").value =
+	         result.salesChitNo || result.purchaseChitNo; // 전표번호
+	        document.getElementById("s_joinInput").value =
+	         result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
+	        document.getElementById("s_clientInput").value = result.clientCode || "";
+	        document.getElementById("s_acctInput").value = result.acctName || "";
+	        document.getElementById("s_price").value = result.supplyPrice
+	         ? Number(result.supplyPrice).toLocaleString()
+	         : "0";
+	        document.getElementById("s_vat").value = result.vat
+	         ? Number(result.vat).toLocaleString()
+	         : "0";
+	        document.getElementById("s_amount").value = result.totalPrice
+	         ? Number(result.totalPrice).toLocaleString()
+	         : "0";
+	        document.getElementById("s_summary").value = result.summary || "";
+			
+		} else if(selectData.type === "매입전표") {
+			// 매입전표 관련 데이터 매핑
+			document.getElementById("p_date").value = result.chitDate || "2024/11/01"; // 전표일자
+			document.getElementById("p_no").value =
+			 result.salesChitNo || result.purchaseChitNo; // 전표번호
+			document.getElementById("p_joinInput").value =
+			 result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
+			document.getElementById("p_clientInput").value = result.clientCode || "";
+			document.getElementById("p_acctInput").value = result.acctName || "";
+			document.getElementById("p_price").value = result.supplyPrice
+			 ? Number(result.supplyPrice).toLocaleString()
+			 : "0";
+			document.getElementById("p_vat").value = result.vat
+			 ? Number(result.vat).toLocaleString()
+			 : "0";
+			document.getElementById("p_amount").value = result.totalPrice
+			 ? Number(result.totalPrice).toLocaleString()
+			 : "0";
+			document.getElementById("p_summary").value = result.summary || "";
+
+		} else {
+			throw new Error("전표 유형이 존재하지 않습니다.");
+		}
+		
+       
       })
       .catch((err) => {
         console.log("에러 : " + err);
@@ -155,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 전표번호(열) 클릭 시 모달 표시
     if (ev.columnName === "voucherNumber") {
       currentTarget = ev;
-      console.log(grid.getFormattedValue(ev.rowKey, "transactionType"));
+      //console.log(grid.getFormattedValue(ev.rowKey, "transactionType"));
       const type = grid.getFormattedValue(ev.rowKey, "transactionType");
       if (type === "매출전표") {
         salesModal.show(); // 유형이 매출전표이면 매출전표 모달

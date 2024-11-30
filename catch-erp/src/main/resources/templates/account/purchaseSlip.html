@@ -87,14 +87,14 @@
           <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표일자</span>
-              <input type="date" class="form-control" name="date"/>
+              <input type="date" class="form-control" name="p_date"/>
             </div>
           </div>
           <!-- 전표No -->
           <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표 No.</span>
-              <input type="text" class="form-control" readonly="readonly" name="no" value="-"/>
+              <input type="text" class="form-control" readonly="readonly" name="p_no" value="-"/>
             </div>
           </div>
         </div>
@@ -109,8 +109,8 @@
                 type="text"
                 class="form-control"
                 placeholder="구매전표 내역보기"
-                name="purchaseslip"
-                id="purchaseInput"
+                name="p_joinInput"
+                id="p_joinInput"
               />
               <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#purchaseModal" id="openPurchaseModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
@@ -125,11 +125,11 @@
                 type="text"
                 class="form-control"
                 placeholder="거래처 선택"
-                name="clientName"
-                id="clientInput"
+                name="p_clientName"
+                id="p_clientInput"
                 readonly="readonly"
               />
-	           <input type="text" style="display:none" id="clientInput2" name="clientCode">
+	           <input type="text" style="display:none" id="p_clientInput2" name="p_clientCode">
               <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
               </button>
@@ -158,11 +158,11 @@
                 type="text"
                 class="form-control"
                 placeholder="회계계정 선택"
-                name="acctName"
-                id="acctInput"
+                name="p_acctName"
+                id="p_acctInput"
                 readonly="readonly"
               />
-              <input type="text" style="display:none" id="acctInput2" name="acctCode">
+              <input type="text" style="display:none" id="p_acctInput2" name="p_acctCode">
               <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="openAcctModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
               </button>
@@ -180,8 +180,8 @@
                 type="text"
                 class="form-control"
                 placeholder="공급가액"
-                name="price"
-                id="price"
+                name="p_price"
+                id="p_price"
               />
             </div>
           </div>
@@ -193,7 +193,7 @@
                 type="text"
                 class="form-control"
                 placeholder="부가세"
-                name="vat"
+                name="p_vat"
               />
             </div>
           </div>
@@ -204,7 +204,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text color">합계</span>
-              <input type="text" class="form-control" name="amount" id="amount" placeholder="합계"/>
+              <input type="text" class="form-control" name="p_amount" id="p_amount" placeholder="합계"/>
             </div>
           </div>
           </div>
@@ -214,7 +214,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text">적요</span>
-              <input type="text" id="summary" class="form-control" name="summary" placeholder="적요"/>
+              <input type="text" id="p_summary" class="form-control" name="p_summary" placeholder="적요"/>
             </div>
           </div>
           </div>
