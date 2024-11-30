@@ -195,6 +195,7 @@
 	       )
 	</insert>
 	
+	<!-- 세금계산서 발행 목록 조회 -->
 	<select id="invoiceList" parameterType="com.cherp.app.acct.vo.SalesVO">
 		SELECT invoice_no
               ,invoice_date
@@ -211,6 +212,8 @@
               FROM sales s
               WHERE s.sales_chit_no = i.saleslip_no) as supply_price
 		FROM invoice i
+		ORDER BY invoice_date desc
+		
 	</select>
 
 

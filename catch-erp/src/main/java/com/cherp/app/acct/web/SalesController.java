@@ -45,7 +45,7 @@ public class SalesController {
 		return "account/regPayReduction";
 	}
 	
-	// 전표 관리 페이지(조회 화면) by sm
+	// 전표 관리 페이지(조회/화면) by sm
 	@GetMapping("sales/selectSlipView")
 	public String selectSlipView(Model model) {
 		List<SalesVO> salesList = salesService.selectAllSlip();
@@ -53,7 +53,7 @@ public class SalesController {
 		return "account/statement";
 	}
 	
-	// 전표 관리 페이지(조회 기능) by sm
+	// 전표 관리 페이지(조회/기능) by sm
 	@GetMapping("sales/selectSlip")
 	@ResponseBody
 	public List<SalesVO> selectSlip() {
