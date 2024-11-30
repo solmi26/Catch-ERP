@@ -5,10 +5,9 @@
 
 let grid = null;
 document.addEventListener("DOMContentLoaded", function () {
-  
   // 그리드 초기화
   grid = new tui.Grid({
-    el: document.querySelector('#grid'), // 그리드를 표시할 DOM 요소의 id 지정
+    el: document.querySelector("#grid"), // 그리드를 표시할 DOM 요소의 id 지정
     //data: gridData, // gridData를 불러와서 그리드로 렌더링
     scrollX: true,
     scrollY: true,
@@ -16,46 +15,48 @@ document.addEventListener("DOMContentLoaded", function () {
       useClient: true,
       perPage: 15,
     },
-    columns: [ // 각 열의 헤더 이름, 데이터 키, 정렬 가능 여부, 정렬 방향 등을 정의
+    columns: [
+      // 각 열의 헤더 이름, 데이터 키, 정렬 가능 여부, 정렬 방향 등을 정의
       {
-        header: "세금계산서 번호", 
+        header: "세금계산서 번호",
         name: "invoiceNo",
         align: "center",
-        formatter: ({ value }) => `<a href="#" class="btn-link text-primary">${value}</a>`,
-      },    
-      {
-        header: '작성일자',
-        name: 'date',
-        sortable: true,
-        align: 'center',
+        formatter: ({ value }) =>
+          `<a href="#" class="btn-link text-primary">${value}</a>`,
       },
       {
-        header: '국세청 전송 일자',
-        name: 'taxDate',
+        header: "작성일자",
+        name: "date",
         sortable: true,
-        align: 'center',
+        align: "center",
       },
       {
-        header: '거래처명',
-        name: 'clientName',
+        header: "국세청 전송 일자",
+        name: "taxDate",
         sortable: true,
-        align: 'center'
+        align: "center",
       },
       {
-        header: '공급가액',
-        name: 'supplyAmount',
+        header: "거래처명",
+        name: "clientName",
         sortable: true,
-        align: 'right',
+        align: "center",
+      },
+      {
+        header: "공급가액",
+        name: "supplyAmount",
+        sortable: true,
+        align: "right",
         formatter: function (e) {
           const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
           return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
         },
       },
       {
-        header: '전자세금계산서 전송 상태',
-        name: 'taxProgress',
+        header: "전자세금계산서 전송 상태",
+        name: "taxProgress",
         sortable: true,
-        align: 'center',
+        align: "center",
         formatter: ({ value }) => {
           // 값에 따라 다른 색상 스타일 적용
           let colorClass = "";
@@ -72,16 +73,15 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
     rowHeaders: [
       {
-        type: 'checkbox',
-        header: 
-          `<span class="custom-input">
+        type: "checkbox",
+        header: `<span class="custom-input">
           <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
             <label for="all-checkbox" class="checkbox selectCheck">✔</label>
           </span>`,
         renderer: {
-          type: gridCheckbox
-        }
-      }
+          type: gridCheckbox,
+        },
+      },
     ],
   });
 
@@ -93,22 +93,65 @@ document.addEventListener("DOMContentLoaded", function () {
         let dataArr = result.map((ele) => ({
           invoiceNo: ele.invoiceNo,
           date: ele.invoiceDate,
-          taxDate: ele.ntsInvoiceDate || '-',
+          taxDate: ele.ntsInvoiceDate || "-",
           clientName: ele.clientName,
           supplyAmount: ele.supplyPrice,
-          taxProgress: ele.invoiceStatus
+          taxProgress: ele.invoiceStatus,
         }));
-        
+
         grid.resetData(dataArr);
+
+        updateStatus(result);
       });
   }
-  
+
   loadGridData();
 
+  //#region 세금계산서 상태별 개수 체크 로직
+  // 미전송, 전송중, 전송완료 개수 체크
+  function updateStatus(data) {
+    let status = {
+      // 초기화
+      "미전송": 0,
+      "전송중": 0,
+      "국세청 전송 완료": 0,
+    };
+
+    // 개수 체크
+    for (let item of data) {
+      //console.log(item);
+      const value = item.invoiceStatus;
+      if (value === "미전송") {
+        status[value]++;
+      } else if (value === "전송중") {
+        status[value]++;
+      } else {
+        status["국세청 전송 완료"]++;
+      }
+      //console.log(status)
+    }
+    document.querySelector(".status-count").innerHTML = `
+      <div class="col status-box">
+        <div class="status-number">${status["미전송"]}</div>
+        <div class="status-label">미전송</div>
+      </div>
+      <div class="col status-box">
+        <div class="status-number">${status["전송중"]}</div>
+        <div class="status-label">전송중</div>
+      </div>
+      <div class="col status-box">
+        <div class="status-number">${status["국세청 전송 완료"]}</div>
+        <div class="status-label">전송완료</div>
+      </div>
+    `;
+  }
+
+  //#endregion
+
   // 그리드 내 클릭이벤트 -> 추후 내가 필요할 때 수정해서 사용
-  grid.on('click', (event) => {
-    if (event.columnName === 'debentureNo' && event.rowKey >= 0) {
-      console.log('클릭이벤트 발생');
+  grid.on("click", (event) => {
+    if (event.columnName === "debentureNo" && event.rowKey >= 0) {
+      console.log("클릭이벤트 발생");
       console.log(event.rowKey);
     }
   });
@@ -121,5 +164,4 @@ document.addEventListener("DOMContentLoaded", function () {
       filterByStatus(status);
     });
   });
-
 });
