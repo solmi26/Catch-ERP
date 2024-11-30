@@ -123,6 +123,18 @@ public class SalesController {
 		return salesService.invoiceList();
 	}
 	
+	// 매입 계약 등록 페이지
+	@GetMapping("sales/insertContractView")
+	public String insertContractView(Model model) {
+		return "account/contractInsert";
+	}
+	
+	// 매입 계약 조회 페이지
+	@GetMapping("sales/contractView")
+	public String contractView(Model model) {
+		return "account/contract";
+	}
+	
 	/**
 	 * 채무감소 등록을 위한 컨트롤러
 	 * 
