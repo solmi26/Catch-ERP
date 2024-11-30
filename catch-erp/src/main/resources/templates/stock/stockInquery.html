@@ -33,15 +33,7 @@
 	                                  </svg></button>
 	                              </div>
 	                          </div>
-	                          <!-- <div class="col-md-2">
-	                              <label class="form-label">창고</label>
-	                              <div class="input-group">
-	                                  <input type="text" class="form-control" id="whInput">
-	                                  <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#warehouseModal" id="openWarehouseModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-	                                  </svg></button>
-	                              </div>
-	                          </div> -->
+	                                                
 	                          <div class="col-md-3">
 	                            <label class="form-label">품목명</label>
 	                            <div class="input-group">
@@ -105,26 +97,6 @@
 	        </div>
 	    </div>
 	    
-	    <!-- 창고 검색 모달 HTML -->
-	    <!-- <div class="modal fade" id="warehouseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-	        <div class="modal-dialog modal-lg">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <h5 class="modal-title" id="modalLabel">창고검색</h5>
-	                    
-	                </div>
-	                <div class="modal-body p-0">
-	                    <div id="warehouseGrid">
-	                    </div>
-	                </div>
-	                <div class="modal-footer justify-content-between">
-	                	<p><small>※창고명을 클릭하여 입력하세요.</small></p>
-	                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
-	                </div>
-	            </div>
-	        </div>
-	    </div> -->
-	    
 	   	<!-- 상품 검색 모달 HTML -->
 	    <div class="modal fade" id="purchaseOrderModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog">
@@ -146,6 +118,152 @@
 	            </div>
 	        </div>
 	    </div>	    	   	  	    
+	     	    
+	    <!-- 거래처 상세(수정) 모달창 -->
+		<div class="modal fade" id="itemInfoModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+			    <div class="modal-dialog modal-xl ">
+			        <form method="post" th:action="@{/수정/필요}" name="updateItemForm">
+			            <div class="modal-content" >
+			                <div class="modal-header">
+			                    <h5 class="modal-title" id="itemInfoModal">제품 상세</h5>
+			                </div>
+			                <div class="d-flex flex-wrap">
+				                <div class="modal-body col-lg-6 col-sm-12 col-md-12 ">
+				                    <ul class="nav nav-tabs" id="itemInfoTabs" role="tablist">
+				                        <li class="nav-item" role="presentation">
+				                            <button class="nav-link active" id="detail-tab" data-bs-toggle="tab"
+				                                data-bs-target="#info" type="button" role="tab" aria-controls="detail"
+				                                aria-selected="true">기본</button>
+				                        </li>
+				                        <!-- 안쓰면삭제 -->
+				                        <li class="nav-item" role="presentation">
+				                            <button class="nav-link" id="contract-tab" data-bs-toggle="tab"
+				                                data-bs-target="#progress" type="button" role="tab" aria-controls="contract-list"
+				                                aria-selected="false">상품추이</button>
+				                        </li>
+				                    </ul>
+								
+				                    <div class="tab-content mt-3" id="customerTabContent ">
+				                        <!-- 상품 상세정보 -->
+				                        <div class="tab-pane fade show active" id="info" role="tabpanel"
+				                            aria-labelledby="detail-tab">
+				                            <input type="hidden" id="clientCode" name="clientCode">
+				                            <div class="mb-3 row">
+				                                <label for="customerName" class="col-sm-3 col-md-6 col-form-label">계약번호</label>
+				                                <div class="col-sm-6 col-md-6">
+				                                    <input type="text" class="form-control" id="clientName" name="clientName" readonly>
+				                                </div>
+				                            </div>
+				                            <div class="mb-3 row">
+				                                <label for="representativeName" class="col-sm-3 col-md-6 col-form-label">품목명</label>
+				                                <div class="col-sm-6 col-md-6">
+				                                    <input type="text" class="form-control" id="ceoName" name="ceoName"  readonly>
+				                                </div>
+				                            </div>
+				                            <div class="mb-3 row">
+				                                <label for="representativeName" class="col-sm-3 col-md-6 col-form-label">품목코드</label>
+				                                <div class="col-sm-6 col-md-6">
+				                                    <input type="text" class="form-control" id="ceoName" name="ceoName" readonly>
+				                                </div>
+				                            </div>
+				                            <div class="mb-3 row">
+				                                <label for="industry" class="col-sm-3 col-md-6 col-form-label">단가</label>
+				                                <div class="col-sm-6 col-md-6">
+				                                    <input type="text" class="form-control" id="state" name="state" readonly>
+				                                </div>
+				                            </div>
+				                            <div class="mb-3 row">
+				                                <label for="category" class="col-sm-3 col-md-6 col-form-label">종목</label>
+				                                <div class="col-sm-6 col-md-6">
+				                                    <input type="text" class="form-control" id="event" name="event" readonly>
+				                                </div>
+				                            </div>
+				                            <div class="mb-3 row">
+				                                <label for="category" class="col-sm-3 col-md-6 col-form-label">계약 기간</label>
+				                                <div class="col-sm-6 col-md-6">
+				                                    <input type="text" class="form-control" id="event" name="event" readonly>
+				                                </div>
+				                            </div>
+											<div>
+												<small style="color: green">※창고별 현재 수량</small>
+											</div>
+				                            <div class="mb-3 row">
+				                                <div class="col-sm-6 col-md-6">
+				                                    <select class="form-select form-control" id="tradeType" name="tradeType" >
+				                                        <option value="창고코드1" selected>본사창고</option>
+				                                        <option value="창고코드2">천안아산</option>
+				                                    </select>
+				                                </div>
+				                                <div class="col-sm-6 col-md-6">
+				                                	<input type="text" class="form-control" id="event" name="event" readonly>
+				                                </div>
+				                            </div>
+				                            <div class="row">
+				                            	<img src = "#" height="200" width="auto">
+				                            	<input type="file"> 
+				                            </div>
+				                        </div>
+				
+				                        <!-- 두번째 탭 -->
+				                        <div class="mb-3 row tab-pane fade" id="progress" role="tabpanel" aria-labelledby="contract-tab">
+				                            <!-- 계약품목 탭 내용 -->
+				                            <div class="col-sm-9">
+				                                <div class="input-group">
+				                                	<div>
+					                                    <select class="form-select form-control " id="sort-field">
+					                                        <option value="conName" selected>계약 명</option>
+					                                        <option value="conDate">계약 일자</option>
+					                                        <option value="conSdate">계약 시작일</option>
+					                                        <option value="conEdate">계약 종료일</option>
+					                                        <option value="totalAmount">총 계약금액</option>
+					                                        <option value="status">계약상태</option>
+					                                    </select>
+					                            
+					                                    <select class="form-select form-control " id="sort-direction">
+					                                        <option value="asc" selected>오름차순</option>
+					                                        <option value="desc">내림차순</option>
+					                                    </select>
+				                           			</div>
+				                                    <button class="btn btn-outline-secondary col-sm-6 col-md-6" id="sort-trigger">정렬</button>
+				                                </div>
+				                            </div>
+				                        </div>
+				
+				                    </div>
+				                </div>
+								
+								<!-- 재고조정내역 그리드 -->
+								<div class="modal-body col-lg-6 col-sm-12 col-md-12">
+									<div class="row mb-1" >
+										<div class="col-sm-3 col-md-3" style="padding-right: 0">
+		                                    <select class="form-select form-control" id="tradeType" name="tradeType" >
+		                                        <option value="창고코드" selected>본사창고</option>
+		                                        <option value="창고코드2">천안아산</option>
+		                                    </select>
+		                                </div>
+		                                <div class="col-sm-3 col-md-3" style="padding-right: 0">
+		                                    <select class="form-select form-control" id="tradeType" name="tradeType" >
+		                                        <option value="년도" selected>2024</option>
+		                                        <option value="년도">2023</option>
+		                                    </select>
+		                                </div>
+	                                </div>
+									<div id="adjustmentDetail"></div>
+								</div>
+								
+				            </div>
+				            <div class="modal-footer">
+				                    <button type="submit" id="updateClientInfo" class="btn btn-success">수정</button>
+				                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				            </div>
+			            </div>
+			            
+			        </form>
+			    </div>
+			</div>
+			
+		
+		 	    
 	     	    
     <!-- 재고조회에 전체적용되는 JS -->
 	<script th:src="@{/js/stock/stockInquery.js}"></script>

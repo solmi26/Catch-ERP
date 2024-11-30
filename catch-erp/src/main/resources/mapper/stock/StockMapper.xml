@@ -196,11 +196,11 @@
 		 	</otherwise>
 		 </choose>
 		  <if test="minPrice != ''">
-		    		AND price > #{minPrice}
+		    		AND price > TO_NUMBER(#{minPrice})
 		  </if>
 		  <if test="maxPrice != ''">
 		      <![CDATA[
-		    		AND price < #{maxPrice}
+		    		AND price < TO_NUMBER(#{maxPrice})
 		      ]]>
 		  </if>
 		

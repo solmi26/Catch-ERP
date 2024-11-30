@@ -47,6 +47,10 @@
 	    -webkit-appearance: none;
 	    margin: 0;
 	 }	
+	 .modalTrigger {
+	 	cursor : pointer;
+	 
+	 }
 	/*============================
     	StackInquery 거래처 모달 CSS
     ==============================*/
@@ -97,34 +101,27 @@
             width: 100px;
         }
     
-    /*============================
-    	StackInquery 창고검색 모달 CSS
-    ==============================*/
-    
-    /* !거래처 모달과 동일 CSS 적용! */
-    
     
     
     /*============================
-    	StackInquery 상품검색 모달 CSS
+    	StackInquery 제품검색 모달 CSS
     ==============================*/
     
     
     /* !거래처 모달과 동일 CSS 적용! */
     
-    
     /*============================
-    	StackInquery 구매내역 모달 CSS
+    	StackInquery 제품상세 모달 CSS
     ==============================*/
+    input[readonly] {
+	    background-color: white !important; 
+	    color: black; 
+	    border: 1px solid #ced4da; 
+	}	
+	.form-select {
+		padding: 3px 7px;
+	}
     
-    /* !StackInquery 본래 페이지와 동일 CSS 적용! */
-    
-    
-    /*============================
-    	StackInquery 판매내역 모달 CSS
-    ==============================*/
-    
-    /* !StackInquery 본래 페이지와 동일 CSS 적용! */
     
     
     

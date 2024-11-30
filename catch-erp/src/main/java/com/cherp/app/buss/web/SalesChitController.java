@@ -36,7 +36,6 @@ public class SalesChitController {
 												  @PathVariable("saleslipNo") String saleslipNo){
 		return salesChitService.selectSelectSaleslip(saleslipHistoryVO, saleslipNo);
 	}
-
 	
 	// 매출전표 전표상태별 조회
 	@ResponseBody
