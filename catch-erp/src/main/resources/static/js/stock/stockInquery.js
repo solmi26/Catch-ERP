@@ -142,9 +142,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	                align: "center",
 	                width: 250,
 	                whiteSpace: 'normal',
-	                className:'border'
-	                
-	            },
+	                className:'border',
+	                formatter: ({ value }) =>
+			          `<div class="btn-link text-primary modalTrigger" data-bs-toggle="modal" data-bs-target="#itemInfoModal">${value}</div>`,
+			        filter: 'select'
+			     },
+			     	        
 	            {
 	                header: '품목코드',
 	                name: 'itemCode',
@@ -175,7 +178,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	                align: "center",
 	                width: 200,
 	                whiteSpace: 'normal',
-	                className:'border'
+	                className:'border',
+	                filter: 'select'
 	            },
 	            {
 	                header: '입고단가', //공급가액
@@ -194,8 +198,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ]
     	});
 		
-		//제품 조건 조회
 		
+		
+		//제품 조건 조회
 		let inqueryBtn = document.getElementById('inqueryBtn');
 		inqueryBtn.addEventListener("click", function(){
 			let data = $('#searchForm').serialize();
@@ -217,8 +222,15 @@ document.addEventListener("DOMContentLoaded", function () {
 			})
 			.catch(ele=> `제품조회 실패! + ${ele}`)
 		})
-
-
+		
+		/*!== 제품 상세조회 모달 ==!*/
+		stockInqueryGrid.on('click',function(e){	
+			let rowKeyNum;
+			if (e.columnName == 'conNo'){		
+				console.log(e.value);
+				
+			}
+		})
 	//#region 거래처 모달
 	/*============================
     	StackInquery 거래처 모달 JS
@@ -252,6 +264,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     renderer: {
                         type: ButtonRenderer
                     },
+                    filter: 'select'
+                },
+                {
+                    header: '거래처코드',
+                    name: 'clientCode',
+                    align: "center",
+                    width: 183,
+                    whiteSpace: 'normal',
+                    className:'border',
                     filter: 'select'
                 },
                 {
@@ -302,12 +323,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
  	//데이터 이동 이벤트함수
     clientGrid.on('click',function(ev){
+		
 		let rowKeyNum;
 		if (ev.columnName == 'clientName'){
 			rowKeyNum = ev.rowKey;	
 			let inputTag = document.getElementById('clientInput');
-			inputTag.value = '';		
-			inputTag.value = clientGrid.getValue(rowKeyNum, 'clientName');													
+			let inputTag2 = document.getElementById('clientHiddenInput');
+			inputTag.value = '';
+			inputTag2.value = '';				
+			inputTag.value = clientGrid.getValue(rowKeyNum, 'clientName');
+			inputTag2.value = clientGrid.getValue(rowKeyNum, 'clientCode');			
+			console.log(inputTag2)										
 		}
 	})
 	
@@ -364,19 +390,104 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
     });
     
+    //모달에서 버튼 클릭시 페이지 input으로 value 이동
     itemGrid.on('click',function(ev){
 		let rowKeyNum;
 		if (ev.columnName == 'itemCode'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('itemInput');
-			inputTag.value = '';			
-			inputTag.value = itemGrid.getValue(rowKeyNum, 'itemName');							
+			let inputTag2 = document.getElementById('itemInput');
+			inputTag.value = '';
+			inputTag2.value = '';			
+			inputTag.value = itemGrid.getValue(rowKeyNum, 'itemName');	
+			inputTag2.value = itemGrid.getValue(rowKeyNum, 'itemCode');						
 		
 		}
 	})        
     //#endregion 품목조회 모달
+    
+    //#region 제품상세모달_조정내역 그리드
+    let	adjustmentDetailGrid = new Grid({
+            el: document.getElementById('adjustmentDetail'),
+            scrollX: true,
+            scrollY: true,
+            header: { height: 34 },
+            bodyHeight: 600,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                    type: 'rowNum',
+                    header: "No.",
+                    width: 50,
+                    className:'border'
+            }],
+            columns: [
+                {
+                    header: '재고조정번호',
+                    name: 'stocksAdjustNo',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    renderer: {
+                        type: ButtonRenderer
+                    },
+                    filter: 'select',
+                    formatter: ({ value }) =>
+			          `<div class="btn-link text-primary modalTrigger" data-bs-toggle="modal" data-bs-target="#adjustDetailModal">${value}</div>`,
+                    
+                },
+                {
+                    header: '전표번호',
+                    name: 'itemName',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '조정사원',
+                    name: 'employeeName',
+                    align: "center",
+                    width: 70,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                                {
+                    header: '등록날짜',
+                    name: 'date',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
 
-	
+                {
+                    header: '증감 여부',
+                    name: 'stocksStocksCheck',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '변동사유',
+                    name: 'updateReason',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+            ]
+    });
+    //#endregion 제품상세모달_조정내역 그리드
+    
+    //#region 기타 함수 및 초기화
 	/*!== 모달 Data 정보 초기화 ==!*/
 	function modalInfoInitailize(){
     	/*!!== 거래처 모달 데이터 fetch & resetData() ==!!*/
@@ -387,6 +498,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			result.forEach(ele=>{
 				let dataRow = {};
 				dataRow.clientName = ele.clientName;
+				dataRow.clientCode = ele.clientCode;
 				dataRow.ceoName = ele.ceoName;
 				dataRow.companyTel = ele.companyTel;
 				dataRow.employeeName = ele.employeeName;
@@ -397,22 +509,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			clientGrid.resetData(gridDataArr);
 		})
 		.catch(err=> `거래처 모달 fetch 실패! ${err}`);
-		
-		/*!!== 창고 모달 데이터 fetch & restData() ==!!*/
-		/*fetch("/whList") //혁태꺼
-		.then(result => result.json())
-		.then(result => {
-			gridDataArr = [];
-			result.forEach(ele=>{
-				let dataRow = {};
-				dataRow.whName = ele.whName;
-				dataRow.whCode = ele.whCode;
-				dataRow.whPlace = ele.whPlace;
-				dataRow.whType = ele.whType;
-				gridDataArr.push(dataRow);
-			})          
-			warehouseGrid.resetData(gridDataArr);
-		})*/
 		
 		/*!!== 품목 모달 데이터 fetch & restData() ==!!*/
 		fetch("/stocks/item")
@@ -430,4 +526,20 @@ document.addEventListener("DOMContentLoaded", function () {
 		})
 		.catch(err=> `품목 모달 fetch 실패! ${err}`);
     }
+    
+   /*!== 수동입력시 hidden값 없애기 ==! */  
+   //수동입력시 hidden input.value 초기화 => 거래처, 품목 Input
+	let clientInputTag = document.getElementById('clientInput')
+	clientInputTag.addEventListener('change', function(){
+		inputTag2 = document.getElementById('clientHiddenInput');
+		inputTag2.value = '';
+	})
+	
+	let itemInputTag = document.getElementById('itemInput')
+	itemInputTag.addEventListener('change', function(){
+		inputTag2 = document.getElementById('clientHiddenInput');
+		inputTag2.value = '';
+	})
+	
+	//#endregion
 }); //End Point

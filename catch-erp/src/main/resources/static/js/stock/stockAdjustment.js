@@ -1300,7 +1300,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	//#endregion 사원조회
 	
-	//#region 체크박스관련
+	//#region 체크박스 및 기타 기능함수
 	
     /*===================================
     	StackAdjust 선택취소, 입력초기화 JS
