@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+    
     // 조정 페이지 그리드 객체     	
     let grid = new Grid({
         el: document.getElementById('adjustmentGrid'),
@@ -194,7 +195,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
-                className:'border'              
+                className:'border',
+                formatter: ({ value }) => {
+		          // 값에 따라 다른 색상 스타일 적용
+		          let colorClass = "";
+		          if (value === "상품 입고") {
+		            colorClass = "r1";
+		          } else if (value === "상품 출고") {
+		            colorClass = "r2";
+		 		  }
+		          return `<span class="${colorClass}">${value}</span>`;
+		        },              
             },           
             {
                 header: '지시수량',
@@ -216,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     min: 1,
                    	max: 99999999
                 },                         
-                className:'border'
+                className:'border',
             },
             {
                 header: '입고수량',
@@ -289,6 +300,10 @@ document.addEventListener("DOMContentLoaded", function () {
             el: document.getElementById("clientGrid"),
             scrollX: true,
             scrollY: true,
+             pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
             header: { height: 40 },
             bodyHeight: 500,
             width: 'auto',
@@ -413,14 +428,14 @@ document.addEventListener("DOMContentLoaded", function () {
     ==============================*/
     // 모달 관련 JavaScript
     var purchaseOrderModal = document.getElementById('purchaseOrderModal')
-    purchaseOrderModal.addEventListener('show.bs.modal', function (event) {
+    purchaseOrderModal.addEventListener('show.bs.modal', function () {
         // 모달이 표시되기 전에 실행할 코드
         window.setTimeout(function(){
             grid5.refreshLayout();
         }, 200) 
     })
 
-    purchaseOrderModal.addEventListener('hidden.bs.modal', function (event) {
+    purchaseOrderModal.addEventListener('hidden.bs.modal', function () {
         // 모달이 완전히 숨겨진 후 실행할 코드
         // 현재는없음
     })
@@ -429,6 +444,10 @@ document.addEventListener("DOMContentLoaded", function () {
             el: document.getElementById('itemGrid'),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
             header: { height: 40 },
             bodyHeight: 500,
             width: 'auto',
@@ -512,6 +531,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		    el: document.getElementById('purchaseGrid'),
 		    scrollX: true,
 		    scrollY: true,
+		    pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
 		    header: { height: 40 },
 		    bodyHeight: 500,
 		    width: 'auto',
@@ -783,6 +806,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		    el: document.getElementById('salesGrid'),
 		    scrollX: true,
 		    scrollY: true,
+		    pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
 		    header: { height: 40 },
 		    bodyHeight: 500,
 		    width: 'auto',
@@ -1195,6 +1222,10 @@ document.addEventListener("DOMContentLoaded", function () {
             el: document.getElementById('humanGrid'),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 15,
+		    },
             header: { height: 40 },
             bodyHeight: 500,
             width: 'auto',
@@ -1322,8 +1353,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c3 = ele.c5;
 			data.c4 = '상품 입고'
 			data.c5 = ele.c7;
-			data.c6 = 'X'
-			data.c7 = '0';
+			data.c6 = '-'
+			data.c7 = '1';
 			data.c8 = ele.c10
 			data.c9 = ele.c11
 			data.c10 = ele.c12
@@ -1336,12 +1367,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		let checkingMaxRows = selectedCtn + exitedRowsInPage;
 		window.setTimeout(function(){
 			if(checkingMaxRows < 16){
-			grid.appendRows(dataArr);
-		} else {
-			alert('한 번에 15건만을 처리할 수 있습니다.')
-			return;
-		}
-		},200)	
+				grid.appendRows(dataArr);
+				disabledCell();
+			} else {
+				alert('한 번에 15건만을 처리할 수 있습니다.')
+				return;
+			}
+			},200)	
 	})
 	
 	//출하지시내역 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
@@ -1357,8 +1389,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			data.c3 = ele.c5;
 			data.c4 = '상품 출고'
 			data.c5 = ele.c7;
-			data.c6 = '0'
-			data.c7 = 'X';
+			data.c6 = '1'
+			data.c7 = '-';
 			data.c8 = ele.c10
 			data.c9 = ele.c11
 			data.c10 = ele.c12
@@ -1370,6 +1402,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		let checkingMaxRows = selectedCtn + exitedRowsInPage;
 		if(checkingMaxRows < 16){
 					grid.appendRows(dataArr);
+					disabledCell();
 		} else {
 			alert('한 번에 15건을 처리할 수 있습니다.')
 		}
@@ -1424,6 +1457,26 @@ document.addEventListener("DOMContentLoaded", function () {
 			resultArr.push(row);
 		})		
 		return resultArr
+	}
+	
+	/*입,출고 여부에 따라 수량입력 cell disable 처리*/
+	function disabledCell (){
+		let gridData = grid.getData();
+		let purcRow = [];
+		let saleRow = [];
+		gridData.forEach(ele=>{
+			if(ele.c4 == '상품 출고'){
+				saleRow.push(ele.rowKey)
+			} else if(ele.c4 == '상품 입고'){
+				purcRow.push(ele.rowKey)
+			}
+		})
+		purcRow.forEach(ele=>{
+			grid.disableCell(ele, 'c6');
+		})
+		saleRow.forEach(ele=>{
+			grid.disableCell(ele, 'c7');
+		})
 	}
 	
 	//#endregion 체크박스관련 & 그 외

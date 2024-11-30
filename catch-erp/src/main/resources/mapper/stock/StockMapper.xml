@@ -35,7 +35,7 @@
 	
 	<!-- 조건검색된 구매전표번호로 구매내역을 조회 -->
 	<select id ="selectPurcHistoryList" parameterType ="map" resultType="PurchaseHistoryVO">
-		WITH b as (SELECT wh_code,item_code, 
+		WITH st as (SELECT wh_code,item_code, 
 			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
 			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
 		FROM stocks
@@ -56,11 +56,11 @@
 			   ,ch.employee_code
 			   ,ch.employee_name
 			   ,ct.stocks_quantity
-			   ,b.current_quantity
+			   ,st.current_quantity
 		FROM   purchase_history hi JOIN purchase_chit ch 
 			ON (hi.purcslip_no = ch.purcslip_no) 
 			JOIN contract_item ct ON (hi.item_code = ct.item_code)
-			JOIN b ON (hi.item_code = b.item_code AND hi.wh_code = b.wh_code)
+			JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
 		WHERE hi.purcslip_no IN
 	    <foreach item="purcNo" collection="chitNoArr" open="(" separator="," close=")">
 	        #{purcNo}
@@ -87,7 +87,7 @@
 	
 	<!-- 판매내역조회 -->
 	<select id="selectSalesHistoryList" parameterType="map" resultType="SalesHistoryVO">
-		WITH b as (SELECT wh_code,item_code, 
+		WITH st as (SELECT wh_code,item_code, 
 			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
 			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
 		FROM stocks
@@ -108,11 +108,11 @@
 			  ,ch.employee_code
 			  ,ch.employee_name
 			  ,ct.stocks_quantity
-			  ,b.current_quantity
+			  ,st.current_quantity
 		FROM   saleslip_history hi 
 			JOIN sales_chit ch ON (hi.saleslip_no = ch.saleslip_no)
 			JOIN contract_item ct ON (hi.item_code = ct.item_code) 
-			JOIN b ON (hi.item_code = b.item_code AND hi.wh_code = b.wh_code)
+			JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
 		WHERE  hi.saleslip_no IN
 			(SELECT  saleslip_no
 			 FROM   sales_chit
@@ -127,7 +127,7 @@
 			 </choose>
 			 <choose>
 			 	<when test="employeeCode != 'no'">
-			 		AND employee_code = #{employeeName}
+			 		AND employee_code = #{employeeCode}
 			 	</when>  
 			 	<otherwise>
 			 		AND employee_name LIKE CONCAT(#{employeeName}, '%')
@@ -165,4 +165,44 @@
 		FROM   stocks
 	</select>
 	
+	<select id="selectAllSearchItemList" parameterType="ItemSearchVO" resultType="ContractItemVO">
+		SELECT ci.con_no
+			  ,ci.item_code
+			  ,ci.item_name
+			  ,ci.price
+			  ,c.client_code
+			  ,cl.client_name
+		FROM  contract_item ci 
+		    JOIN contract c ON (ci.con_no = c.con_no)
+		   	JOIN client cl ON (c.client_code = cl.client_code)
+		WHERE ci.con_no IN 
+			(SELECT con_no
+			 FROM contract
+			 WHERE 1 != 2
+		    <choose>
+			 	<when test="clientHiddenInput != ''">
+			 		AND client_code = #{clientHiddenInput}
+			 	</when>  
+			 	<otherwise>
+			 		AND client_name LIKE CONCAT(#{clientInput}, '%')
+			 	</otherwise>
+			 </choose>) <!-- 서브쿼리 End Point -->
+		 <choose>
+		 	<when test="itemHiddenInput != ''">
+		 		AND ci.item_code = #{itemHiddenInput}
+		 	</when>  
+		 	<otherwise>
+		 		AND ci.item_name LIKE CONCAT(#{itemInput}, '%')
+		 	</otherwise>
+		 </choose>
+		  <if test="minPrice != ''">
+		    		AND price > #{minPrice}
+		  </if>
+		  <if test="maxPrice != ''">
+		      <![CDATA[
+		    		AND price < #{maxPrice}
+		      ]]>
+		  </if>
+		
+	</select>
 </mapper>

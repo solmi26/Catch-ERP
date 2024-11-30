@@ -4,6 +4,7 @@ import java.util.Date;
 
 import lombok.Data;
 
+/*판매내역 조건검색을 위한 VO*/
 @Data
 public class HistorySearchVO {
 	private String clientInput; //거래처명

@@ -6,6 +6,7 @@ import com.cherp.app.buss.vo.PurchaseHistoryVO;
 import com.cherp.app.buss.vo.SalesHistoryVO;
 import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
+import com.cherp.app.stck.vo.ItemSearchVO;
 import com.cherp.app.stck.vo.StocksAdjustVO;
 
 public interface StockService {
@@ -17,4 +18,5 @@ public interface StockService {
 	public List<SalesHistoryVO> getSalesHistoryList(HistorySearchVO searchVO); //판매내역조회
 	public int insertStocksAdjustment(List<StocksAdjustVO> stocksAdjustVO); // 재고조정 프로시저 호출
 	public Long getAdjustNo(); //최신 재고조정번호 조회
+	public List<ContractItemVO> getItemInfoList(ItemSearchVO itemSearchVO);
 }

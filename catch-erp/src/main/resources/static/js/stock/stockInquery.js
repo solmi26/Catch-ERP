@@ -69,22 +69,16 @@
 document.addEventListener("DOMContentLoaded", function () {
         
     /*!== TOAST UI GRID refresh & 공통 설정 ==!*/
-    let container = document.querySelector(".container");
-    container.addEventListener("click", (e)=>{
-		//그리드 refresh()
-		if(e.target.classList.contains('mBtn')){
+    let modalBtn = document.querySelectorAll(".mBtn");
+    for(btn of modalBtn){
+    	btn.addEventListener("click",()=>{
+			//그리드 refresh()
 			window.setTimeout(function(){
             	clientGrid.refreshLayout();
-        	}, 150)
-        	window.setTimeout(function(){
-            	warehouseGrid.refreshLayout();
-        	}, 150)
-        	window.setTimeout(function(){
             	itemGrid.refreshLayout();
-        	}, 150)
-		}
-		
-	})
+        	}, 200);
+		})
+	}
 	/*!!==모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용. ==!!*/
 	const Grid = tui.Grid;
     
@@ -113,72 +107,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 	
-	/*!== 모달 Data 정보 초기화 ==!*/
-    /*!!== 거래처 모달 데이터 fetch & resetData() ==!!*/
-	fetch("/stocks/client")
-	.then(result=>result.json())
-	.then(result=>{
-		gridDataArr = [];
-		result.forEach(ele=>{
-			let dataRow = {};
-			dataRow.clientName = ele.clientName;
-			dataRow.ceoName = ele.ceoName;
-			dataRow.companyTel = ele.companyTel;
-			dataRow.employeeName = ele.employeeName;
-			dataRow.employeeTel = ele.employeeTel;
-			dataRow.event = ele.event;
-			gridDataArr.push(dataRow);
-		})
-		clientGrid.resetData(gridDataArr);
-	})
 	
-	/*!!== 창고 모달 데이터 fetch & restData() ==!!*/
-	fetch("/whList") //혁태꺼
-	.then(result => result.json())
-	.then(result => {
-		gridDataArr = [];
-		result.forEach(ele=>{
-			let dataRow = {};
-			dataRow.whName = ele.whName;
-			dataRow.whCode = ele.whCode;
-			dataRow.whPlace = ele.whPlace;
-			dataRow.whType = ele.whType;
-			gridDataArr.push(dataRow);
-		})          
-		warehouseGrid.resetData(gridDataArr);
-	})
+	/*!!== 모달정보 초기화 ==!!*/
+	modalInfoInitailize();
 	
-	/*!!== 품목 모달 데이터 fetch & restData() ==!!*/
-	fetch("/stocks/item")
-	.then(result => result.json())
-	.then(result => {
-		
-		gridDataArr = [];
-		result.forEach(ele=>{
-			let dataRow = {}
-			dataRow.itemCode = ele.itemCode;
-			dataRow.itemName = ele.itemName;
-			gridDataArr.push(dataRow);
-		})
-		itemGrid.resetData(gridDataArr)
-	})
-    
     //#region 재고조회 페이지 조회정보 그리드
     /*========================
 		   재고조회 토스트 그리드
 	  ========================*/
-    const initGrid = () => {
-        // 그리드 객체
 
-    const grid = new Grid({
-        
+    let stockInqueryGrid = new Grid({      
         el: document.getElementById('inqueryGrid'),
 	        scrollX: true,
-	        scrollY: true,
+	        scrollY: false,
+	        pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
 	        header: { height: 40 },
-	        bodyHeight: 450,
+	        bodyHeight: 600,
 	        rowHeight: 40,
-	        width: 'auto',
+	        width: '100%',
 	        contextMenu: null,
 	       rowHeaders: [{
 	                type: 'rowNum',
@@ -188,25 +137,25 @@ document.addEventListener("DOMContentLoaded", function () {
 	        }],
 	        columns: [
 	            {
-	                header: '품목코드',
-	                name: 'd1',
+	                header: '계약번호',
+	                name: 'conNo',
 	                align: "center",
-	                width: 200,
+	                width: 250,
 	                whiteSpace: 'normal',
 	                className:'border'
 	                
 	            },
 	            {
+	                header: '품목코드',
+	                name: 'itemCode',
+	                align: "center",
+	                width: 200,
+	                whiteSpace: 'normal',
+	                filter: 'select'
+	            },
+	            {
 	                header: '품목명',
-	                name: 'd2',
-	                align: "center",
-	                width: 240,
-	                whiteSpace: 'normal',
-	                filter: 'select'
-	            },
-	            {
-	                header: '거래처',
-	                name: 'd3',
+	                name: 'itemName',
 	                align: "center",
 	                width: 200,
 	                whiteSpace: 'normal',
@@ -214,79 +163,74 @@ document.addEventListener("DOMContentLoaded", function () {
 	                filter: 'select'
 	            },
 	            {
-	                header: '입고단가',
-	                name: 'd4',
+	                header: '거래처코드',
+	                name: 'clientCode',
 	                align: "center",
-	                width: 100,
+	                width: 200,
 	                whiteSpace: 'normal',
-	                sortable: true,
-	                sortingType: 'desc',
 	                className:'border'
-	            },
-	            {
-	                header: '출고단가',
-	                name: 'd5',
-	                align: "center",
-	                width: 100,
-	                whiteSpace: 'normal',
-	                sortable: true,
-	                sortingType: 'desc',
-	                className:'border'
-	            },
-	            {
-	                header: '재고현황',
-	                name: 'd6',
+	            },{
+	                header: '거래처명',
+	                name: 'clientName',
 	                align: "center",
 	                width: 200,
 	                whiteSpace: 'normal',
 	                className:'border'
 	            },
 	            {
-	                header: '창고명',
-	                name: 'd7',
+	                header: '입고단가', //공급가액
+	                name: 'price',
 	                align: "center",
-	                width: 200,
+	                width: 150,
 	                whiteSpace: 'normal',
+	                sortable: true,
+	                sortingType: 'desc',
 	                className:'border',
-	                filter: 'select'
+	                formatter: function (e) {
+			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+			          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			        },
 	            }
         ]
     	});
+		
+		//제품 조건 조회
+		
+		let inqueryBtn = document.getElementById('inqueryBtn');
+		inqueryBtn.addEventListener("click", function(){
+			let data = $('#searchForm').serialize();
+			fetch(`/stocks/itemInfo?${data}`)
+			.then(result=> result.json())
+			.then(result=> {
+				let dataArr = [];
+				result.forEach(ele=>{
+					let data = {};
+					data.conNo = ele.conNo;
+					data.itemCode = ele.itemCode;
+					data.itemName = ele.itemName;
+					data.clientCode = ele.clientCode;
+					data.clientName = ele.clientName;
+					data.price = ele.price;
+					dataArr.push(data);	
+				})
+				stockInqueryGrid.resetData(dataArr);
+			})
+			.catch(ele=> `제품조회 실패! + ${ele}`)
+		})
 
-    	return grid;
-	}
-
-    // 그리드 설정
-    const createdGrid = initGrid();
-	
-    // 샘플 데이터
-    const sampleData = [
-        {
-			d1: 'A0000045',
-            d2: '컵홀더',
-            d3: '태호물산',
-            d4: '100',
-            d5: '120',
-            d6: '10000',
-            d7: '천안아산'
-        }
-        
-    ];
-
-    // 그리드에 데이터 넣기(출력)
-    createdGrid.resetData(sampleData);
 
 	//#region 거래처 모달
 	/*============================
     	StackInquery 거래처 모달 JS
-    ==============================*/
-    
-    // 모달 관련 JavaScript
-        
+    ==============================*/    
     let clientGrid = new Grid({
             el: document.getElementById("clientGrid"),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
             header: { height: 40 },
             bodyHeight: 500,
             width: 'auto',
@@ -368,79 +312,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	
 	//#endregion 거래처 모달
-    
-    //#region 창고 모달
-    /*============================
-    	StackInquery 창고 모달 JS
-    ==============================*/
-	let warehouseGrid = new Grid({
-            el: document.getElementById('warehouseGrid'),
-            scrollX: true,
-            scrollY: true,
-            header: { height: 40 },
-            bodyHeight: 500,
-            width: 'auto',
-            contextMenu: null,
-            rowHeaders: [{
-                    type: 'rowNum',
-                    header: "No.",
-                    width: 50,
-                    className:'border'
-            }],
-            columns: [
-                {
-                    header: '창고명',
-                    name: 'whName',
-                    align: "center",
-                    width: 183,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    renderer: {
-                        type: ButtonRenderer
-                    },
-                    filter: 'select'                    
-                },
-                {
-                    header: '창고코드',
-                    name: 'whCode',
-                    align: "center",
-                    width: 183,
-                    whiteSpace: 'normal',
-                    className:'border'
-                },
-                {
-                    header: '위치',
-                    name: 'whPlace',
-                    align: "center",
-                    width: 184,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
-                },
-                {
-                    header: '구분',
-                    name: 'whType',
-                    align: "center",
-                    width: 184,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
-                }
-            ]
-        });
-    
-    //데이터이동 이벤트 함수
-    warehouseGrid.on('click',function(ev){
-		let rowKeyNum;
-		if (ev.columnName == 'whName'){
-			rowKeyNum = ev.rowKey;	
-			let inputTag = document.getElementById('whInput');
-			inputTag.value = '';		
-			inputTag.value = warehouseGrid.getValue(rowKeyNum, 'whName');										
-		}
-	})
-    //#endregion 창고모달
-    
+
     //#region 품목조회 모달
     /*============================
     	StackInquery 품목조회 모달 JS
@@ -452,6 +324,10 @@ document.addEventListener("DOMContentLoaded", function () {
             el: document.getElementById('itemGrid'),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
             header: { height: 40 },
             bodyHeight: 500,
             width: 'auto',
@@ -486,7 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     filter: 'select'
                 }
             ]
-        });
+    });
     
     itemGrid.on('click',function(ev){
 		let rowKeyNum;
@@ -499,5 +375,59 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	})        
     //#endregion 품목조회 모달
-       
+
+	
+	/*!== 모달 Data 정보 초기화 ==!*/
+	function modalInfoInitailize(){
+    	/*!!== 거래처 모달 데이터 fetch & resetData() ==!!*/
+		fetch("/stocks/client")
+		.then(result=>result.json())
+		.then(result=>{
+			gridDataArr = [];
+			result.forEach(ele=>{
+				let dataRow = {};
+				dataRow.clientName = ele.clientName;
+				dataRow.ceoName = ele.ceoName;
+				dataRow.companyTel = ele.companyTel;
+				dataRow.employeeName = ele.employeeName;
+				dataRow.employeeTel = ele.employeeTel;
+				dataRow.event = ele.event;
+				gridDataArr.push(dataRow);
+			})
+			clientGrid.resetData(gridDataArr);
+		})
+		.catch(err=> `거래처 모달 fetch 실패! ${err}`);
+		
+		/*!!== 창고 모달 데이터 fetch & restData() ==!!*/
+		/*fetch("/whList") //혁태꺼
+		.then(result => result.json())
+		.then(result => {
+			gridDataArr = [];
+			result.forEach(ele=>{
+				let dataRow = {};
+				dataRow.whName = ele.whName;
+				dataRow.whCode = ele.whCode;
+				dataRow.whPlace = ele.whPlace;
+				dataRow.whType = ele.whType;
+				gridDataArr.push(dataRow);
+			})          
+			warehouseGrid.resetData(gridDataArr);
+		})*/
+		
+		/*!!== 품목 모달 데이터 fetch & restData() ==!!*/
+		fetch("/stocks/item")
+		.then(result => result.json())
+		.then(result => {
+			
+			gridDataArr = [];
+			result.forEach(ele=>{
+				let dataRow = {}
+				dataRow.itemCode = ele.itemCode;
+				dataRow.itemName = ele.itemName;
+				gridDataArr.push(dataRow);
+			})
+			itemGrid.resetData(gridDataArr)
+		})
+		.catch(err=> `품목 모달 fetch 실패! ${err}`);
+    }
 }); //End Point

@@ -13,6 +13,7 @@ import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
+import com.cherp.app.stck.vo.ItemSearchVO;
 import com.cherp.app.stck.vo.StocksAdjustVO;
 import com.cherp.app.stck.vo.StocksVO;
 
@@ -102,6 +103,11 @@ public class StockServiceImpl implements StockService{
 	public Long getAdjustNo() {
 		Long AdjustmentNo = stockMapper.selectAdjustNo().getRealNo();
 		return AdjustmentNo;
+	}
+	//제품정보 조건조회
+	@Override
+	public List<ContractItemVO> getItemInfoList(ItemSearchVO itemSearchVO) {	
+		return stockMapper.selectAllSearchItemList(itemSearchVO);
 	}
 
 
