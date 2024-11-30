@@ -337,12 +337,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	==============================*/
 
 	// 모달 관련 JavaScript
-	//const clientModal = document.getElementById('clientModal');
+	const clientModal = new bootstrap.Modal(document.getElementById('clientModal'));
+	
 	//모달실행 시 grid refresh를 위한 코드
 	document
 		.getElementById("openClientModal")
 		.addEventListener("click", function() {
-			
+			clientModal.show();
 			window.setTimeout(function() {
 				grid3.refreshLayout();
 			}, 200);
