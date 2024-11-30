@@ -3,9 +3,9 @@
 // 페이지 로드 완료 시 실행
 document.addEventListener("DOMContentLoaded", function () {
   // 공급가액, 부가세, 합계, 부가세 유형 필드
-  const priceInput = document.querySelector("input[name='price']");
-  const vatInput = document.querySelector("input[name='vat']");
-  const totalInput = document.querySelector("input[name='amount']");
+  const priceInput = document.querySelector("input[name='s_price']");
+  const vatInput = document.querySelector("input[name='s_vat']");
+  const totalInput = document.querySelector("input[name='s_amount']");
   const vatTypeSelect = document.querySelector("select[class='form-select']");
 
   // 콤마 추가
@@ -100,12 +100,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	 // 필수 입력값
     // name은 alert 창에 띄울 내용, ele는 html 요소
     const requiredFields = [
-      { name: "전표일자", element: document.querySelector("input[name='date']") },
-      { name: "거래처", element: document.querySelector("input[name='clientName']") },
-      { name: "계정명", element: document.querySelector("input[name='acctCode']") },
-      { name: "공급가액", element: document.querySelector("input[name='price']") },
-      { name: "부가세", element: document.querySelector("input[name='vat']") },
-      { name: "합계", element: document.querySelector("input[name='amount']") },
+      { name: "전표일자", element: document.querySelector("input[name='s_date']") },
+      { name: "거래처", element: document.querySelector("input[name='s_clientName']") },
+      { name: "계정명", element: document.querySelector("input[name='s_acctCode']") },
+      { name: "공급가액", element: document.querySelector("input[name='s_price']") },
+      { name: "부가세", element: document.querySelector("input[name='s_vat']") },
+      { name: "합계", element: document.querySelector("input[name='s_amount']") },
     ];
 
     let isAllow = true;
@@ -131,16 +131,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // 저장 로직
-    const chitDate = document.querySelector("input[name='date']").value; // 전표일자
-    const client = document.querySelector("input[name='clientCode']").value; // 거래처 코드
-    const acct = document.querySelector("input[name='acctName']").value; // 계정명
+    const chitDate = document.querySelector("input[name='s_date']").value; // 전표일자
+    const client = document.querySelector("input[name='s_clientCode']").value; // 거래처 코드
+    const acct = document.querySelector("input[name='s_acctName']").value; // 계정명
     const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
     const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
     const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
     const writer = "김도영"; // 작성자
     const balance = amount; // 채권 잔액
-    const summary = document.querySelector("input[name='summary']").value; // 적요
-    const saleslip = document.querySelector("input[name='saleslip']").value; // 판매전표 번호
+    const summary = document.querySelector("input[name='s_summary']").value; // 적요
+    const saleslip = document.querySelector("input[name='s_joinInput']").value; // 판매전표 번호
 
     const salesData = {
       chitDate: chitDate,
@@ -231,12 +231,17 @@ document.addEventListener("DOMContentLoaded", function () {
   	회계계정 모달 JS
   ==============================*/
 
-  //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openAcctModal").addEventListener("click", function () {
-    window.setTimeout(function () {
-      grid1.refreshLayout();
-    }, 200);
-  });
+  const acctModal = new bootstrap.Modal(document.getElementById('acctModal'));
+  	
+  	//모달실행 시 grid refresh를 위한 코드
+  	document
+  		.getElementById("openAcctModal")
+  		.addEventListener("click", function() {
+  			acctModal.show();
+  			window.setTimeout(function() {
+  				grid1.refreshLayout();
+  			}, 200);
+  		});
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid1 = new Grid({
@@ -284,8 +289,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "acctCode") {
       rowKeyNum = ev.rowKey;
-      let inputTag = document.getElementById("acctInput");
-      let inputTag2 = document.getElementById("acctInput2");
+      let inputTag = document.getElementById("s_acctInput");
+      let inputTag2 = document.getElementById("s_acctInput2");
       inputTag.value = "";
       inputTag.value = grid1.getValue(rowKeyNum, "acctName");
       inputTag2.value = grid1.getValue(rowKeyNum, "acctCode"); //거래처코드가 들어갈 hidden input
@@ -315,14 +320,17 @@ document.addEventListener("DOMContentLoaded", function () {
   ==============================*/
 
   // 모달 관련 JavaScript
-  //const clientModal = document.getElementById('clientModal');
+  const clientModal = new bootstrap.Modal(document.getElementById('clientModal'));
 
   //모달실행 시 grid refresh를 위한 코드
-  document.getElementById("openClientModal").addEventListener("click", function () {
-    window.setTimeout(function () {
-      grid3.refreshLayout();
-    }, 200);
-  });
+  document
+  	.getElementById("openClientModal")
+  	.addEventListener("click", function() {
+  		clientModal.show();
+  		window.setTimeout(function() {
+  			grid3.refreshLayout();
+  		}, 200);
+  	});
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid3 = new Grid({
@@ -415,8 +423,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "c7") {
       rowKeyNum = ev.rowKey;
-      let inputTag = document.getElementById("clientInput");
-      let inputTag2 = document.getElementById("clientInput2");
+      let inputTag = document.getElementById("s_clientInput");
+      let inputTag2 = document.getElementById("s_clientInput2");
       inputTag.value = "";
       inputTag.value = grid3.getValue(rowKeyNum, "c1");
       inputTag2.value = grid3.getValue(rowKeyNum, "c7"); //거래처코드가 들어갈 hidden input
@@ -462,10 +470,13 @@ document.addEventListener("DOMContentLoaded", function () {
   /*============================
 		구매전표 모달 JS
 	==============================*/
+	
+const salesModal = new bootstrap.Modal(document.getElementById('salesModal'));	
 
   //모달실행 시 grid refresh를 위한 코드
   document.getElementById("openSalesModal").addEventListener("click", function () {
     window.setTimeout(function () {
+	  salesModal.show();
       grid2.refreshLayout();
     }, 200);
   });
@@ -595,13 +606,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let rowKeyNum;
     if (ev.columnName == "c1") {
       rowKeyNum = ev.rowKey;
-      let inputTag1 = document.getElementById("joinInput");
-      let inputTag2 = document.getElementById("clientInput");
-      let inputTag3 = document.getElementById("clientInput2");
-      let inputTag4 = document.getElementById("price");
+      let inputTag1 = document.getElementById("s_joinInput");
+      let inputTag2 = document.getElementById("s_clientInput");
+      let inputTag3 = document.getElementById("s_clientInput2");
+      let inputTag4 = document.getElementById("s_price");
       //let inputTag5 = document.getElementById("vat");
       //let inputTag6 = document.getElementById("amount");
-      let inputTag7 = document.getElementById("summary");
+      let inputTag7 = document.getElementById("s_summary");
 
       inputTag1.value = "";
       inputTag1.value = grid2.getValue(rowKeyNum, "c1");

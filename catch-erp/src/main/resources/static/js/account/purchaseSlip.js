@@ -3,9 +3,9 @@
 // 페이지 로드 완료 시 실행
 document.addEventListener("DOMContentLoaded", function() {
 	// 공급가액, 부가세, 합계, 부가세 유형 필드
-	const priceInput = document.querySelector("input[name='price']");
-	const vatInput = document.querySelector("input[name='vat']");
-	const totalInput = document.querySelector("input[name='amount']");
+	const priceInput = document.querySelector("input[name='p_price']");
+	const vatInput = document.querySelector("input[name='p_vat']");
+	const totalInput = document.querySelector("input[name='p_amount']");
 	const vatTypeSelect = document.querySelector("select[class='form-select']");
 
 	// 콤마 추가
@@ -104,27 +104,27 @@ document.addEventListener("DOMContentLoaded", function() {
 			const requiredFields = [
 				{
 					name: "전표일자",
-					element: document.querySelector("input[name='date']"),
+					element: document.querySelector("input[name='p_date']"),
 				},
 				{
 					name: "거래처",
-					element: document.querySelector("input[name='clientName']"),
+					element: document.querySelector("input[name='p_clientName']"),
 				},
 				{
 					name: "계정명",
-					element: document.querySelector("input[name='acctCode']"),
+					element: document.querySelector("input[name='p_acctCode']"),
 				},
 				{
 					name: "공급가액",
-					element: document.querySelector("input[name='price']"),
+					element: document.querySelector("input[name='p_price']"),
 				},
 				{
 					name: "부가세",
-					element: document.querySelector("input[name='vat']"),
+					element: document.querySelector("input[name='p_vat']"),
 				},
 				{
 					name: "합계",
-					element: document.querySelector("input[name='amount']"),
+					element: document.querySelector("input[name='p_amount']"),
 				},
 			];
 
@@ -152,17 +152,17 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 
 			// 저장 로직
-			const chitDate = document.querySelector("input[name='date']").value; // 전표일자
-			const client = document.querySelector("input[name='clientCode']").value; // 거래처 코드
-			const acct = document.querySelector("input[name='acctName']").value; // 계정명
+			const chitDate = document.querySelector("input[name='p_date']").value; // 전표일자
+			const client = document.querySelector("input[name='p_clientCode']").value; // 거래처 코드
+			const acct = document.querySelector("input[name='p_acctName']").value; // 계정명
 			const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
 			const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
 			const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
 			const writer = "정재현"; // 작성자
 			//const balance = amount; // 채무 잔액
-			const summary = document.querySelector("input[name='summary']").value; // 적요
+			const summary = document.querySelector("input[name='p_summary']").value; // 적요
 			const purchaseSlip = document.querySelector(
-				"input[name='purchaseslip']"
+				"input[name='p_joinInput']"
 			).value; // 구매전표 번호
 
 			const purchaseData = {
@@ -250,11 +250,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	/*============================
 		  회계계정 모달 JS
 	==============================*/
-
+	const acctModal = new bootstrap.Modal(document.getElementById('acctModal'));
+	
 	//모달실행 시 grid refresh를 위한 코드
 	document
 		.getElementById("openAcctModal")
 		.addEventListener("click", function() {
+			acctModal.show();
 			window.setTimeout(function() {
 				grid1.refreshLayout();
 			}, 200);
@@ -306,8 +308,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		let rowKeyNum;
 		if (ev.columnName == "acctCode") {
 			rowKeyNum = ev.rowKey;
-			let inputTag = document.getElementById("acctInput");
-			let inputTag2 = document.getElementById("acctInput2");
+			let inputTag = document.getElementById("p_acctInput");
+			let inputTag2 = document.getElementById("p_acctInput2");
 			inputTag.value = "";
 			inputTag.value = grid1.getValue(rowKeyNum, "acctName");
 			inputTag2.value = grid1.getValue(rowKeyNum, "acctCode"); //거래처코드가 들어갈 hidden input
@@ -441,8 +443,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		let rowKeyNum;
 		if (ev.columnName == "c7") {
 			rowKeyNum = ev.rowKey;
-			let inputTag = document.getElementById("clientInput");
-			let inputTag2 = document.getElementById("clientInput2");
+			let inputTag = document.getElementById("p_clientInput");
+			let inputTag2 = document.getElementById("p_clientInput2");
 			inputTag.value = "";
 			inputTag.value = grid3.getValue(rowKeyNum, "c1");
 			inputTag2.value = grid3.getValue(rowKeyNum, "c7"); //거래처코드가 들어갈 hidden input
@@ -486,13 +488,15 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 
 	/*============================
-		  구매전표 모달 JS
+		  판매전표 모달 JS
 	  ==============================*/
+	  const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
 
 	//모달실행 시 grid refresh를 위한 코드
 	document
 		.getElementById("openPurchaseModal")
 		.addEventListener("click", function() {
+			purchaseModal.show();
 			window.setTimeout(function() {
 				grid2.refreshLayout();
 			}, 200);
@@ -623,13 +627,13 @@ document.addEventListener("DOMContentLoaded", function() {
 		let rowKeyNum;
 		if (ev.columnName == "c1") {
 			rowKeyNum = ev.rowKey;
-			let inputTag1 = document.getElementById("joinInput");
-			let inputTag2 = document.getElementById("clientInput");
-			let inputTag3 = document.getElementById("clientInput2");
-			let inputTag4 = document.getElementById("price");
+			let inputTag1 = document.getElementById("p_joinInput");
+			let inputTag2 = document.getElementById("p_clientInput");
+			let inputTag3 = document.getElementById("p_clientInput2");
+			let inputTag4 = document.getElementById("p_price");
 			//let inputTag5 = document.getElementById("vat");
 			//let inputTag6 = document.getElementById("amount");
-			let inputTag7 = document.getElementById("summary");
+			let inputTag7 = document.getElementById("p_summary");
 
 			inputTag1.value = "";
 			inputTag1.value = grid2.getValue(rowKeyNum, "c1");
