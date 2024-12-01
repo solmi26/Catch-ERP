@@ -113,6 +113,11 @@ public class SalesServiceImpl implements SalesService{
 		
 	}
 	
+	@Override
+	public int updateSales(SalesVO salesVO) {
+		return salesMapper.updateSales(salesVO);
+	}
+	
 	// 매입, 매출전표 상세 조회
 	@Override
 	public SalesVO slipInfo(SalesVO salesVO) {

@@ -38,7 +38,8 @@ public interface SalesService {
 	public void insertPurchase(PayablesVO payblesVO);
 	
 	//수정
-	public int updateSalesInvoiceNo(SalesVO salesVO); // 매출 단건 수정
+	public int updateSalesInvoiceNo(SalesVO salesVO); // 매출전표 인보이스 번호 수정
+	public int updateSales(SalesVO salesVO); // 매출전표 수정
 	public int updatePayable(PayablesVO payablesVO); // 채무거래 단건 수정
 	public int updateReceivable(SalesVO salesVO);	 // 채권거래 단건 수정
 	public int updateInvoice(SalesVO salesVO);		 // 세금 계산서 수정
