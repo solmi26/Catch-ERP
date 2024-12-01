@@ -24,14 +24,16 @@ public class BussController {
     }
 
     // 구매 페이지
-    @GetMapping("testPurchase")
-    public String testPurchase() {
-        return "purchase/purchasePage";
+    @GetMapping("/purchaseChit")
+    public String purchaseChit(Model model) {
+        List<ClientVO> list = clientService.clientList();
+        model.addAttribute("client", list);
+        return "purchase/purchaseChit";
     }
     
     // 판매 페이지
     @GetMapping("/salesChit")
-    public String SalesChit(Model model) {
+    public String salesChit(Model model) {
         List<ClientVO> list = clientService.clientList();
         model.addAttribute("client", list);
         return "sales/salesChit";

@@ -172,7 +172,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                 width: 200,
                 whiteSpace: 'normal',
                 editor: 'text',
-                className: 'border'
+                className: 'border',
+                filter: {
+                    type: 'date',
+                    options: {
+                        format: 'yyyy-MM-dd',
+                        language: 'ko'
+                    },
+                    showClearBtn: true
+                }
             }, {
                 header: '거래처명',
                 name: 'clientName',
@@ -388,5 +396,25 @@ document.addEventListener("DOMContentLoaded", async function () {
         return saleslipHistory;
     }
     initSaleslipHistory();
+
+    document.getElementById('searchButton').addEventListener('click', () => {
+        const formData = new FormData(document.getElementById('searchForm'));
+        const params = new URLSearchParams();
+
+        for (const [key, value] of formData.entries()) {
+            if (value) {
+                params.append(key, value);
+            }
+        }
+
+        fetch(`/sales/selectSalesChit/search?${params.toString()}`)
+            .then(result => result.json())
+            .then(data => {
+                salesChit.resetData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    })
 });
 
