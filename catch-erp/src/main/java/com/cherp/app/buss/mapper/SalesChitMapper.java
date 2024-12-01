@@ -22,7 +22,7 @@ public interface SalesChitMapper {
 	public List<SalesChitVO> selectSalesChit();
 
 	// 판매전표 검색 기능
-	public List<SalesChitVO> searchSalesChit();
+	public List<SalesChitVO> searchSalesChit(SalesChitVO salesChitVO);
 
 	// 판매전표 전표상태별 조회
 	public List<SalesChitVO> selectSalesChitState(String slipState);

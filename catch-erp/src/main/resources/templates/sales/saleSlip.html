@@ -19,26 +19,26 @@
 
 <!-- Form -->
 <div class="card">
-    <form class="bg-light p-4 rounded card-body">
+    <form class="bg-light p-4 rounded card-body" id="searchForm">
         <div class="row g-3">
             <div class="col-md-12">
                 <div class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label">발주일자</label>
                         <div class="input-group">
-                            <input type="date" class="form-control">
+                            <input type="date" class="form-control" name="insertDate">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">입고예정일</label>
                         <div class="input-group">
-                            <input type="date" class="form-control">
+                            <input type="date" class="form-control" name="deliveryDate">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">거래처</label>
                         <div class="input-group">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="clientName">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
                                     data-bs-toggle="modal" data-bs-target=""></button>
                         </div>
@@ -46,7 +46,7 @@
                     <div class="col-md-3">
                         <label class="form-label">품목</label>
                         <div class="input-group">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="itemName">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
                                     data-bs-toggle="modal" data-bs-target=""></button>
                         </div>
@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <button class="bi bi-search border btn btn-success px-4" type="button" data-bs-toggle="dropdown"
+        <button class="bi bi-search border btn btn-success px-4" id="searchButton" type="button" data-bs-toggle="dropdown"
                 style="margin:10px 0px">
             검색
         </button>

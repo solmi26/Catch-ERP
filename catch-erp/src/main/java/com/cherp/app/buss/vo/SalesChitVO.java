@@ -24,6 +24,10 @@ public class SalesChitVO {
     private int vat; // 부가세
     private String slipState; // 발행상태
 
+    private Date deliveryDate; // 배송예정일
+    private String itemName; // 품목 이름
+
+
     private int deliveryPrice; // 총 단가 금액
 
     List<SaleslipHistoryVO> saleslipHistories;

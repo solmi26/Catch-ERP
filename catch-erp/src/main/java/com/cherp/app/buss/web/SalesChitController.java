@@ -25,8 +25,15 @@ public class SalesChitController {
     // 판매전표 전체 조회
 	@ResponseBody
     @GetMapping("sales/selectSalesChit")
-	public List<SalesChitVO> selectSalesShit(Model model){
+	public List<SalesChitVO> selectSalesShit(){
 		return salesChitService.selectSalesChit();
+	}
+
+	// 판매전표 검색 조회
+	@ResponseBody
+	@GetMapping("sales/selectSalesChit/search")
+	public List<SalesChitVO> searchSalesChit(@ModelAttribute SalesChitVO salesChitVO){
+		return salesChitService.searchSalesChit(salesChitVO);
 	}
 
 	// 판매전표별 판매내역 보기
