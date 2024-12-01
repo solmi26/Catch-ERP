@@ -118,8 +118,12 @@ public class StockServiceImpl implements StockService{
 		stockMapper.updateItemImage(image, itemCode);		
 	}
 	@Override
-	public int getItemQuantityByWh(String itemCode, String whCode) {
-		return 0;
+	public ContractItemVO getItemQuantityByWh(String itemCode, String whCode) {
+		return stockMapper.selectItemQuantityByWh(itemCode, whCode);
+	}
+	@Override
+	public List<StocksVO> getAllAdjustList(String whCode, String date) {
+		return stockMapper.selectAllAdjustList(whCode, date);
 	}
 
 

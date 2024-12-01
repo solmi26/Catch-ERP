@@ -16,8 +16,9 @@ import com.cherp.app.stck.vo.StocksVO;
 public interface StockMapper {
 	
 	public List<ContractItemVO> selectAllItemList();  //품목조회
-	public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String type1, @Param("type2") String type2 //구매내역 조건조회를 위한 구매전표 조건조회
-			, @Param("client") String client, @Param("employee") String employee);
+	public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String type1, @Param("type2") String type2 
+			, @Param("client") String client, @Param("employee") String employee); //구매내역 조건조회를 위한 구매전표 조건조회
+	
 	public List<PurchaseHistoryVO> selectPurcHistoryList(Map<String, Object> map); //구매내역 조건조회
 	public ContractItemVO selectStocks(String itemCode); // 단건 품목의 재고 조회
 	public List<SalesHistoryVO> selectSalesHistoryList(Map<String, Object> map); //판매내역조회
@@ -26,5 +27,8 @@ public interface StockMapper {
 	public List<ContractItemVO> selectAllSearchItemList(ItemSearchVO itemSearchVO); //제품정보 조건조회
 	public ContractItemVO selectItemDetail(String itemCode); //제품상세정보 조회
 	public void updateItemImage(@Param("image") String image, @Param("itemCode") String itemCode); //제품사진수정
-	public ContractItemVO selectItemQuantityByWh(String itemCode, String whCode); //창고별 특정 품목의 현재수량 조회
+	public ContractItemVO selectItemQuantityByWh(@Param("itemCode") String itemCode, 
+			@Param("whCode") String whCode); //창고별 특정 품목의 현재수량 조회
+	
+	public List<StocksVO> selectAllAdjustList(String whCode, String date); //창고,제품별 재고이력조회
 }

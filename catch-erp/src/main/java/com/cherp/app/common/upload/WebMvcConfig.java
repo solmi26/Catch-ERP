@@ -1,4 +1,4 @@
-package com.cherp.app.stck.web.upload;
+package com.cherp.app.common.upload;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

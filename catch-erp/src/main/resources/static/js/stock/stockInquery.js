@@ -224,11 +224,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		})
 		
 		/*!== 제품 상세조회 모달 ==!*/
+		let totalQuantity; //제품 상세정보띄울때 전체재고를 저장하기 위함, 콤보박스 누를때 전체재고수량 보관하기위함
 		stockInqueryGrid.on('click',function(e){	
 			if (e.columnName == 'conNo'){		
 				let rowKeyNum = e.rowKey;
 				let itemCode = stockInqueryGrid.getValue(rowKeyNum, 'itemCode'); //제품코드로 상세정보를 불러올 거에용.
-				fetch(`/stocks/itemDetailInfo/${itemCode}`)
+				fetch(`/stocks/itemDetailInfo/${itemCode}`) //받아오는값 ContractItemVO
 				.then(result=> result.json())
 				.then(result=> {
 					let clientValue = result.clientName + '[' + result.clientCode + ']';
@@ -238,9 +239,10 @@ document.addEventListener("DOMContentLoaded", function () {
 					setValueByName('conNo', result.conNo)
 					setValueByName('itemCode', result.itemCode)
 					setValueByName('itemName', result.itemName)
-					setValueByName('price', result.price)
+					setValueByName('price', result.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+"원")
 					setValueByName('contractPeriod', contractPeriod)
 					setValueByName('currentQuantity', result.stocksQuantity)
+					totalQuantity = result.stocksQuantity;
 							
 				})
 				.catch(err=>{`제품상세불러오기 실패! : ${err}`})
@@ -253,6 +255,14 @@ document.addEventListener("DOMContentLoaded", function () {
 					let warehouseTypeBox2 = document.getElementById('warehouseType2');
 					warehouseTypeBox.replaceChildren();
 					warehouseTypeBox2.replaceChildren();
+					let option = document.createElement('option'); 
+		            option.value = "allStocks"; 
+		            option.textContent = "전체재고";
+		            let option2 = document.createElement('option');
+		            option2.value = "allStocks"; 
+		            option2.textContent = "전체재고"; 
+		            warehouseTypeBox.appendChild(option);
+		            warehouseTypeBox2.appendChild(option2);
 					result.forEach(ele=>{	
 						let option = document.createElement('option'); 
 			            option.value = ele.whCode; 
@@ -274,12 +284,21 @@ document.addEventListener("DOMContentLoaded", function () {
 			 let selectedOption = warehouseTypeBox.options[warehouseTypeBox.selectedIndex];			 
 		     let whCode = selectedOption.value;
 		     let itemCode = document.getElementById('itemCode').value;
-		     fetch("/stocks/itemQuantity/{}/{}")//창고코드와 제품코드로 현재고를 알아오는 API작성해야함.
-		     .then(result => result.json())
-		     .then(result => {
-				console.log(result);
-			 })
-		     .catch(err=>{`제품의 특정 창고 재고 알아오기 실패! ${err}`})
+		     if(e.target.value != 'allStocks'){
+			     fetch(`/stocks/itemQuantity/${itemCode}/${whCode}`)//창고코드와 제품코드로 현재고를 알아오는 API작성해야함.
+			     .then(result => result.json())
+			     .then(result => {
+					let currentQuantity = document.getElementById('currentQuantity');
+					if(result.data != null){
+						currentQuantity.value = result.data.currentQuantity;
+					} else if(result.data == null){
+						currentQuantity.value = 0;
+					}				
+				 })
+			     .catch(err=>{`제품의 특정 창고 재고 알아오기 실패! ${err}`})
+		     } else if(e.target.value == 'allStocks'){
+					currentQuantity.value = totalQuantity; //상세정보모달 열 때 보관되는 값을 가져온다.
+			 }
 		})
 		
 		/*수정버튼 클릭시 제품사진 변경*/ 
@@ -338,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			})
 		}
 		
-		//창고종류 select 콤보박스 이벤트
+		
 		
 	//#region 거래처 모달
 	/*============================
@@ -551,7 +570,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 {
                     header: '전표번호',
-                    name: 'itemName',
+                    name: 'slipNo',
                     align: "center",
                     width: 100,
                     whiteSpace: 'normal',
@@ -559,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     filter: 'select'
                 },
                 {
-                    header: '조정사원',
+                    header: '사원명',
                     name: 'employeeName',
                     align: "center",
                     width: 70,
@@ -597,7 +616,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             ]
     });
-
+	
+	//let 창고 =
+	//let 년도 =
+	fetch(`/stocks/itemAdjust/${whCode}/${data}`)
+	.then(result=>result.json())
+	.then(result=>{
+		let dataArr = [];
+		result.forEach(ele=>{
+			let data = {};
+			data.slipNo = ele.slipNo;
+			data.employeeName = ele.employeeName;
+			data.date = ele.date;
+			data.stocksStocksCheck = ele.stocksStocksCheck;
+			data.updateReason = ele.updateReason;
+			dataArr.push(data);
+		})
+	})
+	.catch(err=>{`재고조정내역 불러오기 실패! ${err}`})
+	
     //#endregion 제품상세모달_조정내역 그리드
     
     //#region 기타 함수 및 초기화

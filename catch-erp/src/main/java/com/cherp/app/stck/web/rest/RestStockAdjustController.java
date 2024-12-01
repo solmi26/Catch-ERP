@@ -4,13 +4,13 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,16 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cherp.app.buss.service.ClientService;
 import com.cherp.app.buss.vo.ClientVO;
-import com.cherp.app.buss.vo.PurchaseChitVO;
 import com.cherp.app.buss.vo.PurchaseHistoryVO;
 import com.cherp.app.buss.vo.SalesHistoryVO;
-import com.cherp.app.stck.mapper.StockMapper;
 import com.cherp.app.stck.service.StockService;
 import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
 import com.cherp.app.stck.vo.ItemSearchVO;
 import com.cherp.app.stck.vo.StocksAdjustVO;
-import com.cherp.app.stck.web.StockAdjustController;
+import com.cherp.app.stck.vo.StocksVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -151,9 +149,21 @@ public class RestStockAdjustController {
 	}
 
 	//창고별 특정 품목의 현재수량 조회
-	@GetMapping("/itemQuantity")
-	public int getItemQuantityByWh (String itemCode, String whCode) {
-		return stockAdjustService.getItemQuantityByWh(itemCode, whCode);
+	@GetMapping("/itemQuantity/{itemCode}/{whCode}")
+	public Map<String, Object> getItemQuantityByWh (@PathVariable("itemCode") String itemCode, @PathVariable("whCode") String whCode) {
+		ContractItemVO vo = stockAdjustService.getItemQuantityByWh(itemCode, whCode);
+		Map<String, Object> map = new HashMap<>();
+		if(vo != null) {
+			map.put("data", vo);
+		} else {
+			map.put("data", null);
+		}
+		return map;
+	}
+	
+	@GetMapping("/itemAdjust/{whCode}/{date}")
+	public List<StocksVO> getAllAdjustList(@PathVariable("whCode") String whCode, @PathVariable("date") String date){
+		return stockAdjustService.getAllAdjustList(whCode, date);
 	}
 
 }
