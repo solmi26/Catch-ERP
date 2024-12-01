@@ -239,7 +239,7 @@
 		                id="p_clientInput"
 		                readonly="readonly"
 		              />
-			           <input type="text" style="display:none" id="p_clientInput2" name="clientCode">
+			           <input type="text" style="display:none" id="p_clientInput2" name="p_clientCode">
 		              <button class="btn btn-outline-secondary mgBtn" type="button" id="p_openClientModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
@@ -335,7 +335,7 @@
                     <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
                  <div>
 			        <!-- 리스트로 이동하는 버튼 -->
-			        <button type="button" class="btn btn-success saveBtn" id="save-btn">수정</button>
+			        <button type="button" class="btn btn-success updateBtn">수정</button>
 			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
@@ -383,7 +383,7 @@
 		                type="text"
 		                class="form-control"
 		                placeholder="구매전표 내역보기"
-		                name="s_saleslip"
+		                name="s_joinInput"
 		                id="s_joinInput"
 		              />
 		              <button class="btn btn-outline-secondary mgBtn" type="button" id="openSalesModal">
@@ -403,7 +403,7 @@
 		                id="s_clientInput"
 		                readonly="readonly"
 		              />
-			           <input type="text" style="display:none" id="s_clientInput2" name="clientCode">
+			           <input type="text" style="display:none" id="s_clientInput2" name="s_clientCode">
 		              <button class="btn btn-outline-secondary mgBtn" type="button" id="s_openClientModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
@@ -499,7 +499,7 @@
                     <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
                  <div>
 			        <!-- 리스트로 이동하는 버튼 -->
-			        <button type="button" class="btn btn-success saveBtn" id="save-btn">수정</button>
+			        <button type="button" class="btn btn-success updateBtn">수정</button>
 			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
@@ -645,6 +645,7 @@
             </div>
         </div>
     </div>
+    <button id="save-btn" hidden=""></button>
     
       
      

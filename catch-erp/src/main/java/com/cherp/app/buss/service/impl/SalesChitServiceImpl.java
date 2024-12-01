@@ -42,11 +42,19 @@ public class SalesChitServiceImpl implements SalesChitService {
         return salesChitMapper.selectSalesChit();
     }
 
+    // 판매전표 검색
+    @Override
+    public List<SalesChitVO> searchSalesChit(SalesChitVO salesChitVO) {
+        System.out.println("salesChitVO22222 = " + salesChitVO);
+        return salesChitMapper.searchSalesChit(salesChitVO);
+    }
+
     // 판매전표별 판매내역 보기
     @Override
     public List<SaleslipHistoryVO> selectSelectSaleslip(SaleslipHistoryVO saleslipHistoryVO, String saleslipNo) {
         return salesChitMapper.selectSaleslip(saleslipHistoryVO, saleslipNo);
     }
+
 
     // 판매내역 전표상태별 조회
     @Override

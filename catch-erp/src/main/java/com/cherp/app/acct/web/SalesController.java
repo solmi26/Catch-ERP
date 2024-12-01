@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,6 +68,14 @@ public class SalesController {
 	public String deleteSlip(@RequestBody List<SalesVO> salesVO) {
 		salesService.deleteSlip(salesVO);
 		return "삭제 성공";
+	}
+	
+	// 매출전표 수정 기능 by sm
+	@PutMapping("sales/updateSales")
+	@ResponseBody
+	public String updateSales(@RequestBody SalesVO salesVO) {
+		salesService.updateSales(salesVO);
+		return "수정성공";
 	}
 	
 	// 매입, 매출전표 상세조회(기능) by sm

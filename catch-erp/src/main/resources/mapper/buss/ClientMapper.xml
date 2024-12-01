@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.buss.mapper.ClientMapper">
 
+	<!-- 거래처 리스트 전체 조회 -->
 	<select id="selectClientList" resultType="com.cherp.app.buss.vo.ClientVO">
 		SELECT client_name
-		,ceo_name
-		,company_tel
-		,employee_name
-		,employee_tel
-		,event
-		,client_code
+			,ceo_name
+			,company_tel
+			,employee_name
+			,employee_tel
+			,event
+			,client_code
 		FROM client
 	</select>
 	

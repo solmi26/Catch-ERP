@@ -120,6 +120,9 @@
 		SELECT '매출전표' as type ,m.sales_chit_no
 		       ,m.chit_date
 		       ,m.supply_price
+               ,(SELECT client_name
+                FROM client c
+                WHERE m.client_code = c.client_code) client_name
 		       ,m.client_code
 		       ,m.summary
 		       ,FIND_CODE(i.invoice_status) invoice_status
@@ -135,10 +138,13 @@
 		SELECT '매입전표', purchase_chit_no
 		       ,chit_date
 		       ,supply_price
+               ,(SELECT client_name
+                FROM client c
+                WHERE p.client_code = c.client_code) client_name
 		       ,client_code
 		       ,summary
 		       ,FIND_CODE(invoice_status) invoice_status
-		FROM purchase
+		FROM purchase p
 		
 		ORDER BY chit_date desc
 	</select>
@@ -215,7 +221,6 @@
 		ORDER BY invoice_date desc
 		
 	</select>
-
 
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
 	<insert id="insertReceivable" parameterType="com.cherp.app.acct.vo.SalesVO">
@@ -351,7 +356,19 @@
 	</delete>
 	
 	<!-- 매출전표 수정 -->
-	<update id="updateSales" parameterType="com.cherp.app.acct.vo.SalesVO"></update>
+	<update id="updateSales" parameterType="com.cherp.app.acct.vo.SalesVO">
+			UPDATE sales
+			SET      chit_date  = #{chitDate}
+           			 ,client_code = #{clientCode}
+           			 ,acct_name  = #{acctName}
+       			     ,supply_price = #{supplyPrice}
+            		 ,vat = #{vat}
+           		  	 ,total_price = #{totalPrice}
+           	 	 	 ,writer = #{writer}
+	       			 ,summary = #{summary}
+           			 ,saleslip_no = #{saleslipNo}
+			WHERE sales_chit_no = #{salesChitNo}
+	</update>
 	
 	<!-- 매입전표 수정 -->
 	<update id="updatePurchase" parameterType="com.cherp.app.acct.vo.PayablesVO"></update>
@@ -363,6 +380,7 @@
 		       ,(select client_name
                  from client c
                  where c.client_code = s.client_code)as client_code
+               ,client_code as client_no
 		       ,acct_name
 		       ,supply_price
 		       ,vat
