@@ -8,6 +8,7 @@ import com.cherp.app.stck.vo.ContractItemVO;
 import com.cherp.app.stck.vo.HistorySearchVO;
 import com.cherp.app.stck.vo.ItemSearchVO;
 import com.cherp.app.stck.vo.StocksAdjustVO;
+import com.cherp.app.stck.vo.StocksVO;
 
 public interface StockService {
 	
@@ -21,5 +22,6 @@ public interface StockService {
 	public List<ContractItemVO> getItemInfoList(ItemSearchVO itemSearchVO); //제품리스트 조건 조회
 	public ContractItemVO getItemDetailInfo(String itemCode); //제품저보상세조회
 	public void modifyItemImage(String image, String itemCode); //제품 이미지 수정
-	public int getItemQuantityByWh(String itemCode, String whCode); //창고별 특정 품목의 현재수량 조회
+	public ContractItemVO getItemQuantityByWh(String itemCode, String whCode); //창고별 특정 품목의 현재수량 조회
+	public List<StocksVO> getAllAdjustList(String whCode, String date); //창고, 제품별 재고조정이력 조회
 }

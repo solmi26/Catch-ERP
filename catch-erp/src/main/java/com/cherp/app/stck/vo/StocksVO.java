@@ -24,4 +24,7 @@ public class StocksVO {
 	private int stocksQuantity;		  // 재고 수량(조정전의 수량을 의미
 	private int stocksAdjustNo; 	  // 재고 조정 번호 (동시에 처리되는 재고조정건수들은 같은 재고조정번호를 가짐.)
 	
+	/* 재고조정내역 불러올 때 필요 */
+	private String slipNo; // 전표번호
+	
 }
