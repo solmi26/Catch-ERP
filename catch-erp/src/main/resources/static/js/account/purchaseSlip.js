@@ -250,11 +250,11 @@ document.addEventListener("DOMContentLoaded", function() {
 	/*============================
 		  회계계정 모달 JS
 	==============================*/
-	const acctModal = new bootstrap.Modal(document.getElementById('acctModal'));
+	const acctModal = new bootstrap.Modal(document.getElementById('p_acctModal'));
 	
 	//모달실행 시 grid refresh를 위한 코드
 	document
-		.getElementById("openAcctModal")
+		.getElementById("p_openAcctModal")
 		.addEventListener("click", function() {
 			acctModal.show();
 			window.setTimeout(function() {
@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	//모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
 	let grid1 = new Grid({
-		el: document.getElementById("acctGrid"),
+		el: document.getElementById("p_acctGrid"),
 		scrollX: true,
 		scrollY: true,
 		header: { height: 40 },
@@ -339,22 +339,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	==============================*/
 
 	// 모달 관련 JavaScript
-	const clientModal = new bootstrap.Modal(document.getElementById('clientModal'));
+	const clientModal = new bootstrap.Modal(document.getElementById('p_clientModal'));
 	//모달실행 시 grid refresh를 위한 코드
 	document
-		.getElementById("openClientModal")
+		.getElementById("p_openClientModal")
 		.addEventListener("click", function() {
-			console.log(123);
 			clientModal.show();
 			window.setTimeout(function() {
-				grid3.refreshLayout();
+				console.log(p_grid3);
+				p_grid3.refreshLayout();
 			}, 200);
 		});
-		
 
 	//모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
-	let grid3 = new Grid({
-		el: document.getElementById("clientGrid"),
+	let p_grid3 = new Grid({
+		el: document.getElementById("p_clientGrid"),
 		scrollX: true,
 		scrollY: true,
 		header: { height: 40 },
@@ -439,17 +438,19 @@ document.addEventListener("DOMContentLoaded", function() {
 		],
 	});
 
-	grid3.on("click", function(ev) {
+	p_grid3.on("click", function(ev) {
 		let rowKeyNum;
 		if (ev.columnName == "c7") {
 			rowKeyNum = ev.rowKey;
 			let inputTag = document.getElementById("p_clientInput");
 			let inputTag2 = document.getElementById("p_clientInput2");
 			inputTag.value = "";
-			inputTag.value = grid3.getValue(rowKeyNum, "c1");
-			inputTag2.value = grid3.getValue(rowKeyNum, "c7"); //거래처코드가 들어갈 hidden input
+			inputTag.value = p_grid3.getValue(rowKeyNum, "c1");
+			inputTag2.value = p_grid3.getValue(rowKeyNum, "c7"); //거래처코드가 들어갈 hidden input
 
 			console.log(inputTag.value);
+			
+			clientModal.hide();
 		}
 	});
 
@@ -484,7 +485,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				dataRow.c7 = ele.clientCode;
 				dataArr.push(dataRow);
 			});
-			grid3.resetData(dataArr);
+			p_grid3.resetData(dataArr);
 		});
 
 	/*============================
