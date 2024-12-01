@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cherp.app.empl.mapper.PayrollMapper">
+	<resultMap type="com.cherp.app.empl.vo.PayrollVO" id="Payroll">
+		<id column="salary_number" property="salaryNumber"/>
+		<result column="payroll_ydate" property="payrollYdate"/>
+		<result column="monthly_salary" property="monthlySalary"/>
+		<result column="overtime_allowance" property="overtimeAllowance"/>
+		<result column="night_allowance" property="nightAllowance"/>
+		<result column="weekend_allowance" property="weekendAllowance"/>
+		<result column="payment_total" property="paymentTotal"/>
+		<result column="income_tax" property="incomeTax"/>
+		<result column="local_tax" property="localTax"/>
+		<result column="national_insurance" property="nationalInsurance"/>
+		<result column="health_insurance" property="healthInsurance"/>
+		<result column="employment_insurance" property="employmentInsurance"/>
+		<result column="leave_rate" property="leaveRate"/>
+		<result column="deductions_total" property="deductionsTotal"/>
+		<result column="real_pay" property="realPay"/>
+		<result column="payroll_sdate" property="payrollSdate"/>
+		<result column="payroll_edate" property="payrollEdate"/>	
+		<result column="employee_code" property="employeeCode"/>	
+		<result column="notax_payment" property="notaxPayment"/>	
+		<result column="name" property="name"/>	
+		<result column="employee_id" property="employeeId"/>
+		<collection property="allowanceHistoryVO"
+					javaType="java.util.ArrayList"
+					ofType="com.cherp.app.empl.vo.AllowanceHistoryVO">	
+			<id column="awhi_no" property="awhiNo"/>
+			<result column="allowance_price" property="allowancePrice"/>
+			<result column="employee_code" property="employeeCode"/>
+			<result column="salary_number" property="salaryNumber"/>
+			<result column="allowance_name" property="allowanceName"/>
+		</collection>
+	</resultMap>
+	<!-- 급여명세서 다건조회 -->
+    <select id="selectAllPayrollList" parameterType="com.cherp.app.common.dto.EmployeeSearchDto">
+       SELECT sp.salary_number
+             ,sp.payroll_ydate
+             ,sp.monthly_salary
+             ,sp.overtime_allowance
+             ,sp.night_allowance
+             ,sp.weekend_allowance
+             ,sp.payment_total
+             ,sp.income_tax
+             ,sp.local_tax
+             ,sp.national_insurance
+             ,sp.health_insurance
+             ,sp.employment_insurance
+             ,sp.leave_rate
+             ,sp.deductions_total
+             ,sp.real_pay
+             ,sp.payroll_sdate
+             ,sp.payroll_edate
+             ,sp.employee_code
+             ,sp.notax_payment
+             ,em.name
+             ,em.employee_id
+       FROM   salary_payroll sp
+       JOIN   employees em
+       ON     sp.employee_code = em.employee_code
+    </select>
+
+	<!-- 급여명세서 단건조회 -->
+	<select id="selectPayroll" resultMap="Payroll">
+	   SELECT sp.salary_number
+             ,sp.payroll_ydate
+             ,sp.monthly_salary
+             ,sp.overtime_allowance
+             ,sp.night_allowance
+             ,sp.weekend_allowance
+             ,sp.payment_total
+             ,sp.income_tax
+             ,sp.local_tax
+             ,sp.national_insurance
+             ,sp.health_insurance
+             ,sp.employment_insurance
+             ,sp.leave_rate
+             ,sp.deductions_total
+             ,sp.real_pay
+             ,sp.payroll_sdate
+             ,sp.payroll_edate
+             ,sp.employee_code
+             ,sp.notax_payment
+             ,em.name
+             ,em.employee_id
+             ,awhi.awhi_no
+             ,awhi.allowance_price
+             ,awhi.allowance_name
+       FROM   salary_payroll sp
+       JOIN   employees em
+       ON     sp.employee_code = em.employee_code
+       JOIN   allowance_history awhi
+       ON     sp.employee_code = awhi.employee_code
+	   WHERE  sp.salary_number = #{salaryNumber}
+	</select>
+	
+	<!-- 급여명세서 수정하기 -->
+	<update id="updatePayroll" statementType="CALLABLE">
+	    CALL payroll_update (
+	                         #{salaryNumber}
+							,#{monthlySalary}
+							,#{overtimeAllowance}
+							,#{nightAllowance}
+							,#{weekendAllowance}
+							,#{incomeTax}
+							,#{localTax}
+							,#{nationalInsurance}
+							,#{healthInsurance}
+							,#{employmentInsurance}
+							,#{leaveRate}
+							,#{allowanceHistoryVO, mode=IN, typeHandler=com.cherp.app.empl.vo.PayrollArrayStructHandler}  
+	                         )
+		
+	
+	</update>
+	
+	<!-- 급여명세서 삭제 -->
+	<delete id="deletePayroll" parameterType="java.util.ArrayList">
+		DELETE salary_payroll
+		WHERE  salary_number IN
+		<foreach collection="array" item="salaryNumber" open="(" separator="," close=")">
+			#{salaryNumber}
+		</foreach>
+	
+	</delete>
+	
+</mapper>

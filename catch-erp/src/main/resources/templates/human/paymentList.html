@@ -223,7 +223,7 @@
 				<div class="col-auto">
 					<div class="row">
 						<div class="col-auto">
-							<button type="button" class="btn btn-sm btn-danger deleteRowBtn">삭제</button>
+							<button type="button" class="btn btn-sm btn-danger delete-Btn">삭제</button>
 						</div>
 					</div>
 				</div>
@@ -272,8 +272,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary update-Btn" >저장</button>
+                    <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">닫기</button>
 
                 </div>
             </div>
@@ -281,7 +281,7 @@
     </div>
 <!-- 급여수정내역 모달 -->
 	<script th:src='@{/js/common/deleteRowBtn.js}'></script>	
-	<script>
+	<script th:inline="javascript">
 		const Grid = tui.Grid;
 	    const grid = new tui.Grid({
 	        el: document.getElementById('grid'),
@@ -304,16 +304,21 @@
 	        scrollY: false,
 	        columns: [
 	          {
-	            header: '귀속연월',
-	            name: 'payrollDate'
+	        	  header:'급여명세번호',
+	        	  name:'salaryNumber',
+	        	  hidden:true
 	          },
 	          {
-	            header: '사원코드',
-	            name: 'emoloyeeCode'
+	            header: '귀속연월',
+	            name: 'payrollYdate'
+	          },
+	          {
+	        	header:'사원아이디',
+	        	name:'employeeId'
 	          },
 	          {
 	        	header:'성명',
-	        	name:'employeeName'
+	        	name:'name'
 	          },
 	          {
 	            header: '기본급',
@@ -321,19 +326,19 @@
 	          },
 	          {
 	        	header:'연장수당',
-	        	name:'overtimePay'
+	        	name:'overtimeAllowance'
 	          },
 	          {
 		        header:'야간수당',
-		        name:'nightPay'
+		        name:'nightAllowance'
 		      },
 	          {
 	            header: '주말근무수당',
-	            name: 'weekendPay'
+	            name: 'weekendAllowance'
 	          },
 		      {
 		        header: '지급총액',
-		        name: 'totalPayment'
+		        name: 'paymentTotal'
 	          },
 		      {
 		        header: '소득세',
@@ -345,7 +350,7 @@
 	          },
 		      {
 		        header: '국민연금',
-		        name: 'nationalPension'
+		        name: 'nationalInsurance'
 	          },
 		      {
 		        header: '건강보험료',
@@ -357,33 +362,14 @@
 	          },
 		      {
 		        header: '공제금액',
-		        name: 'totalDeductions'
+		        name: 'deductionsTotal'
 	          },
 		      {
 		        header: '실지급액',
 		        name: 'realPay'
 	          }
 	        ],
-	    	data:[
-	    		{
-	  	            payrollDate:'2024.11.19',
-	  	            emoloyeeCode:'2024-001',
-	  	            employeeName:'유석진',
-	  	            monthlySalary:'2,800,000',
-	  	        	overtimePay:'100,000',
-	  		        nightPay:'100,000',
-	  	            weekendPay:'100,000',
-	  		        totalPayment:'31,000,000',
-	  		        incomeTax:'100,000',
-	  		        localTax:'100,000',
-	  		        nationalPension:'100,000',
-	  		        healthInsurance:'100,000',
-	  		        employmentInsurance:'100,000',
-	  		        totalDeductions:'500,000',
-	  		        realPay:'2,600,000',
-	    			
-	    		}
-	    	]
+	    	data:[[${list}]]
 	      });
 	    
 	</script>

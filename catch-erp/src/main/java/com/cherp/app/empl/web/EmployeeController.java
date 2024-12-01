@@ -1,5 +1,7 @@
 package com.cherp.app.empl.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.cherp.app.common.dto.EmployeeSearchDto;
 import com.cherp.app.empl.service.EmployeeService;
+import com.cherp.app.empl.service.PayrollService;
+import com.cherp.app.empl.vo.PayrollVO;
 
 @Controller
 
@@ -14,6 +18,8 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeService employeeService;
+	@Autowired
+	PayrollService payrollService;
 	
 	//인사목록 페이지
 	@GetMapping("employees/employee")
@@ -44,9 +50,20 @@ public class EmployeeController {
 	
 	//급여조회 페이지
 	@GetMapping("employees/payment")
-	public String patmentList () {
+	public String paymentList (Model model) {
+		EmployeeSearchDto search = new EmployeeSearchDto();
+		List<PayrollVO> list = payrollService.payrollList(search);
+		model.addAttribute("list",list);
 		return "human/paymentList";
 	}
+	
+	
+	@GetMapping("employees/employeehisoryinput")
+	public String employeeHistoryInput () {
+		return "human/employeeHistoryInput";
+	}
+	
+	
 	
 	//기초등록
 	
