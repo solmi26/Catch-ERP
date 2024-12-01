@@ -477,8 +477,8 @@ const salesModal = new bootstrap.Modal(document.getElementById('salesModal'));
 
   //모달실행 시 grid refresh를 위한 코드
   document.getElementById("openSalesModal").addEventListener("click", function () {
+	salesModal.show();
     window.setTimeout(function () {
-	  salesModal.show();
       grid2.refreshLayout();
     }, 200);
   });
@@ -654,6 +654,7 @@ const salesModal = new bootstrap.Modal(document.getElementById('salesModal'));
         dataRow.c10 = ele.slipState;
         dataArr.push(dataRow);
       });
+	  console.log(result, dataArr);
       grid2.resetData(dataArr);
     });
 

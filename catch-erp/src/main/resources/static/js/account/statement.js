@@ -386,6 +386,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		for(let saveBtn of document.querySelectorAll(".saveBtn")){
 			saveBtn.disabled = true;
 		}
+		for(let mgBtn of document.querySelectorAll(".mgBtn")) {
+			mgBtn.disabled = true;
+		}
 	} else {
 		for(let inputEle of slipDetailInputs) {
 			inputEle.removeAttribute("readonly");
@@ -395,6 +398,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		for(let saveBtn of document.querySelectorAll(".saveBtn")){
 			saveBtn.disabled = false;
+		}
+		for(let mgBtn of document.querySelectorAll(".mgBtn")) {
+			mgBtn.disabled = false;
 		}
 	}
   }
