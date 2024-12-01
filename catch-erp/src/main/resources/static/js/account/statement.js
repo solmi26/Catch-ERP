@@ -4,6 +4,13 @@
  */
 
 let grid = null;
+let selectData = {
+	salesChitNo: null, // 전표번호
+	type: null, // 전표유형
+};
+let allSlipList;
+let isSlipDetailReadOnly = false;
+
 document.addEventListener("DOMContentLoaded", function () {
   // Modal 요소를 가져와 Modal 인스턴스를 생성
   // 매입전표 모달
@@ -113,13 +120,13 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("check!", ev);
     const row = grid.getRow(ev.rowKey); // 클릭된 행의 데이터 가져오기
 
-    let selectData = {
+    selectData = {
       salesChitNo: row.voucherNumber, // 전표번호
       type: row.transactionType, // 전표유형
     };
 
-    console.log(selectData.salesChitNo);
-    console.log(selectData.type);
+    // console.log(selectData.salesChitNo);
+    // console.log(selectData.type);
 
     // 선택된 전표 정보 서버에서 가져오기
     fetch(
@@ -128,12 +135,16 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((result) => {
         let data = result;
-        console.log("데이터 : ", data);
+		
+		// 선택된 전표 전송 상태에 따라 
+		
+        // console.log("데이터 : ", result);
         // 가져온 데이터 필드에 삽입
 		
 		
 		// 현재 선택한 전표가 매입인지 매출인지 구분
 		if(selectData.type === "매출전표") {
+			result.invoiceStatus = allSlipList.find(slipData => slipData.salesChitNo === result.salesChitNo).invoiceStatus || null;
 			// 매출전표 관련 데이터 매핑		
 			document.getElementById("s_date").value = result.chitDate || "2024/11/01"; // 전표일자
 	      	document.getElementById("s_no").value =
@@ -154,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	        document.getElementById("s_summary").value = result.summary || "";
 			
 		} else if(selectData.type === "매입전표") {
+			result.invoiceStatus = allSlipList.find(slipData => slipData.salesChitNo === result.purchaseChitNo).invoiceStatus || null;
 			// 매입전표 관련 데이터 매핑
 			document.getElementById("p_date").value = result.chitDate || "2024/11/01"; // 전표일자
 			document.getElementById("p_no").value =
@@ -177,6 +189,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			throw new Error("전표 유형이 존재하지 않습니다.");
 		}
 		
+		if(result.invoiceStatus) {
+			console.log(result.invoiceStatus); 
+			isSlipDetailReadOnly = result.invoiceStatus !== "미전송";
+		}
+		updateSlipDetailInputs(isSlipDetailReadOnly);		
        
       })
       .catch((err) => {
@@ -202,6 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("/sales/selectSlip")
       .then((result) => result.json())
       .then((result) => {
+		allSlipList = result;
         let dataArr = result.map((ele) => ({
           voucherNumber: ele.salesChitNo, // 전표번호
           transactionType: ele.type, // 전표유형
@@ -292,6 +310,22 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("전표 삭제 중 오류가 발생했습니다.");
         });
     });
+	
+	// 모달 창에서(상세보기) 선택 삭제 버튼
+	for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
+		deleteBtn.addEventListener("click", function (){
+			const {salesChitNo, type} = selectData;
+				
+			console.log(salesChitNo, type);
+			
+		});
+	}
+	//document.querySelectorAll(".deleteBtn")
+	  //.addEventListener("click", function () {
+	    //console.log("모달창 삭제 버튼 클릭됨");
+
+	  //});
+	  
 
   // "신규 등록" 버튼 클릭 시 드롭다운 메뉴 표시/숨기기
   document.getElementById("new").addEventListener("click", function () {
@@ -326,4 +360,42 @@ document.addEventListener("DOMContentLoaded", function () {
       dropdownMenu.style.display = "none";
     }
   });
+  
+  // 전자세금계산서 전송 상태에 따라 필드값 활성/비활성 상태 업데이트
+  function updateSlipDetailInputs(isSlipDetailReadOnly) {
+	const slipDetailInputs = Array.from(document.querySelectorAll(".form-control")).filter(input => {
+		const inputName = input.getAttribute('name');
+		if(
+			inputName !== 's_no' && inputName !== 'p_no' &&
+			inputName !== 's_clientName' && inputName !== 'p_clientName' &&
+			inputName !== 's_acctName' && inputName !== 'p_acctName'
+		){
+			return true;
+		} else {
+			return false;
+		}
+	});
+	
+	if(isSlipDetailReadOnly) {
+		for(let inputEle of slipDetailInputs) {
+			inputEle.setAttribute("readonly", true);
+		}
+		for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
+			deleteBtn.disabled = true;
+		}
+		for(let saveBtn of document.querySelectorAll(".saveBtn")){
+			saveBtn.disabled = true;
+		}
+	} else {
+		for(let inputEle of slipDetailInputs) {
+			inputEle.removeAttribute("readonly");
+		}
+		for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
+			deleteBtn.disabled = false;
+		}
+		for(let saveBtn of document.querySelectorAll(".saveBtn")){
+			saveBtn.disabled = false;
+		}
+	}
+  }
 });

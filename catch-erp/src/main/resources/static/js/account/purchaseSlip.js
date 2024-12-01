@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	const priceInput = document.querySelector("input[name='p_price']");
 	const vatInput = document.querySelector("input[name='p_vat']");
 	const totalInput = document.querySelector("input[name='p_amount']");
-	const vatTypeSelect = document.querySelector("select[class='form-select']");
+	const vatTypeSelect = document.querySelector("select[class~='form-select']");
 
 	// 콤마 추가
 	function formatNumber(value) {
@@ -340,11 +340,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// 모달 관련 JavaScript
 	const clientModal = new bootstrap.Modal(document.getElementById('clientModal'));
-	
 	//모달실행 시 grid refresh를 위한 코드
 	document
 		.getElementById("openClientModal")
 		.addEventListener("click", function() {
+			console.log(123);
 			clientModal.show();
 			window.setTimeout(function() {
 				grid3.refreshLayout();

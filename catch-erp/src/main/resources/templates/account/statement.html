@@ -136,6 +136,10 @@
 	  	padding-top: 20px !important;
 	  }
 	  
+	  select[readonly] {
+	  	pointer-events: none;
+	  }
+	  
 	</style>
 	
   </head>
@@ -254,7 +258,7 @@
 		          <div class="col-md-4">
 		            <div class="input-group input-group-sm">
 		              <span class="input-group-text">부가세 유형</span>
-		              <select class="form-select">
+		              <select class="form-control form-select" name="s_vat_type">
 		                <option value="과세" selected="selected">과세</option>
 		                <option value="면세">면세</option>
 		                <option value="영세">영세</option>
@@ -336,8 +340,8 @@
                     <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
                  <div>
 			        <!-- 리스트로 이동하는 버튼 -->
-			        <button type="button" class="btn btn-success" id="save-btn">수정</button>
-			        <button type="button" class="btn btn-danger">삭제</button>
+			        <button type="button" class="btn btn-success saveBtn" id="save-btn">수정</button>
+			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>
@@ -423,7 +427,7 @@
 		          <div class="col-md-4">
 		            <div class="input-group input-group-sm">
 		              <span class="input-group-text">부가세 유형</span>
-		              <select class="form-select">
+		              <select class="form-control form-select" name="p_vat_type">
 		                <option value="과세" selected="selected">과세</option>
 		                <option value="면세">면세</option>
 		                <option value="영세">영세</option>
@@ -505,8 +509,8 @@
                     <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
                  <div>
 			        <!-- 리스트로 이동하는 버튼 -->
-			        <button type="button" class="btn btn-success" id="save-btn">수정</button>
-			        <button type="button" class="btn btn-danger">삭제</button>
+			        <button type="button" class="btn btn-success saveBtn" id="save-btn">수정</button>
+			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>

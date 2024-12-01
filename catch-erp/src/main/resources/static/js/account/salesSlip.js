@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const priceInput = document.querySelector("input[name='s_price']");
   const vatInput = document.querySelector("input[name='s_vat']");
   const totalInput = document.querySelector("input[name='s_amount']");
-  const vatTypeSelect = document.querySelector("select[class='form-select']");
+  const vatTypeSelect = document.querySelector("select[class~='form-select']");
 
   // 콤마 추가
   function formatNumber(value) {
