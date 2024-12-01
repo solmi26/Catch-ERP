@@ -271,11 +271,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		/*콤보박스에서 창고 option 선택시 수량변경*/
 		let warehouseTypeBox = document.getElementById('warehouseType');
 		warehouseTypeBox.addEventListener("change", function(e){
-			 let selectedOption = warehouseTypeBox.options[warehouseTypeBox.selectedIndex];
-		     console.log(selectedOption.value);
-		     fetch("")//창고코드와 제품코드로 현재고를 알아오는 API작성해야함.
-		     .then()
-		     .then()
+			 let selectedOption = warehouseTypeBox.options[warehouseTypeBox.selectedIndex];			 
+		     let whCode = selectedOption.value;
+		     let itemCode = document.getElementById('itemCode').value;
+		     fetch("/stocks/itemQuantity/{}/{}")//창고코드와 제품코드로 현재고를 알아오는 API작성해야함.
+		     .then(result => result.json())
+		     .then(result => {
+				console.log(result);
+			 })
 		     .catch(err=>{`제품의 특정 창고 재고 알아오기 실패! ${err}`})
 		})
 		

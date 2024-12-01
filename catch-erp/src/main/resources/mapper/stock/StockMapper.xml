@@ -230,4 +230,13 @@
 		SET image = #{image}
 		WHERE item_code = #{itemCode}
 	</update>
+	
+	<select id="selectItemCurennQuantity" resultType="ContractItemVO">
+		SELECT wh_code,item_code, 
+			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
+			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
+		FROM stocks
+		WHERE item_code = #{itemCode} AND wh_code = {whCode}
+		GROUP BY wh_code, item_code
+	</select>
 </mapper>

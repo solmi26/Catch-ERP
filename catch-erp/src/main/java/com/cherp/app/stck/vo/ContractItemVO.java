@@ -35,5 +35,7 @@ public class ContractItemVO {
 	private Date conEdate; //계약종료일
 	
 	/* 창고별 수량을 알기위한 추가필드 */
-	private int currentQuantityByWh;
+	private String whCode; //창고코드
+	private int currentQuantity; //현수량(창고와 제품에 따른 조건적인 수량)
+	
 }
