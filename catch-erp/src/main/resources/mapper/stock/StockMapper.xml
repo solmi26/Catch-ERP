@@ -196,13 +196,47 @@
 		 	</otherwise>
 		 </choose>
 		  <if test="minPrice != ''">
-		    		AND price > #{minPrice}
+		    		AND price > TO_NUMBER(#{minPrice})
 		  </if>
 		  <if test="maxPrice != ''">
 		      <![CDATA[
-		    		AND price < #{maxPrice}
+		    		AND price < TO_NUMBER(#{maxPrice})
 		      ]]>
 		  </if>
 		
+	</select>
+	
+	<!-- 제품 상세정보 조회 -->
+	<select id="selectItemDetail" parameterType="String" resultType="ContractItemVO">
+		SELECT ci.con_no
+		      ,ci.item_code
+		      ,ci.item_name
+		      ,ci.price
+		      ,ci.image
+		      ,ci.stocks_quantity
+		      ,c.con_sdate
+		      ,c.con_edate
+		      ,c.client_code
+		      ,cl.client_name	      
+		FROM  contract_item ci
+		    JOIN contract c ON (ci.con_no = c.con_no)
+		    JOIN client cl ON (c.client_code = cl.client_code)
+		WHERE item_code = #{itemCode}
+	</select>
+	
+	<!-- 제품의 이미지 수정 (단건) -->
+	<update id="updateItemImage">
+		UPDATE contract_item 
+		SET image = #{image}
+		WHERE item_code = #{itemCode}
+	</update>
+	
+	<select id="selectItemCurennQuantity" resultType="ContractItemVO">
+		SELECT wh_code,item_code, 
+			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
+			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
+		FROM stocks
+		WHERE item_code = #{itemCode} AND wh_code = {whCode}
+		GROUP BY wh_code, item_code
 	</select>
 </mapper>

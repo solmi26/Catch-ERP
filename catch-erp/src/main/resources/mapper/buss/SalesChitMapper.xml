@@ -159,7 +159,7 @@
                 ,employee_name
                 ,employee_code
                 ,vat
-                ,slip_state
+                ,find_code(slip_state) as slip_state
         FROM sales_chit
         WHERE slip_state = #{slipState}
     </select>

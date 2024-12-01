@@ -109,6 +109,18 @@ public class StockServiceImpl implements StockService{
 	public List<ContractItemVO> getItemInfoList(ItemSearchVO itemSearchVO) {	
 		return stockMapper.selectAllSearchItemList(itemSearchVO);
 	}
+	@Override
+	public ContractItemVO getItemDetailInfo(String itemCode) {
+		return stockMapper.selectItemDetail(itemCode);
+	}
+	@Override
+	public void modifyItemImage(String image, String itemCode) {
+		stockMapper.updateItemImage(image, itemCode);		
+	}
+	@Override
+	public int getItemQuantityByWh(String itemCode, String whCode) {
+		return 0;
+	}
 
 
 }
