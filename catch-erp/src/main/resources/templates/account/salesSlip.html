@@ -87,14 +87,14 @@
           <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표일자</span>
-              <input type="date" class="form-control" name="date"/>
+              <input type="date" class="form-control" name="s_date"/>
             </div>
           </div>
           <!-- 전표No -->
           <div class="col-md-4">
             <div class="input-group input-group-sm">
               <span class="input-group-text">전표 No.</span>
-              <input type="text" class="form-control" readonly="readonly" name="no" value="-"/>
+              <input type="text" class="form-control" readonly="readonly" name="s_no" value="-"/>
             </div>
           </div>
         </div>
@@ -109,8 +109,8 @@
                 type="text"
                 class="form-control"
                 placeholder="판매전표 내역보기"
-                name="saleslip"
-                id="joinInput"
+                name="s_joinInput"
+                id="s_joinInput"
               />
               <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#salesModal" id="openSalesModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
@@ -125,12 +125,12 @@
                 type="text"
                 class="form-control"
                 placeholder="거래처 선택"
-                name="clientName"
-                id="clientInput"
+                name="s_clientName"
+                id="s_clientInput"
                 readonly="readonly"
               />
-	           <input type="text" style="display:none" id="clientInput2" name="clientCode">
-              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal">
+	           <input type="text" style="display:none" id="s_clientInput2" name="s_clientCode">
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="s_openClientModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
               </button>
             </div>
@@ -158,12 +158,12 @@
                 type="text"
                 class="form-control"
                 placeholder="회계계정 선택"
-                name="acctName"
-                id="acctInput"
+                name="s_acctName"
+                id="s_acctInput"
                 readonly="readonly"
               />
-              <input type="text" style="display:none" id="acctInput2" name="acctCode">
-              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="openAcctModal">
+              <input type="text" style="display:none" id="s_acctInput2" name="s_acctCode">
+              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="s_openAcctModal">
                 <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
               </button>
             </div>
@@ -180,8 +180,8 @@
                 type="text"
                 class="form-control"
                 placeholder="공급가액"
-                name="price"
-                id="price"
+                name="s_price"
+                id="s_price"
               />
             </div>
           </div>
@@ -193,7 +193,7 @@
                 type="text"
                 class="form-control"
                 placeholder="부가세"
-                name="vat"
+                name="s_vat"
               />
             </div>
           </div>
@@ -204,7 +204,7 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text color">합계</span>
-              <input type="text" class="form-control" name="amount" id="amount" placeholder="합계"/>
+              <input type="text" class="form-control" name="s_amount" id="s_amount" placeholder="합계"/>
             </div>
           </div>
           </div>
@@ -214,10 +214,10 @@
           <div class="col-md-8">
             <div class="input-group input-group-sm">
               <span class="input-group-text">적요</span>
-              <input type="text" id="summary" class="form-control" name="summary" placeholder="적요"/>
+              <input type="text" id="s_summary" class="form-control" name="s_summary" placeholder="적요"/>
             </div>
           </div>
-          </div>
+          </div> 
 		
 	<!-- 버튼 구역 -->
     <div class="grid-controls">
@@ -237,7 +237,7 @@
    </div> <!-- 전체 컨테이너 끝 -->
    
     <!-- 거래처 검색 모달 HTML -->
-	    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal fade" id="s_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-lg">
 	            <div class="modal-content">
 	                <div class="modal-header">
@@ -245,7 +245,7 @@
 	                   
 	                </div>               
 	                <div class="modal-body p-0">
-	                    <div id="clientGrid">
+	                    <div id="s_clientGrid">
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
@@ -257,18 +257,18 @@
 	    </div>
 	    
 	     <!-- 회계 계정 검색 모달 HTML -->
-	    <div class="modal fade" id="acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal fade" id="s_acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-md">
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <h5 class="modal-title" id="modalLabel">회계 계정 검색</h5>
 	                </div>               
 	                <div class="modal-body p-0">
-	                    <div id="acctGrid">
+	                    <div id="s_acctGrid">
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+	                    <p class="msg"><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
