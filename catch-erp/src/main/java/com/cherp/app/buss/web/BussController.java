@@ -13,7 +13,6 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/sales")
 public class BussController {
 
     private ClientService clientService;
@@ -24,7 +23,7 @@ public class BussController {
     }
 
     // 구매 페이지
-    @GetMapping("/purchaseChit")
+    @GetMapping("purchase/purchaseChit")
     public String purchaseChit(Model model) {
         List<ClientVO> list = clientService.clientList();
         model.addAttribute("client", list);
@@ -32,7 +31,7 @@ public class BussController {
     }
     
     // 판매 페이지
-    @GetMapping("/salesChit")
+    @GetMapping("/sales/salesChit")
     public String salesChit(Model model) {
         List<ClientVO> list = clientService.clientList();
         model.addAttribute("client", list);
@@ -40,7 +39,7 @@ public class BussController {
     }
 
     // 판매 조회 페이지
-    @GetMapping("/saleSlip")
+    @GetMapping("/sales/saleSlip")
     public String saleSlip(){
         return "sales/saleSlip";
     }

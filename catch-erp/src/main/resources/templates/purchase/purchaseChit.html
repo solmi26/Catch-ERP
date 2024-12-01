@@ -52,9 +52,10 @@
                     <div class="col-md-6">
                         <label class="form-label">입고창고</label>
                         <div class="input-group">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" id="whNameInput" name="whName">
+                            <input type="hidden" class="form-control" id="whCodeInput" name="whCode">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
-                                    data-bs-toggle="modal" data-bs-target="#whSearchModal"></button>
+                                    data-bs-toggle="modal" data-bs-target="#whSearchModal" id="openWhModal"></button>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -76,18 +77,18 @@
 </div>
 
 <!-- Transaction History Select -->
-<div class="btn-group dropdown">
-    <button class="btn btn-primary dropdown-toggle btn btn-success" type="button" data-bs-toggle="dropdown"
-            style="margin:10px 0px">
-        거래내역보기(구매)
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li>
-            <a class="dropdown-item" href="">구매내역</a>
-            <a class="dropdown-item" href="">판매내역</a>
-        </li>
-    </ul>
-</div>
+<!--<div class="btn-group dropdown">-->
+<!--    <button class="btn btn-primary dropdown-toggle btn btn-success" type="button" data-bs-toggle="dropdown"-->
+<!--            style="margin:10px 0px">-->
+<!--        거래내역보기(구매)-->
+<!--    </button>-->
+<!--    <ul class="dropdown-menu" role="menu">-->
+<!--        <li>-->
+<!--            <a class="dropdown-item" href="">구매내역</a>-->
+<!--            <a class="dropdown-item" href="">판매내역</a>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
 <button class="btn btn-success px-4" type="button" style="margin:10px 0px">
     품목
 </button>
@@ -169,29 +170,11 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #aacb73;">
-                <h5 class="modal-title">창고검색</h5>
+                <h5 class="modal-title">창고</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <table class="table table-hover" id="accountTable">
-                <thead>
-                <tr>
-                    <th>창고코드</th>
-                    <th>창고명</th>
-                    <th>구분</th>
-                    <th>창고위치</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>00001</td>
-                    <td>본사창고</td>
-                    <td>본사</td>
-                    <td>대구광역시 중구 OOO</td>
-                </tr>
-                </tbody>
-            </table>
             <div class="modal-body">
-                <div id=""></div> <!-- modal tabulator 사용 -->
+                <div id="whGrid"></div> <!-- modal tabulator 사용 -->
             </div>
         </div>
     </div>
