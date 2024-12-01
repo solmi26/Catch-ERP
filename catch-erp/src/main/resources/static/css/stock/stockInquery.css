@@ -115,7 +115,8 @@
     ==============================*/
     input[readonly] {
 	    background-color: white !important; 
-	    color: black; 
+	    color: black;
+	    font-weight: 500; 
 	    border: 1px solid #ced4da; 
 	}	
 	.form-select {

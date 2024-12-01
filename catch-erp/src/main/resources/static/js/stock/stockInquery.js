@@ -225,12 +225,118 @@ document.addEventListener("DOMContentLoaded", function () {
 		
 		/*!== 제품 상세조회 모달 ==!*/
 		stockInqueryGrid.on('click',function(e){	
-			let rowKeyNum;
 			if (e.columnName == 'conNo'){		
-				console.log(e.value);
+				let rowKeyNum = e.rowKey;
+				let itemCode = stockInqueryGrid.getValue(rowKeyNum, 'itemCode'); //제품코드로 상세정보를 불러올 거에용.
+				fetch(`/stocks/itemDetailInfo/${itemCode}`)
+				.then(result=> result.json())
+				.then(result=> {
+					let clientValue = result.clientName + '[' + result.clientCode + ']';
+					let contractPeriod = result.conSdate + '  ~  ' + result.conEdate;
+					document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
+					setValueByName('clientNameAndCode', clientValue)
+					setValueByName('conNo', result.conNo)
+					setValueByName('itemCode', result.itemCode)
+					setValueByName('itemName', result.itemName)
+					setValueByName('price', result.price)
+					setValueByName('contractPeriod', contractPeriod)
+					setValueByName('currentQuantity', result.stocksQuantity)
+							
+				})
+				.catch(err=>{`제품상세불러오기 실패! : ${err}`})
 				
+				//창고종류 콤보박스에 창고정보 불러오기
+				fetch("/whList")
+				.then(result=> result.json())
+				.then(result=> {
+					let warehouseTypeBox = document.getElementById('warehouseType');
+					let warehouseTypeBox2 = document.getElementById('warehouseType2');
+					warehouseTypeBox.replaceChildren();
+					warehouseTypeBox2.replaceChildren();
+					result.forEach(ele=>{	
+						let option = document.createElement('option'); 
+			            option.value = ele.whCode; 
+			            option.textContent = ele.whName; 
+			            warehouseTypeBox.appendChild(option);
+			            //DOM에서는 하나의 노드가 동시에 두 곳에 존재할 수 없다.
+			            let option2 = document.createElement('option'); 
+			            option2.value = ele.whCode; 
+			            option2.textContent = ele.whName; 
+			            warehouseTypeBox2.appendChild(option2);
+					})
+				})
 			}
 		})
+		
+		/*콤보박스에서 창고 option 선택시 수량변경*/
+		let warehouseTypeBox = document.getElementById('warehouseType');
+		warehouseTypeBox.addEventListener("change", function(e){
+			 let selectedOption = warehouseTypeBox.options[warehouseTypeBox.selectedIndex];
+		     console.log(selectedOption.value);
+		     fetch("")//창고코드와 제품코드로 현재고를 알아오는 API작성해야함.
+		     .then()
+		     .then()
+		     .catch(err=>{`제품의 특정 창고 재고 알아오기 실패! ${err}`})
+		})
+		
+		/*수정버튼 클릭시 제품사진 변경*/ 
+		let updateBtn = document.getElementById('updateBtn');
+		updateBtn.addEventListener('click',function(){
+			let newImgTag2 = document.getElementById('newImage');
+			if(newImgTag2.value == ''){
+				alert("변경하실 이미지 파일를 선택해주세요.");
+				return;
+			}
+			
+			let response = confirm("제품의 사진을 변경하시겠습니까?")
+			if(response){
+				let newImgTag = document.getElementById('newImage');				
+				let itemCode = document.getElementById('itemCode'); //name으로 변수에 담으니까 .value 값이 안나온다..
+				let formData = new FormData();
+				formData.append('imageFile', newImgTag.files[0]);
+				formData.append('itemCode', itemCode.value); 
+				/* formData 내용 콘솔에서 확인
+				for (const data of formData.entries()) {
+					console.log(data);
+				};*/
+				
+				fetch("/stocks/itemImage",{
+					method: 'post',
+					body: formData
+				})
+				.then(result => {
+					newImgTag.value = '';		
+					console.log(itemCode);
+					let itemCodeForImageChange = itemCode.value;
+					fetch(`/stocks/itemDetailInfo/${itemCodeForImageChange}`)
+					.then(result=> result.json())
+					.then(result=>{
+						document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
+					})
+					
+					alert('제품 이미지가 정상적으로 변경되었습니다.')
+				})
+				.catch(err=>{console.log(`제품사진변경 실패! ${err}`)
+						alert("제품 이미지 변경 중 에러가 발생했습니다.")
+				})
+			}
+		})
+		
+		
+		//작업해야함 아직 안했음. 모달내 탭이동 시 refresh하는거 
+	   	let modalTrigger = document.querySelectorAll(".modalTrigger")
+	    for(btn of modalTrigger){
+	    	btn.addEventListener("click",()=>{
+				//그리드 refresh()-> 모달내 탭이동이 있을 수 있으니 별도로 refresh() 하겠음
+				window.setTimeout(function(){
+	            	adjustmentDetailGrid.refreshLayout();
+	        	}, 200);
+	        	console.log(e.target.value);
+			})
+		}
+		
+		//창고종류 select 콤보박스 이벤트
+		
 	//#region 거래처 모달
 	/*============================
     	StackInquery 거래처 모달 JS
@@ -339,9 +445,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 	//#endregion 거래처 모달
 
-    //#region 품목조회 모달
+    //#region 제품조회 모달
     /*============================
-    	StackInquery 품목조회 모달 JS
+    	StackInquery 제품조회 모달 JS
     ==============================*/
     // 모달 관련 JavaScript
     
@@ -404,15 +510,18 @@ document.addEventListener("DOMContentLoaded", function () {
 		
 		}
 	})        
-    //#endregion 품목조회 모달
+    //#endregion 제품조회 모달
     
-    //#region 제품상세모달_조정내역 그리드
+    //#region 제품상세모달_조정내역 그리드 & 상세정보 & 제품추이(예정)
+    /*============================
+    	StackInquery 제품상세 모달 JS
+    ==============================*/
     let	adjustmentDetailGrid = new Grid({
             el: document.getElementById('adjustmentDetail'),
             scrollX: true,
             scrollY: true,
             header: { height: 34 },
-            bodyHeight: 600,
+            bodyHeight: 703,
             width: 'auto',
             contextMenu: null,
             rowHeaders: [{
@@ -434,7 +543,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                     filter: 'select',
                     formatter: ({ value }) =>
-			          `<div class="btn-link text-primary modalTrigger" data-bs-toggle="modal" data-bs-target="#adjustDetailModal">${value}</div>`,
+			          `<div class="btn-link text-primary AdjusttModalTrigger" data-bs-toggle="modal" data-bs-target="#adjustDetailModal">${value}</div>`,
                     
                 },
                 {
@@ -485,6 +594,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             ]
     });
+
     //#endregion 제품상세모달_조정내역 그리드
     
     //#region 기타 함수 및 초기화
@@ -541,5 +651,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		inputTag2.value = '';
 	})
 	
+	
+	// name을 기준으로 값 넣기!
+	function setValueByName(name, value) {
+    	document.querySelector(`[name="${name}"]`).value = value;
+	}
 	//#endregion
 }); //End Point

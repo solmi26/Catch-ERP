@@ -1,13 +1,25 @@
 package com.cherp.app.stck.web.rest;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.time.format.DateTimeFormatter;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cherp.app.buss.service.ClientService;
 import com.cherp.app.buss.vo.ClientVO;
@@ -33,6 +45,9 @@ public class RestStockAdjustController {
 	
 	private final StockService stockAdjustService;
 	private final ClientService clientService;
+	
+	@Value("${file.upload.path}") 
+	private String uploadPath;
 	
 	//거래처 검색
 	@GetMapping("/client") //거래처전체조회
@@ -77,10 +92,68 @@ public class RestStockAdjustController {
 		return stockAdjustService.getAdjustNo();
 	}
 	
-	//재고조회 
+	//제품리스트 조건조회 
 	@GetMapping("/itemInfo")
 	public List<ContractItemVO> getItemInfo (ItemSearchVO itemSearchVO){
 		return stockAdjustService.getItemInfoList(itemSearchVO);
+	}
+	
+	//제품상세정보 조회 (단건)
+	@GetMapping("/itemDetailInfo/{itemCode}")
+	public ContractItemVO getItemDetailInfo(@PathVariable("itemCode") String itemCode) {
+		return stockAdjustService.getItemDetailInfo(itemCode);
+	}
+	
+	//제품상세정보에서 사진 변경(단건)
+	@PostMapping("/itemImage")
+	public void modifyItemImage (@RequestPart("imageFile") MultipartFile imageFile, @RequestParam("itemCode") String itemCode){
+		//저장경로 설정
+		String fileName = imageFile.getOriginalFilename();
+		//날짜 폴더생성
+		String folderPath = makeFolder();
+		//UUID 고유값 보장
+		String uuid = UUID.randomUUID().toString();
+		//저장되는 파일 이름 중간에 _를 이용하여 구분
+		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+		String saveName = uploadPath + File.separator + uploadFileName;
+		Path savePath = Paths.get(saveName); //Paths.get() => 특정경로의 파일반환 (경로정의)
+		
+		try {
+			imageFile.transferTo(savePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		//DB 저장 처리
+		stockAdjustService.modifyItemImage(setImagePath(uploadFileName),itemCode);
+		
+		
+	}
+
+	/* 파일저장를 위한 private 메서드 */
+	private String makeFolder() {
+		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+		// LocalDate를 문자열로 포멧
+		String folderPath = str.replace("/", File.separator);
+		File uploadPathFoler = new File(uploadPath, folderPath);
+		// File newFile= new File(dir,"파일명");
+		
+		// 해당 경로의 존재유무를 확인
+		if (uploadPathFoler.exists() == false) {
+			// mkdirs(): 디렉토리의 상위 디렉토리가 존재하지 않을 경우에는 상위 디렉토리까지 모두 생성하는 함수
+			uploadPathFoler.mkdirs();			
+		}
+		return folderPath;
+	}
+	
+	private String setImagePath(String uploadFileName) {
+		return uploadFileName.replace(File.separator, "/");
+	}
+	
+	//창고별 특정 품목의 현재수량 조회
+	@GetMapping("/itemQuantity")
+	public int getItemQuantityByWh (String itemCode, String whCode) {
+		return stockAdjustService.getItemQuantityByWh(itemCode, whCode);
 	}
 	
 }

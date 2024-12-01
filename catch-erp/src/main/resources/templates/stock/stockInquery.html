@@ -149,39 +149,40 @@
 				                            aria-labelledby="detail-tab">
 				                            <input type="hidden" id="clientCode" name="clientCode">
 				                            <div class="mb-3 row">
+				                                <label for="customerName" class="col-sm-3 col-md-6 col-form-label">거래처명[거래처코드]</label>
+				                                <div class="col-sm-6 col-md-6">
+				                                    <input type="text" class="form-control" id="clientNameAndCode" name="clientNameAndCode" readonly>
+				                                </div>
+				                            </div>
+				                            <div class="mb-3 row">
 				                                <label for="customerName" class="col-sm-3 col-md-6 col-form-label">계약번호</label>
 				                                <div class="col-sm-6 col-md-6">
-				                                    <input type="text" class="form-control" id="clientName" name="clientName" readonly>
+				                                    <input type="text" class="form-control" id="conNo" name="conNo" readonly>
 				                                </div>
 				                            </div>
 				                            <div class="mb-3 row">
 				                                <label for="representativeName" class="col-sm-3 col-md-6 col-form-label">품목명</label>
 				                                <div class="col-sm-6 col-md-6">
-				                                    <input type="text" class="form-control" id="ceoName" name="ceoName"  readonly>
+				                                    <input type="text" class="form-control" id="itemName" name="itemName"  readonly>
 				                                </div>
 				                            </div>
 				                            <div class="mb-3 row">
 				                                <label for="representativeName" class="col-sm-3 col-md-6 col-form-label">품목코드</label>
 				                                <div class="col-sm-6 col-md-6">
-				                                    <input type="text" class="form-control" id="ceoName" name="ceoName" readonly>
+				                                    <input type="text" class="form-control" id="itemCode" name="itemCode" readonly>
 				                                </div>
 				                            </div>
 				                            <div class="mb-3 row">
 				                                <label for="industry" class="col-sm-3 col-md-6 col-form-label">단가</label>
 				                                <div class="col-sm-6 col-md-6">
-				                                    <input type="text" class="form-control" id="state" name="state" readonly>
+				                                    <input type="text" class="form-control" id="price" name="price" readonly>
 				                                </div>
 				                            </div>
-				                            <div class="mb-3 row">
-				                                <label for="category" class="col-sm-3 col-md-6 col-form-label">종목</label>
-				                                <div class="col-sm-6 col-md-6">
-				                                    <input type="text" class="form-control" id="event" name="event" readonly>
-				                                </div>
-				                            </div>
+				                           
 				                            <div class="mb-3 row">
 				                                <label for="category" class="col-sm-3 col-md-6 col-form-label">계약 기간</label>
 				                                <div class="col-sm-6 col-md-6">
-				                                    <input type="text" class="form-control" id="event" name="event" readonly>
+				                                    <input type="text" class="form-control" id="contractPeriod" name="contractPeriod" readonly>
 				                                </div>
 				                            </div>
 											<div>
@@ -189,18 +190,16 @@
 											</div>
 				                            <div class="mb-3 row">
 				                                <div class="col-sm-6 col-md-6">
-				                                    <select class="form-select form-control" id="tradeType" name="tradeType" >
-				                                        <option value="창고코드1" selected>본사창고</option>
-				                                        <option value="창고코드2">천안아산</option>
+				                                    <select class="form-select form-control" id="warehouseType" name="warehouseType" >
 				                                    </select>
 				                                </div>
 				                                <div class="col-sm-6 col-md-6">
-				                                	<input type="text" class="form-control" id="event" name="event" readonly>
+				                                	<input type="text" class="form-control" id="currentQuantity" name="currentQuantity" readonly>
 				                                </div>
 				                            </div>
 				                            <div class="row">
-				                            	<img src = "#" height="200" width="auto">
-				                            	<input type="file"> 
+				                            	<img src = "#" height="300" width="auto" name="itemImage" class="mb-3">
+				                            	<input type="file" id="newImage"> 
 				                            </div>
 				                        </div>
 				
@@ -236,9 +235,7 @@
 								<div class="modal-body col-lg-6 col-sm-12 col-md-12">
 									<div class="row mb-1" >
 										<div class="col-sm-3 col-md-3" style="padding-right: 0">
-		                                    <select class="form-select form-control" id="tradeType" name="tradeType" >
-		                                        <option value="창고코드" selected>본사창고</option>
-		                                        <option value="창고코드2">천안아산</option>
+		                                    <select class="form-select form-control" id="warehouseType2" name="warehouseType2" >
 		                                    </select>
 		                                </div>
 		                                <div class="col-sm-3 col-md-3" style="padding-right: 0">
@@ -253,7 +250,7 @@
 								
 				            </div>
 				            <div class="modal-footer">
-				                    <button type="submit" id="updateClientInfo" class="btn btn-success">수정</button>
+				                    <button type="button" id="updateBtn" class="btn btn-success">수정</button>
 				                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				            </div>
 			            </div>

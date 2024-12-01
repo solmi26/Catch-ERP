@@ -205,4 +205,29 @@
 		  </if>
 		
 	</select>
+	
+	<!-- 제품 상세정보 조회 -->
+	<select id="selectItemDetail" parameterType="String" resultType="ContractItemVO">
+		SELECT ci.con_no
+		      ,ci.item_code
+		      ,ci.item_name
+		      ,ci.price
+		      ,ci.image
+		      ,ci.stocks_quantity
+		      ,c.con_sdate
+		      ,c.con_edate
+		      ,c.client_code
+		      ,cl.client_name	      
+		FROM  contract_item ci
+		    JOIN contract c ON (ci.con_no = c.con_no)
+		    JOIN client cl ON (c.client_code = cl.client_code)
+		WHERE item_code = #{itemCode}
+	</select>
+	
+	<!-- 제품의 이미지 수정 (단건) -->
+	<update id="updateItemImage">
+		UPDATE contract_item 
+		SET image = #{image}
+		WHERE item_code = #{itemCode}
+	</update>
 </mapper>

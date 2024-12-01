@@ -1,5 +1,11 @@
 package com.cherp.app.stck.vo;
 
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -19,5 +25,15 @@ public class ContractItemVO {
 	/* 거래처 [CLIENT] 테이블 컬럼 */
 	private String clientName; // 거래처명
 	private String clientCode; // 거래처코드
-
+	
+	/* 매입계약 [CONTRACT] 테이블 컬럼 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date conSdate; //계약시작일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date conEdate; //계약종료일
+	
+	/* 창고별 수량을 알기위한 추가필드 */
+	private int currentQuantityByWh;
 }
