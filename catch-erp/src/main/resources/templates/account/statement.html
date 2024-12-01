@@ -136,6 +136,10 @@
 	  	padding-top: 20px !important;
 	  }
 	  
+	  select[readonly] {
+	  	pointer-events: none;
+	  }
+	  
 	</style>
 	
   </head>
@@ -218,7 +222,7 @@
 		                name="p_joinInput"
 		                id="p_joinInput"
 		              />
-		              <button class="btn btn-outline-secondary" type="button" id="openPurchaseModal">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="openPurchaseModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
 		            </div>
@@ -235,13 +239,8 @@
 		                id="p_clientInput"
 		                readonly="readonly"
 		              />
-			           <input type="text" style="display:none" id="clientInput2" name="clientCode">
-		              <button 
-		              	class="btn btn-outline-secondary" 
-		              	type="button" 
-		              	
-		              	id="openClientModal"
-		              >
+			           <input type="text" style="display:none" id="p_clientInput2" name="clientCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="p_openClientModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
 		            </div>
@@ -254,7 +253,7 @@
 		          <div class="col-md-4">
 		            <div class="input-group input-group-sm">
 		              <span class="input-group-text">부가세 유형</span>
-		              <select class="form-select">
+		              <select class="form-control form-select" name="s_vat_type">
 		                <option value="과세" selected="selected">과세</option>
 		                <option value="면세">면세</option>
 		                <option value="영세">영세</option>
@@ -273,8 +272,8 @@
 		                id="p_acctInput"
 		                readonly="readonly"
 		              />
-		              <input type="text" style="display:none" id="acctInput2" name="acctCode">
-		              <button class="btn btn-outline-secondary" type="button" id="openAcctModal">
+		              <input type="text" style="display:none" id="p_acctInput2" name="p_acctCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="p_openAcctModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
 		            </div>
@@ -336,8 +335,8 @@
                     <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
                  <div>
 			        <!-- 리스트로 이동하는 버튼 -->
-			        <button type="button" class="btn btn-success" id="save-btn">수정</button>
-			        <button type="button" class="btn btn-danger">삭제</button>
+			        <button type="button" class="btn btn-success saveBtn" id="save-btn">수정</button>
+			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>
@@ -387,7 +386,7 @@
 		                name="s_saleslip"
 		                id="s_joinInput"
 		              />
-		              <button class="btn btn-outline-secondary" type="button" id="openSalesModal">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="openSalesModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
 		            </div>
@@ -404,13 +403,8 @@
 		                id="s_clientInput"
 		                readonly="readonly"
 		              />
-			           <input type="text" style="display:none" id="clientInput2" name="clientCode">
-		              <button 
-		              	class="btn btn-outline-secondary" 
-		              	type="button" 
-		              	
-		              	id="openClientModal"
-		              >
+			           <input type="text" style="display:none" id="s_clientInput2" name="clientCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="s_openClientModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
 		            </div>
@@ -423,7 +417,7 @@
 		          <div class="col-md-4">
 		            <div class="input-group input-group-sm">
 		              <span class="input-group-text">부가세 유형</span>
-		              <select class="form-select">
+		              <select class="form-control form-select" name="p_vat_type">
 		                <option value="과세" selected="selected">과세</option>
 		                <option value="면세">면세</option>
 		                <option value="영세">영세</option>
@@ -442,8 +436,8 @@
 		                id="s_acctInput"
 		                readonly="readonly"
 		              />
-		              <input type="text" style="display:none" id="acctInput2" name="acctCode">
-		              <button class="btn btn-outline-secondary" type="button" id="openAcctModal">
+		              <input type="text" style="display:none" id="s_acctInput2" name="s_acctCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="s_openAcctModal">
 		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
 		              </button>
 		            </div>
@@ -505,8 +499,8 @@
                     <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
                  <div>
 			        <!-- 리스트로 이동하는 버튼 -->
-			        <button type="button" class="btn btn-success" id="save-btn">수정</button>
-			        <button type="button" class="btn btn-danger">삭제</button>
+			        <button type="button" class="btn btn-success saveBtn" id="save-btn">수정</button>
+			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>
@@ -515,7 +509,7 @@
     </div>
     
      <!-- 거래처 검색 모달 HTML -->
-	    <div class="modal fade bg-dark bg-opacity-50" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal fade bg-dark bg-opacity-50" id="p_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-lg">
 	            <div class="modal-content">
 	                <div class="modal-header">
@@ -523,8 +517,25 @@
 	                   
 	                </div>               
 	                <div class="modal-body p-0">
-	                    <div id="clientGrid">
-	                    </div>
+	                	<div id="p_clientGrid"></div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="modal fade bg-dark bg-opacity-50" id="s_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-lg">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">거래처검색</h5>
+	                   
+	                </div>               
+	                <div class="modal-body p-0">
+	                	<div id="s_clientGrid"></div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
 	                    <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
@@ -535,14 +546,32 @@
 	    </div>
 	    
 	     <!-- 회계 계정 검색 모달 HTML -->
-	    <div class="modal fade bg-dark bg-opacity-50" id="acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal fade bg-dark bg-opacity-50" id="s_acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-md">
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <h5 class="modal-title" id="modalLabel">회계 계정 검색</h5>
 	                </div>               
 	                <div class="modal-body p-0">
-	                    <div id="acctGrid">
+	                    <div id="s_acctGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p class="msg"><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="modal fade bg-dark bg-opacity-50" id="p_acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-md">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">회계 계정 검색</h5>
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="p_acctGrid">
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
