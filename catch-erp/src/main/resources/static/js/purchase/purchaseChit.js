@@ -430,7 +430,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetch('/whList')
             .then(result => result.json())
             .then(data => whGrid.resetData(data))
-            .catch(error => alert("창고 조회 실패"))
+            .catch(error => alert("창고 조회 실패입니다."))
     }, 200)
 
     //모달실행 시 grid refresh를 위한 코드
