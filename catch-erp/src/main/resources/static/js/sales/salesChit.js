@@ -275,7 +275,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
 
             columns: [{
-                header: "계정 코드", name: "acctCode", align: "center", renderer: {
+                header: "계정 코드",
+                name: "acctCode",
+                align: "center",
+                renderer: {
                     type: ButtonRenderer
                 },
             }, {

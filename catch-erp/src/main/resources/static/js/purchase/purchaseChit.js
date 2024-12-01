@@ -423,20 +423,67 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 그리드 설정
     initClientGrid();
 
-    // 그리드에 데이터 넣기(출력)
-    createdAccCodeGrid.resetData(accCodeData);
+    // 모달 관련 JavaScript
+    const whSearchModal = document.getElementById('whSearchModal')
 
-    //매출계정 input
-    accCodeGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
+    window.setTimeout(function () {
+        fetch('/whList')
+            .then(result => result.json())
+            .then(data => whGrid.resetData(data))
+            .catch(error => alert("창고 조회 실패"))
+    }, 200)
 
-        if (columnName === 'acctCode') {
-            // 특정 열(columnName)의 값 가져오기
-            const columnValue = accCodeGrid.getValue(ev.rowKey, 'acctName');
-            document.getElementById('accCodeInput').value = columnValue;
-        }
+    //모달실행 시 grid refresh를 위한 코드
+    document.getElementById('openWhModal').addEventListener('click', function () {
+        window.setTimeout(function () {
+            whGrid.refreshLayout();
+        }, 200)
     });
 
+    // 입고창고 불러오기
+    let whGrid;
+    const initWhGridGrid = () => {
+        whGrid = new Grid({
+            el: document.getElementById('whGrid'), scrollX: false, scrollY: true, bodyHeight: 350, rowHeaders: [{
+                type: 'rowNum', header: "No.", width: 50, className: 'border'
+            }],
+            data:[],
+            columns: [{
+                header: "창고 코드",
+                name: "whCode",
+                align: "center",
+                renderer: {
+                    type: ButtonRenderer
+                },
+            }, {
+                header: "창고명",
+                name: "whName",
+                sortingType: "asc",
+                align: "center",
+                filter: 'select',
+            }, {
+                header: "창고위치",
+                name: "whPlace",
+                sortingType: "asc",
+                align: "center",
+                filter: 'select',
+                }
+            ],
+        });
+        return whGrid;
+    }
+    initWhGridGrid();
+
+    // 입고창고 input
+    whGrid.on("click", (ev) => {
+        const columnName = ev.columnName;
+
+        if (columnName === 'whCode') {
+            // 특정 열(columnName)의 값 가져오기
+            const columnValue = whGrid.getValue(ev.rowKey, 'whName');
+            document.getElementById('whNameInput').value = columnValue;
+        }
+    });
 
     // 발주서 모달
     /*============================
