@@ -53,10 +53,23 @@
                 this.el.style.borderRadius ='3px';
                 this.el.style.backgroundColor = 'white';
                 this.el.classList.add('gridBtn')
-                /*this.el.onclick = () => {
-                	console.log(this.el.innerText);             
-                };*/
+                this.el.setAttribute("type", "button");
                 this.el.setAttribute("data-bs-dismiss", "modal");              
+            }
+            getElement() {
+                return this.el;
+            }
+    }
+    
+    class ButtonRenderer2 {
+            constructor(props) {
+                this.el = document.createElement('button');
+                this.el.innerText = props.value;
+                this.el.style.border = '1px solid gray';
+                this.el.style.borderRadius ='3px';
+                this.el.style.backgroundColor = 'white';
+                this.el.classList.add('gridBtn')
+                this.el.setAttribute("type", "button");                                    
             }
             getElement() {
                 return this.el;
@@ -243,44 +256,52 @@ document.addEventListener("DOMContentLoaded", function () {
 					setValueByName('contractPeriod', contractPeriod)
 					setValueByName('currentQuantity', result.stocksQuantity)
 					totalQuantity = result.stocksQuantity;
+					
+					//창고종류 콤보박스에 창고정보 불러오기 fetch안의 fetch
+					fetch("/whList")
+					.then(result=> result.json())
+					.then(result=> {
+						let warehouseTypeBox = document.getElementById('warehouseType');
+						let warehouseTypeBox2 = document.getElementById('warehouseType2');
+						warehouseTypeBox.replaceChildren();
+						warehouseTypeBox2.replaceChildren();
+						let option = document.createElement('option'); 
+			            option.value = "allStocks"; 
+			            option.textContent = "전체재고";
+			            let option2 = document.createElement('option');
+			            option2.value = "allStocks"; 
+			            option2.textContent = "전체"; 
+			            warehouseTypeBox.appendChild(option);
+			            warehouseTypeBox2.appendChild(option2);
+						result.forEach(ele=>{	
+							let option = document.createElement('option'); 
+				            option.value = ele.whCode; 
+				            option.textContent = ele.whName; 
+				            warehouseTypeBox.appendChild(option);
+				            //DOM에서는 하나의 노드가 동시에 두 곳에 존재할 수 없다.
+				            let option2 = document.createElement('option'); 
+				            option2.value = ele.whCode; 
+				            option2.textContent = ele.whName; 
+				            warehouseTypeBox2.appendChild(option2);
+						})
+						
+						//재고조정이력 그리드 그려주기
+						//fetch뒤에 조정이력그리드를 그리면 창고정보를 못불러온다.
+						getAdjustmentInfo();
+						window.setTimeout(function(){
+			            	adjustmentDetailGrid.refreshLayout()
+			        	}, 200);
+			        	
+				})
 							
 				})
-				.catch(err=>{`제품상세불러오기 실패! : ${err}`})
-				
-				//창고종류 콤보박스에 창고정보 불러오기
-				fetch("/whList")
-				.then(result=> result.json())
-				.then(result=> {
-					let warehouseTypeBox = document.getElementById('warehouseType');
-					let warehouseTypeBox2 = document.getElementById('warehouseType2');
-					warehouseTypeBox.replaceChildren();
-					warehouseTypeBox2.replaceChildren();
-					let option = document.createElement('option'); 
-		            option.value = "allStocks"; 
-		            option.textContent = "전체재고";
-		            let option2 = document.createElement('option');
-		            option2.value = "allStocks"; 
-		            option2.textContent = "전체재고"; 
-		            warehouseTypeBox.appendChild(option);
-		            warehouseTypeBox2.appendChild(option2);
-					result.forEach(ele=>{	
-						let option = document.createElement('option'); 
-			            option.value = ele.whCode; 
-			            option.textContent = ele.whName; 
-			            warehouseTypeBox.appendChild(option);
-			            //DOM에서는 하나의 노드가 동시에 두 곳에 존재할 수 없다.
-			            let option2 = document.createElement('option'); 
-			            option2.value = ele.whCode; 
-			            option2.textContent = ele.whName; 
-			            warehouseTypeBox2.appendChild(option2);
-					})
-				})
+				.catch(err=>{`제품상세불러오기 실패! : ${err}`})		
 			}
 		})
 		
 		/*콤보박스에서 창고 option 선택시 수량변경*/
 		let warehouseTypeBox = document.getElementById('warehouseType');
-		warehouseTypeBox.addEventListener("change", function(e){
+		warehouseTypeBox.addEventListener("change", function(e){		 
 			 let selectedOption = warehouseTypeBox.options[warehouseTypeBox.selectedIndex];			 
 		     let whCode = selectedOption.value;
 		     let itemCode = document.getElementById('itemCode').value;
@@ -542,6 +563,10 @@ document.addEventListener("DOMContentLoaded", function () {
             el: document.getElementById('adjustmentDetail'),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 17,
+		    },
             header: { height: 34 },
             bodyHeight: 703,
             width: 'auto',
@@ -552,20 +577,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     width: 50,
                     className:'border'
             }],
+		    columnOptions: {
+			    frozenCount: 1, 
+			    frozenBorderWidth: 1 
+			},
             columns: [
                 {
-                    header: '재고조정번호',
+                    header: '조정번호',
                     name: 'stocksAdjustNo',
                     align: "center",
                     width: 100,
                     whiteSpace: 'normal',
                     className:'border',
                     renderer: {
-                        type: ButtonRenderer
+                        type: ButtonRenderer2
                     },
-                    filter: 'select',
                     formatter: ({ value }) =>
-			          `<div class="btn-link text-primary AdjusttModalTrigger" data-bs-toggle="modal" data-bs-target="#adjustDetailModal">${value}</div>`,
+			          `<div class="btn-link text-primary adjustModalTrigger"  >${value}</div>`,
                     
                 },
                 {
@@ -586,54 +614,178 @@ document.addEventListener("DOMContentLoaded", function () {
                     className:'border',
                     filter: 'select'
                 },
+                {
+                    header: '변동수량',
+                    name: 'stocksStocks',
+                    align: "center",
+                    width: 50,
+                    whiteSpace: 'normal',
+                    className:'border',
+                },
                                 {
                     header: '등록날짜',
                     name: 'date',
                     align: "center",
-                    width: 100,
+                    width: 90,
                     whiteSpace: 'normal',
                     className:'border',
-                    filter: 'select'
+                    filter: {
+		                type: 'date',
+		                options: {
+		                    format: 'yyyy-MM-dd',
+		                    language: 'ko'
+		                },
+		                showClearBtn: true
+		            }
                 },
 
                 {
                     header: '증감 여부',
                     name: 'stocksStocksCheck',
                     align: "center",
-                    width: 100,
+                    width: 85,
                     whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
+                    className:'border',                  
+                    formatter: ({ value }) => {
+		          // 값에 따라 다른 색상 스타일 적용
+			          let colorClass = "";
+			          if (value === "재고증가") {
+			            colorClass = "r1";
+			          } else if (value === "재고감소") {
+			            colorClass = "r2";
+			 		  }
+			          return `<span class="${colorClass}">${value}</span>`;
+			        },
                 },
                 {
                     header: '변동사유',
                     name: 'updateReason',
                     align: "center",
-                    width: 100,
+                    width: 85,
                     whiteSpace: 'normal',
                     className:'border',
                     filter: 'select'
                 },
             ]
     });
-	
-	//let 창고 =
-	//let 년도 =
-	fetch(`/stocks/itemAdjust/${whCode}/${data}`)
-	.then(result=>result.json())
-	.then(result=>{
-		let dataArr = [];
-		result.forEach(ele=>{
-			let data = {};
-			data.slipNo = ele.slipNo;
-			data.employeeName = ele.employeeName;
-			data.date = ele.date;
-			data.stocksStocksCheck = ele.stocksStocksCheck;
-			data.updateReason = ele.updateReason;
-			dataArr.push(data);
+      
+      //재고 증가,감소 색상 다르게
+	function sortColor(){	  
+      adjustmentDetailGrid.getData().forEach((row) => {
+		  let check = row.stocksStocksCheck === "재고증가";
+		  if (check) {
+		      adjustmentDetailGrid.addRowClassName(row.rowKey, "increase");
+	      } else {
+	          adjustmentDetailGrid.addRowClassName(row.rowKey, "decrease");
+	      }
+	  });
+	  }
+    
+    //조정내역 불러오는 함수, 모달창띄우는 fetch안에서 사용
+	function getAdjustmentInfo(){
+		let warehouseTypeBox2 = document.getElementById('warehouseType2'); 			
+		let selectedOption = warehouseTypeBox2.options[warehouseTypeBox2.selectedIndex];
+		let dateBox = document.getElementById('inqueryYear');
+		
+		let whCode = selectedOption.value; 	
+		let date = dateBox.options[dateBox.selectedIndex].value;
+		let itemCode = document.getElementById('itemCode').value;	
+		let formData = new FormData();
+		formData.append('whCode', whCode);
+		formData.append('date', date); 
+		formData.append('itemCode', itemCode);
+		
+		fetch(`/stocks/itemAdjust`,{
+				method: 'post',
+				body: formData
 		})
+		.then(result=>result.json())
+		.then(result=>{
+			let dataArr = [];
+			result.forEach(ele=>{
+				let data = {};
+				data.stocksAdjustNo = ele.stocksAdjustNo;
+				data.stocksStocks = ele.stocksStocks;
+				data.slipNo = ele.slipNo;
+				data.employeeName = ele.employeeName;
+				data.date = ele.regDate;
+				data.stocksStocksCheck = ele.stocksStocksCheck;
+				data.updateReason = ele.updateReason;
+				dataArr.push(data);
+			})
+			adjustmentDetailGrid.resetData(dataArr);
+			sortColor(); //Row 색감 넣기!
+		})
+		.catch(err=>{`재고조정내역 불러오기 실패! ${err}`})
+		
+	}
+	//제품상세 모달 - > 콤보박스(창고타입) 변경시 조정내역 reload
+	let warehouseTypeBox2 = document.getElementById('warehouseType2');
+		warehouseTypeBox2.addEventListener("change", function(){
+			getAdjustmentInfo();		
 	})
-	.catch(err=>{`재고조정내역 불러오기 실패! ${err}`})
+	//제품상세 모달 - > 콤보박스(년도) 변경시 조정내역 reload
+	let dateBox = document.getElementById('inqueryYear');
+	dateBox.addEventListener("change", function(){
+		getAdjustmentInfo();
+	})
+	
+	adjustmentDetailGrid.on("click", function(e){
+		let rowKeyNum;
+		if (e.columnName == 'stocksAdjustNo'){
+			rowKeyNum = e.rowKey;		
+			let val = adjustmentDetailGrid.getValue(rowKeyNum, 'stocksAdjustNo');
+			let formData = new FormData();
+			formData.append("stocksAdjustNo", val);
+			fetch("/stocks/itemAdjustDetail",{
+					method: 'post',
+					body: formData
+			})
+			.then(result=> result.json())
+			.then(result=> {
+				let dataArr = [];
+				result.forEach(ele=>{
+					let data = {};
+					//일련번호 자재식별번호 품명 현재수량 증감수량 창고명 재고조정사유
+					data.logNo = ele.logNo;
+					data.itemCode = ele.itemCode;
+					data.itemName = ele.itemName;
+					data.stocksQuantity = ele.stocksQuantity;
+					data.stocksStocks = ele.stocksStocks;
+					data.whName = ele.whName;
+					data.updateReason = ele.updateReason;
+					dataArr.push(data);
+				})
+				//작성자,조정번호 값넣기
+				let reporter = document.querySelectorAll("reporter");
+				let adjustNo = document.getElementById("adjustNo");
+				reporter.forEach(ele=>{
+					ele.innerHTML = ele.employeeName;
+				})
+				adjustNo.innerHTML = result[0].stocksAdjustNo;
+				//일자에 값넣기
+				let inputDate = document.querySelectorAll('.inputDate');
+				inputDate.forEach(ele=>{
+					if(ele.tagName == "DIV"){
+						ele.innerHTML = `일자: ${result[0].regDate}`;
+					} else{
+						ele.innerHTML = result[0].regDate;
+					}
+				})
+				
+				//보고서 cell에 값 넣기
+				dataArr.forEach((ele,index)=>{
+					let tr = document.querySelector(`#adjustTbody tr:nth-child(${index+1})`)
+					for(let i=1; i<8; i++){
+						tr.querySelector(`td:nth-child(${i})`).innerHTML = ele[Object.keys(ele)[i-1]];			
+					}
+				})
+			})
+			.catch(err => {`재고조정내역 불러오기 실패! +${err}`})
+			const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));			
+			reportModal.show();
+		}
+	})
 	
     //#endregion 제품상세모달_조정내역 그리드
     
@@ -696,5 +848,36 @@ document.addEventListener("DOMContentLoaded", function () {
 	function setValueByName(name, value) {
     	document.querySelector(`[name="${name}"]`).value = value;
 	}
+	
+	//파일입력창 커스터마이징
+	document.getElementById('newImage').addEventListener('change', function () {
+	  const fileName = this.files[0] ? this.files[0].name : '선택된 파일 없음';
+	  document.getElementById('fileName').textContent = fileName;
+	});
+	
+	/*================================
+    	StackInquery 재고조정보고서 모달 JS
+    ==================================*/
+    
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });  
+
+    document.getElementById('pdfButton').addEventListener('click', function() {
+        const element = document.getElementById('reportContent');
+        html2canvas(element).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jspdf.jsPDF();
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            //재고조정번호를 파일명뒤에 넣어준다.
+            let adjustNo = "_" + document.getElementById("adjustNo").innerHTML;
+            pdf.save(`재고조정보고서${adjustNo}.pdf`);
+            
+        });
+    });
 	//#endregion
 }); //End Point
