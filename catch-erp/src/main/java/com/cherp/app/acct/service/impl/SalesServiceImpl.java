@@ -101,6 +101,22 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.selectAcctList(debitSide);
 	}
 	
+	// 세금계산서 업데이트(발행상태, 국세청 전송 날짜) // by sm
+	@Override
+	public void updateInvoice(List<SalesVO> salesVO) {
+		//int result = salesVO.stream().mapToInt((data) -> salesMapper.updateInvoice(data.getInvoiceNo())).sum();
+		salesVO.forEach((data) -> {		
+			System.out.println(data.getType());
+			System.out.println(data.getInvoiceNo());
+			if(data.getType().equals("now")) {
+				salesMapper.updateInvoice(data.getInvoiceNo(), "f3");
+			}else {
+				salesMapper.updateInvoice(data.getInvoiceNo(), "f2");
+			}
+		});
+
+	}
+	
 	// 매출, 매입 전표 삭제 // by sm
 	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
@@ -203,11 +219,6 @@ public class SalesServiceImpl implements SalesService{
 
 	@Override
 	public int updateReceivable(SalesVO salesVO) {
-		return 0;
-	}
-
-	@Override
-	public int updateInvoice(SalesVO salesVO) {
 		return 0;
 	}
 

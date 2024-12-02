@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 	
-	// 모달 창에서(상세보기) 선택 삭제 버튼
+	// 모달 창에서(상세보기) 삭제 버튼
 	for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
 		deleteBtn.addEventListener("click", function (){
 			const {salesChitNo, type} = selectData;

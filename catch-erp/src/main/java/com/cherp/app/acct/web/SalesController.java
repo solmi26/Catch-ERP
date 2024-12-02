@@ -86,6 +86,14 @@ public class SalesController {
 		return "수정 성공(DI)";
 	}
 	
+	// 세금계산서 상태 수정 기능(발행상태, 국세청 전송 일자) by sm
+	@PutMapping("sales/updateInvoice")
+	@ResponseBody
+	public String updateInvoice(@RequestBody List<SalesVO> salesVO) {
+		salesService.updateInvoice(salesVO);
+		return "인보이스 상태 변경 성공";
+	}
+	
 	// 매입, 매출전표 상세조회(기능) by sm
 	@GetMapping("sales/selectSlipInfo")
 	@ResponseBody
