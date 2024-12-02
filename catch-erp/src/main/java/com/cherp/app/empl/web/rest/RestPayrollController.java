@@ -24,8 +24,7 @@ public class RestPayrollController {
 	private final PayrollService service;
 	
 	@GetMapping("/employees/payroll")
-	public List<PayrollVO> payrollList () {
-		EmployeeSearchDto search = new EmployeeSearchDto();
+	public List<PayrollVO> payrollList (EmployeeSearchDto search) {
 		return service.payrollList(search);
 	} 
 	

@@ -59,6 +59,35 @@
        FROM   salary_payroll sp
        JOIN   employees em
        ON     sp.employee_code = em.employee_code
+        <where>
+        <if test="employeePosition != null and !employeePosition.equals('')">
+        em.employee_position = #{employeePosition}
+        </if>
+        <if test="employeeName != null and !employeeName.equals('')">
+        AND em.name LIKE '%'|| #{employeeName}|| '%'
+        </if>
+        <if test="employeeId != null and !employeeId.equals('')">
+        AND em.employee_id LIKE '%'||#{employeeId}||'%'
+        </if>
+        <if test="departmentCode != null and !departmentCode.equals('')">
+        AND em.department_code = #{departmentCode}
+        </if>
+        <if test="statusType != null and !statusType.equals('')">
+        AND em.status_type = #{statusType}
+        </if>
+        <if test="hireDateStart != null" >
+        AND em.hire_date >= #{hireDateStart}
+        </if>
+        <if test=" hireDateEnd != null " >        
+        AND em.hire_date <![CDATA[ <= ]]> #{hireDateEnd}        
+        </if>
+        <if test="resignationDateStart != null " >
+        AND em.RESIGNATION_DATE >= #{resignationDateStart}
+        </if>
+        <if test="resingationDateEnd != null " >
+        AND em.RESIGNATION_DATE <![CDATA[ <=  ]]> #{resingationDateEnd}
+        </if>        
+        </where>     
     </select>
 
 	<!-- 급여명세서 단건조회 -->
