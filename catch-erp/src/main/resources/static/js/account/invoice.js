@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formatter: ({ value }) =>
           `<a href="#" class="btn-link text-primary">${value}</a>`,
       },
+
       {
         header: "작성일자",
         name: "date",
@@ -53,6 +54,13 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       },
       {
+        header: "전표번호",
+        name: "voucherNumber",
+        align: "center",
+        formatter: ({ value }) =>
+          `<a href="#" class="btn-link text-primary">${value}</a>`,
+      },
+      {
         header: "전자세금계산서 전송 상태",
         name: "taxProgress",
         sortable: true,
@@ -70,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return `<span class="${colorClass}">${value}</span>`;
         },
       },
+            
     ],
     rowHeaders: [
       {
@@ -92,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((result) => {
         let dataArr = result.map((ele) => ({
           invoiceNo: ele.invoiceNo,
+          voucherNumber: ele.saleslipNo, // 전표번호
           date: ele.invoiceDate,
           taxDate: ele.ntsInvoiceDate || "-",
           clientName: ele.clientName,
@@ -147,6 +157,128 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   //#endregion
+  
+  // 국세청 즉시 전송 선택
+  document.querySelector(".now-save").addEventListener("click", function(){
+	console.log("즉시 전송 버튼 선택")
+	
+	let selectedRows = grid.getCheckedRows(); // 체크된 데이터
+	console.log("선택된 데이터 : " , selectedRows);
+	
+	if (selectedRows.length === 0) {
+        alert("전송할 데이터를 선택하세요.");
+   		return;
+      }
+      
+   // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
+   const noSendRows = selectedRows.filter(
+	(row) => row.taxProgress === "미전송" || row.taxProgress === "전송중"
+   )
+   
+   const sendRows = selectedRows.filter(
+	(row) => row.taxProgress === "국세청 전송 완료"
+   );
+   
+   if(sendRows.length > 0){
+	alert("이미 국세청 전송이 완료된 건이 포함되어 있습니다.")
+	return;
+   }
+   
+   // 국세청 즉시 전송할 데이터
+   let nowSendData = noSendRows.map((row) => ({
+	invoiceNo: row.invoiceNo,
+  	saleslipNo : row.voucherNumber,
+  	type:"now"
+   }))
+   
+   // 서버로 업데이트 요청
+   fetch("/sales/updateInvoice", {
+	method:"PUT",
+	 headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nowSendData),
+   })
+   .then((response) => {
+	if(!response.ok){
+		throw new Errow("업데이트 요청에 실패했습니다.")
+	}return response.text();
+   })
+   .then((result) => {
+	console.log("업데이트 결과 : " , result);
+	alert("국세청 전송이 완료되었습니다.")
+	
+	// 전송시 그리드 재로드
+	loadGridData();
+   })
+   .catch((error) =>  {
+	console.log("업데이트 요청 중 오류 발생 : ", error);
+	alert("국세청 전송 중 오류가 발생했습니다.")
+   })
+   
+  })
+  
+  // 일반 전송 버튼 선택
+    document.querySelector(".save").addEventListener("click", function(){
+	console.log("일반 전송 버튼 선택")
+	
+	let selectedRows = grid.getCheckedRows(); // 체크된 데이터
+	console.log("선택된 데이터 : " , selectedRows);
+	
+	if (selectedRows.length === 0) {
+        alert("전송할 데이터를 선택하세요.");
+   		return;
+      }
+      
+   // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
+   const noSendRows = selectedRows.filter(
+	(row) => row.taxProgress === "미전송" 
+   )
+   
+   const sendRows = selectedRows.filter(
+	(row) => row.taxProgress === "국세청 전송 완료" || row.taxProgress === "전송중"
+   );
+   
+   if(sendRows.length > 0){
+	alert("이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다.")
+	return;
+   }
+   
+   // 일반 전송할 데이터
+   let nowSendData = noSendRows.map((row) => ({
+	invoiceNo: row.invoiceNo,
+  	saleslipNo : row.voucherNumber,
+  	type:"yet"
+   }))
+   
+   // 서버로 업데이트 요청
+   fetch("/sales/updateInvoice", {
+	method:"PUT",
+	 headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nowSendData),
+   })
+   .then((response) => {
+	if(!response.ok){
+		throw new Errow("업데이트 요청에 실패했습니다.")
+	}return response.text();
+   })
+   .then((result) => {
+	console.log("업데이트 결과 : " , result);
+	alert("전송이 완료되었습니다. 익일 0시에 국세청으로 자동 전송됩니다.")
+	
+	// 전송시 그리드 재로드
+	loadGridData();
+   })
+   .catch((error) =>  {
+	console.log("업데이트 요청 중 오류 발생 : ", error);
+	alert("전송 중 오류가 발생했습니다.")
+   })
+   
+  })
+  
+  
 
   // 그리드 내 클릭이벤트 -> 추후 내가 필요할 때 수정해서 사용
   grid.on("click", (event) => {

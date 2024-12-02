@@ -364,6 +364,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 className: 'border'
             }, {
                 header: '재고수량',
+                editor: "text",
                 name: 'stocksQuantity',
                 align: "center",
                 width: 100,
@@ -372,6 +373,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부족수량',
                 name: 'deficiencyQuantity',
+                editor: "text",
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -452,7 +454,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
         });
 
-        //
+        // 창고 수량 검색
         salesChit.on("editingFinish", (ev) => {
 
             const columnName = ev.columnName;

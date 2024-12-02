@@ -54,6 +54,8 @@ public class SalesVO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date invoiceDate;		// 발송 일자
 	private String invoiceStatus;	// 전송 상태
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date ntsInvoiceDate;	// 국세청 전송 일자
 	private String refType;			// 원세금계산서 유형
 	
