@@ -231,8 +231,8 @@
 	<update id="updateInvoice">
 	    UPDATE invoice
         SET invoice_status = #{state}
-            ,nts_invoice_date = CASE WHEN #{state} ='f2' THEN NULL
-            						 ELSE SYSDATE
+            ,nts_invoice_date = CASE WHEN #{state} ='f3' THEN SYSDATE
+            						 ELSE NULL
             						 END
         WHERE invoice_no = #{invoiceNo}
 	</update>

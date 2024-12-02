@@ -5,6 +5,18 @@
 
 let grid = null;
 document.addEventListener("DOMContentLoaded", function () {
+	
+// 매출전표 모달
+const salesModalElement = document.getElementById("sModal");
+let salesModal;
+
+// salesModal이 존재하는 경우 Modal 인스턴스 생성
+if (salesModalElement) {
+  salesModal = new bootstrap.Modal(salesModalElement);
+} else {
+  console.error("salesModal 요소가 없습니다.");
+}
+
   // 그리드 초기화
   grid = new tui.Grid({
     el: document.querySelector("#grid"), // 그리드를 표시할 DOM 요소의 id 지정
@@ -106,6 +118,59 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ],
   });
+  
+  let currentTarget = null; // 현재 클릭된 대상
+  
+  grid.on("click", (ev) => {
+    console.log("check!", ev);
+    const row = grid.getRow(ev.rowKey);
+
+    selectData = {
+      salesChitNo: row.voucherNumber, // 전표번호
+      type: "매출전표", // 전표유형
+    };
+
+    // 선택된 전표 정보 서버에서 가져오기
+    fetch(
+      `/sales/selectSlipInfo?salesChitNo=${selectData.salesChitNo}&type=${selectData.type}`
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        let data = result;
+
+        console.log("데이터 : ", result);
+
+        // 매출전표 관련 데이터 매핑
+        document.getElementById("s_date").value = result.chitDate || "2024/11/01"; // 전표일자
+        document.getElementById("s_no").value =
+          result.salesChitNo || result.purchaseChitNo; // 전표번호
+        document.getElementById("s_joinInput").value =
+          result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
+        document.getElementById("s_clientInput").value = result.clientCode || "";
+        clientCode = result.clientNo;
+        console.log("code" + clientCode);
+        document.getElementById("s_acctInput").value = result.acctName || "";
+        document.getElementById("s_price").value = result.supplyPrice
+          ? Number(result.supplyPrice).toLocaleString()
+          : "0";
+        document.getElementById("s_vat").value = result.vat
+          ? Number(result.vat).toLocaleString()
+          : "0";
+        document.getElementById("s_amount").value = result.totalPrice
+          ? Number(result.totalPrice).toLocaleString()
+          : "0";
+        document.getElementById("s_summary").value = result.summary || "";
+      })
+      .catch((err) => {
+        console.log("에러 : " + err);
+      });
+
+    if (ev.columnName === "voucherNumber") {
+      currentTarget = ev;
+      salesModal.show();
+    }
+  });
+
 
   // 데이터 로드 함수
   function loadGridData() {
@@ -121,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
           supplyAmount: ele.supplyPrice,
           taxProgress: ele.invoiceStatus,
 		  vat:ele.vat,
-		  amount:ele.totalPrice,
+		  amount:ele.totalPrice
         }));
 
         grid.resetData(dataArr);
@@ -292,6 +357,66 @@ document.addEventListener("DOMContentLoaded", function () {
    })
    
   })
+  
+  	// 발송 취소 버튼 선택
+    document.querySelector(".resetBtn").addEventListener("click", function(){
+  	console.log("발송 취소 버튼 선택")
+  	
+  	let selectedRows = grid.getCheckedRows(); // 체크된 데이터
+  	console.log("선택된 데이터 : " , selectedRows);
+  	
+  	if (selectedRows.length === 0) {
+          alert("전송할 데이터를 선택하세요.");
+     		return;
+        }
+        
+     // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
+     const noSendRows = selectedRows.filter(
+  	(row) => row.taxProgress === "미전송" || row.taxProgress === "국세청 전송 완료"
+     )
+     
+     const sendRows = selectedRows.filter(
+  	(row) => row.taxProgress === "전송중" 
+     );
+     
+     if(noSendRows.length > 0){
+  	alert("이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다.")
+  	return;
+     }
+     
+     // 발송 취소할 데이터
+     let nowSendData = sendRows.map((row) => ({
+  		invoiceNo: row.invoiceNo,
+    	saleslipNo : row.voucherNumber,
+    	type:"reset"
+     }))
+     
+     // 서버로 업데이트 요청
+     fetch("/sales/updateInvoice", {
+  	method:"PUT",
+  	 headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(nowSendData),
+     })
+     .then((response) => {
+  	if(!response.ok){
+  		throw new Errow("발송 취소 요청에 실패했습니다.")
+  	}return response.text();
+     })
+     .then((result) => {
+  	console.log("발송 취소 결과 : " , result);
+  	alert("발송취소가 완료되었습니다.")
+  	
+  	// 전송시 그리드 재로드
+  	loadGridData();
+     })
+     .catch((error) =>  {
+  	console.log("발송 취소 요청 중 오류 발생 : ", error);
+  	alert("발송 취소 중 오류가 발생했습니다.")
+     })
+     
+    })
   
   
 
