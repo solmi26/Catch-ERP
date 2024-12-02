@@ -7,4 +7,5 @@ public class AttItemVO {
 	private String attCode;
 	private String attStatus;
 	private String attName;
+	private String commonName;
 }

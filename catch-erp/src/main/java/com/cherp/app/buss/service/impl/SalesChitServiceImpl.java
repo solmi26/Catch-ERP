@@ -36,7 +36,7 @@ public class SalesChitServiceImpl implements SalesChitService {
 
     }
 
-    // 판매 내역 전체 조회
+    // 판매 내역 전체 조회 by sm
     @Override
     public List<SalesChitVO> selectSalesChit() {
         return salesChitMapper.selectSalesChit();
@@ -56,7 +56,7 @@ public class SalesChitServiceImpl implements SalesChitService {
     }
 
 
-    // 판매내역 전표상태별 조회
+    // 판매내역 전표상태별 조회 by sm
     @Override
     public List<SalesChitVO> selectsalesChitState(String slipState) {
         return salesChitMapper.selectSalesChitState(slipState);

@@ -84,10 +84,9 @@
                                         </div>
                                         <div class="col">
                                       		<select class="form-select form-select-sm EmployeeDetailVO insert-input" name="attStatus">
-												<option value="i1" selected>일반</option>
-												<option value="i4" >공제</option>												
-												<option value="i2" >휴가</option>
-												<option value="i3" >기타</option>
+					                    		<th:block th:each="com : ${ccList}">
+					                    			<option   th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+					                    		</th:block>
                                        		</select>		                                        
                                         </div>
                                    		</div>
@@ -151,9 +150,9 @@
                                         </div>
                                         <div class="col">
                                       		<select class="form-select form-select-sm EmployeeDetailVO modify-input" name="attStatus">
-												<option value="i1" >일반</option>
-												<option value="i2" >휴가</option>
-												<option value="i3" >기타</option>
+					                    		<th:block th:each="com : ${ccList}">
+					                    			<option   th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+					                    		</th:block>
                                        		</select>		                                        
                                         </div>
                                    		</div>
@@ -205,8 +204,13 @@
 			      name: 'attName'
 			    },
 			    {
-			      header: '근태유형',
-			      name: 'attStatus'
+			      header: '근태유형코드',
+			      name: 'attStatus',
+			      hidden:true
+			    },
+			    {
+			      header:'근태유형',
+			      name:'commonName'
 			    }
 			  ],
 			  data: [

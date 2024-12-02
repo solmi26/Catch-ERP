@@ -217,6 +217,12 @@
             ,(SELECT supply_price
               FROM sales s
               WHERE s.sales_chit_no = i.saleslip_no) as supply_price
+              ,(SELECT vat
+              FROM sales s
+              WHERE s.sales_chit_no = i.saleslip_no) as vat
+ 			  ,(SELECT total_price
+              FROM sales s
+              WHERE s.sales_chit_no = i.saleslip_no) as total_price
 		FROM invoice i
 		ORDER BY invoice_date desc
 		

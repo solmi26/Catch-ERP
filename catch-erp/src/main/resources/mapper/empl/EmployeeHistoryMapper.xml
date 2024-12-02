@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cherp.app.empl.mapper.EmployeeHistoryMapper">
+
+
+	<!--  
+	<insert id="insertEmployeeHistory" parameterType="com.cherp.app.empl.vo.EmployeeHistoryVO">
+		INSERT	INTO employees_history (EH_NO
+                                   ,EH_DATE
+                                   ,EH_TYPE
+                                   ,EMPLOYEE_CODE
+                                   ,PREV_POSITION
+                                   ,ASSIGNED_POSITION
+                                   ,PREV_DEPARTMENT
+                                   ,ASSIGNED_DEPARTMENT
+                                   ,STANDARD_DATE)
+                                   
+	    SELECT employee_history_seq.NEXTVAL AS EH_NO, A.*
+		FROM (
+		<foreach collection="list" item="vo" open="" separator=" UNION ALL " close="">
+                           SELECT  #{vo.ehDate} AS EH_DATE
+                                  ,#{vo.ehType} AS EH_TYPE
+                                  ,#{vo.employeeCode} AS EMPLOYEE_CODE
+                                  ,#{vo.prevPosition} AS PREV_POSITION
+                                  ,#{vo.assignedPosition} AS ASSIGNED_POSITION
+                                  ,#{vo.prevDepartment} AS PREV_DEPARTMENT
+                                  ,#{vo.assignedDepartment} AS ASSIGNED_DEPARTMENT
+                                  ,#{vo.standardDate} AS STANDARD_DATE
+                           FROM dual
+		</foreach>
+        ) A 
+	</insert>
+	-->
+	
+	<insert id="insertEmployeeHistory" parameterType="hashmap" statementType="CALLABLE">
+		    CALL EMPLOYEE_HISTORY_INSERT (
+							,#{employeeHistory, mode=IN, typeHandler=com.cherp.app.empl.vo.EmployeeHistoryArrayStructHandler}  
+	                         )
+	</insert>
+	
+</mapper>

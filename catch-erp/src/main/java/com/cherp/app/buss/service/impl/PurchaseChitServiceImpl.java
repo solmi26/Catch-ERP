@@ -18,7 +18,7 @@ public class PurchaseChitServiceImpl implements PurchaseChitService {
         this.purchaseChitMapper = purchaseChitMapper;
     }
 
-    // 구매내역 전표상태별 조회
+    // 구매내역 전표상태별 조회 by sm
     @Override
     public List<PurchaseChitVO> selectPurchaseChitState(String slipState) {
     	return purchaseChitMapper.selectPurchaseChitState(slipState);
