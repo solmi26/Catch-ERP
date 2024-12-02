@@ -160,7 +160,6 @@ public class RestStockAdjustController {
 		}
 		return map;
 	}
-<<<<<<< HEAD
 	//조정내역리스트 조회
 	@PostMapping("/itemAdjust")
 	public List<StocksVO> getAllAdjustList(@RequestParam("itemCode") String itemCode, 
@@ -173,12 +172,5 @@ public class RestStockAdjustController {
 	public List<StocksVO> getAdjustDetail (@RequestParam("stocksAdjustNo") String stocksAdjustNo){
 		return stockAdjustService.getAdjustLogList(stocksAdjustNo);
 	}
-=======
 
-	@GetMapping("/itemAdjust/{whCode}/{date}")
-	public List<StocksVO> getAllAdjustList(@PathVariable("whCode") String whCode, @PathVariable("date") String date){
-		return stockAdjustService.getAllAdjustList(whCode, date);
-	}
-
->>>>>>> main
 }
