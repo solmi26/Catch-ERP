@@ -110,8 +110,10 @@ public class SalesServiceImpl implements SalesService{
 			System.out.println(data.getInvoiceNo());
 			if(data.getType().equals("now")) {
 				salesMapper.updateInvoice(data.getInvoiceNo(), "f3");
-			}else {
+			}else if(data.getType().equals("yet")){
 				salesMapper.updateInvoice(data.getInvoiceNo(), "f2");
+			}else {
+				salesMapper.updateInvoice(data.getInvoiceNo(), "f1");
 			}
 		});
 

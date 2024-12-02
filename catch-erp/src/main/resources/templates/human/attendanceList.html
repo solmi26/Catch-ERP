@@ -85,7 +85,7 @@
         <!--  세부 검색 구역 -->
       <div class="card mb-4 bg-white">
         <div class="card-body bg-light">
-        <h3>사원정보</h3>
+        <h3>근태정보</h3>
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
@@ -210,7 +210,7 @@
 			<!-- 버튼용 로우 -->
 			<div class="row">
 				<div class="col">
-					<button type="button" class="btn btn-sm btn-success">신규</button>
+					<button type="button" class="btn btn-sm btn-success new-Btn">신규</button>
 					<button type="button" class="btn btn-sm btn-danger delete-Btn">삭제</button>
 					<button type="button" class="btn btn-sm btn-secondary">Excel</button>
 					<button type="button" class="btn btn-sm btn-secondary">인쇄</button>
@@ -258,6 +258,54 @@
 	
 <!-- 근태 수정 모달 -->	
 
+
+<!-- 근태항목 조회 -->
+    <div class="modal fade bg-dark bg-opacity-50" id="atItemModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">근태항목검색</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>근태항목검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col ">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text p-0" style="width: 100px;">
+                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                        <option selected style="width:80px;">근태명</option>
+                                                        <option value="1" style="width:80px;">근태코드</option>
+                                                    </select>                                          
+                                                </span>
+                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="atItemGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 근태항목 조회끝 -->
 		<script th:src='@{/js/common/deleteRowBtn.js}'></script>
 		<script th:src='@{/js/common/appendRowBtn.js}'></script>
 	
@@ -328,6 +376,7 @@
   
 	
 	</script>
+	<script th:src="@{/js/human/modal/atItemModal.js}"></script>
 	<script th:src="@{/js/human/modal/atModifyModal.js}"></script>
 	
 	

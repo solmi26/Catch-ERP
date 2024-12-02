@@ -40,9 +40,8 @@ public class SecurityController {
 	public String userLogin() {
 		System.out.println("login시도중");
 		return "index/login/userLogin";
-//		return "sales/clientList";
 	}
-	
+	// 기본 index page 설정
 	@GetMapping("index")
 	public String goIndex() {
 		return "sales/clientList";

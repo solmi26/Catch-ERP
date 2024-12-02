@@ -3,6 +3,7 @@ package com.cherp.app.buss.web;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +19,14 @@ public class RestGWClientController {
 	
 	private final ClientService clientService;
 	// 클라이언트 리스트 전체 조회
+	@Secured("ROLE_USER")
 	@GetMapping("api/business/client")
 	public List<ClientPsVO> clientList() {
 		return clientService.gwClientList();
 	}
 	
 	// 클라이언트 정보 단건 조회
+	@Secured("ROLE_USER")
 	@GetMapping("api/business/clientDetail/{clientCode}")
 	public Map<String, Object> viewClientDetail(@PathVariable("clientCode") String clientCode) {
 		System.out.println(clientCode);

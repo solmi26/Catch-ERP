@@ -1,10 +1,10 @@
 package com.cherp.app.empl.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import com.cherp.app.empl.vo.AttItemVO;
 import com.cherp.app.empl.vo.DepartmentVO;
+import com.cherp.app.empl.vo.FixedVO;
 
 public interface RegisterMapper {
 	public List<DepartmentVO> selectAllDepartment ();
@@ -19,4 +19,8 @@ public interface RegisterMapper {
 	public int insertAttItem (AttItemVO attItem); //근태항목등록
 	public int updateAttItem (AttItemVO attItem); //근태항목수정
 	public int deleteAttItem (String[] attItem); //근태항목 다건삭제
+	
+	public List<FixedVO> selectAllowanceItemList (); //고정수당항목 조회
+	
+	
 }

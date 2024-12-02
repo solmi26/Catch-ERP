@@ -10,7 +10,8 @@ grid.on('click', function (ev) {
 		currentTarget = ev;
 		window.setTimeout(function(){
         empGrid.refreshLayout();
-        }, 200) 
+        }, 200)
+        dataToEmpModal () 
 		empModal.show()
 	}
 	if (ev.columnName == 'assignedDepartment') {
@@ -33,7 +34,7 @@ grid.on('click', function (ev) {
 //사원검색 모달창 이벤트
 empGrid.on('click',function (ev) {
 	if (ev.targetType == 'cell') {
-		let empName = empGrid.getFormattedValue(ev.rowKey,'employeeName');
+		let empName = empGrid.getFormattedValue(ev.rowKey,'name');
 		grid.setValue(currentTarget.rowKey,'employeeName',empName)
 		empModal.hide()
 	}
@@ -58,3 +59,24 @@ empPositionGrid.on('click',function (ev) {
 		
 	}
 })
+//저장버튼클릭시 이벤트
+document.querySelector('.insert-Btn').addEventListener('click',function () {
+	//널검사
+	/*
+	if (validateCheck()) {
+		return;
+	}
+	*/
+	let row = grid.getData()
+	fetch("/employees/emphistory",{
+		method:"post",
+		headers:{"Content-Type":"application/json"},
+		body:JSON.stringify(row)
+	})
+	.then(data => data.json())
+	.then(data => {
+		
+	})
+})
+
+

@@ -2,6 +2,7 @@ package com.cherp.app.buss.web;
 
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class GWClientController {
 	private final ClientService clientService;
 	
+	@Secured("ROLE_USER")
 	@GetMapping("business/clientList")
 	public String clientList(Model model) {
 		List<ClientPsVO> clientList = clientService.gwClientList();
@@ -28,6 +30,7 @@ public class GWClientController {
 		return "sales/clientList";
 	}
 	
+	@Secured("ROLE_USER")
 	@PostMapping("business/insertClient")
 	public String insertClient(ClientPsVO client) {
 		int result = clientService.insertClient(client);
@@ -40,6 +43,7 @@ public class GWClientController {
 		return url;
 	}
 	
+	@Secured("ROLE_USER")
 	@PostMapping("business/updateClient")
 	public String updateClientDetail(ClientPsVO client) {
 		int result = clientService.updateClient(client);

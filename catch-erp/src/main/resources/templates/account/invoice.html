@@ -6,102 +6,7 @@
   <head>
     <meta charset="UTF-8" />
 	<title>전자세금계산서</title>
-
-    <style>
-    
-       h1{
-        margin-top: 20px;
-        margin-left:10px;
-        font-weight: bold;
-       }
-      /* 버튼 고정 */
-      .button-group {
-        display: flex;
-        gap: 5px; /* 버튼들 사이 간격 */
-        font-size: 18px;
-        margin-top:40px;
-        margin-bottom:20px;
-        justify-content: flex-end; /* 버튼을 오른쪽에 정렬 */
-      }
-      
-      /* 전체, 전송중, 전송완료 전체 div */
-      .status-count {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 4px;
-        margin-bottom: 1rem;
-      }
-      
- 	  /* 전체, 전송중, 전송완료 각 div */
-      .status-box {
-        text-align: center;
-        padding: 8px;
-        border-right: 1px solid #dee2e6;
-      }
-      
-	/* 전송완료 오른쪽 border X */
-      .status-box:last-child {
-        border-right: none;
-      }
-	
-	 /* 전체, 전송중, 전송완료 개수 */
-      .status-number {
-        font-size: 1.4rem;
-        font-weight: bold;
-        color: #31ce36;
-      }
-		
-	/* 전체, 전송중, 전송완료 한글 표시 */
-      .status-label {
-        font-size: 1.2rem;
-		font-weight: 600;
-      }
-      
-     .r1 {
-	  color: red;
-	 }
-	 .r2 {
-	  color: green;
-	 }
-	 .r3{
-		color: blue;
-	 }
-	 
-	 	/* 드롭다운 기본 스타일 */
-	  .dropdown-menu-custom {
-	      display: none;
-	      position: absolute;
-	      top: 100%;
-	      left: 0;
-	      background-color: #ffffff;
-	      border: 1px solid #ccc;
-	      border-radius: 4px;
-	      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-	      z-index: 1000;
-	  }
-	
-	  /* 드롭다운 항목 스타일 */
-	  .dropdown-item {
-	      padding: 10px 20px;
-	      cursor: pointer;
-	      text-align: left;
-	      border-bottom: 1px solid #f0f0f0;
-	      transition: background-color 0.2s ease, color 0.2s ease;
-	  }
-	
-	  .dropdown-item:last-child {
-	      border-bottom: none;
-	  }
-	  
-	  .save:hover {
-	      background-color: #e0f7fa;
-	  }
-	
-	  .now-save:hover {
-	      background-color: #ffebee;
-	  }
-      
-    </style>
+	<link rel="stylesheet" th:href="@{/css/acct/invoice.css}" />
     
   </head>
   
@@ -138,7 +43,7 @@
 	    <li><a class="dropdown-item now-save">국세청 즉시 전송</a></li>
 	  </ul>
 
-        <button class="btn btn-danger">발송취소</button>
+        <button class="btn btn-danger resetBtn">발송취소</button>
         <button class="btn btn-secondary">인쇄</button>
         <button class="btn btn-secondary">Excel</button>
       </div>
@@ -148,6 +53,419 @@
   	   <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
   	   
       </div> <!-- 페이지 전체 컨테이너 끝. -->
+      
+      <!-- 매출전표 모달 -->
+      <!-- 매출전표 신규 등록 모달, 수정, 삭제 -->
+	<div class="modal fade" id="sModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-xl">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="modalLabel">매출 전표</h5>
+	            </div>
+	            <div class="modal-body p-0 stm">
+	
+	                <form name="purchaseForm">
+	
+	                    <!-- 전표일자 및 전표No -->
+	                    <div class="row mb-3">
+	                        <!-- 전표일자 -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text">전표일자</span>
+	                                <input type="date" class="form-control" name="s_date" id="s_date" readonly="readonly" />
+	                            </div>
+	                        </div>
+	                        <!-- 전표No -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text">전표 No.</span>
+	                                <input type="text" class="form-control" readonly="readonly" id="s_no" name="s_no" value="-" />
+	                            </div>
+	                        </div>
+	                    </div>
+	
+	                    <!-- 연결전표 및 거래처 -->
+	                    <div class="row mb-3">
+	                        <!-- 연결전표 -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text">연결전표</span>
+	                                <input
+	                                    type="text"
+	                                    class="form-control"
+	                                    placeholder="구매전표 내역보기"
+	                                    name="s_joinInput"
+	                                    id="s_joinInput"
+	                                    readonly="readonly"
+	                                />
+	                                <button class="btn btn-outline-secondary mgBtn" type="button" id="openSalesModal" disabled>
+	                                    <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+	                                </button>
+	                            </div>
+	                        </div>
+	                        <!-- 거래처 -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text">거래처</span>
+	                                <input
+	                                    type="text"
+	                                    class="form-control"
+	                                    placeholder="거래처 선택"
+	                                    name="s_clientName"
+	                                    id="s_clientInput"
+	                                    readonly="readonly"
+	                                />
+	                                <input type="text" style="display:none" id="s_clientInput2" name="s_clientCode" readonly="readonly">
+	                                <button class="btn btn-outline-secondary mgBtn" type="button" id="s_openClientModal" disabled>
+	                                    <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+	                                </button>
+	                            </div>
+	                        </div>
+	                    </div>
+	
+	                    <!-- 부가세 유형 및 세금계산서 구분 -->
+	                    <div class="row mb-3">
+	                        <!-- 부가세 유형 -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text">부가세 유형</span>
+	                                <select class="form-control form-select" name="p_vat_type" disabled>
+	                                    <option value="과세" selected="selected">과세</option>
+	                                    <option value="면세">면세</option>
+	                                    <option value="영세">영세</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                        <!-- 계정명 -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text">계정명</span>
+	                                <input
+	                                    type="text"
+	                                    class="form-control"
+	                                    placeholder="회계계정 선택"
+	                                    name="s_acctName"
+	                                    id="s_acctInput"
+	                                    readonly="readonly"
+	                                />
+	                                <input type="text" style="display:none" id="s_acctInput2" name="s_acctCode" readonly="readonly">
+	                                <button class="btn btn-outline-secondary mgBtn" type="button" id="s_openAcctModal" disabled>
+	                                    <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+	                                </button>
+	                            </div>
+	                        </div>
+	                    </div>
+	
+	                    <!-- 공급가액/부가세 -->
+	                    <div class="row mb-3">
+	                        <!-- 공급가액 -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text bcolor">공급가액</span>
+	                                <input
+	                                    type="text"
+	                                    class="form-control"
+	                                    placeholder="공급가액"
+	                                    name="s_price"
+	                                    id="s_price"
+	                                    readonly="readonly"
+	                                />
+	                            </div>
+	                        </div>
+	                        <!-- 부가세 -->
+	                        <div class="col-md-4">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text bcolor">부가세</span>
+	                                <input
+	                                    type="text"
+	                                    class="form-control"
+	                                    placeholder="부가세"
+	                                    name="s_vat"
+	                                    id="s_vat"
+	                                    readonly="readonly"
+	                                />
+	                            </div>
+	                        </div>
+	                    </div>
+	
+	                    <!-- 총 금액 -->
+	                    <div class="row mb-3">
+	                        <div class="col-md-8">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text bcolor">합계</span>
+	                                <input type="text" class="form-control" name="s_amount" id="s_amount" placeholder="합계" readonly="readonly" />
+	                            </div>
+	                        </div>
+	                    </div>
+	
+	                    <!-- 적요 -->
+	                    <div class="row mb-3">
+	                        <div class="col-md-8">
+	                            <div class="input-group input-group-sm">
+	                                <span class="input-group-text">적요</span>
+	                                <input type="text" class="form-control" name="s_summary" id="s_summary" placeholder="적요" readonly="readonly" />
+	                            </div>
+	                        </div>
+	                    </div>
+	                </form>
+	            </div>
+	            <div class="modal-footer">
+	                <div>
+	                    <button type="button" class="btn btn-success" th:onclick="|location.href='@{/sales/selectSlipView}'|">전표 관리</button>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	
+	<!-- 세금계산서 양식 모달 -->
+	<div class="modal fade" id="iModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-xl">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="modalLabel">세금계산서</h5>
+	            </div>
+	            <div class="modal-body p-0 stm">
+		           
+		            <!-- 빨간 부분(공급자용)-->
+		            <div class="invoice-form">
+		            
+		              <div class="invoice-header">
+		                <div style="color: #ff0000; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
+		                <div>승인번호</div>
+		              </div>
+		
+		              <!-- 공급자 / 공급받는 자 섹션 -->
+		              <div class="company-section">
+		              
+		                <!-- 공급자 정보 -->
+		                <div>
+		                  <div style="text-align: center; color: #ff0000; font-weight: bold">공급자</div>
+		                  <div class="info-row">
+		                    <div class="info-label">등록번호</div>
+		                    <div class="info-value">120-12-34567</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">상호(법인명)</div>
+		                    <div class="info-value">망고가 좋아하는 커피</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">성명(대표자)</div>
+		                    <div class="info-value">김동영</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">사업장주소</div>
+		                    <div class="info-value">서울특별시 성동구 왕십리로 83-21 </div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">업태</div>
+		                    <div class="info-value">제조, 유통, 서비스</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">Email</div>
+		                    <div class="info-value">abc123@mangolike.co.kr</div>
+		                  </div>
+		                </div>
+		
+		                <!-- 공급받는 자 정보 -->
+		                <div>
+		                  <div style="text-align: center; color: #ff0000; font-weight: bold">공급받는자</div>
+		                  <div class="info-row">
+		                    <div class="info-label">등록번호</div>
+		                    <div class="info-value">DB 칼럼 없음</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">상호(법인명)</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">성명(대표자)</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">사업장주소</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">업태</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">Email</div>
+		                    <div class="info-value">ben8725@ecounterp.co.kr</div>
+		                  </div>
+		                </div>
+		              </div>
+		
+		              <!-- 거래 상세 내용 테이블 -->
+		              <table class="table">
+		                <thead>
+		                  <tr>
+		                    <th>일자</th>
+		                    <th>공급가액</th>
+		                    <th>세액</th>
+		                    <th colspan="2">적요</th>
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                  <tr>
+		                    <td>2024/12/03</td>
+		                    <td class="amount-cell">5,000,000</td>
+		                    <td class="amount-cell">500,000</td>
+		                    <td colspan="2">-</td>
+		                  </tr>
+		                </tbody>
+		                <tfoot>
+		                  <tr class="total-row">
+		                  	<td>합계금액</td>
+		                    <td class="size">현금</td>
+		                    <td class="size">수표</td>
+		                    <td class="size">어음</td>
+		                    <td class="size">외상</td>
+		                  </tr>
+		                  <tr>
+		                  	<td class="amount-cell">5,500,000</td>
+		                    <td class="size"></td>
+		                    <td class="size"></td>
+		                    <td class="size"></td>
+		                    <td class="amount-cell size">5,500,000</td>
+		                  </tr>
+		                </tfoot>
+		              </table>
+		            </div> <!-- 빨간 부분 끝. -->
+		
+					 <!-- 구분선 -->
+		            <hr style="border-width: 3px 0 0 0; border-style: dotted; border-color: #b4b4b4" />
+		
+		            <!-- 파란 부분/공급받는자 용-->
+		            <div class="invoice-form blue-theme">
+		            
+		              <div class="invoice-header">
+		                <div style="color: blue; font-weight: bold">미전송전자세금계산서 (공급받는자용)</div>
+		                <div>승인번호</div>
+		              </div>
+		
+		              <!-- 공급자 / 공급받는 자 섹션 -->
+		              <div class="company-section">
+		              
+		                <!-- 공급자 정보 -->
+		                <div>
+		                  <div style="text-align: center; color: blue; font-weight: bold">공급자</div>
+		                  <div class="info-row">
+		                    <div class="info-label">등록번호</div>
+		                    <div class="info-value">120-12-34567</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">상호(법인명)</div>
+		                    <div class="info-value">망고가 좋아하는 커피</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">성명(대표자)</div>
+		                    <div class="info-value">김동영</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">사업장주소</div>
+		                    <div class="info-value">서울특별시 성동구 왕십리로 83-21 </div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">업태</div>
+		                    <div class="info-value">제조, 유통, 서비스</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">Email</div>
+		                    <div class="info-value">abc123@mangolike.co.kr</div>
+		                  </div>
+		                </div>
+		
+		                <!-- 공급받는 자 정보 -->
+		                <div>
+		                  <div style="text-align: center; color: blue; font-weight: bold">공급받는자</div>
+		                  <div class="info-row">
+		                    <div class="info-label">등록번호</div>
+		                    <div class="info-value">DB 칼럼 없음</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">상호(법인명)</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">성명(대표자)</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">사업장주소</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">업태</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                  <div class="info-row">
+		                    <div class="info-label">Email</div>
+		                    <div class="info-value">-</div>
+		                  </div>
+		                </div>
+		              </div>
+		
+		              <!-- 거래 상세 내용 테이블 -->
+		              <table class="table">
+		                <thead>
+		                  <tr>
+		                    <th>일자</th>
+		                    <th>공급가액</th>
+		                    <th>세액</th>
+		                    <th colspan="2">적요</th>
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                  <tr>
+		                    <td>2024/12/03</td>
+		                    <td class="amount-cell">5,000,000</td>
+		                    <td class="amount-cell">500,000</td>
+		                    <td colspan="2">-</td>
+		                  </tr>
+		                </tbody>
+		                <tfoot>
+		                  <tr class="total-row">
+		                  	<td>합계금액</td>
+		                    <td class="size">현금</td>
+		                    <td class="size">수표</td>
+		                    <td class="size">어음</td>
+		                    <td class="size">외상</td>
+		                  </tr>
+		                  <tr>
+		                  	<td class="amount-cell">5,500,000</td>
+		                    <td class="size"></td>
+		                    <td class="size"></td>
+		                    <td class="size"></td>
+		                    <td class="amount-cell size">5,500,000</td>
+		                  </tr>
+		                </tfoot>
+		              </table>
+		            </div>
+		          </div> <!-- 모달 본문 끝. -->
+		          
+		            <!-- 모달 푸터 -->
+		          <div class="modal-footer">
+		            <button type="button" class="btn btn-success">인쇄</button>
+		            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+		          </div>
+		          
+		        </div>
+		      </div>
+		    </div>  <!-- 세금계산서 모달 끝. -->
+           
+           <div class="modal-footer">
+               <div>
+                   <button type="button" class="btn btn-success" th:onclick="|location.href='@{/sales/selectSlipView}'|">전표 관리</button>
+                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+               </div>
+           </div>
+
+      
+      
       
       <script th:src="@{/js/account/invoice.js}"></script>
     
