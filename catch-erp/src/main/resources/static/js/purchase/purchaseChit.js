@@ -249,6 +249,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     /*============================
              판매 등록 그리드
     ==============================*/
+    async function loadWhList() {
+        let result = await fetch('/whList');
+        result = await result.json();
+        result = result.map(ele => ({text: ele.whName, value: ele.whCode}));
+        return result;
+    }
+
+    let whList = await loadWhList();
 
     let purchaseChit;
     const initSalesChitGrid = () => {
@@ -283,9 +291,24 @@ document.addEventListener("DOMContentLoaded", async function () {
                 editor: 'text',
                 className: 'border'
             }, {
+                header: '창고',
+                name: 'whCode',
+                align: "center",
+                width: 125,
+                whiteSpace: 'normal',
+                formatter: 'listItemText',
+                editor: {
+                    type: 'select',
+                    options: {
+                        listItems: whList
+                    }
+                },
+                className: 'border'
+            }, {
                 header: '수량',
                 name: 'quantity',
                 editor: 'text',
+                defaultValue : 1,
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -293,21 +316,29 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortingType: 'desc',
                 className: 'border'
             }, {
-                header: '재고수량',
-                name: 'stocksQuantity',
+                header: '총 금액',
+                name: 'totalPrice',
+                editor: 'text',
                 align: "center",
-                width: 100,
+                width: 150,
                 whiteSpace: 'normal',
-                className: 'border'
-            }, {
-                header: '부족수량',
-                name: 'deficiencyQuantity',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
+                sortable: true,
                 sortingType: 'desc',
                 className: 'border',
-                validation: {dataType: 'string'}
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '총 금액',
+                name: 'totalPriceHidden',
+                hidden: true,
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
             }, {
                 header: '단가',
                 name: 'price',
@@ -322,23 +353,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
             }, {
-                header: '출고 단가',
-                name: 'deliveryPrice',
-                editor: {
-                    type: 'text', options: {
-                        inputType: 'number', placeholder: '금액 입력',
-                    }
-                },
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                },
-            }, {
                 header: '공급가액',
                 name: 'supplyPrice',
                 editor: 'text',
@@ -351,6 +365,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                 formatter: ({value}) => {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
+            }, {
+                header: '공급가액',
+                name: 'supplyPriceHidden',
+                hidden: true,
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
             }, {
                 header: '부가세',
                 name: 'vat',
@@ -365,25 +390,203 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
             }, {
-                header: '출하 예정일',
-                name: 'deliveryDate',
-                editor: {
-                    type: 'datePicker',
-                    options: {
-                        language: 'ko', // 한국어 설정
-                    }
-                },
+                header: '부가세',
+                name: 'vatHidden',
+                editor: 'text',
+                hidden: true,
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
                 className: 'border',
-            }],
+            },],
         });
+
+        purchaseChit.on('editingFinish', (ev) => {
+
+            const columnName = ev.columnName;
+
+            if(columnName === 'quantity'){
+                let quantity = ev.value;
+
+                // 총 금액 증가
+                let inputQuantity = purchaseChit.getValue(ev.rowKey, 'totalPriceHidden')
+                console.log(inputQuantity)
+                let sumQuantity = inputQuantity * quantity;
+                purchaseChit.setValue(ev.rowKey, 'totalPrice', sumQuantity);
+
+                // 공급가액 증가
+                let inputSupplyPrice = purchaseChit.getValue(ev.rowKey, 'supplyPriceHidden')
+                let sumSupplyPrice = inputSupplyPrice * quantity;
+                purchaseChit.setValue(ev.rowKey, 'supplyPrice', sumSupplyPrice);
+
+                // 부가세 증가
+                let inputVat = purchaseChit.getValue(ev.rowKey, 'vatHidden')
+                let sumVat = inputVat * quantity;
+                purchaseChit.setValue(ev.rowKey, 'vat', sumVat)
+            }
+
+
+
+        })
+
         return purchaseChit;
     }
 
+    /*============================
+             품목 그리드
+    ==============================*/
+
+    var contractItemModal = document.getElementById('contractItem')
+
+    contractItemModal.addEventListener('show.bs.modal', function () {
+        // 모달이 표시되기 전에 실행할 코드
+        window.setTimeout(function () {
+            itemListGrid.refreshLayout();
+        }, 200)
+    })
+
+    window.setTimeout(function () {
+        fetch('/purchase/contractItem')
+            .then(result => result.json())
+            .then(data => itemListGrid.resetData(data))
+            .catch(error => console.log(error))
+    }, 200)
+
+    let itemListGrid;
+    const initItemListGrid = () => {
+
+        itemListGrid = new Grid({
+            el: document.getElementById('itemListGrid'),
+            scrollX: true,
+            scrollY: true,
+            header: {height: 40},
+            bodyHeight: 400,
+            rowHeight: 40,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                type: 'checkbox', header: `
+                      <span class="custom-input">
+                          <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+                          <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+                      </span>`, renderer: {
+                    type: gridCheckbox
+                }
+            }],
+            data: [],
+            columns: [{
+                header: '품목코드', name: 'itemCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
+            }, {
+                header: '품목명',
+                name: 'itemName',
+                align: "center",
+                width: 200,
+                whiteSpace: 'normal',
+                editor: 'text',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '재고수량',
+                name: 'stocksQuantity',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+            }, {
+                header: '총 금액',
+                name: 'totalPrice',
+                editor: 'text',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '총 금액',
+                name: 'totalPriceHidden',
+                hidden: true,
+                editor: 'text',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+            }, {
+                header: '단가',
+                name: 'price',
+                editor: 'text',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '공급가액',
+                name: 'supplyPrice',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '공급가액',
+                name: 'supplyPrice',
+                editor: 'text',
+                hidden: true,
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+            }, {
+                header: '부가세',
+                name: 'vat',
+                editor: 'text',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
+                header: '부가세',
+                name: 'vat',
+                editor: 'text',
+                hidden: true,
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+            },],
+        });
+        return itemListGrid;
+    }
+    initItemListGrid();
 
     // 그리드 추가
     let appends = document.querySelectorAll('.appendRowBtn')
@@ -426,197 +629,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 모달 관련 JavaScript
     const whSearchModal = document.getElementById('whSearchModal')
 
-    window.setTimeout(function () {
-        fetch('/whList')
-            .then(result => result.json())
-            .then(data => whGrid.resetData(data))
-            .catch(error => alert("창고 조회 실패입니다."))
-    }, 200)
-
-    //모달실행 시 grid refresh를 위한 코드
-    document.getElementById('openWhModal').addEventListener('click', function () {
-        window.setTimeout(function () {
-            whGrid.refreshLayout();
-        }, 200)
-    });
-
-    // 입고창고 불러오기
-    let whGrid;
-    const initWhGridGrid = () => {
-        whGrid = new Grid({
-            el: document.getElementById('whGrid'), scrollX: false, scrollY: true, bodyHeight: 350, rowHeaders: [{
-                type: 'rowNum', header: "No.", width: 50, className: 'border'
-            }],
-            data:[],
-            columns: [{
-                header: "창고 코드",
-                name: "whCode",
-                align: "center",
-                renderer: {
-                    type: ButtonRenderer
-                },
-            }, {
-                header: "창고명",
-                name: "whName",
-                sortingType: "asc",
-                align: "center",
-                filter: 'select',
-            }, {
-                header: "창고위치",
-                name: "whPlace",
-                sortingType: "asc",
-                align: "center",
-                filter: 'select',
-                }
-            ],
-        });
-        return whGrid;
-    }
-    initWhGridGrid();
-
-    // 입고창고 input
-    whGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
-
-        if (columnName === 'whCode') {
-            // 특정 열(columnName)의 값 가져오기
-            const columnValue = whGrid.getValue(ev.rowKey, 'whName');
-            document.getElementById('whNameInput').value = columnValue;
-        }
-    });
-
-    // 발주서 모달
-    /*============================
-       StackInquery 구매내역 모달 JS
-   ==============================*/
-    var orderModal = document.getElementById('orders')
-
-    orderModal.addEventListener('show.bs.modal', function () {
-        // 모달이 표시되기 전에 실행할 코드
-        window.setTimeout(function () {
-            ordersGrid.refreshLayout();
-        }, 200)
-    })
-
-    window.setTimeout(function () {
-        fetch('/ordersList')
-            .then(result => result.json())
-            .then(data => ordersGrid.resetData(data))
-            .catch(error => console.log(error))
-    }, 200)
-
-    let ordersGrid;
-    const initordersGrid = () => {
-        ordersGrid = new Grid({
-            el: document.getElementById('ordersGrid'),
-            scrollX: true,
-            scrollY: true,
-            header: {height: 40},
-            bodyHeight: 500,
-            width: 'auto',
-            contextMenu: null,
-            data: [],
-            rowHeaders: [{
-                type: 'checkbox', header: `
-                <span class="custom-input">
-                <input type="checkbox" id="all-checkbox-2" class="hidden-input" name="_checked" />
-                  <label for="all-checkbox-2" class="checkbox selectCheck">✔</label>
-              </span>
-            `, renderer: {
-                    type: gridCheckbox
-                }
-            }],
-            columns: [{
-                header: '발주번호', name: 'orderNo', align: "center", width: 120, whiteSpace: 'normal', className: 'border',
-            }, {
-                header: '거래처코드', name: 'clientCode', align: "center", width: 120, whiteSpace: 'normal',
-            }, {
-                header: '거래처명',
-                name: 'clientName',
-                align: "center",
-                width: 120,
-                whiteSpace: 'normal',
-                className: 'border',
-            }, {
-                header: '발주일자',
-                name: 'orderDate',
-                align: "center",
-                width: 120,
-                whiteSpace: 'normal',
-                className: 'border',
-                filter: {
-                    type: 'date', options: {
-                        format: 'yyyy.MM.dd', language: 'ko'
-                    }
-                }
-            }, {
-                header: '사원코드',
-                name: 'employeeCode',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border'
-            }, {
-                header: '사원명', name: 'name', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
-            }, {
-                header: '품목코드', name: 'itemCode', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
-            }, {
-                header: '품목명', name: 'itemName', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
-            }, {
-                header: '수량',
-                name: 'quantity',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 숫자에 콤마 추가
-                }
-            }, {
-                header: '단가',
-                name: 'price',
-                align: "center",
-                width: 200,
-                whiteSpace: 'normal',
-                editor: 'text',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                }
-            }, {
-                header: '공급가액',
-                name: 'supplyPrice',
-                align: "center",
-                width: 200,
-                whiteSpace: 'normal',
-                editor: 'text',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                }
-            }, {
-                header: '부가세',
-                name: 'vat',
-                align: "center",
-                width: 200,
-                whiteSpace: 'normal',
-                editor: 'text',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                }
-            },]
-        });
-        return ordersGrid;
-    }
-
-    // 샘플 데이터
-    initordersGrid();
+    // window.setTimeout(function () {
+    //     fetch('/whList')
+    //         .then(result => result.json())
+    //         .then(data => whGrid.resetData(data))
+    //         .catch(error => alert("창고 조회 실패입니다."))
+    // }, 200)
 
     //발주서 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
-    let orderInputBtn = document.getElementById('orderInputBtn');
-    orderInputBtn.addEventListener("click", function () {
-        let arr = ordersGrid.getCheckedRows();
+    let itemInputBtn = document.getElementById('itemInputBtn');
+    itemInputBtn.addEventListener("click", function () {
+        let arr = itemListGrid.getCheckedRows();
         let dataArr = [];
 
         //price에 넣을 데이터를 위한 fetch함수 필요
@@ -624,21 +647,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             let data = {};
             data.itemCode = ele.itemCode;
             data.itemName = ele.itemName;
+            data.totalPrice = ele.totalPrice;
             data.price = ele.price;
             data.quantity = ele.quantity;
-            data.vat = ele.vat;
-            // data.deficiencyQuantity = '디비 값 연산';
-            data.deliveryPrice = '';
-            data.deliveryDate = '';
             data.supplyPrice = ele.supplyPrice;
             data.vat = ele.vat;
+            data.totalPriceHidden = ele.totalPrice;
+            data.supplyPriceHidden = ele.supplyPrice;
+            data.vatHidden = ele.vat;
             dataArr.push(data)
         })
         let selectedCtn = arr.length;
-        let exitedRowsInPage = salesChit.getRowCount()
+        let exitedRowsInPage = purchaseChit.getRowCount()
         let checkingMaxRows = selectedCtn + exitedRowsInPage;
         if (checkingMaxRows < 16) {
-            salesChit.appendRows(dataArr);
+            purchaseChit.appendRows(dataArr);
         } else {
             alert('한 번에 15건을 처리할 수 있습니다.')
         }
@@ -693,46 +716,42 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.getElementById('saveBtn').addEventListener('click', function () {
         // 전송할 데이터
-        let insertSales = {};
+        let insertPurchase = {};
         // 마스터 정보
         // 거래처
-        insertSales.clientName = document.getElementById('inputClientName').value;
-        insertSales.clientCode = document.getElementById('inputClientCode').value;
+        insertPurchase.clientName = document.getElementById('inputClientName').value;
+        insertPurchase.clientCode = document.getElementById('inputClientCode').value;
         // 담당자
-        insertSales.employeeName = document.getElementById('empNameInput').value;
-        insertSales.employeeCode = document.getElementById('empCodeInput').value;
-        // 입금계좌
-        insertSales.depBacct = document.getElementById('accountInput').value;
-        // 매출계정
-        insertSales.acc = document.getElementById('accCodeInput').value;
+        insertPurchase.employeeName = document.getElementById('empNameInput').value;
+        insertPurchase.employeeCode = document.getElementById('empCodeInput').value;
+        // 출금계좌
+        insertPurchase.witBacct = document.getElementById('accountInput').value;
 
         // 그리드 정보
-        insertSales.saleslipHistories = salesChit.getData();
+        insertPurchase.purchaseHistories = purchaseChit.getData();
 
+        // 부가세, 공급가액 합계 계산
         let vat = 0;
         let supplyPrice = 0;
-        for (ele of insertSales.saleslipHistories) {
+        for (ele of insertPurchase.purchaseHistories) {
             vat += ele.vat;
             supplyPrice += ele.supplyPrice;
         }
-
         // 부가세, 공급가액 계산
-        insertSales.vat = vat;
-        insertSales.supplyPrice = supplyPrice;
+        insertPurchase.vat = vat;
+        insertPurchase.supplyPrice = supplyPrice;
 
         // ajax 호출 전 확인
-        console.log(insertSales);
-        console.log(JSON.stringify(insertSales));
+        console.log(insertPurchase);
+        console.log(JSON.stringify(insertPurchase));
         // ajax 호출
         fetch('/sales/insertSalesChit', {
-            method: 'POST',
-            headers: {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(insertSales),
+            }, body: JSON.stringify(insertPurchase),
         })
             .then(result => {
-                if(result.status === 200) {
+                if (result.status === 200) {
                     alert("저장 완료");
                 }
             })

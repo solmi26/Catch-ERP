@@ -1,6 +1,7 @@
 package com.cherp.app.buss.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,4 +26,6 @@ public class PurchaseChitVO {
 	private String employeeCode; // 사원 코드
 	private int vat; 			 // 부가세
 	private String slipState; 	 // 전표 발행 상태
+
+	List<PurchaseHistoryVO> purchaseHistories;
 }
