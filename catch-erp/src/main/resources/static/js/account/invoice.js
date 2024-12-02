@@ -17,26 +17,36 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     columns: [
       // 각 열의 헤더 이름, 데이터 키, 정렬 가능 여부, 정렬 방향 등을 정의
-      {
-        header: "세금계산서 번호",
-        name: "invoiceNo",
-        align: "center",
-        formatter: ({ value }) =>
-          `<a href="#" class="btn-link text-primary">${value}</a>`,
-      },
-
-      {
-        header: "작성일자",
-        name: "date",
-        sortable: true,
-        align: "center",
-      },
-      {
-        header: "국세청 전송 일자",
-        name: "taxDate",
-        sortable: true,
-        align: "center",
-      },
+	  {
+	    header: "전자세금계산서 전송 상태",
+	    name: "taxProgress",
+	    sortable: true,
+	    align: "center",
+	    formatter: ({ value }) => {
+	      // 값에 따라 다른 색상 스타일 적용
+	      let colorClass = "";
+	      if (value === "미전송") {
+	        colorClass = "r1";
+	      } else if (value === "국세청 전송 완료") {
+	        colorClass = "r3";
+	      } else {
+	        colorClass = "r2";
+	      }
+	      return `<span class="${colorClass}">${value}</span>`;
+	    },
+	  },
+	  {
+	     header: "작성일자",
+	     name: "date",
+	     sortable: true,
+	     align: "center",
+	   },
+	   {
+	     header: "국세청 전송 일자",
+	     name: "taxDate",
+	     sortable: true,
+	     align: "center",
+	   },
       {
         header: "거래처명",
         name: "clientName",
@@ -53,30 +63,33 @@ document.addEventListener("DOMContentLoaded", function () {
           return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
         },
       },
+	  {
+	    header: "부가세",
+	    name: "vat",
+	    sortable: true,
+	    align: "right",
+	    formatter: function (e) {
+	      const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	      return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	    },
+	  },
+	  {
+	    header: "합계금액",
+	    name: "amount",
+	    sortable: true,
+	    align: "right",
+	    formatter: function (e) {
+	      const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	      return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	    },
+	  },
+
       {
         header: "전표번호",
         name: "voucherNumber",
         align: "center",
         formatter: ({ value }) =>
           `<a href="#" class="btn-link text-primary">${value}</a>`,
-      },
-      {
-        header: "전자세금계산서 전송 상태",
-        name: "taxProgress",
-        sortable: true,
-        align: "center",
-        formatter: ({ value }) => {
-          // 값에 따라 다른 색상 스타일 적용
-          let colorClass = "";
-          if (value === "미전송") {
-            colorClass = "r1";
-          } else if (value === "국세청 전송 완료") {
-            colorClass = "r3";
-          } else {
-            colorClass = "r2";
-          }
-          return `<span class="${colorClass}">${value}</span>`;
-        },
       },
             
     ],
@@ -107,6 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
           clientName: ele.clientName,
           supplyAmount: ele.supplyPrice,
           taxProgress: ele.invoiceStatus,
+		  vat:ele.vat,
+		  amount:ele.totalPrice,
         }));
 
         grid.resetData(dataArr);
