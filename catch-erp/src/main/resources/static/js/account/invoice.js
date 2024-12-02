@@ -5,6 +5,18 @@
 
 let grid = null;
 document.addEventListener("DOMContentLoaded", function () {
+	
+// 매출전표 모달
+const salesModalElement = document.getElementById("sModal");
+let salesModal;
+
+// salesModal이 존재하는 경우 Modal 인스턴스 생성
+if (salesModalElement) {
+  salesModal = new bootstrap.Modal(salesModalElement);
+} else {
+  console.error("salesModal 요소가 없습니다.");
+}
+
   // 그리드 초기화
   grid = new tui.Grid({
     el: document.querySelector("#grid"), // 그리드를 표시할 DOM 요소의 id 지정
@@ -106,6 +118,59 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ],
   });
+  
+  let currentTarget = null; // 현재 클릭된 대상
+  
+  grid.on("click", (ev) => {
+    console.log("check!", ev);
+    const row = grid.getRow(ev.rowKey);
+
+    selectData = {
+      salesChitNo: row.voucherNumber, // 전표번호
+      type: "매출전표", // 전표유형
+    };
+
+    // 선택된 전표 정보 서버에서 가져오기
+    fetch(
+      `/sales/selectSlipInfo?salesChitNo=${selectData.salesChitNo}&type=${selectData.type}`
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        let data = result;
+
+        console.log("데이터 : ", result);
+
+        // 매출전표 관련 데이터 매핑
+        document.getElementById("s_date").value = result.chitDate || "2024/11/01"; // 전표일자
+        document.getElementById("s_no").value =
+          result.salesChitNo || result.purchaseChitNo; // 전표번호
+        document.getElementById("s_joinInput").value =
+          result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
+        document.getElementById("s_clientInput").value = result.clientCode || "";
+        clientCode = result.clientNo;
+        console.log("code" + clientCode);
+        document.getElementById("s_acctInput").value = result.acctName || "";
+        document.getElementById("s_price").value = result.supplyPrice
+          ? Number(result.supplyPrice).toLocaleString()
+          : "0";
+        document.getElementById("s_vat").value = result.vat
+          ? Number(result.vat).toLocaleString()
+          : "0";
+        document.getElementById("s_amount").value = result.totalPrice
+          ? Number(result.totalPrice).toLocaleString()
+          : "0";
+        document.getElementById("s_summary").value = result.summary || "";
+      })
+      .catch((err) => {
+        console.log("에러 : " + err);
+      });
+
+    if (ev.columnName === "voucherNumber") {
+      currentTarget = ev;
+      salesModal.show();
+    }
+  });
+
 
   // 데이터 로드 함수
   function loadGridData() {
