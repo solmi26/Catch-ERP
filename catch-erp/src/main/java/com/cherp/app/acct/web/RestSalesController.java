@@ -3,6 +3,7 @@ package com.cherp.app.acct.web;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,16 +31,19 @@ public class RestSalesController {
 	}
 	
 	// JSON 채권 데이터 
+	@Secured("ROLE_USER")
 	@GetMapping("api/account/receivables")
 	public List<SalesVO> receList() {
 		return salesService.receivablesList();
 	}
 	// JSON 채무 데이터
+	@Secured("ROLE_USER")
 	@GetMapping("api/account/payables")
 	public List<PayablesVO> payList() {
 		return salesService.payablesList();
 	}
 	// JSON 거래처 채무 데이터
+	@Secured("ROLE_USER")
 	@PostMapping("api/account/clientPayables")
 	@ResponseBody
 	public List<PayablesVO> clientPayablesList(@RequestBody HashMap<String, String> map) {
@@ -47,6 +51,7 @@ public class RestSalesController {
 		return salesService.ClientPayableList(map.get("clientCode"));
 	}
 	// JSON 거래처 채권 데이터
+	@Secured("ROLE_USER")
 	@PostMapping("api/account/clientReceivables")
 	@ResponseBody
 	public List<SalesVO> clientReceivablesList(@RequestBody JsonNode json) {
