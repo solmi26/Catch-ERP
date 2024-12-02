@@ -203,6 +203,7 @@
 		    		AND price < TO_NUMBER(#{maxPrice})
 		      ]]>
 		  </if>
+		  ORDER BY stocks_quantity
 		
 	</select>
 	

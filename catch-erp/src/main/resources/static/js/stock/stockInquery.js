@@ -349,7 +349,6 @@ document.addEventListener("DOMContentLoaded", function () {
 				})
 				.then(result => {
 					newImgTag.value = '';		
-					console.log(itemCode);
 					let itemCodeForImageChange = itemCode.value;
 					fetch(`/stocks/itemDetailInfo/${itemCodeForImageChange}`)
 					.then(result=> result.json())
@@ -365,6 +364,14 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		})
 		
+		//엑셀버튼 테스트중
+/*		let btnTest = document.getElementById("testBtn");
+		btnTest.addEventListener("click",function(){
+			adjustmentDetailGrid.export(".xls", { 
+				includeHeader: true, 
+				fileName : 'test'
+				});
+		})*/
 		
 		//작업해야함 아직 안했음. 모달내 탭이동 시 refresh하는거 
 	   	let modalTrigger = document.querySelectorAll(".modalTrigger")
@@ -849,12 +856,6 @@ document.addEventListener("DOMContentLoaded", function () {
     	document.querySelector(`[name="${name}"]`).value = value;
 	}
 	
-	//파일입력창 커스터마이징
-	document.getElementById('newImage').addEventListener('change', function () {
-	  const fileName = this.files[0] ? this.files[0].name : '선택된 파일 없음';
-	  document.getElementById('fileName').textContent = fileName;
-	});
-	
 	/*================================
     	StackInquery 재고조정보고서 모달 JS
     ==================================*/
@@ -880,4 +881,56 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 	//#endregion
+	
+	//#region 두번째 탭 작업
+		//차트
+	  const el = document.getElementById('statisticsChart');
+      const data = {
+        categories: ['1월', '2월', '3월', '3월', '4월', '5월', '6월', '7월', '8월', '9월' ,'10월' ,'11월' ,'12월'],
+        series: [
+          {
+            name: '입고수량',
+            data: [5000, 3000, 5000, 7000, 6000, 4000, 1000],
+          },
+          {
+            name: '출고수량',
+            data: [8000, 4000, 7000, 2000, 6000, 3000, 5000],
+          },
+          {
+            name: '재고수량',
+            data: [4000, 4000, 6000, 3000, 4000, 5000, 7000],
+          },
+          {
+            name: '총 매입',
+            data: [3000, 4000, 3000, 1000, 2000, 4000, 3000],
+          },
+          {
+            name: '총 매출',
+            data: [3000, 4000, 3000, 1000, 2000, 4000, 3000],
+          },
+        ],
+      };
+      const options = {
+        chart: { title: '월간 분석', width: 900, height: 400 },
+        xAxis: { pointOnColumn: false, title: { text: '월' } },
+        yAxis: [
+          {
+            title: 'Temperature (Celsius)',
+          },
+          {
+            title: 'Percent (%)',
+            scale: {
+              min: 0,
+              max: 100,
+            },
+          },
+        ],
+       
+      };
+
+      const chart = toastui.Chart.areaChart({ el, data, options });
+      
+      //그리드
+      
+	//#endregion 두번째 탭 작업
 }); //End Point
