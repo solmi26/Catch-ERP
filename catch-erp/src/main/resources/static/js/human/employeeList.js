@@ -224,12 +224,15 @@ saveBtn.addEventListener('click',function(){
 		EmployeeVO[ele.name] = ele.value;
 	})
 	
-	// EmployeeDetailVO 필드값 넣기
+	// EmployeeDetailVO 
 	let EmployeeDetailVO = {}
 	let detailInfo = document.querySelectorAll('.EmployeeDetailVO')
 	detailInfo.forEach(ele => {
 		EmployeeDetailVO[ele.name] = ele.value;
 	})
+	
+	
+	
 	EmployeeVO['employeeDetailVO'] = EmployeeDetailVO 
 	
 	// EmployeeSalaryVO 필드값 넣기
@@ -249,12 +252,18 @@ saveBtn.addEventListener('click',function(){
 		FixedVO[index] = ele;
 		index += 1;
 	})
-	console.log(FixedVO+' : arr')
 
 	EmployeeVO['fixedVO'] = FixedVO;
-	console.log(EmployeeVO+' : vo')
 	
-	console.log(EmployeeVO);
+	//사진첨부하기
+	let formData = new FormData();
+	let imgInput = document.querySelector('#imgInput')
+	
+	formData.append(imgInput.name, imgInput.files[0]);
+	formData.append("EmployeeVO", JSON.stringify(EmployeeVO))
+	
+	
+	
 	//만약 사용자가 신규버튼을 누른 상태라면
 	if (saveBtn.dataset.mode == 'insert') {
 		 fetch('/employees/emps', {method: 'post', 
@@ -281,7 +290,6 @@ saveBtn.addEventListener('click',function(){
 	}
 })
 //널체크폼
-
 
 //검색버튼 클릭 이벤트
 document.querySelector('.search-btn').addEventListener('click',function (ev) {
@@ -315,6 +323,29 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	
 })
 console.log('gd')
+//파일첨부버튼(미리보기 설정)
+//#region
+document.querySelector('#imgBtn').addEventListener('click',function () {
+	imgInput.click()
+})
+document.querySelector('#imgInput').addEventListener('change',function (ev) {
+	document.querySelector('.img-Text').innerText = imgInput.files[0].name
+	let img = document.querySelector('#employeePhoto')
+	if (ev.target.files.length > 0) {
+		let reader = new FileReader();
+		reader.onload = function(data) {
+			img.src = data.target.result;
+			img.width = 250;
+			img.height = 250;
+		}
+		reader.readAsDataURL(ev.target.files[0]);
+	} else {
+		img.src = "";
+	}
+})
+
+//#endregin
+
 
 //삭제버튼 클릭 이벤트
 document.querySelector('.delete-Btn').addEventListener('click',function(){
