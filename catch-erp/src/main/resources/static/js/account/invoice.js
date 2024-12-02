@@ -52,6 +52,9 @@ if (salesModalElement) {
 	     name: "date",
 	     sortable: true,
 	     align: "center",
+		 formatter: ({ value }) =>
+		     `<a href="#" class="btn-link text-primary">${value}</a>`,
+		 
 	   },
 	   {
 	     header: "국세청 전송 일자",

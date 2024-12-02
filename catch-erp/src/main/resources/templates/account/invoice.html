@@ -6,170 +6,7 @@
   <head>
     <meta charset="UTF-8" />
 	<title>전자세금계산서</title>
-
-    <style>
-    
-       h1{
-        margin-top: 20px;
-        margin-left:10px;
-        font-weight: bold;
-       }
-      /* 버튼 고정 */
-      .button-group {
-        display: flex;
-        gap: 5px; /* 버튼들 사이 간격 */
-        font-size: 18px;
-        margin-top:40px;
-        margin-bottom:20px;
-        justify-content: flex-start; /* 버튼을 오른쪽에 정렬 */
-      }
-      
-      /* 전체, 전송중, 전송완료 전체 div */
-      .status-count {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 4px;
-        margin-bottom: 1rem;
-      }
-      
- 	  /* 전체, 전송중, 전송완료 각 div */
-      .status-box {
-        text-align: center;
-        padding: 8px;
-        border-right: 1px solid #dee2e6;
-      }
-      
-	/* 전송완료 오른쪽 border X */
-      .status-box:last-child {
-        border-right: none;
-      }
-	
-	 /* 전체, 전송중, 전송완료 개수 */
-      .status-number {
-        font-size: 1.4rem;
-        font-weight: bold;
-        color: #31ce36;
-      }
-		
-	/* 전체, 전송중, 전송완료 한글 표시 */
-      .status-label {
-        font-size: 1.2rem;
-		font-weight: 600;
-      }
-      
-     .r1 {
-	  color: red;
-	 }
-	 .r2 {
-	  color: green;
-	 }
-	 .r3{
-		color: blue;
-	 }
-	 
-	 	/* 드롭다운 기본 스타일 */
-	  .dropdown-menu-custom {
-	      display: none;
-	      position: absolute;
-	      top: 100%;
-	      left: 0;
-	      background-color: #ffffff;
-	      border: 1px solid #ccc;
-	      border-radius: 4px;
-	      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-	      z-index: 1000;
-	  }
-	
-	  /* 드롭다운 항목 스타일 */
-	  .dropdown-item {
-	      padding: 10px 20px;
-	      cursor: pointer;
-	      text-align: left;
-	      border-bottom: 1px solid #f0f0f0;
-	      transition: background-color 0.2s ease, color 0.2s ease;
-	  }
-	
-	  .dropdown-item:last-child {
-	      border-bottom: none;
-	  }
-	  
-	  .save:hover {
-	      background-color: #e0f7fa;
-	  }
-	
-	  .now-save:hover {
-	      background-color: #ffebee;
-	  }
-	  
-	  	  /* 전체 컨테이너*/    
-      .content {
-        background-color: #fff;
-        padding: 1rem;
-      }
-
-	  /* 그리드 전 form 관련 높이, 글자크기 */
-      .form-control,
-      .form-select,
-      .input-group-text {
-        height: 48px;
-        font-size: 1rem !important;
-      }
-      
-	/* 그리드 전 form 제목 길이 지정 */
-      .input-group-text {
-        width: 130px;
-      }
-
-       /* 버튼 그룹 기본 설정 */
-	  .btn-group {
-	    display: flex;
-	    gap: 5px; /* 버튼 간 간격 */
-	    font-size: 18px;
-	    margin-bottom: 10px;
-	  }
-	
-	  /* 그리드 위 영역 */
-	  .grid-controls {
-	    display: flex;
-	    justify-content: flex-start; /* 양쪽 끝으로 버튼 그룹 배치 */
-	    align-items: center;
-	    margin-top:50px;
-	  }
-	  
-	  
-	  .input-group-text{
-        font-weight: bold;
-        color: #5a5c69;
-        /*background-color: #f0f4ff;*/
-	  }
-	  
-	  .btn img {
-	    width: 20px;
-	    height: 20px;
-	  }
-	  
-	  .pcolor{
-	  	background-color: #ffebee;
-	  }
-	  
-	  .bcolor{
-	  	background-color: #e0f7fa;
-	  }
-	  
-	  input:read-only{
-	  	background-color: #eee !important;
-	  }
-	  
-	  .stm{
-	  	padding-left: 20px !important;
-	  	padding-top: 20px !important;
-	  }
-	  
-	  select[readonly] {
-	  	pointer-events: none;
-	  }
-      
-    </style>
+	<link rel="stylesheet" th:href="@{/css/acct/invoice.css}" />
     
   </head>
   
@@ -372,6 +209,294 @@
 	                    </div>
 	                </form>
 	            </div>
+	            <div class="modal-footer">
+	                <div>
+	                    <button type="button" class="btn btn-success" th:onclick="|location.href='@{/sales/selectSlipView}'|">전표 관리</button>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	
+	<!-- 세금계산서 양식 모달 -->
+	<div class="modal fade" id="sModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-xl">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="modalLabel">매출 전표</h5>
+	            </div>
+	            <div class="modal-body p-0 stm">
+	            
+				<!-- 세금계산서 모달 본문 -->
+			    <div class="modal fade" id="taxInvoiceModal" tabindex="-1">
+			      <div class="modal-dialog modal-xl">
+			        <div class="modal-content">
+			        
+			        <!-- 모달 헤더 -->
+			          <div class="modal-header">
+			            <h5 class="modal-title">전자세금계산서</h5>
+			          </div>
+			          
+			          <!-- 모달 본문 -->
+			          <div class="modal-body">
+			          
+			            <!-- 빨간 부분(공급자용)-->
+			            <div class="invoice-form">
+			            
+			              <div class="invoice-header">
+			                <div style="color: #ff0000; font-weight: bold">미전송전자세금계산서 (공급자용)</div>
+			                <div>승인번호</div>
+			                <div>인증서미첨부</div>
+			              </div>
+			
+			              <!-- 공급자 / 공급받는 자 섹션 -->
+			              <div class="company-section">
+			              
+			                <!-- 공급자 정보 -->
+			                <div>
+			                  <div style="text-align: center; color: #ff0000; font-weight: bold">공급자</div>
+			                  <div class="info-row">
+			                    <div class="info-label">등록번호</div>
+			                    <div class="info-value">220-12-34567</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">상호(법인명)</div>
+			                    <div class="info-value">(주)카운팅ERP</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">성명(대표자)</div>
+			                    <div class="info-value">김신래</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">사업장주소</div>
+			                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">업태</div>
+			                    <div class="info-value">제조, 유통, 서비스</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">Email</div>
+			                    <div class="info-value">ben8725@ecounterp.co.kr</div>
+			                  </div>
+			                </div>
+			
+			                <!-- 공급받는 자 정보 -->
+			                <div>
+			                  <div style="text-align: center; color: #ff0000; font-weight: bold">공급받는자</div>
+			                  <div class="info-row">
+			                    <div class="info-label">등록번호</div>
+			                    <div class="info-value">220-81-65848</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">상호(법인명)</div>
+			                    <div class="info-value">이카운트</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">성명(대표자)</div>
+			                    <div class="info-value">김신래</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">사업장주소</div>
+			                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">업태</div>
+			                    <div class="info-value">제조, 유통, 서비스</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">Email</div>
+			                    <div class="info-value">ben8725@ecounterp.co.kr</div>
+			                  </div>
+			                </div>
+			              </div>
+			
+			              <!-- 거래 상세 내용 테이블 -->
+			              <table class="table">
+			                <thead>
+			                  <tr>
+			                    <th>년</th>
+			                    <th>월</th>
+			                    <th>일</th>
+			                    <th>품목</th>
+			                    <th>규격</th>
+			                    <th>수량</th>
+			                    <th>단가</th>
+			                    <th>공급가액</th>
+			                    <th>세액</th>
+			                    <th>비고</th>
+			                  </tr>
+			                </thead>
+			                <tbody>
+			                  <tr>
+			                    <td>2024</td>
+			                    <td>02</td>
+			                    <td>28</td>
+			                    <td>최신스마트폰</td>
+			                    <td></td>
+			                    <td class="amount-cell">8</td>
+			                    <td class="amount-cell">500,000</td>
+			                    <td class="amount-cell">4,000,000</td>
+			                    <td class="amount-cell">400,000</td>
+			                    <td></td>
+			                  </tr>
+			                </tbody>
+			                <tfoot>
+			                  <tr class="total-row">
+			                    <td colspan="3">합계금액</td>
+			                    <td colspan="2">현금</td>
+			                    <td colspan="2">수표</td>
+			                    <td colspan="2">어음</td>
+			                    <td>외상</td>
+			                  </tr>
+			                  <tr>
+			                    <td colspan="3" class="amount-cell">4,400,000</td>
+			                    <td colspan="2"></td>
+			                    <td colspan="2"></td>
+			                    <td colspan="2"></td>
+			                    <td class="amount-cell">4,400,000</td>
+			                  </tr>
+			                </tfoot>
+			              </table>
+			            </div> <!-- 빨간 부분 끝. -->
+			
+						 <!-- 구분선 -->
+			            <hr style="border-width: 3px 0 0 0; border-style: dotted; border-color: #b4b4b4" />
+			
+			            <!-- 파란 부분/공급받는자 용-->
+			            <div class="invoice-form blue-theme">
+			            
+			              <div class="invoice-header">
+			                <div style="color: blue; font-weight: bold">미전송전자세금계산서 (공급받는자용)</div>
+			                <div>승인번호</div>
+			                <div>인증서미첨부</div>
+			              </div>
+			
+			              <!-- 공급자 / 공급받는 자 섹션 -->
+			              <div class="company-section">
+			              
+			                <!-- 공급자 정보 -->
+			                <div>
+			                  <div style="text-align: center; color: blue; font-weight: bold">공급자</div>
+			                  <div class="info-row">
+			                    <div class="info-label">등록번호</div>
+			                    <div class="info-value">220-12-34567</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">상호(법인명)</div>
+			                    <div class="info-value">(주)카운팅ERP</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">성명(대표자)</div>
+			                    <div class="info-value">김신래</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">사업장주소</div>
+			                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">업태</div>
+			                    <div class="info-value">제조, 유통, 서비스</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">Email</div>
+			                    <div class="info-value">ben8725@ecounterp.co.kr</div>
+			                  </div>
+			                </div>
+			
+			                <!-- 공급받는 자 정보 -->
+			                <div>
+			                  <div style="text-align: center; color: blue; font-weight: bold">공급받는자</div>
+			                  <div class="info-row">
+			                    <div class="info-label">등록번호</div>
+			                    <div class="info-value">220-81-65848</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">상호(법인명)</div>
+			                    <div class="info-value">이카운트</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">성명(대표자)</div>
+			                    <div class="info-value">김신래</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">사업장주소</div>
+			                    <div class="info-value">서울특별시 강남구 고덕비즈밸리로6길</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">업태</div>
+			                    <div class="info-value">제조, 유통, 서비스</div>
+			                  </div>
+			                  <div class="info-row">
+			                    <div class="info-label">Email</div>
+			                    <div class="info-value">ben8725@ecounterp.co.kr</div>
+			                  </div>
+			                </div>
+			              </div>
+			
+			              <!-- 거래 상세 내용 테이블 -->
+			              <table class="table">
+			                <thead>
+			                  <tr>
+			                    <th>년</th>
+			                    <th>월</th>
+			                    <th>일</th>
+			                    <th>품목</th>
+			                    <th>규격</th>
+			                    <th>수량</th>
+			                    <th>단가</th>
+			                    <th>공급가액</th>
+			                    <th>세액</th>
+			                    <th>비고</th>
+			                  </tr>
+			                </thead>
+			                <tbody>
+			                  <tr>
+			                    <td>2024</td>
+			                    <td>02</td>
+			                    <td>28</td>
+			                    <td>최신스마트폰</td>
+			                    <td></td>
+			                    <td class="amount-cell">8</td>
+			                    <td class="amount-cell">500,000</td>
+			                    <td class="amount-cell">4,000,000</td>
+			                    <td class="amount-cell">400,000</td>
+			                    <td></td>
+			                  </tr>
+			                </tbody>
+			                <tfoot>
+			                  <tr class="total-row">
+			                    <td colspan="3">합계금액</td>
+			                    <td colspan="2">현금</td>
+			                    <td colspan="2">수표</td>
+			                    <td colspan="2">어음</td>
+			                    <td>외상</td>
+			                  </tr>
+			                  <tr>
+			                    <td colspan="3" class="amount-cell">4,400,000</td>
+			                    <td colspan="2"></td>
+			                    <td colspan="2"></td>
+			                    <td colspan="2"></td>
+			                    <td class="amount-cell">4,400,000</td>
+			                  </tr>
+			                </tfoot>
+			              </table>
+			            </div>
+			          </div> <!-- 모달 본문 끝. -->
+			          
+			            <!-- 모달 푸터 -->
+			          <div class="modal-footer">
+			            <button type="button" class="btn btn-success">인쇄</button>
+			            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+			          </div>
+			          
+			        </div>
+			      </div>
+			    </div>  <!-- 세금계산서 모달 끝. -->
+	            
+	             </div>
 	            <div class="modal-footer">
 	                <div>
 	                    <button type="button" class="btn btn-success" th:onclick="|location.href='@{/sales/selectSlipView}'|">전표 관리</button>
