@@ -263,7 +263,7 @@
 	<!-- 판매전표 전표 상태 변경 -->
 	<update id="updateSalesSlipState">
 		UPDATE  sales_chit
-		SET slip_state = 'r2'
+		SET slip_state = #{state}
 		WHERE saleslip_no = #{saleslipNo}
 	</update>
 	
@@ -353,6 +353,19 @@
 	<delete id="deletePurchase">
 		DELETE FROM purchase
 		WHERE purchase_chit_no = #{purchaseChitNo}
+	</delete>
+	
+	<!-- 채권 삭제 -->
+	<delete id="deleteReceivable">
+		DELETE 
+        FROM receivables_log
+        WHERE sales_chit_no = #{salesChitNo}
+	</delete>
+	
+	<delete id="deleteInvoice">
+	    DELETE
+	    FROM invoice
+        WHERE invoice_no = #{invoiceNo}
 	</delete>
 	
 	<!-- 매출전표 수정 -->
