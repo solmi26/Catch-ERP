@@ -23,13 +23,13 @@ public class SalesServiceImpl implements SalesService{
 		this.salesMapper = salesMapper;
 	}
 	
-	// 매출 전표 전체 조회
+	// 매출 전표 전체 조회 // by sm
 	@Override
 	public List<SalesVO> salesList() {
 		return salesMapper.selectAllSalesList();
 	}
 	
-	// 매입전표 전체 조회
+	// 매입전표 전체 조회 // by sm
 	@Override
 	public List<PayablesVO> payablesList() {
 		return salesMapper.payablesList();
@@ -40,13 +40,13 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.receivablesList();
 	}
 	
-	// 전자세금계산서 전체 조회
+	// 전자세금계산서 전체 조회 // by sm
 	@Override
 	public List<SalesVO> invoiceList() {
 		return salesMapper.invoiceList();
 	}
 	
-	// 매출, 매입전표 전체 조회
+	// 매출, 매입전표 전체 조회 // by sm
 	@Override
 	public List<SalesVO> selectAllSlip() {
 		return salesMapper.selectAllSlip();
@@ -101,7 +101,7 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.selectAcctList(debitSide);
 	}
 	
-	// 매출, 매입 전표 삭제
+	// 매출, 매입 전표 삭제 // by sm
 	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
 	public void deleteSlip(List<SalesVO> salesVO) {
@@ -131,12 +131,25 @@ public class SalesServiceImpl implements SalesService{
 		
 	}
 	
-	@Override
+	// 매출전표 수정 // by sm
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
+	@Override 
 	public int updateSales(SalesVO salesVO) {
 		return salesMapper.updateSales(salesVO);
 	}
 	
-	// 매입, 매출전표 상세 조회
+	// 매출전표 수정 // by sm
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
+	@Override 
+	public void updateSalesDI(List<SalesVO> salesVO) {
+		// 기존 전표 삭제
+		deleteSlip(salesVO);
+		
+		// 전표 재등록
+		insertSale(salesVO.get(0));	
+	}
+	
+	// 매입, 매출전표 상세 조회 // by sm
 	@Override
 	public SalesVO slipInfo(SalesVO salesVO) {
 		if(salesVO.getType().equals("매출전표")) {
