@@ -10,6 +10,7 @@ import com.cherp.app.empl.mapper.RegisterMapper;
 import com.cherp.app.empl.service.RegisterService;
 import com.cherp.app.empl.vo.AttItemVO;
 import com.cherp.app.empl.vo.DepartmentVO;
+import com.cherp.app.empl.vo.FixedVO;
 @Service
 public class RegisterServiceImpl implements RegisterService {
 	
@@ -75,4 +76,9 @@ public class RegisterServiceImpl implements RegisterService {
 		return mapper.deleteAttItem(attItem);
 	}
 
+	
+	@Override
+	public List<FixedVO> allowanceItemList() {
+		return mapper.selectAllowanceItemList();
+	}
 }

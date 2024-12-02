@@ -33,7 +33,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return employeemapper.insertEmployee(employee);
 	}
 	@Override
-	public List<CommonCodeVO> commonCodeList(CommonCodeVO commonCode) {
+	public List<CommonCodeVO> commonCodeList(String[] commonCode) {
 		return employeemapper.selectCommonCodeList(commonCode);
+	}
+	@Override
+	public int employeeUpdate(EmployeeVO employee) {
+		return employeemapper.updateEmployee(employee);
 	}
 }

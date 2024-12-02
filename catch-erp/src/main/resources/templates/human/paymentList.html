@@ -322,51 +322,104 @@
 	          },
 	          {
 	            header: '기본급',
-	            name: 'monthlySalary'
+	            name: 'monthlySalary',
+            	formatter: function (e) {
+                    const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+                    return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+                  },
 	          },
 	          {
 	        	header:'연장수당',
-	        	name:'overtimeAllowance'
+	        	name:'overtimeAllowance',
+	            formatter: function (e) {
+	  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
+	        	
 	          },
 	          {
 		        header:'야간수당',
-		        name:'nightAllowance'
+		        name:'nightAllowance',
+                formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		  		    },
 		      },
 	          {
 	            header: '주말근무수당',
-	            name: 'weekendAllowance'
+	            name: 'weekendAllowance',
+	            formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '지급총액',
-		        name: 'paymentTotal'
+		        name: 'paymentTotal',
+	            formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+ 		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '소득세',
-		        name: 'incomeTax'
+		        name: 'incomeTax',
+	            formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '지방세',
-		        name: 'localTax'
+		        name: 'localTax',
+	            formatter: function (e) {
+  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '국민연금',
-		        name: 'nationalInsurance'
+		        name: 'nationalInsurance',
+		        formatter: function (e) {
+		  		const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '건강보험료',
-		        name: 'healthInsurance'
+		        name: 'healthInsurance',
+	            formatter: function (e) {
+	  		     const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		     return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		      },
+
 	          },
 		      {
 		        header: '고용보험료',
-		        name: 'employmentInsurance'
+		        name: 'employmentInsurance',
+	            formatter: function (e) {
+	  		    const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		     return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		    },
+		        
 	          },
 		      {
 		        header: '공제금액',
-		        name: 'deductionsTotal'
+		        name: 'deductionsTotal',
+	            formatter: function (e) {
+	  		     const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		     return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		    },
+		        
 	          },
 		      {
 		        header: '실지급액',
-		        name: 'realPay'
+		        name: 'realPay',
+		        formatter: function (e) {
+		  		const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
+		        
 	          }
 	        ],
 	    	data:[[${list}]]

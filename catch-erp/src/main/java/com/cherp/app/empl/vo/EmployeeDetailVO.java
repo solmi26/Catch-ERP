@@ -22,6 +22,8 @@ public class EmployeeDetailVO {
 	private String employeeImage; //사진명
 	private String bank; //은행
 
+	//조인으로 추가될 컬럼
+	private String bankName;
 	
 	
 	

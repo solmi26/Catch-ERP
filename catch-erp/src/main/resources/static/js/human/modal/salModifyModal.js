@@ -80,6 +80,10 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
 	          },
 	          {
 	        	header:'연장수당',
@@ -90,6 +94,11 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+                
 	          },
 	          {
 		        header:'야간수당',
@@ -100,6 +109,11 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+                
 		      },
 	          {
 	            header: '주말근무수당',
@@ -110,6 +124,10 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
 	          }]
 	 let columnBack =
 	          [
@@ -120,7 +138,13 @@ function remodelSalModifyGrid(data) {
 			  },
 			  {
 		        header: '지급총액',
-		        name: 'paymentTotal'
+		        name: 'paymentTotal',
+                formatter: function (e) {
+					console.log(e)
+		          const value = e.value !== undefined || e.value !== null || Number(e.value) === NaN ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+		        
 	          },
 		      {
 		        header: '소득세',
@@ -131,6 +155,11 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null && Number(e.value) === NaN? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+                
 	          },
 		      {
 		        header: '지방세',
@@ -141,6 +170,11 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+                
 	          },
 		      {
 		        header: '국민연금',
@@ -151,6 +185,11 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+                
 	          },
 		      {
 		        header: '건강보험료',
@@ -161,6 +200,10 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },                
 	          },
 		      {
 		        header: '고용보험료',
@@ -171,6 +214,11 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                  formatter: function (e) {
+    		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+
 	          },
 	          {
 				header:'유급휴가비',
@@ -181,20 +229,39 @@ function remodelSalModifyGrid(data) {
                     min: 1,
                     max: 99999999
                 },
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+                
 	          },
 		      {
 		        header: '공제금액',
-		        name: 'deductionsTotal'
+		        name: 'deductionsTotal',
+                  formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+
 	          },
+	          
 		      {
 		        header: '실지급액',
-		        name: 'realPay'
+		        name: 'realPay',
+                formatter: function (e) {
+		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		        },
+		        
 	          }]
 	 let columnMiddle = []
 	 for (let i in data.allowanceHistoryVO) {
 		let obj = {}
 		obj.header = data.allowanceHistoryVO[i].allowanceName
 		obj.name = data.allowanceHistoryVO[i].awhiNo
+		obj.formatter = function (e) {
+		                const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		                return Number(value).toLocaleString() + "원"; }// 숫자로 변환 후 포맷팅
 		columnMiddle[i] = obj
 		
 	 }
