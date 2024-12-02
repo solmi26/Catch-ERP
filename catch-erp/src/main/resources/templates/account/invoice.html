@@ -66,6 +66,40 @@
 	 .r3{
 		color: blue;
 	 }
+	 
+	 	/* 드롭다운 기본 스타일 */
+	  .dropdown-menu-custom {
+	      display: none;
+	      position: absolute;
+	      top: 100%;
+	      left: 0;
+	      background-color: #ffffff;
+	      border: 1px solid #ccc;
+	      border-radius: 4px;
+	      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	      z-index: 1000;
+	  }
+	
+	  /* 드롭다운 항목 스타일 */
+	  .dropdown-item {
+	      padding: 10px 20px;
+	      cursor: pointer;
+	      text-align: left;
+	      border-bottom: 1px solid #f0f0f0;
+	      transition: background-color 0.2s ease, color 0.2s ease;
+	  }
+	
+	  .dropdown-item:last-child {
+	      border-bottom: none;
+	  }
+	  
+	  .save:hover {
+	      background-color: #e0f7fa;
+	  }
+	
+	  .now-save:hover {
+	      background-color: #ffebee;
+	  }
       
     </style>
     
@@ -95,7 +129,15 @@
 
       <!-- 버튼들이 고정된 위치에 나타나도록 합니다.(오른쪽 상단) -->
       <div class="button-group">
-        <button class="btn btn-success">전송</button>
+
+	  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+	    전송
+	  </button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+	    <li><a class="dropdown-item save">일반 전송</a></li>
+	    <li><a class="dropdown-item now-save">국세청 즉시 전송</a></li>
+	  </ul>
+
         <button class="btn btn-danger">발송취소</button>
         <button class="btn btn-secondary">인쇄</button>
         <button class="btn btn-secondary">Excel</button>
