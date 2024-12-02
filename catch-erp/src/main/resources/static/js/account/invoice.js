@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
           supplyAmount: ele.supplyPrice,
           taxProgress: ele.invoiceStatus,
 		  vat:ele.vat,
-		  amount:ele.totalPrice,
+		  amount:ele.totalPrice
         }));
 
         grid.resetData(dataArr);
@@ -292,6 +292,66 @@ document.addEventListener("DOMContentLoaded", function () {
    })
    
   })
+  
+  	// 발송 취소 버튼 선택
+    document.querySelector(".resetBtn").addEventListener("click", function(){
+  	console.log("발송 취소 버튼 선택")
+  	
+  	let selectedRows = grid.getCheckedRows(); // 체크된 데이터
+  	console.log("선택된 데이터 : " , selectedRows);
+  	
+  	if (selectedRows.length === 0) {
+          alert("전송할 데이터를 선택하세요.");
+     		return;
+        }
+        
+     // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
+     const noSendRows = selectedRows.filter(
+  	(row) => row.taxProgress === "미전송" || row.taxProgress === "국세청 전송 완료"
+     )
+     
+     const sendRows = selectedRows.filter(
+  	(row) => row.taxProgress === "전송중" 
+     );
+     
+     if(noSendRows.length > 0){
+  	alert("이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다.")
+  	return;
+     }
+     
+     // 발송 취소할 데이터
+     let nowSendData = sendRows.map((row) => ({
+  		invoiceNo: row.invoiceNo,
+    	saleslipNo : row.voucherNumber,
+    	type:"reset"
+     }))
+     
+     // 서버로 업데이트 요청
+     fetch("/sales/updateInvoice", {
+  	method:"PUT",
+  	 headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(nowSendData),
+     })
+     .then((response) => {
+  	if(!response.ok){
+  		throw new Errow("발송 취소 요청에 실패했습니다.")
+  	}return response.text();
+     })
+     .then((result) => {
+  	console.log("발송 취소 결과 : " , result);
+  	alert("발송취소가 완료되었습니다.")
+  	
+  	// 전송시 그리드 재로드
+  	loadGridData();
+     })
+     .catch((error) =>  {
+  	console.log("발송 취소 요청 중 오류 발생 : ", error);
+  	alert("발송 취소 중 오류가 발생했습니다.")
+     })
+     
+    })
   
   
 
