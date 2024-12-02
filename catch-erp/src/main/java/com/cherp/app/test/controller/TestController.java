@@ -20,8 +20,8 @@ public class TestController {
 		//return "account/purchaseSlip";
 		//return "account/salesSlip";
 		// return "account/statement";
-	    return "account/modal/salesSlipModal";
-		//return "account/modal/invoicePrintModal";
+	    //return "account/modal/salesSlipModal";
+		return "account/modal/invoicePrintModal";
 		//return "account/modal/slipPrintModal";
 	}
 	// NKW TEST
