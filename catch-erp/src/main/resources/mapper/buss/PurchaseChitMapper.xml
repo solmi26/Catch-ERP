@@ -5,18 +5,102 @@
 	<!-- 구매전표 전표 상태별 조회 -->
 	<select id="selectPurchaseChitState" resultType="com.cherp.app.buss.vo.PurchaseChitVO">
 		SELECT purcslip_no
-            , insert_date
-            , client_code
+            ,insert_date
+            ,client_code
             ,client_name
-            , wit_bacct
+            ,wit_bacct
             ,supply_price
             ,vat
             ,pur_summary
-            , employee_name
-            , employee_code
+            ,employee_name
+            ,employee_code
             ,find_code(slip_state) as slip_state
 		FROM purchase_chit
 		WHERE slip_state = #{slipState}
 	</select>
+
+    <!-- 계약품목리스트 조회-->
+    <select id="selectContractItem" resultType="com.cherp.app.stck.vo.ContractItemVO">
+        SELECT item_name,
+               price,
+               stocks_quantity,
+               supply_price,
+               vat,
+               con_no,
+               item_code,
+               total_price,
+               image,
+               total_price as total_price_hidden,
+               supply_price as supply_price_hidden,
+               vat as vat_hidden
+        FROM contract_item
+    </select>
+
+    <!-- 수량에 맞게 가격 변화 -->
+    <select id="selectContractQuantity" resultType="com.cherp.app.stck.vo.ContractItemVO">
+        SELECT item_name,
+        price * #{quantity} as price,
+        stocks_quantity * #{quantity} as stocks_quantity,
+        supply_price * #{quantity} as supply_price,
+        vat * #{quantity} as vat,
+        con_no,
+        item_code,
+        total_price * #{quantity} as total_price,
+        image
+        FROM contract_item
+    </select>
+
+    <!-- 구매전표 등록 -->
+    <insert id="insertPurchase" parameterType="com.cherp.app.buss.vo.PurchaseChitVO">
+        <selectKey keyProperty="purcslipNo" resultType="String" order="BEFORE">
+            SELECT domain('purcslip_no') FROM DUAL
+        </selectKey>
+        INSERT
+        INTO purchase_chit (
+            purcslip_no,
+            insert_date,
+            client_code,
+            client_name,
+            wit_bacct,
+            employee_name,
+            employee_code
+        )
+        VALUES (
+            #{purcslipNo},
+            sysdate,
+            #{clientCode},
+            #{clientName},
+            #{witBacct},
+            #{employeeName},
+            #{employeeCode}
+        )
+    </insert>
+
+    <!-- 구매내역 등록 -->
+    <insert id="insertPurchaseHistory" parameterType="com.cherp.app.buss.vo.SaleslipHistoryVO">
+        INSERT
+        INTO purchase_history (
+             pur_no,
+             purcslip_no,
+             wh_code,
+             wh_name,
+             item_code,
+             item_name,
+             quantity,
+             restocking_price,
+             restocking_date
+        )
+        VALUES (
+        DOMAIN('pur_no'),
+        #{purcslipNo},
+        #{whCode},
+        #{wh_name},
+        #{itemCode},
+        #{itemName},
+        #{quantity},
+        #{price},
+        sysdate + 5
+        )
+    </insert>
 	
 </mapper>

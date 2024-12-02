@@ -160,7 +160,7 @@ public class RestStockAdjustController {
 		}
 		return map;
 	}
-	
+
 	@GetMapping("/itemAdjust/{whCode}/{date}")
 	public List<StocksVO> getAllAdjustList(@PathVariable("whCode") String whCode, @PathVariable("date") String date){
 		return stockAdjustService.getAllAdjustList(whCode, date);

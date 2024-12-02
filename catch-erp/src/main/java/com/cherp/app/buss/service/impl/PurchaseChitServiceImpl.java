@@ -2,6 +2,7 @@ package com.cherp.app.buss.service.impl;
 
 import java.util.List;
 
+import com.cherp.app.stck.vo.ContractItemVO;
 import org.springframework.stereotype.Service;
 
 import com.cherp.app.buss.mapper.PurchaseChitMapper;
@@ -22,5 +23,20 @@ public class PurchaseChitServiceImpl implements PurchaseChitService {
     public List<PurchaseChitVO> selectPurchaseChitState(String slipState) {
     	return purchaseChitMapper.selectPurchaseChitState(slipState);
     }
-    
+
+    // 구매전표 등록을 위한 품목리스트 조회
+    @Override
+    public List<ContractItemVO> selectContractItem() {
+        return purchaseChitMapper.selectContractItem();
+    }
+
+    // 수량에 맞게 가격 변화
+    @Override
+    public ContractItemVO purchaseQuantity(int quantity) {
+        return purchaseChitMapper.selectContractQuantity(quantity);
+    }
+
+
+
+
 }
