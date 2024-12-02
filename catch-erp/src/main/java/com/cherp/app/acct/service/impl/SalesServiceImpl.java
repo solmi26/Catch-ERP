@@ -73,7 +73,7 @@ public class SalesServiceImpl implements SalesService{
 	    salesMapper.updateSalesInvoiceNo(salesVO);
 	    
 	    // 판매전표 전표 발행 상태 변경
-	    salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
+	    salesMapper.updateSalesSlipState(salesVO.getSaleslipNo(), "r2");
 	        
 	}
 	
@@ -102,10 +102,28 @@ public class SalesServiceImpl implements SalesService{
 	}
 	
 	// 매출, 매입 전표 삭제
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
 	public void deleteSlip(List<SalesVO> salesVO) {
 		salesVO.forEach((data) -> {if(data.getType().equals("매출전표")) {
+			SalesVO result = salesMapper.selectSales(data.getSalesChitNo());
+			String clientCode = result.getClientNo();
+			Integer totalPrice = -1 * (result.getTotalPrice());
+			String invoiceNo = result.getInvoiceNo();
+			String saleSlipNo = result.getSaleslipNo();
+			
+			// 매출전표 삭제
 			salesMapper.deleteSales(data.getSalesChitNo());
+			// 채권 삭제
+			salesMapper.deleteReceivable(data.getSalesChitNo());
+			// 거래처 총 잔액 수정
+			System.out.println(data.getTotalPrice());
+			salesMapper.updateClientBalancek(clientCode, totalPrice);
+			// 세금계산서 삭제
+			salesMapper.deleteInvoice(invoiceNo);
+		    // 판매전표 전표 발행 상태 변경
+		    salesMapper.updateSalesSlipState(saleSlipNo, "r1");
+			
 		}else {
 			salesMapper.deletePurchase(data.getSalesChitNo());
 		}
@@ -187,8 +205,8 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public int deleteReceivable(int logId) {
-		return 0;
+	public int deleteReceivable(String no) {
+		return salesMapper.deleteReceivable(no);
 	}
 
 	@Override

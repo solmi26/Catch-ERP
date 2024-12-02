@@ -285,6 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let deleteData = deletableRows.map((row) => ({
         salesChitNo: row.voucherNumber,
         type: row.transactionType,
+        
       }));
 
       // 서버로 삭제 요청
