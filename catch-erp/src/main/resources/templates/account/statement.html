@@ -156,7 +156,7 @@
 		<!-- 버튼 그룹 -->
 		<div class="button-group mt-3 position-relative">
 			<!-- 신규등록 버튼 드롭다운 기능 -->
-		    <button type="button" class="btn btn-success btn" id="new">신규 등록</button>
+		    <button type="button" class="btn btn-success btn dropdown-toggle" id="new">신규 등록</button>
 		    <div id="dropdownMenu" class="dropdown-menu-custom">
 		        <button class="dropdown-item sales-item" th:onclick="|location.href='@{/sales/insertSales}'|">매출전표 등록</button>
 		        <button class="dropdown-item purchase-item" th:onclick="|location.href='@{/sales/insertPurchase}'|">매입전표 등록</button>

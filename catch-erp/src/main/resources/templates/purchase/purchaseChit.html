@@ -49,14 +49,15 @@
                                     id="humanInqueryModal"></button>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">입고창고</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control">
-                            <button type="button" class="bi bi-search border px-4 btn btn-success"
-                                    data-bs-toggle="modal" data-bs-target="#whSearchModal"></button>
-                        </div>
-                    </div>
+<!--                    <div class="col-md-6">-->
+<!--                        <label class="form-label">입고창고</label>-->
+<!--                        <div class="input-group">-->
+<!--                            <input type="text" class="form-control" id="whNameInput" name="whName">-->
+<!--                            <input type="hidden" class="form-control" id="whCodeInput" name="whCode">-->
+<!--                            <button type="button" class="bi bi-search border px-4 btn btn-success"-->
+<!--                                    data-bs-toggle="modal" data-bs-target="#whSearchModal" id="openWhModal"></button>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="col-md-6">
                         <label class="form-label">출금계좌</label>
                         <div class="input-group">
@@ -76,19 +77,19 @@
 </div>
 
 <!-- Transaction History Select -->
-<div class="btn-group dropdown">
-    <button class="btn btn-primary dropdown-toggle btn btn-success" type="button" data-bs-toggle="dropdown"
-            style="margin:10px 0px">
-        거래내역보기(구매)
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li>
-            <a class="dropdown-item" href="">구매내역</a>
-            <a class="dropdown-item" href="">판매내역</a>
-        </li>
-    </ul>
-</div>
-<button class="btn btn-success px-4" type="button" style="margin:10px 0px">
+<!--<div class="btn-group dropdown">-->
+<!--    <button class="btn btn-primary dropdown-toggle btn btn-success" type="button" data-bs-toggle="dropdown"-->
+<!--            style="margin:10px 0px">-->
+<!--        거래내역보기(구매)-->
+<!--    </button>-->
+<!--    <ul class="dropdown-menu" role="menu">-->
+<!--        <li>-->
+<!--            <a class="dropdown-item" href="">구매내역</a>-->
+<!--            <a class="dropdown-item" href="">판매내역</a>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
+<button class="btn btn-success px-4" id="contractItemModal" type="button" data-bs-toggle="modal" data-bs-target="#contractItem" style="margin:10px 0px">
     품목
 </button>
 <button class="btn btn-success px-5" type="button" style="margin:10px 0px">
@@ -169,29 +170,36 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #aacb73;">
-                <h5 class="modal-title">창고검색</h5>
+                <h5 class="modal-title">창고</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <table class="table table-hover" id="accountTable">
-                <thead>
-                <tr>
-                    <th>창고코드</th>
-                    <th>창고명</th>
-                    <th>구분</th>
-                    <th>창고위치</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>00001</td>
-                    <td>본사창고</td>
-                    <td>본사</td>
-                    <td>대구광역시 중구 OOO</td>
-                </tr>
-                </tbody>
-            </table>
             <div class="modal-body">
-                <div id=""></div> <!-- modal tabulator 사용 -->
+                <div id="whGrid"></div> <!-- modal tabulator 사용 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 품목 모달 -->
+<div class="modal fade" id="contractItem" tabindex="-1" aria-labelledby="modalLabel">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">품목리스트</h5>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-left mb-3">
+                    <div>
+                        <button class="btn btn-success">엑셀양식 다운로드</button>
+                    </div>
+                </div>
+                <div id="itemListGrid"></div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="itemInputBtn" data-bs-dismiss="modal">선택</button>
+                </div>
             </div>
         </div>
     </div>
