@@ -3,6 +3,7 @@ package com.cherp.app.buss.mapper;
 import java.util.List;
 
 import com.cherp.app.buss.vo.PurchaseChitVO;
+import com.cherp.app.buss.vo.PurchaseHistoryVO;
 import com.cherp.app.buss.vo.SalesChitVO;
 import com.cherp.app.buss.vo.SaleslipHistoryVO;
 import com.cherp.app.stck.vo.ContractItemVO;
@@ -20,9 +21,16 @@ public interface PurchaseChitMapper {
 	public ContractItemVO selectContractQuantity(@Param("quantity")
 												 int quantity);
 
-	// 판매전표 등록
-	public int insertPurchase(SalesChitVO salesChitVO);
+	// 구매전표 등록
+	public int insertPurchase(PurchaseChitVO purchaseChitVO);
 
-	// 판매내역 등록
-	public int insertPurchaseHistory(SaleslipHistoryVO saleslipHistoryVO);
+	// 구매내역 등록
+	public int insertPurchaseHistory(PurchaseHistoryVO purchaseHistoryVO);
+
+	// 구매전표 전체 조회
+	public List<PurchaseChitVO> selectPurchaseChit();
+
+	// 구매전표별 구매내역 보기
+	public List<PurchaseHistoryVO> selectPurchaseHistory(PurchaseHistoryVO purchaseHistoryVO,
+														 @Param("purcslipNo") String purcslipNo);
 }

@@ -21,10 +21,10 @@ public class SalesChitServiceImpl implements SalesChitService {
 
     // 판매 전표, 판매 내역 추가
     @Override
-    public void salesChitInsert(SalesChitVO salesChitVO) {
+    public int salesChitInsert(SalesChitVO salesChitVO) {
 
         //판매 전표 등록
-        salesChitMapper.insertSalesChit(salesChitVO);
+        int result = salesChitMapper.insertSalesChit(salesChitVO);
 
         for (int i = 0; i < salesChitVO.getSaleslipHistories().size(); i++) {
             // SaleslipHistoryVO 객체 가져오기
@@ -33,7 +33,7 @@ public class SalesChitServiceImpl implements SalesChitService {
             history.setSaleslipNo(salesChitVO.getSaleslipNo());
             salesChitMapper.insertSaleslipHistory(history);
         }
-
+        return result;
     }
 
     // 판매 내역 전체 조회

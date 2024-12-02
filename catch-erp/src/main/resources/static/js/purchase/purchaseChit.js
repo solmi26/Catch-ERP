@@ -252,6 +252,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function loadWhList() {
         let result = await fetch('/whList');
         result = await result.json();
+        // 리스트 항목을 whName과 whCode로 구성
         result = result.map(ele => ({text: ele.whName, value: ele.whCode}));
         return result;
     }
@@ -744,8 +745,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         // ajax 호출 전 확인
         console.log(insertPurchase);
         console.log(JSON.stringify(insertPurchase));
+
         // ajax 호출
-        fetch('/sales/insertSalesChit', {
+        fetch('/purchase/insertPurchaseChit', {
             method: 'POST', headers: {
                 'Content-Type': 'application/json',
             }, body: JSON.stringify(insertPurchase),
@@ -755,8 +757,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     alert("저장 완료");
                 }
             })
-            .then(result => {
-                console.log("판매전표 에러 : ", res.message)
+            .then(error => {
+                console.log("판매전표 에러 : ", error)
             })
 
     })

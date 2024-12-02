@@ -29,6 +29,12 @@ public class BussController {
         model.addAttribute("client", list);
         return "purchase/purchaseChit";
     }
+
+    // 구매 조회 페이지
+    @GetMapping("purchase/purchaseHistory")
+    public String purchaseHistory(){
+        return "purchase/purchaseHistory";
+    }
     
     // 판매 페이지
     @GetMapping("/sales/salesChit")

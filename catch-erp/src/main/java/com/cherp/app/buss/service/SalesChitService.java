@@ -7,8 +7,9 @@ import com.cherp.app.buss.vo.SaleslipHistoryVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface SalesChitService {
+
     // 판매전표 추가
-    public void salesChitInsert(SalesChitVO salesChitVO);
+    public int salesChitInsert(SalesChitVO salesChitVO);
     
     // 판매전표 전체 조회
     public List<SalesChitVO> selectSalesChit();

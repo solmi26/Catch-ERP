@@ -25,6 +25,10 @@ public class PurchaseHistoryVO {
 	private Date restockingDate;  // 입고 예정일
 	private String purcslipNo;    // 구매전표 번호
 	private int incompleteQuantity; // 미완료 수량
+
+	// 두개 수량 나누기 하면 될듯?
+	private int supplyPrice; // 공급가액
+	private int vat; // 부가세
 	
 	/* 구매전표 [purchase_chit] 컬럼*/
 	private String clientCode; 	  // 거래처 코드

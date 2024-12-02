@@ -3,6 +3,7 @@ package com.cherp.app.buss.web;
 import java.util.List;
 
 import com.cherp.app.buss.vo.SaleslipHistoryVO;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,13 @@ public class SalesChitController {
     @GetMapping("sales/selectSalesChit")
 	public List<SalesChitVO> selectSalesShit(){
 		return salesChitService.selectSalesChit();
+	}
+
+	// 판매전표 등록
+	@PostMapping("sales/insertSalesChit")
+	public String insertSalesChit(SalesChitVO salesChitVO) {
+		int rowInsert = salesChitService.salesChitInsert(salesChitVO);
+		return "sales/salesChit";
 	}
 
 	// 판매전표 검색 조회

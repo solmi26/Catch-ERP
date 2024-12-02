@@ -8,13 +8,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>판매 조회</title>
+    <title>구매 조회</title>
 </head>
 
 <body>
 <!-- Header -->
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>판매 조회</h4>
+    <h4>구매 조회</h4>
 </div>
 
 <!-- Form -->
@@ -24,7 +24,7 @@
             <div class="col-md-12">
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <label class="form-label">발주일자</label>
+                        <label class="form-label">구매일자</label>
                         <div class="input-group">
                             <input type="date" class="form-control" name="insertDate">
                         </div>
@@ -63,23 +63,23 @@
 
 <!-- Table -->
 <div id="wrap">
-    <div id="salesChit"> <!--gird html이 들어가는 div태그-->
+    <div id="purchaseChit"> <!--gird html이 들어가는 div태그-->
     </div>
 </div>
 
 <!-- 판매목록 전표 모달 -->
-<div class="modal fade" id="saleslipHistoryModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="purchaseHistoryModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">판매목록</h5>
+                <h5 class="modal-title">구매목록</h5>
             </div>
             <div class="modal-body p-0">
-                <div id="saleslipHistory">
+                <div id="purchaseHistory">
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
-                <p><small>※판매내역을 확인하세요.</small></p>
+                <p><small>※구매내역을 확인하세요</small></p>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
@@ -87,6 +87,6 @@
 </div>
 <!-- Bottom Button -->
 
-<script th:src="@{/js/sales/salesSlip.js}"></script>
+<script th:src="@{/js/purchase/purchaseHistory.js}"></script>
 </body>
 </html>
