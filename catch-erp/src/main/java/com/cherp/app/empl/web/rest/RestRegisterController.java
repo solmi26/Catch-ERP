@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cherp.app.empl.service.RegisterService;
 import com.cherp.app.empl.vo.AttItemVO;
 import com.cherp.app.empl.vo.DepartmentVO;
+import com.cherp.app.empl.vo.FixedVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +46,7 @@ public class RestRegisterController {
 		return service.departmentInfo(department);
 	}
 	//부서 단건수정
-	@PutMapping("employees/dept/")
+	@PutMapping("employees/dept")
 	public int departmentUpdate (@RequestBody DepartmentVO department) {
 		return service.departmentUpdate(department);	
 	}
@@ -92,4 +93,11 @@ public class RestRegisterController {
 		return service.attItemDelete(attItem);
 	}
 	
+	
+	
+	//수당항목 조회
+	@GetMapping("/employees/allItem")
+	public List<FixedVO> allowanceItemList () {
+		return service.allowanceItemList();
+	}
 }

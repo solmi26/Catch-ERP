@@ -1,7 +1,7 @@
 /**
  * 
  */
-
+let currentTarget = null;
 //#region 그리드클릭이벤트
 datoToGrid ()
 //그리드 클릭 이벤트
@@ -17,6 +17,32 @@ datoToGrid ()
 	}
  })
 //#endregion 그리드클릭이벤트
+
+//수정모달 그리드 이벤트
+//#region
+atModifyGrid.on('click',function(ev){
+	if (ev.columnName == 'attName') {
+		currentTarget = ev;
+		dataToatItemGrid()
+		window.setTimeout(function(){
+        atItemGrid.refreshLayout();
+        }, 200)
+		atItemModal.show()
+	}
+})
+//#endregion
+//근태항목 그리드 클릭이벤트
+atItemGrid.on('click',function (ev) {
+	console.log(ev)
+	if(ev.targetType == 'cell') {
+		let attCode = atItemGrid.getFormattedValue(ev.rowKey,'attCode')
+		let attName = atItemGrid.getFormattedValue(ev.rowKey,'attName')
+		atModifyGrid.setValue(currentTarget.rowKey,'attCode',attCode)
+		atModifyGrid.setValue(currentTarget.rowKey,'attName',attName)
+		atItemModal.hide()
+		
+	}	
+})
 
 //#region 수정모달 저장 버튼 클릭 함수
 document.querySelector('.save-Btn').addEventListener('click',function () {
@@ -88,7 +114,12 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 })
 //#endregion
 
-
+//신규버튼클릭시 이벤튼
+//#region
+document.querySelector('.new-Btn').addEventListener('click',function(){
+	location.href='/employees/attendanceinput'
+})
+//#endregion
 
 
 //#region 메인그리드 데이터 로드 함수

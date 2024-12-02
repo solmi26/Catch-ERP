@@ -47,7 +47,7 @@ class gridNumber {
       const { grid, rowKey } = props;
 	
       const label = document.createElement('label');
-      label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
+      label.className = `checkbox tui-grid-row-header-checkbox selectCheck countCheck-${grid.el.id}`;
       label.setAttribute('for', 'selectCheck'+grid.el.id+String(rowKey));
       label.innerText = `${grid.getIndexOfRow(rowKey)+1}`;
       const hiddenInput = document.createElement('input');

@@ -132,6 +132,7 @@
 		        ed.depositor,
 		        ed.employee_image,
 		        ed.bank,
+		        cc.common_name,
                 es.monthly_salary,
                 fx.fixed_no,
                 fx.allowance_price,
@@ -145,7 +146,7 @@
         JOIN    employees_salary es        ON      em.employee_code = es.employee_code
         JOIN    fixed fx        ON      em.employee_code = fx.employee_code
         JOIN    allowance_item ai        ON      fx.allowance_code = ai.allowance_code
-        
+        JOIN    common_code cc          ON ed.bank = cc.code_rule
 		WHERE   em.employee_code = #{employeeCode}
 		
 	</select>
@@ -179,17 +180,52 @@
 							)
 	</insert>
 	
-	<!-- 인사정보 삽입 -->
+	<!-- 인사정보 수정 -->
+	<update id="updateEmployee" statementType="CALLABLE" >
+		CALL employee_update (
+		                      #{employeeCode}
+							, #{name} 
+							, #{hireDate}
+							, #{password} 
+							, #{employeePosition} 
+							, #{statusType} 
+							, #{resignationDate} 
+							, #{hireType} 
+							, #{departmentCode} 
+							, #{employeeDetailVO.engName}
+							, #{employeeDetailVO.identityNo}
+							, #{employeeDetailVO.headCheck}
+							, #{employeeDetailVO.duty}
+							, #{employeeDetailVO.tel}
+							, #{employeeDetailVO.phone}
+							, #{employeeDetailVO.email}
+							, #{employeeDetailVO.empStatus}
+							, #{employeeDetailVO.zipcode}
+							, #{employeeDetailVO.address}
+							, #{employeeDetailVO.detailAddress}
+							, #{employeeDetailVO.bacct} 
+							, #{employeeDetailVO.depositor}
+							, #{employeeDetailVO.employeeImage}
+							, #{employeeDetailVO.bank}
+							, #{employeeSalaryVO.monthlySalary}
+							, #{fixedVO, mode=IN, typeHandler=com.cherp.app.empl.vo.EmployeeArrayStructHandler} 
+                        		)
 	
+	</update>
 	
 	
 	<!-- 셀렉트박스 정보 불러오기 -->
 	
-	<!--  직책 불러오기 -->
-	<select id="selectCommonCodeList" parameterType="com.cherp.app.common.vo.CommonCodeVO">
+	<!-- 공통코드 불러오기 -->
+	<select id="selectCommonCodeList" parameterType="java.util.ArrayList">
 	    SELECT code_rule,
-               common_name
+               common_name,
+               common_code
         FROM common_code
-        WHERE common_code = #{commonCode}
+        WHERE common_code IN
+        <foreach collection="array" item="commonCode" open="(" separator="," close=")">
+			#{commonCode}
+		</foreach>
+
 	</select>
 </mapper>
