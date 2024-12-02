@@ -152,7 +152,6 @@
 	  }
 	  
 	  .stm{
-	  	padding-left: 20px !important;
 	  	padding-top: 20px !important;
 	  }
 	  
@@ -168,13 +167,13 @@
  	.invoice-form {
         border: 1px solid #ff0000;
         margin: 1rem;
-        padding: 0.5rem;
+        padding: 1rem;
       }
 
       .invoice-header {
         border: 1px solid #ff0000;
         color: #ff0000;
-        padding: 0.5rem;
+        padding: 1rem;
         margin-bottom: 1rem;
         display: grid;
         grid-template-columns: 2fr 1fr 1fr;
@@ -204,7 +203,7 @@
         gap: 2rem;
         margin-bottom: 1rem;
         border: 1px solid #ff0000; /* 기본 테두리는 빨간색 */
-        padding: 0.5rem;
+        padding: 1rem;
       }
 
       .company-info {
@@ -246,7 +245,7 @@
       .table th,
       .table td {
         border: 1px solid #ff0000;
-        padding: 0.5rem;
+        padding: 1rem !important;
         text-align: center;
       }
 
@@ -262,7 +261,7 @@
       /* 파란색 테마 부분 */
       .invoice-form.blue-theme {
         border: 1px solid blue;
-        padding: 0.5rem;
+        padding: 1rem;
       }
 
       .invoice-form.blue-theme .invoice-header {
@@ -291,7 +290,7 @@
       .invoice-form.blue-theme .table th,
       .invoice-form.blue-theme .table td {
         border: 1px solid blue !important;
-        padding: 0.5rem !important;
+        padding: 1rem !important;
         text-align: center !important;
       }
 
@@ -315,3 +314,7 @@
         padding: 0.25rem;
       }
       /* 파란색 테마 부분 끝. */
+      
+      .size{
+      	width: 20%;
+      }

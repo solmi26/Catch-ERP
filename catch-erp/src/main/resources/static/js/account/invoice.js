@@ -8,13 +8,22 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 // 매출전표 모달
 const salesModalElement = document.getElementById("sModal");
-let salesModal;
+// 세금계산서 모달
+const invoiceModalElement = document.getElementById("iModal");
+let salesModal, invoiceModal;
 
 // salesModal이 존재하는 경우 Modal 인스턴스 생성
 if (salesModalElement) {
   salesModal = new bootstrap.Modal(salesModalElement);
 } else {
   console.error("salesModal 요소가 없습니다.");
+}
+
+// invoiceModal이 존재하는 경우 Modal 인스턴스 생성
+if (invoiceModalElement) {
+  invoiceModal= new bootstrap.Modal(invoiceModalElement);
+} else {
+  console.error("invoiceModal 요소가 없습니다.");
 }
 
   // 그리드 초기화
@@ -172,6 +181,11 @@ if (salesModalElement) {
       currentTarget = ev;
       salesModal.show();
     }
+	
+	if(ev.columnName === "date"){
+		currentTarget = ev;
+		invoiceModal.show();
+	}
   });
 
 
