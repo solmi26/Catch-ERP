@@ -78,6 +78,14 @@ public class SalesController {
 		return "수정성공";
 	}
 	
+	// 매출전표 수정 기능(삭제 후 추가) by sm
+	@PutMapping("sales/updateSalesDI")
+	@ResponseBody
+	public String updateSalesDI(@RequestBody List<SalesVO> salesVO) {
+		salesService.updateSalesDI(salesVO);
+		return "수정 성공(DI)";
+	}
+	
 	// 매입, 매출전표 상세조회(기능) by sm
 	@GetMapping("sales/selectSlipInfo")
 	@ResponseBody

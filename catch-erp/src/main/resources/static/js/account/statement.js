@@ -356,7 +356,100 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 	
+	// 수정 버튼 클릭 시 수정(삭제 후 재삽입)
+	for (let updateBtn of document.querySelectorAll(".updateBtn")) {
+	  updateBtn.addEventListener("click", function (event) {
+	    const { salesChitNo, type } = selectData;
+	    console.log(salesChitNo, type);
+	
+	    // name은 alert 창에 띄울 내용, ele는 html 요소
+	    const requiredFields = [
+	      { name: "전표일자", element: document.querySelector("input[name='s_date']") },
+	      { name: "거래처", element: document.querySelector("input[name='s_clientName']") },
+	      { name: "계정명", element: document.querySelector("input[name='s_acctName']") },
+	      { name: "공급가액", element: document.querySelector("input[name='s_price']") },
+	      { name: "부가세", element: document.querySelector("input[name='s_vat']") },
+	      { name: "합계", element: document.querySelector("input[name='s_amount']") },
+	    ];
+	
+	    let isAllow = true;
+	    let noValueFields = [];
+	
+	    // 입력되었는지 확인
+	    requiredFields.forEach((field) => {
+	      console.log(field.element.value);
+	      if (!field.element.value.trim()) {
+	        isAllow = false;
+	        noValueFields.push(field.name);
+	      }
+	    });
+	
+	    // 경고창 표시
+	    if (!isAllow) {
+	      // 버튼 기본 동작 중단
+	      event.preventDefault();
+	      // 비활성화
+	      alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+	      return;
+	    }
+	
+	    // 저장 로직
+	    const chitDate = document.querySelector("input[name='s_date']").value; // 전표일자
+	    const client = document.querySelector("input[name='s_clientCode']").value; // 거래처 코드
+	    const acct = document.querySelector("input[name='s_acctName']").value; // 계정명
+	    const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
+	    const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
+	    const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
+	    const writer = "오세훈"; // 작성자
+	    const balance = amount; // 채권 잔액
+	    const summary = document.querySelector("input[name='s_summary']").value; // 적요
+	    const saleslip = document.querySelector("input[name='s_joinInput']").value; // 판매전표 번호
+	
+		// 전송할 데이터	
+	    const updateData = [{
+	      salesChitNo: salesChitNo,
+	      type: type,
+	      chitDate: chitDate,
+	      clientCode: client,
+	      acctName: acct,
+	      supplyPrice: price,
+	      vat: vat,
+	      totalPrice: amount,
+	      writer: writer,
+	      recBalance: balance,
+	      summary: summary,
+	      saleslipNo: saleslip,
+	    }];
+	    
+	    	   // AJAX 요청
+		fetch("/sales/updateSalesDI", {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(updateData),
+		})
+			.then((response) => response.text())
+			.then((data) => {
+				console.log(data);
+				alert("수정이 완료되었습니다.");
+				salesModal.hide();
+				
+			// 수정 시 그리드 다시 로드
+			loadGridData();
+			})
+			.catch((error) => {
+				console.error("Error: ", error);
+				alert("서버와 연결에 실패했습니다.");
+			});
+	  });
+	  
+	}
+
+	
+	
 	// 수정 버튼 클릭 시 수정
+	/** 
 	for(let updateBtn of document.querySelectorAll(".updateBtn")){
 			updateBtn.addEventListener("click", function (event){
 				const {salesChitNo, type} = selectData;
@@ -444,6 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					});
 			});
 		}
+		*/
 
 
   // "신규 등록" 버튼 클릭 시 드롭다운 메뉴 표시/숨기기
@@ -502,8 +596,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
 			deleteBtn.disabled = true;
 		}
-		for(let saveBtn of document.querySelectorAll(".saveBtn")){
-			saveBtn.disabled = true;
+		for(let updateBtn of document.querySelectorAll(".updateBtn")){
+			updateBtn.disabled = true;
 		}
 		for(let mgBtn of document.querySelectorAll(".mgBtn")) {
 			mgBtn.disabled = true;
@@ -515,8 +609,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
 			deleteBtn.disabled = false;
 		}
-		for(let saveBtn of document.querySelectorAll(".saveBtn")){
-			saveBtn.disabled = false;
+		for(let updateBtn of document.querySelectorAll(".updateBtn")){
+			updateBtn.disabled = false;
 		}
 		for(let mgBtn of document.querySelectorAll(".mgBtn")) {
 			mgBtn.disabled = false;
