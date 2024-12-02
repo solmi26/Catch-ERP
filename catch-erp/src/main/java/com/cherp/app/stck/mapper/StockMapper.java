@@ -30,5 +30,8 @@ public interface StockMapper {
 	public ContractItemVO selectItemQuantityByWh(@Param("itemCode") String itemCode, 
 			@Param("whCode") String whCode); //창고별 특정 품목의 현재수량 조회
 	
-	public List<StocksVO> selectAllAdjustList(String whCode, String date); //창고,제품별 재고이력조회
+	public List<StocksVO> selectAllAdjustList(@Param("itemCode") String itemCode, 
+			@Param("whCode") String whCode, @Param("date") String date); //창고 및 년도별 제품의 재고조정이력조회
+	public List<StocksVO> selectAdjustLogList(String stocksAdjustNo); //재고조정번호에 맞는 재고조정내역 조회		
+
 }

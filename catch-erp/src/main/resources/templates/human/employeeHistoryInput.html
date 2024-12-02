@@ -90,7 +90,7 @@
 								<button class="btn btn-primary btn-sm">Excel</button>
 							</div>
 							<div class="col-auto">
-								<button class="btn btn-primary btn-sm">저장</button>
+								<button class="btn btn-primary btn-sm insert-Btn">저장</button>
 							</div>
 						</div>
 					</div>
@@ -290,7 +290,7 @@
     columns: [
         {
         header: '기준일자',
-        name: 'name',
+        name: 'standardDate',
 
         editor: {
         	type:gridDate,
@@ -354,9 +354,7 @@
     showDummyRows: true
     });
 
-    instance.resetData(newData); // Call API of instance's public method
 
-    Grid.applyTheme('striped'); // Call API of static method
 	
 
 	</script>

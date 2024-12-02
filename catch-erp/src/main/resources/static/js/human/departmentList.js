@@ -5,7 +5,6 @@
 
 
 
-
 //기본변수선언
 let currentTarget = null;
 //모달선언
@@ -53,6 +52,31 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 	})
 		
 })
+//부서장 클릭시
+document.querySelectorAll('[name="name"]').forEach(ele => {
+ele.addEventListener('click',function (ev) {
+	currentTarget = ev;
+	window.setTimeout(function(){
+		empGrid.refreshLayout();
+		}, 200) 
+	dataToEmpModal ()
+	empModal.show()
+	})
+})
+//사원검색모달 이벤트
+empGrid.on('click',function (ev) {
+	console.log()
+	if(ev.targetType == 'cell') {
+		
+		let managerCode = empGrid.getFormattedValue(ev.rowKey,'employeeCode')
+		let name = empGrid.getFormattedValue(ev.rowKey,'name')
+		currentTarget.target.value = name;
+		currentTarget.target.nextElementSibling.value = managerCode;
+		
+	}
+})
+
+
 
 //삭제버튼 클릭 이벤트
 document.querySelector('.del-Btn').addEventListener('click',function () {
@@ -150,7 +174,10 @@ async function selectDataLoad(departmentCode) {
 			console.log(data)
 			for (ele in data) {
 				console.log(ele)
-			document.querySelector("#deptModifyModal").querySelector(`[name="${ele}"]`).value = data[ele]
+				let input = document.querySelector("#deptModifyModal").querySelector(`[name="${ele}"]`)
+			    if (input != null) {
+					document.querySelector("#deptModifyModal").querySelector(`[name="${ele}"]`).value = data[ele]
+				}
 			}
 				
 			})

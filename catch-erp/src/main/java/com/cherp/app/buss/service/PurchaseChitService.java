@@ -9,7 +9,7 @@ import com.cherp.app.stck.vo.ContractItemVO;
 
 public interface PurchaseChitService {
     
-    // 구매전표 전표 발행 상태별 조회
+    // 구매전표 전표 발행 상태별 조회 by sm
     public List<PurchaseChitVO> selectPurchaseChitState(String slipState);
 
     // 구매전표 작성을 위해 품목리스트 조회

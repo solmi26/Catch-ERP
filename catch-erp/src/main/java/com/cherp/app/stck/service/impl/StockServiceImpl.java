@@ -109,21 +109,30 @@ public class StockServiceImpl implements StockService{
 	public List<ContractItemVO> getItemInfoList(ItemSearchVO itemSearchVO) {	
 		return stockMapper.selectAllSearchItemList(itemSearchVO);
 	}
+	//제품정보 상세조회
 	@Override
 	public ContractItemVO getItemDetailInfo(String itemCode) {
 		return stockMapper.selectItemDetail(itemCode);
 	}
+	//제품 이미지 수정
 	@Override
 	public void modifyItemImage(String image, String itemCode) {
 		stockMapper.updateItemImage(image, itemCode);		
 	}
+	//창고별 특정 품목의 현재수량 조회
 	@Override
 	public ContractItemVO getItemQuantityByWh(String itemCode, String whCode) {
 		return stockMapper.selectItemQuantityByWh(itemCode, whCode);
 	}
+	//창고, 제품별 재고조정이력 조회
 	@Override
-	public List<StocksVO> getAllAdjustList(String whCode, String date) {
-		return stockMapper.selectAllAdjustList(whCode, date);
+	public List<StocksVO> getAllAdjustList(String itemCode, String whCode, String date) {
+		return stockMapper.selectAllAdjustList(itemCode, whCode, date);
+	}
+	// 재고조정번호에 따른 재고조정이력 조회
+	@Override
+	public List<StocksVO> getAdjustLogList(String stocksAdjustNo) {
+		return stockMapper.selectAdjustLogList(stocksAdjustNo);
 	}
 
 

@@ -13,5 +13,6 @@ public interface EmployeeMapper {
 	public List<EmployeeVO> selectAllEmployeeList(EmployeeSearchDto search); //인사정보 다건조회
 	public EmployeeVO seleectEmployee(EmployeeVO employee); //인사정보 단건조회
 	public int insertEmployee(EmployeeVO employee); //인사정보 입력
-	public List<CommonCodeVO> selectCommonCodeList(CommonCodeVO commonCode); //공통코드 단건조회 
+	public int updateEmployee(EmployeeVO employee); //인사정보 수정
+	public List<CommonCodeVO> selectCommonCodeList(String[] commonCode); //공통코드 단건조회 
 }

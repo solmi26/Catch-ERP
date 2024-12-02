@@ -47,7 +47,7 @@ public interface SalesMapper {
 	public int updatePurchase(PayablesVO payablesVO); // 매입전표 수정
 	public int updatePayable(PayablesVO payablesVO); // 채무거래 단건 수정
 	public int updateReceivable(SalesVO salesVO);	 // 채권거래 단건 수정
-	public int updateInvoice(SalesVO salesVO);		 // 세금 계산서 수정
+	public int updateInvoice(@Param("invoiceNo")String invoiceNo, @Param("state")String state); // 세금 계산서 수정
 	// 거래처 채권 총 잔액 변경
 	public int updateClientBalancek(@Param("clientCode") String clientCode, @Param("balancek") int balancek);
 	// 거래처 채무 총 잔액 변경

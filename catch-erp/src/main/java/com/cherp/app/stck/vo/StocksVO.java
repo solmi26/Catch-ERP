@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class StocksVO {
 	private Long realNo;		 	  // 입출고 번호 (PK)
-	private int stocksStocks;		  // 재고 증감
+	private int stocksStocks;		  // 재고 증감 (증가혹은 감소된 수량)
 	private String updateReason;	  // 재고변동 사유
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -22,9 +22,11 @@ public class StocksVO {
 	private String itemCode;		  // 품목 코드
 	private String logNo;			  // 내역 번호(구매내역, 판매내역)
 	private int stocksQuantity;		  // 재고 수량(조정전의 수량을 의미
-	private int stocksAdjustNo; 	  // 재고 조정 번호 (동시에 처리되는 재고조정건수들은 같은 재고조정번호를 가짐.)
+	private Long stocksAdjustNo; 	  // 재고 조정 번호 (동시에 처리되는 재고조정건수들은 같은 재고조정번호를 가짐.)
 	
 	/* 재고조정내역 불러올 때 필요 */
 	private String slipNo; // 전표번호
-	
+	private String itemName; //품목 명
+	private String employeeName; //조정사원명
+	private String whName; //창고명
 }

@@ -73,7 +73,7 @@
 		        ,ct.CON_EDATE
 		        ,ct.CON_DATE
 		        ,ct.TOTAL_AMOUNT
-		        ,ct.STATUS
+		        ,find_code(ct.STATUS) AS statusDetail
 		        ,ct.URL
 		        ,ct.WRITER
 		FROM    CONTRACT ct JOIN CLIENT c 

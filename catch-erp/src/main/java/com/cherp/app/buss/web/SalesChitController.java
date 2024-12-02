@@ -23,7 +23,7 @@ public class SalesChitController {
         this.salesChitService = salesChitService;
     }
     
-    // 판매전표 전체 조회
+    // 판매전표 전체 조회 by sm
 	@ResponseBody
     @GetMapping("sales/selectSalesChit")
 	public List<SalesChitVO> selectSalesShit(){
@@ -52,7 +52,7 @@ public class SalesChitController {
 		return salesChitService.selectSelectSaleslip(saleslipHistoryVO, saleslipNo);
 	}
 	
-	// 매출전표 전표상태별 조회
+	// 판매전표 전표상태별 조회 by sm
 	@ResponseBody
     @GetMapping("sales/selectSalesChitState")
 	public List<SalesChitVO> selectSalesChitState(@RequestParam("state") String state){

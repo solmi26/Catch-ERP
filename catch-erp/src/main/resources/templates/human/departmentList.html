@@ -88,7 +88,8 @@
                                          <label for="inputPassword6" class="col-form-label">부서장</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input" name="managerCode" aria-describedby="passwordHelpInline">
+                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input" name="name" aria-describedby="passwordHelpInline" >
+                                         <input type="hidden" id="inputPassword6" class="form-control form-control-sm insert-input" name="managerCode"  aria-describedby="passwordHelpInline" >
                                        </div>
                                    </div> 
                                    </div>
@@ -149,7 +150,8 @@
                                          <label for="inputPassword6" class="col-form-label">부서장</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" name="managerCode" aria-describedby="passwordHelpInline" >
+                                         <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" name="name" aria-describedby="passwordHelpInline" >
+                                         <input type="hidden" id="inputPassword6" class="form-control form-control-sm modify-input" name="managerCode"  aria-describedby="passwordHelpInline" >
                                        </div>
                                    </div> 
 
@@ -168,6 +170,53 @@
     </div>
     
  <!-- 부서수정모달끝!!! -->
+ 
+ <!-- 사원검색모달!!!!! -->		
+	    <div class="modal fade" id="empModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">사원검색</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>사원검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col input-group">
+                                            <span class="input-group-text p-0" style="min-width: 110px;">
+                                                <select class="form-select input-group-text "style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                    <option selected>성명</option>
+                                                    <option value="1">사원번호</option>
+                                                    <option value="2">부서명</option>
+                                                </select>                                          
+                                            </span>
+                                            <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                            <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="empGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 사원검색모달끝 -->
+ 
 	<script>
 	    var gridData = [{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'},{name:'hh'}]
 		const Grid = tui.Grid;
@@ -202,8 +251,13 @@
 			      name: 'departmentName'
 			    },
 			    {
-			      header: '부서장',
-			      name: 'managerCode'
+			      header: '부서장코드',
+			      name: 'managerCode',
+			      hidden:true
+			    },
+			    {
+			     header:'부서장',
+			     name:'name'
 			    }
 			  ],
 			  data: [
@@ -216,6 +270,7 @@
 		      
 			Grid.applyTheme('striped'); // Call API of static method
 	</script>
+	<script th:src="@{/js/human/modal/employeeListModal.js}"></script>
 	<script th:src="@{/js/human/departmentList.js}"></script>
 </body>
 </body>

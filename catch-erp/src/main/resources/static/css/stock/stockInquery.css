@@ -122,7 +122,147 @@
 	.form-select {
 		padding: 3px 7px;
 	}
+/* 	@media (min-width: 1100px) {
+		.detailModal{
+			width: 2000px;
+		}
+	} */
+	
+	.r1 {
+		 color: red;
+		 
+		}
+		
+	.r2 {
+	  	 color: blue;
+	  	 
+	}
+	
+	/* 재고감소는 파랑색 */	
+	  .decrease {
+	    background-color: #e0f7fa !important; /* 밝은 파랑색 */
+	  }
+	
+	/* 재고증가는 빨간색 */	
+	  .increase {
+	    background-color: #ffebee !important; /* 밝은 빨강색 */
+	  }
     
+    /* 파일첨부 input 커스터마이징 */ 
+         .inputbox {
+		  position: relative;
+		}
+		
+		#newImage {
+		  display: inline-block;
+		  width: 0;
+		  height: 0;
+		  opacity: 0;
+		}
+		
+		.inputbox label {
+		  margin-bottom: 0; /* Align with text */
+		}
+		
+		.inputbox span {
+		  font-size: 0.875rem;
+		  color: #6c757d;
+		  white-space: nowrap;
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		  max-width: 250px; /* Adjust based on your layout */
+		}
+		
+		#custum:hover{
+			background-color : #cad0e7;
+		}
+	
+	/*===========================
+    	StackInquery 재고조정 보고서 모달 CSS
+    ==============================*/
+    	.modal-header {
+            background-color: #AACB73;
+            color: #FFFFE8;
+        }
+        .report-form {
+            border: 2px solid #000;
+            margin: 1rem;
+            background: white;
+        }
+        .report-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 2rem 0;
+            letter-spacing: 0.5em;
+        }
+        .table-container {
+            max-height: 610px;
+            overflow-y: auto;
+        }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .report-table th,
+        .report-table td {
+            border: 1.5px solid #000;
+            padding: 4px;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            height: 30px;
+        }
+        .report-table thead th {
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            border-bottom: 2px solid #000;
+        }
+        .col-serial { width: 80px; }
+        .col-name { width: 200px; }
+        .col-type { width: 60px; }
+        .col-amount { width: 100px; }
+        .col-price { width: 120px; }
+        .col-reason { width: 200px; }
+        
+        .signature-section {
+            border-top: 2px solid #000;
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .signature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .signature-box {
+            text-align: left;
+        }
+        .signature-title {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .signature-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .signature-fields {
+            line-height: 2;
+            font-size: 12px;
+        }
+        .seal-space {
+            width: 60px;
+            height: 60px;
+            border: 1.5px solid #000;
+            margin-left: 10px;
+        }
+        .table-row-height {
+            height: 40px;
+        }
     
     
     
