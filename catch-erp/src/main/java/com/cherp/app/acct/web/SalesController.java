@@ -194,6 +194,7 @@ public class SalesController {
 		}
 		return message;
 	}
+	// 채권 감소 컨트롤러
 	@PostMapping("account/insertReceivableBalance")
 	@ResponseBody
 	public String insertReceivableBalance(@RequestBody JsonNode receiables) {
