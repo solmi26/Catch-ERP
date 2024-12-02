@@ -106,7 +106,6 @@
         ON a.saleslip_no = b.saleslip_no
         WHERE 1 = 1
         <if test="insertDate != null">
-
             AND a.insert_date >=  #{insertDate} AND a.insert_date <![CDATA[ < ]]> #{insertDate} + 1
         </if>
         <if test="deliveryDate != null">

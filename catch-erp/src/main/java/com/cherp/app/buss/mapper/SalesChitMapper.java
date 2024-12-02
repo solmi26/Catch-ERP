@@ -14,6 +14,9 @@ public interface SalesChitMapper {
 	// 판매내역 등록
 	public int insertSaleslipHistory(SaleslipHistoryVO SaleslipHistoryVO);
 
+	// 판매전표 전체 조회
+	public List<SalesChitVO> selectSalesChit();
+
 	// 판매전표별 판매내역 보기
 	public List<SaleslipHistoryVO> selectSaleslip(SaleslipHistoryVO saleslipHistoryVO,
 												  @Param("saleslipNo") String saleslipNo);
