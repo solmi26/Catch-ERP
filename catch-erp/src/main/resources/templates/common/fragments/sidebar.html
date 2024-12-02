@@ -44,6 +44,12 @@
                   <p>마이페이지</p>
                 </a>
               </li>
+              <li>
+                <form action="/logout" method="POST">
+                  <p>로그아웃</p>
+                  <button type="submit" class="btn btn-success">Logout</button>
+                </form>
+              </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
                   <i class="fa fa-ellipsis-h"></i>
@@ -365,12 +371,12 @@
                   <p>기초등록</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                  <i class="icon-film"></i>
-                  <p>전자세금계산서</p>
-                </a>
-              </li>
+			<li class="nav-item">
+			  <a href="/sales/invoiceListView">
+			    <i class="icon-film"></i>
+			    <p>전자세금계산서</p>
+			  </a>
+			</li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">
                   <i class="icon-briefcase"></i>
@@ -380,12 +386,12 @@
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="#">
+                      <a href="/sales/insertContractView">
                         <span class="sub-item">매입 계약 등록</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <a href="/sales/contractView">
                         <span class="sub-item">매입 계약 관리</span>
                       </a>
                     </li>
@@ -401,13 +407,18 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="#">
+                      <a href="/sales/insertSales">
                         <span class="sub-item">매출 전표</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <a href="/sales/insertPurchase">
                         <span class="sub-item">매입 전표</span>
+                      </a>
+                    </li>
+                     <li>
+                      <a href="/sales/selectSlipView">
+                        <span class="sub-item">전표관리</span>
                       </a>
                     </li>
                   </ul>

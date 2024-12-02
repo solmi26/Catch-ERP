@@ -47,13 +47,13 @@ public interface SalesMapper {
 	public int updatePurchase(PayablesVO payablesVO); // 매입전표 수정
 	public int updatePayable(PayablesVO payablesVO); // 채무거래 단건 수정
 	public int updateReceivable(SalesVO salesVO);	 // 채권거래 단건 수정
-	public int updateInvoice(SalesVO salesVO);		 // 세금 계산서 수정
+	public int updateInvoice(@Param("invoiceNo")String invoiceNo, @Param("state")String state); // 세금 계산서 수정
 	// 거래처 채권 총 잔액 변경
 	public int updateClientBalancek(@Param("clientCode") String clientCode, @Param("balancek") int balancek);
 	// 거래처 채무 총 잔액 변경
     public int updateClientBalancem(@Param("clientCode") String clientCode, @Param("balancem") int balancem);
 	// 판매전표 전표 상태 변경
-    public int updateSalesSlipState(String saleslipNo);
+    public int updateSalesSlipState(@Param("saleslipNo")String saleslipNo, @Param("state")String state);
 	// 구매전표 전표 상태 변경
     public int updatePurchaseSlipState(String purcslipNo);
 	
@@ -61,7 +61,7 @@ public interface SalesMapper {
 	public int deleteSales(String no); // 매출 삭제
 	public int deletePurchase(String no); // 매입 삭제
 	public int deletePayable(int recLogId);			// 채무거래 단건 삭제
-	public int deleteReceivable(int logId);			// 채권거래 단건 삭제
-	public int deleteInvoice(int invoiceNo);		// 세금 계산서 삭제
+	public int deleteReceivable(String no);			// 채권거래 단건 삭제
+	public int deleteInvoice(String invoiceNo);		// 세금 계산서 삭제
 
 }

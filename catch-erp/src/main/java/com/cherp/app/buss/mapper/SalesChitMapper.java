@@ -21,6 +21,9 @@ public interface SalesChitMapper {
 	// 판매전표 전체 조회
 	public List<SalesChitVO> selectSalesChit();
 
+	// 판매전표 검색 기능
+	public List<SalesChitVO> searchSalesChit(SalesChitVO salesChitVO);
+
 	// 판매전표 전표상태별 조회
 	public List<SalesChitVO> selectSalesChitState(String slipState);
 

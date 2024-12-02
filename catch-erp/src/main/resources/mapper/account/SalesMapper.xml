@@ -120,6 +120,9 @@
 		SELECT '매출전표' as type ,m.sales_chit_no
 		       ,m.chit_date
 		       ,m.supply_price
+               ,(SELECT client_name
+                FROM client c
+                WHERE m.client_code = c.client_code) client_name
 		       ,m.client_code
 		       ,m.summary
 		       ,FIND_CODE(i.invoice_status) invoice_status
@@ -135,10 +138,13 @@
 		SELECT '매입전표', purchase_chit_no
 		       ,chit_date
 		       ,supply_price
+               ,(SELECT client_name
+                FROM client c
+                WHERE p.client_code = c.client_code) client_name
 		       ,client_code
 		       ,summary
 		       ,FIND_CODE(invoice_status) invoice_status
-		FROM purchase
+		FROM purchase p
 		
 		ORDER BY chit_date desc
 	</select>
@@ -194,7 +200,36 @@
 	            ,#{salesChitNo}
 	       )
 	</insert>
-
+	
+	<!-- 세금계산서 발행 목록 조회 -->
+	<select id="invoiceList" parameterType="com.cherp.app.acct.vo.SalesVO">
+		SELECT invoice_no
+              ,invoice_date
+              ,find_code(invoice_status) as invoice_status
+              ,nts_invoice_date
+              ,saleslip_no
+              ,(select client_name
+                 from client c
+                 where c.client_code = (
+                    SELECT client_code
+                    FROM  sales s
+                    WHERE s.sales_chit_no = i.saleslip_no))  as client_name 
+            ,(SELECT supply_price
+              FROM sales s
+              WHERE s.sales_chit_no = i.saleslip_no) as supply_price
+		FROM invoice i
+		ORDER BY invoice_date desc
+		
+	</select>
+	
+	<update id="updateInvoice">
+	    UPDATE invoice
+        SET invoice_status = #{state}
+            ,nts_invoice_date = CASE WHEN #{state} ='f2' THEN NULL
+            						 ELSE SYSDATE
+            						 END
+        WHERE invoice_no = #{invoiceNo}
+	</update>
 
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
 	<insert id="insertReceivable" parameterType="com.cherp.app.acct.vo.SalesVO">
@@ -237,7 +272,7 @@
 	<!-- 판매전표 전표 상태 변경 -->
 	<update id="updateSalesSlipState">
 		UPDATE  sales_chit
-		SET slip_state = 'r2'
+		SET slip_state = #{state}
 		WHERE saleslip_no = #{saleslipNo}
 	</update>
 	
@@ -329,8 +364,33 @@
 		WHERE purchase_chit_no = #{purchaseChitNo}
 	</delete>
 	
+	<!-- 채권 삭제 -->
+	<delete id="deleteReceivable">
+		DELETE 
+        FROM receivables_log
+        WHERE sales_chit_no = #{salesChitNo}
+	</delete>
+	
+	<delete id="deleteInvoice">
+	    DELETE
+	    FROM invoice
+        WHERE invoice_no = #{invoiceNo}
+	</delete>
+	
 	<!-- 매출전표 수정 -->
-	<update id="updateSales" parameterType="com.cherp.app.acct.vo.SalesVO"></update>
+	<update id="updateSales" parameterType="com.cherp.app.acct.vo.SalesVO">
+			UPDATE sales
+			SET      chit_date  = #{chitDate}
+           			 ,client_code = #{clientCode}
+           			 ,acct_name  = #{acctName}
+       			     ,supply_price = #{supplyPrice}
+            		 ,vat = #{vat}
+           		  	 ,total_price = #{totalPrice}
+           	 	 	 ,writer = #{writer}
+	       			 ,summary = #{summary}
+           			 ,saleslip_no = #{saleslipNo}
+			WHERE sales_chit_no = #{salesChitNo}
+	</update>
 	
 	<!-- 매입전표 수정 -->
 	<update id="updatePurchase" parameterType="com.cherp.app.acct.vo.PayablesVO"></update>
@@ -342,6 +402,7 @@
 		       ,(select client_name
                  from client c
                  where c.client_code = s.client_code)as client_code
+               ,client_code as client_no
 		       ,acct_name
 		       ,supply_price
 		       ,vat

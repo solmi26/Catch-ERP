@@ -19,13 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("stocks")
 public class StockAdjustController {
 
-	
-	@GetMapping("/stockAdjustment") //재고조정페이지
+	//재고조정페이지
+	@GetMapping("/stockAdjustment") 
 	public String stockAdjustment(){
 		return "stock/stockAdjustment";
 	}
-	@GetMapping("/stockInquery")
+	//재고조회&관리페이지
+	@GetMapping("/stockInquery") 
 	public String stockInquery() {
-		return "stock/stockInqeury";
+		return "stock/stockInquery";
 	}
 }

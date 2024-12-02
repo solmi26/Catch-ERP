@@ -23,26 +23,30 @@ public class SalesServiceImpl implements SalesService{
 		this.salesMapper = salesMapper;
 	}
 	
+	// 매출 전표 전체 조회 // by sm
 	@Override
 	public List<SalesVO> salesList() {
 		return salesMapper.selectAllSalesList();
 	}
-
+	
+	// 매입전표 전체 조회 // by sm
 	@Override
 	public List<PayablesVO> payablesList() {
 		return salesMapper.payablesList();
 	}
-
+	
 	@Override
 	public List<SalesVO> receivablesList() {
 		return salesMapper.receivablesList();
 	}
-
+	
+	// 전자세금계산서 전체 조회 // by sm
 	@Override
 	public List<SalesVO> invoiceList() {
 		return salesMapper.invoiceList();
 	}
 	
+	// 매출, 매입전표 전체 조회 // by sm
 	@Override
 	public List<SalesVO> selectAllSlip() {
 		return salesMapper.selectAllSlip();
@@ -69,7 +73,7 @@ public class SalesServiceImpl implements SalesService{
 	    salesMapper.updateSalesInvoiceNo(salesVO);
 	    
 	    // 판매전표 전표 발행 상태 변경
-	    salesMapper.updateSalesSlipState(salesVO.getSaleslipNo());
+	    salesMapper.updateSalesSlipState(salesVO.getSaleslipNo(), "r2");
 	        
 	}
 	
@@ -97,11 +101,45 @@ public class SalesServiceImpl implements SalesService{
 		return salesMapper.selectAcctList(debitSide);
 	}
 	
-	// 매출, 매입 전표 삭제
+	// 세금계산서 업데이트(발행상태, 국세청 전송 날짜) // by sm
+	@Override
+	public void updateInvoice(List<SalesVO> salesVO) {
+		//int result = salesVO.stream().mapToInt((data) -> salesMapper.updateInvoice(data.getInvoiceNo())).sum();
+		salesVO.forEach((data) -> {		
+			System.out.println(data.getType());
+			System.out.println(data.getInvoiceNo());
+			if(data.getType().equals("now")) {
+				salesMapper.updateInvoice(data.getInvoiceNo(), "f3");
+			}else {
+				salesMapper.updateInvoice(data.getInvoiceNo(), "f2");
+			}
+		});
+
+	}
+	
+	// 매출, 매입 전표 삭제 // by sm
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
 	@Override
 	public void deleteSlip(List<SalesVO> salesVO) {
 		salesVO.forEach((data) -> {if(data.getType().equals("매출전표")) {
+			SalesVO result = salesMapper.selectSales(data.getSalesChitNo());
+			String clientCode = result.getClientNo();
+			Integer totalPrice = -1 * (result.getTotalPrice());
+			String invoiceNo = result.getInvoiceNo();
+			String saleSlipNo = result.getSaleslipNo();
+			
+			// 매출전표 삭제
 			salesMapper.deleteSales(data.getSalesChitNo());
+			// 채권 삭제
+			salesMapper.deleteReceivable(data.getSalesChitNo());
+			// 거래처 총 잔액 수정
+			System.out.println(data.getTotalPrice());
+			salesMapper.updateClientBalancek(clientCode, totalPrice);
+			// 세금계산서 삭제
+			salesMapper.deleteInvoice(invoiceNo);
+		    // 판매전표 전표 발행 상태 변경
+		    salesMapper.updateSalesSlipState(saleSlipNo, "r1");
+			
 		}else {
 			salesMapper.deletePurchase(data.getSalesChitNo());
 		}
@@ -109,6 +147,25 @@ public class SalesServiceImpl implements SalesService{
 		
 	}
 	
+	// 매출전표 수정 // by sm
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
+	@Override 
+	public int updateSales(SalesVO salesVO) {
+		return salesMapper.updateSales(salesVO);
+	}
+	
+	// 매출전표 수정 // by sm
+	@Transactional // 트랜잭션이 성공하면 커밋, 예외가 발생하면 롤백.
+	@Override 
+	public void updateSalesDI(List<SalesVO> salesVO) {
+		// 기존 전표 삭제
+		deleteSlip(salesVO);
+		
+		// 전표 재등록
+		insertSale(salesVO.get(0));	
+	}
+	
+	// 매입, 매출전표 상세 조회 // by sm
 	@Override
 	public SalesVO slipInfo(SalesVO salesVO) {
 		if(salesVO.getType().equals("매출전표")) {
@@ -165,11 +222,6 @@ public class SalesServiceImpl implements SalesService{
 		return 0;
 	}
 
-	@Override
-	public int updateInvoice(SalesVO salesVO) {
-		return 0;
-	}
-
 
 	@Override
 	public int deletePayable(int recLogId) {
@@ -177,8 +229,8 @@ public class SalesServiceImpl implements SalesService{
 	}
 
 	@Override
-	public int deleteReceivable(int logId) {
-		return 0;
+	public int deleteReceivable(String no) {
+		return salesMapper.deleteReceivable(no);
 	}
 
 	@Override

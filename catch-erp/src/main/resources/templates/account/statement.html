@@ -9,6 +9,12 @@
  
 	<style>
 	
+	h1{
+        margin-top: 20px;
+        margin-left:10px;
+        font-weight: bold;
+       }
+       
 	/* 매출전표는 파랑색 */	
 	  .sales {
 	    background-color: #e0f7fa !important; /* 밝은 파랑색 */
@@ -113,8 +119,12 @@
 	    height: 20px;
 	  }
 	  
-	  .color{
-	  	background-color: #fff7e6;
+	  .pcolor{
+	  	background-color: #ffebee;
+	  }
+	  
+	  .bcolor{
+	  	background-color: #e0f7fa;
 	  }
 	  
 	  input:read-only{
@@ -126,13 +136,18 @@
 	  	padding-top: 20px !important;
 	  }
 	  
+	  select[readonly] {
+	  	pointer-events: none;
+	  }
+	  
 	</style>
 	
   </head>
   
   <body>
   
-  <!-- 전체 페이지 컨테이너 -->
+  <h1>전표 관리</h1>
+  <!-- 전체 페이지 컨테이너 --> 
     <div class="container-fluid p-3">
     
     	<!-- 그리드 위 구역 -->
@@ -141,7 +156,7 @@
 		<!-- 버튼 그룹 -->
 		<div class="button-group mt-3 position-relative">
 			<!-- 신규등록 버튼 드롭다운 기능 -->
-		    <button type="button" class="btn btn-success btn" id="new">신규 등록</button>
+		    <button type="button" class="btn btn-success btn dropdown-toggle" id="new">신규 등록</button>
 		    <div id="dropdownMenu" class="dropdown-menu-custom">
 		        <button class="dropdown-item sales-item" th:onclick="|location.href='@{/sales/insertSales}'|">매출전표 등록</button>
 		        <button class="dropdown-item purchase-item" th:onclick="|location.href='@{/sales/insertPurchase}'|">매입전표 등록</button>
@@ -166,172 +181,335 @@
     </div> <!-- 전체 페이지 컨테이너 끝. -->
 
 	<!-- 매입전표 신규 등록 모달, 수정, 삭제 -->
-    <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="pModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel">매입 전표</h5>
                 </div>               
                 <div class="modal-body p-0 stm">
-               <form>
-
-        <!-- 전표일자 및 전표No -->
-        <div class="row mb-3">
-        <!-- 전표일자 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">전표일자</span>
-              <input type="date" class="form-control" name="date" id="date"/>
-            </div>
-          </div>
-          <!-- 전표No -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">전표 No.</span>
-              <input type="text" class="form-control" readonly="readonly" name="no" value="-" id="no"/>
-            </div>
-          </div>
-        </div>
-
-        <!-- 연결전표 및 거래처 -->
-        <div class="row mb-3">
-        <!-- 연결전표 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">연결전표</span>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="판매전표 내역보기"
-                name="saleslip"
-                id="salesInput"
-              />
-              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#salesModal" id="openSalesModal">
-                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
-              </button>
-            </div>
-          </div>
-          <!-- 거래처 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">거래처</span>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="거래처 선택"
-                name="clientName"
-                id="clientInput"
-                readonly="readonly"
-              />
-	           <input type="text" style="display:none" id="clientInput2" name="clientCode">
-              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal">
-                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 부가세 유형 및 세금계산서 구분 -->
-        <div class="row mb-3">
-        <!-- 부가세 유형 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">부가세 유형</span>
-              <select class="form-select">
-                <option value="과세" selected="selected">과세</option>
-                <option value="면세">면세</option>
-                <option value="영세">영세</option>
-              </select>
-            </div>
-          </div>
-          <!-- 계정명 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">계정명</span>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="회계계정 선택"
-                name="acctName"
-                id="acctInput"
-                readonly="readonly"
-              />
-              <input type="text" style="display:none" id="acctInput2" name="acctCode">
-              <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="openAcctModal">
-                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 공급가액/부가세 -->
-        <div class="row mb-3">
-        <!-- 공급가액 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text color">공급가액</span>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="공급가액"
-                name="price"
-                id="price"
-              />
-            </div>
-          </div>
-          <!-- 부가세 -->
-          <div class="col-md-4">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text color">부가세</span>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="부가세"
-                name="vat"
-              />
-            </div>
-          </div>
-        </div>
-        
-		<!-- 총 금액 -->
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text color">합계</span>
-              <input type="text" class="form-control" name="amount" id="amount" placeholder="합계"/>
-            </div>
-          </div>
-          </div>
-
-        <!-- 적요 -->
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text">적요</span>
-              <input type="text" id="summary" class="form-control" name="summary" placeholder="적요"/>
-            </div>
-          </div>
-          </div>
-    </form>
+  
+		        <form name="purchaseForm">
+		      
+		        <!-- 전표일자 및 전표No -->
+		        <div class="row mb-3">
+		        <!-- 전표일자 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">전표일자</span>
+		              <input type="date" class="form-control" name="p_date" id="p_date"/>
+		            </div>
+		          </div>
+		          <!-- 전표No -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">전표 No.</span>
+		              <input type="text" class="form-control" readonly="readonly" id="p_no" name="p_no" value="-"/>
+		            </div>
+		          </div>
+		        </div>
+		
+		        <!-- 연결전표 및 거래처 -->
+		        <div class="row mb-3">
+		        <!-- 연결전표 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">연결전표</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="구매전표 내역보기"
+		                name="p_joinInput"
+		                id="p_joinInput"
+		              />
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="openPurchaseModal">
+		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+		              </button>
+		            </div>
+		          </div>
+		          <!-- 거래처 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">거래처</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="거래처 선택"
+		                name="p_clientName"
+		                id="p_clientInput"
+		                readonly="readonly"
+		              />
+			           <input type="text" style="display:none" id="p_clientInput2" name="p_clientCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="p_openClientModal">
+		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+		              </button>
+		            </div>
+		          </div>
+		        </div>
+		
+		        <!-- 부가세 유형 및 세금계산서 구분 -->
+		        <div class="row mb-3">
+		        <!-- 부가세 유형 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">부가세 유형</span>
+		              <select class="form-control form-select" name="s_vat_type">
+		                <option value="과세" selected="selected">과세</option>
+		                <option value="면세">면세</option>
+		                <option value="영세">영세</option>
+		              </select>
+		            </div>
+		          </div>
+		          <!-- 계정명 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">계정명</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="회계계정 선택"
+		                name="p_acctName"
+		                id="p_acctInput"
+		                readonly="readonly"
+		              />
+		              <input type="text" style="display:none" id="p_acctInput2" name="p_acctCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="p_openAcctModal">
+		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+		              </button>
+		            </div>
+		          </div>
+		        </div>
+		        
+		        <!-- 공급가액/부가세 -->
+		        <div class="row mb-3">
+		        <!-- 공급가액 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text pcolor">공급가액</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="공급가액"
+		                name="p_price"
+		                id="p_price"
+		              />
+		            </div>
+		          </div>
+		          <!-- 부가세 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text pcolor">부가세</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="부가세"
+		                name="p_vat"
+		                id="p_vat"
+		              />
+		            </div>
+		          </div>
+		        </div>
+		        
+				<!-- 총 금액 -->
+		        <div class="row mb-3">
+		          <div class="col-md-8">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text pcolor">합계</span>
+		              <input type="text" class="form-control" name="p_amount" id="p_amount" placeholder="합계"/>
+		            </div>
+		          </div>
+		          </div>
+		
+		        <!-- 적요 -->
+		        <div class="row mb-3">
+		          <div class="col-md-8">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">적요</span>
+		              <input type="text" class="form-control" name="p_summary" id="p_summary" placeholder="적요"/>
+		            </div>
+		          </div>
+		          </div>
+		    </form>
                 </div>
                 <div class="modal-footer justify-content-between" >
                     <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
                  <div>
 			        <!-- 리스트로 이동하는 버튼 -->
-			        <button type="button" class="btn btn-success" id="save-btn">수정</button>
-			        <button type="button" class="btn btn-danger">삭제</button>
+			        <button type="button" class="btn btn-success updateBtn">수정</button>
+			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
-        
                 </div>
             </div>
-                
         </div>
-       
     </div>
     
-        <!-- 거래처 검색 모달 HTML -->
-	    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <!-- 매출전표 신규 등록 모달, 수정, 삭제 -->
+    <div class="modal fade" id="sModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">매출 전표</h5>
+                </div>               
+                <div class="modal-body p-0 stm">
+  
+		        <form name="purchaseForm">
+		      
+		        <!-- 전표일자 및 전표No -->
+		        <div class="row mb-3">
+		        <!-- 전표일자 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">전표일자</span>
+		              <input type="date" class="form-control" name="s_date" id="s_date"/>
+		            </div>
+		          </div>
+		          <!-- 전표No -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">전표 No.</span>
+		              <input type="text" class="form-control" readonly="readonly" id="s_no" name="s_no" value="-"/>
+		            </div>
+		          </div>
+		        </div>
+		
+		        <!-- 연결전표 및 거래처 -->
+		        <div class="row mb-3">
+		        <!-- 연결전표 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">연결전표</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="구매전표 내역보기"
+		                name="s_joinInput"
+		                id="s_joinInput"
+		              />
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="openSalesModal">
+		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+		              </button>
+		            </div>
+		          </div>
+		          <!-- 거래처 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">거래처</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="거래처 선택"
+		                name="s_clientName"
+		                id="s_clientInput"
+		                readonly="readonly"
+		              />
+			           <input type="text" style="display:none" id="s_clientInput2" name="s_clientCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="s_openClientModal">
+		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+		              </button>
+		            </div>
+		          </div>
+		        </div>
+		
+		        <!-- 부가세 유형 및 세금계산서 구분 -->
+		        <div class="row mb-3">
+		        <!-- 부가세 유형 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">부가세 유형</span>
+		              <select class="form-control form-select" name="p_vat_type">
+		                <option value="과세" selected="selected">과세</option>
+		                <option value="면세">면세</option>
+		                <option value="영세">영세</option>
+		              </select>
+		            </div>
+		          </div>
+		          <!-- 계정명 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">계정명</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="회계계정 선택"
+		                name="s_acctName"
+		                id="s_acctInput"
+		                readonly="readonly"
+		              />
+		              <input type="text" style="display:none" id="s_acctInput2" name="s_acctCode">
+		              <button class="btn btn-outline-secondary mgBtn" type="button" id="s_openAcctModal">
+		                <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
+		              </button>
+		            </div>
+		          </div>
+		        </div>
+		        
+		        <!-- 공급가액/부가세 -->
+		        <div class="row mb-3">
+		        <!-- 공급가액 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text bcolor">공급가액</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="공급가액"
+		                name="s_price"
+		                id="s_price"
+		              />
+		            </div>
+		          </div>
+		          <!-- 부가세 -->
+		          <div class="col-md-4">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text bcolor">부가세</span>
+		              <input
+		                type="text"
+		                class="form-control"
+		                placeholder="부가세"
+		                name="s_vat"
+		                id="s_vat"
+		              />
+		            </div>
+		          </div>
+		        </div>
+		        
+				<!-- 총 금액 -->
+		        <div class="row mb-3">
+		          <div class="col-md-8">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text bcolor">합계</span>
+		              <input type="text" class="form-control" name="s_amount" id="s_amount" placeholder="합계"/>
+		            </div>
+		          </div>
+		          </div>
+		
+		        <!-- 적요 -->
+		        <div class="row mb-3">
+		          <div class="col-md-8">
+		            <div class="input-group input-group-sm">
+		              <span class="input-group-text">적요</span>
+		              <input type="text" class="form-control" name="s_summary" id="s_summary" placeholder="적요"/>
+		            </div>
+		          </div>
+		          </div>
+		    </form>
+                </div>
+                <div class="modal-footer justify-content-between" >
+                    <p style="color : red;"><small>※ 국세청 미전송 건만 수정/삭제가 가능합니다.</small></p>
+                 <div>
+			        <!-- 리스트로 이동하는 버튼 -->
+			        <button type="button" class="btn btn-success updateBtn">수정</button>
+			        <button type="button" class="btn btn-danger deleteBtn">삭제</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+     <!-- 거래처 검색 모달 HTML -->
+	    <div class="modal fade bg-dark bg-opacity-50" id="p_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-lg">
 	            <div class="modal-content">
 	                <div class="modal-header">
@@ -339,11 +517,28 @@
 	                   
 	                </div>               
 	                <div class="modal-body p-0">
-	                    <div id="clientGrid">
-	                    </div>
+	                	<div id="p_clientGrid"></div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+	                    <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="modal fade bg-dark bg-opacity-50" id="s_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-lg">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">거래처검색</h5>
+	                   
+	                </div>               
+	                <div class="modal-body p-0">
+	                	<div id="s_clientGrid"></div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
@@ -351,26 +546,76 @@
 	    </div>
 	    
 	     <!-- 회계 계정 검색 모달 HTML -->
-	    <div class="modal fade" id="acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal fade bg-dark bg-opacity-50" id="s_acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-md">
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <h5 class="modal-title" id="modalLabel">회계 계정 검색</h5>
 	                </div>               
 	                <div class="modal-body p-0">
-	                    <div id="acctGrid">
+	                    <div id="s_acctGrid">
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
-	                    <p><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+	                    <p class="msg"><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
 	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	    
-	 <!-- 판매전표 모달 HTML -->
-	<div class="modal fade" id="salesModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal fade bg-dark bg-opacity-50" id="p_acctModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-md">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel">회계 계정 검색</h5>
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="p_acctGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p class="msg"><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	 <!-- 구매전표 모달 HTML -->
+	<div class="modal fade bg-dark bg-opacity-50" id="purchaseModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">구매전표</h5>
+                    
+                </div>
+                <div class="modal-body">
+                   
+                    <div class="d-flex justify-content-left mb-3">
+                        
+                        <div>
+                        	<button class="btn btn-secondary filter-item" data-state="r1">미발행 건 보기</button>
+                            <button class="btn btn-success filter-item"  data-state="r2">발행완료 건 보기</button>
+                        </div>
+                    </div>
+                    
+                    <div id="purchaseGrid"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div>
+                        <p class="msg"><small>※ 매입전표를 발행할 전표No.를 클릭하여 입력해주세요.</small></p>
+                    </div>
+                    <div>
+                    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 판매전표 모달 HTML -->
+	<div class="modal fade bg-dark bg-opacity-50" id="salesModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -391,7 +636,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <div>
-                       <p class="msg"><small>※ 매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</small></p>
+                        <p class="msg"><small>※ 매출전표를 발행할 전표No.를 클릭하여 입력해주세요.</small></p>
                     </div>
                     <div>
                     	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -400,10 +645,13 @@
             </div>
         </div>
     </div>
+    <button id="save-btn" hidden=""></button>
+    
+      
      
 	
-	<script th:src="@{/js/account/salesSlip.js}"></script>
 	<script th:src="@{/js/account/purchaseSlip.js}"></script>
+	<script th:src="@{/js/account/salesSlip.js}"></script>
 	<script th:src="@{/js/account/statement.js}"></script>
     
   </body>

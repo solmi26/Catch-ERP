@@ -177,15 +177,15 @@
                     <div class="d-flex justify-content-left mb-3">
                         
                         <div>
-                            <button class="btn btn-success">엑셀양식 다운로드</button>
+                            <button class="btn btn-success" id="purcExcelBtn">엑셀양식 다운로드</button>
                         </div>
                     </div>
                     
                     <div id="purchaseGrid"></div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <div><small>
-                        <p style="color: gray;">※재고를 조정할 대상의 체크박스를 선택 후 선택버튼을 클릭하세요.</p></small>
+                    <div>
+                        <p style="color: gray;"><small>※재고를 조정할 대상의 체크박스를 선택 후 선택버튼을 클릭하세요.</small></p>
                     </div>
                     <div>
                         <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">닫기</button>
@@ -268,157 +268,18 @@
                                         </tr>
                                     </thead>
                                     <tbody id="adjustTbody">                                      
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>                           
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>                                       
-                                        
+                                       <th:block th:each="i : ${#numbers.sequence(1, 15)}">
+										    <tr>
+										        <td></td>
+										        <td></td>
+										        <td></td>
+										        <td></td>
+										        <td></td>
+										        <td></td>
+										        <td></td>
+										        <td></td>
+										    </tr>
+										</th:block>                                                                                                                    
                                     </tbody>
                                 </table>
                             </div>
@@ -482,6 +343,8 @@
 	<!-- pdf 파일 다운을 위한 JS -->    
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>    
+    <!-- 토스트 그리드 엑셀다운 -->
+    
     <!-- 재고조회조정에 전체적용되는 JS -->
 	<script th:src="@{/js/stock/stockAdjustment.js}"></script>
 	</body>

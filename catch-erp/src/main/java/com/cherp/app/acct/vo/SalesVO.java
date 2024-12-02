@@ -38,6 +38,7 @@ public class SalesVO {
 	private String type;            // 전표유형
 	private String purcslipNo; // 구매전표번호
 	private String purchaseChitNo; //매입전표번호
+	private String clientNo; // 임시 테스트 코드
 	
 	/*---------------채권/채무거래 내역----------------*/
 	private Integer logId; 			// 로그 아이디
@@ -53,6 +54,8 @@ public class SalesVO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date invoiceDate;		// 발송 일자
 	private String invoiceStatus;	// 전송 상태
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date ntsInvoiceDate;	// 국세청 전송 일자
 	private String refType;			// 원세금계산서 유형
 	

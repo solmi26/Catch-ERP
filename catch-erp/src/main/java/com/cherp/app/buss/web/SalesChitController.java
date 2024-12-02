@@ -22,11 +22,18 @@ public class SalesChitController {
         this.salesChitService = salesChitService;
     }
     
-    // 매출전표 전체 조회
+    // 판매전표 전체 조회
 	@ResponseBody
     @GetMapping("sales/selectSalesChit")
-	public List<SalesChitVO> selectSalesShit(Model model){
+	public List<SalesChitVO> selectSalesShit(){
 		return salesChitService.selectSalesChit();
+	}
+
+	// 판매전표 검색 조회
+	@ResponseBody
+	@GetMapping("sales/selectSalesChit/search")
+	public List<SalesChitVO> searchSalesChit(@ModelAttribute SalesChitVO salesChitVO){
+		return salesChitService.searchSalesChit(salesChitVO);
 	}
 
 	// 판매전표별 판매내역 보기
@@ -36,7 +43,6 @@ public class SalesChitController {
 												  @PathVariable("saleslipNo") String saleslipNo){
 		return salesChitService.selectSelectSaleslip(saleslipHistoryVO, saleslipNo);
 	}
-
 	
 	// 매출전표 전표상태별 조회
 	@ResponseBody

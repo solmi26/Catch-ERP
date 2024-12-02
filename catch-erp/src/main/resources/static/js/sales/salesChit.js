@@ -275,7 +275,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
 
             columns: [{
-                header: "계정 코드", name: "acctCode", align: "center", renderer: {
+                header: "계정 코드",
+                name: "acctCode",
+                align: "center",
+                renderer: {
                     type: ButtonRenderer
                 },
             }, {
@@ -361,6 +364,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 className: 'border'
             }, {
                 header: '재고수량',
+                editor: "text",
                 name: 'stocksQuantity',
                 align: "center",
                 width: 100,
@@ -369,6 +373,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부족수량',
                 name: 'deficiencyQuantity',
+                editor: "text",
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -449,7 +454,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
         });
 
-        //
+        // 창고 수량 검색
         salesChit.on("editingFinish", (ev) => {
 
             const columnName = ev.columnName;
@@ -460,6 +465,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 let params = {
                     whCode: whCode, itemCode: itemCode
                 }
+                console.log(whCode, itemCode)
 
                 if (whCode && itemCode) {
                     fetch('/quantity/' + whCode + '/' + itemCode)
@@ -475,7 +481,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 salesChit.setValue(ev.rowKey, 'deficiencyQuantity', deficiencyQuantity)
                             }
                         })
-                        .catch(error => console.log('창고 재고수량을 불러오지 못 했습니다.'))
+                        .catch(error => console.log(error))
                 }
             }
         });

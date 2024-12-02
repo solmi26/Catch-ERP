@@ -26,7 +26,7 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">작성일자</label>
-                        <input type="date" class="form-control" id="currentDate" readonly >
+                        <input type="date" class="form-control" id="currentDate" disabled >
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">거래처</label>
@@ -90,7 +90,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">구매현황 (재고)</h5>
+                <h5 class="modal-title" id="modalLabel">발주서</h5>
 
             </div>
             <div class="modal-body">
@@ -105,9 +105,6 @@
                 <div id="ordersGrid"></div>
             </div>
             <div class="modal-footer justify-content-between">
-                <div><small>
-                    <p style="color: gray;">※재고를 조정할 전표No. / 내역No. 버튼을 클릭후 선택버튼을 클릭하세요.</p></small>
-                </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">닫기</button>
                     <button type="button" class="btn btn-primary" id="orderInputBtn" data-bs-dismiss="modal">선택</button>
