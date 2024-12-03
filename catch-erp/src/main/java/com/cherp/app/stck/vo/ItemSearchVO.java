@@ -11,4 +11,5 @@ public class ItemSearchVO {
 	private String itemHiddenInput;
 	private String minPrice;
 	private String maxPrice;
+	private Long result;
 }
