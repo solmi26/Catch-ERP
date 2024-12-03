@@ -23,7 +23,7 @@ public class SaleslipHistoryVO {
 
     private int incompleteQuantity; // 미완료 수량
 
-    private int price;
+    private int price; // 가격
     private int supplyPrice; // 공급가액
     private int vat; // 부가세
 
