@@ -172,6 +172,24 @@ if (invoiceModalElement) {
           ? Number(result.totalPrice).toLocaleString()
           : "0";
         document.getElementById("s_summary").value = result.summary || "";
+
+		// 세금계산서 모달 데이터 매핑
+		document.getElementById("title1").innerHTML =  row.taxProgress  === "국세청 전송 완료" ? "전자세금계산서 (공급자용)" : "미전송전자세금계산서 (공급자용)";
+		document.getElementById("title2").innerHTML =  row.taxProgress  === "국세청 전송 완료" ? "전자세금계산서 (공급받는자용)" : "미전송전자세금계산서 (공급받는자용)";
+		document.getElementById("allow1").innerHTML =  row.taxProgress  === "국세청 전송 완료" ? `승인번호 ${result.invoiceNo}`  : "승인번호";
+		document.getElementById("allow2").innerHTML =  row.taxProgress  === "국세청 전송 완료" ? `승인번호 ${result.invoiceNo}` : "승인번호";
+		document.getElementById("k_date").innerHTML = result.chitDate;
+		document.getElementById("j_date").innerHTML = result.chitDate;
+		document.getElementById("k_price").innerHTML = 	result.supplyPrice ? Number(result.supplyPrice).toLocaleString()+"원" : "0";
+		document.getElementById("j_price").innerHTML = result.supplyPrice ? Number(result.supplyPrice).toLocaleString()+"원" : "0";
+		document.getElementById("k_vat").innerHTML = result.vat ? Number(result.vat).toLocaleString()+"원" : "0";
+		document.getElementById("j_vat").innerHTML = result.vat ? Number(result.vat).toLocaleString()+"원" : "0";
+		document.getElementById("k_summary").innerHTML = result.summary
+		document.getElementById("j_summary").innerHTML = result.summary
+		document.getElementById("k_sum").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString()+"원" : "0";
+		document.getElementById("j_sum").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString()+"원" : "0";
+		document.getElementById("k_acc").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString()+"원" : "0";
+		document.getElementById("j_acc").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString()+"원" : "0";
       })
       .catch((err) => {
         console.log("에러 : " + err);
@@ -181,6 +199,7 @@ if (invoiceModalElement) {
       currentTarget = ev;
       salesModal.show();
     }
+	
 	
 	if(ev.columnName === "date"){
 		currentTarget = ev;
@@ -266,7 +285,18 @@ if (invoiceModalElement) {
         alert("전송할 데이터를 선택하세요.");
    		return;
       }
-      
+	  
+	  const today = new Date();
+	  const invalidRows = selectedRows.filter((row) => {
+	    const date = new Date(row.date); // 작성일자
+	    return date > today; // 미래 날짜인지 확인
+	  });
+
+	  if (invalidRows.length > 0) {
+	    alert("작성일이 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+	    return;
+	  }
+	
    // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
    const noSendRows = selectedRows.filter(
 	(row) => row.taxProgress === "미전송" || row.taxProgress === "전송중"
@@ -326,6 +356,17 @@ if (invoiceModalElement) {
         alert("전송할 데이터를 선택하세요.");
    		return;
       }
+	  
+	  const today = new Date();
+	  const invalidRows = selectedRows.filter((row) => {
+	    const date = new Date(row.date); // 작성일자
+	    return date > today; // 미래 날짜인지 확인
+	  });
+
+	  if (invalidRows.length > 0) {
+	    alert("작성일이 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+	    return;
+	  }
       
    // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
    const noSendRows = selectedRows.filter(
