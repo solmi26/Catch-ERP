@@ -11,12 +11,12 @@
 	</select>
 
 	<select id="selectWhQuantity" resultType="com.cherp.app.buss.vo.WarehouseVO">
-		SELECT
-			a.stocks_quantity
-		FROM
-			contract_item a
-		INNER JOIN stocks b ON a.item_code = b.item_code
-		WHERE b.wh_code = #{whCode} and
-		      a.item_code = #{itemCode}
+		SELECT wh_code,item_code,
+			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -
+			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
+		FROM stocks
+		WHERE item_code = #{itemCode}
+		AND wh_code = #{whCode}
+		GROUP BY wh_code, item_code
 	</select>
 </mapper>

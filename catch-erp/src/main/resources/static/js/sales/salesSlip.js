@@ -40,79 +40,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    //숫자타입 인풋 렌더러 (석진제작1)
-    class gridNumber {
-        constructor(props) {
-            const el = document.createElement('input');
-
-            el.type = 'number';
-            el.value = String(props.value);
-            el.className = 'form-control from-control-sm'
-            this.el = el;
-        }
-
-        getElement() {
-            return this.el;
-        }
-
-        getValue() {
-            return this.el.value;
-        }
-
-        mounted() {
-            this.el.select();
-        }
-    }
-
-    //숫자있는 체크박스 (석진제작)
-    class gridCheckbox {
-        constructor(props) {
-            const {grid, rowKey} = props;
-
-            const label = document.createElement('label');
-            label.className = 'checkbox tui-grid-row-header-checkbox selectCheck countCheck';
-            label.setAttribute('for', 'selectCheck' + String(rowKey));
-            label.innerText = `${grid.getIndexOfRow(rowKey) + 1}`;
-            const hiddenInput = document.createElement('input');
-            hiddenInput.className = 'hidden-input';
-            hiddenInput.id = 'selectCheck' + String(rowKey);
-
-            // console.log(grid.el.id);
-            const customInput = document.createElement('span');
-            customInput.className = 'custom-input';
-
-            customInput.appendChild(hiddenInput);
-            customInput.appendChild(label);
-
-            hiddenInput.type = 'checkbox';
-            label.addEventListener('click', (ev) => {
-                ev.preventDefault();
-
-                if (ev.shiftKey) {
-                    grid[!hiddenInput.checked ? 'checkBetween' : 'uncheckBetween'](rowKey);
-                    return;
-                }
-
-                grid[!hiddenInput.checked ? 'check' : 'uncheck'](rowKey);
-            });
-
-            this.el = customInput;
-
-            this.render(props);
-        }
-
-        getElement() {
-            return this.el;
-        }
-
-        render(props) {
-            const hiddenInput = this.el.querySelector('.hidden-input');
-            const checked = Boolean(props.value);
-
-            hiddenInput.checked = checked;
-        }
-    }
-
     const Grid = tui.Grid;
     Grid.applyTheme('default', {
         outline: {
@@ -148,16 +75,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             rowHeight: 40,
             width: 'auto',
             contextMenu: null,
-            rowHeaders: [{
-                type: 'checkbox', header: `
-                        <span class="custom-input">
-                            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-                            <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-                        </span>`, renderer: {
-                    type: gridCheckbox
-                }
-            }],
             data: [],
+            rowHeaders: [{
+                type: 'rowNum',
+                header: "No.",
+                width: 50,
+                className:'border'
+            }],
             columns: [{
                 header: '판매전표번호',
                 name: 'saleslipNo',
@@ -165,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 width: 150,
                 whiteSpace: 'normal',
                 className: 'border'
-            }, {
+            }, { 
                 header: '발주일자',
                 name: 'insertDate',
                 align: "center",
@@ -416,5 +340,104 @@ document.addEventListener("DOMContentLoaded", async function () {
                 console.error('Error fetching data:', error);
             });
     })
+
+    //모달실행 시 grid refresh를 위한 코드
+    document.getElementById('openClientModal').addEventListener('click', function () {
+        window.setTimeout(function () {
+            clientGrid.refreshLayout();
+        }, 200)
+    });
+
+    let clientGrid;
+    const initClientGrid = () => {
+
+        // 그리드 객체
+        clientGrid = new Grid({
+            el: document.getElementById("clientGrid"),
+            scrollX: true,
+            scrollY: true,
+            data: clientData,
+            header: {height: 40},
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                type: 'rowNum', header: "No.", width: 50, className: 'border'
+            }],
+            columns: [{
+                header: '거래처명',
+                name: 'clientName',
+                align: "center",
+                width: 183,
+                whiteSpace: 'normal',
+                className: 'border',
+                renderer: {
+                    type: ButtonRenderer
+                },
+                filter: 'select'
+            }, {
+                header: '거래처코드',
+                name: 'clientCode',
+                hidden: true,
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '대표자명',
+                name: 'ceoName',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '회사 연락처',
+                name: 'companyTel',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '담당자명',
+                name: 'employeeName',
+                align: "center",
+                width: 110,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '담당자 연락처',
+                name: 'employeeTel',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '종목',
+                name: 'event',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }]
+        });
+
+        //거래처 input
+        clientGrid.on("click", (ev) => {
+            const clientRowData = clientGrid.getRow(ev.rowKey);
+
+            if (clientRowData && clientRowData.clientName) {
+                // 특정 열(columnName)의 값 가져오기
+                // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
+                document.getElementById('inputClientName').value = clientRowData.clientName;
+            }
+        });
+        return clientGrid;
+    }
+    initClientGrid();
 });
 

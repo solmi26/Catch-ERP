@@ -46,7 +46,9 @@ public class BussController {
 
     // 판매 조회 페이지
     @GetMapping("/sales/saleSlip")
-    public String saleSlip(){
+    public String saleSlip(Model model){
+        List<ClientVO> list = clientService.clientList();
+        model.addAttribute("client", list);
         return "sales/saleSlip";
     }
 }
