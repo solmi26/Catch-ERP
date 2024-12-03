@@ -21,9 +21,6 @@ public interface SalesChitMapper {
 	public List<SaleslipHistoryVO> selectSaleslip(SaleslipHistoryVO saleslipHistoryVO,
 												  @Param("saleslipNo") String saleslipNo);
 
-	// 판매전표 전체 조회 by sm
-	public List<SalesChitVO> selectSalesChit();
-
 	// 판매전표 검색 기능
 	public List<SalesChitVO> searchSalesChit(SalesChitVO salesChitVO);
 

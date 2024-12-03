@@ -147,6 +147,7 @@
         d.saleslip_no = #{saleslipNo}
     </select>
 
+	<!-- 판매전표 상태별 조회 by sm -->
     <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT saleslip_no
                 ,insert_date
