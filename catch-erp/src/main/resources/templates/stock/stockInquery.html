@@ -18,7 +18,7 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="itemList-tab" data-bs-toggle="tab"
                         data-bs-target="#itemList" type="button" role="tab" aria-controls="itemList"
-                        aria-selected="true">재고&상품 조회</button>
+                        aria-selected="true">재고&품목 조회</button>
                 </li>
                  <li class="nav-item" role="presentation">
                     <button class="nav-link" id="#itemAnalysis-tab" data-bs-toggle="tab" 
@@ -94,32 +94,53 @@
 		    	
 		    <div class="tab-pane fade" id="itemAnalysis" role="tabpanel"
         									aria-labelledby="itemAnalysis-tab"> <!-- 두번째 탭 시작 -->
-        		<div class="row d-flex flex-row-reverse">
-	        		<div class=" col-md-8 col-lg-8 col-sm-8" style="border-left: 1px solid #dee2e6; border-left: 1px solid #dee2e6; padding:0px;">
+        		<div class="row d-flex flex-row-reverse" style="margin-right: 20px;">
+        			<!-- 토스트 차트 -->
+	        		<div class=" col-md-8 col-lg-8 col-sm-8" style="border-left: 1px solid #dee2e6; border-left: 1px solid #dee2e6; padding:0px; margin-left:13px;">
 					     	<div id="statisticsChart" style="width: 100%; height: 400px; "></div>
-			     	</div>	
+			     	</div>
+			     		
 			     	<div class="row d-flex flex-column col-md-4 col-lg-4 col-sm-4" style="height: 400px; padding:0;">			     		
 			     			
 			     			<div class="h-auto d-flex clientFlexBox " style="padding:0;">		     				
 			     					<div class="col-md-12 row">
-			     						<small style="margin-top: 4px;">거래처</small>
+			     						<small style="margin-top: 4px; font-weight:700;">거래처</small>
 					     						                                                         
 			                                  <!-- 거래처 모달 트리거 버튼 -->
 			                                  <div class="input-group">
-			                                  <input type="input" readonly placeholder="거래처를 선택하세요.">
-			                                  <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			                                  <input type="text" id="clientInput2"readonly placeholder="거래처를 선택하세요.">
+			                                  <input type="text" style="display:none;" class="form-control" id="clientHiddenInput2" name="clientHiddenInput2">
+			                                  <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#clientModal2" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 			                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 			                                  </svg></button>
 			                                  </div>
-			                            
 			                         </div>
 				     			</div>
 				     		
-			     			<div class="h-75 d-flex itemFlexBox" style="padding:0;">
-			     				<small style="margin-top: 4px;">품목</small>
+			     			<div class="h-75 d-flex flex-row itemFlexBox overflow-auto" style="padding:0;">
+			     				<small class="itemFlexBox d-flex align-items-center justify-content-center" id ="smallTag">품목</small>
+			     				<div id="itemListBox" class="itemFlexBox" style="margin-left: 10px; display:block; flex-grow: 1;">
+				     				
+				     				<th:block th:each="test, i : ${#numbers.sequence(1,40)}">
+									    <div class="form-check d-flex align-items-center" style="margin-bottom: 10px;">
+									        <input class="form-check-input" type="checkbox" 
+									               th:id="'checkbox' + ${i.index}" 
+									                
+									               style="margin-right: 10px;">
+									        <label class="form-check-label" 
+									               th:for="'checkbox' + ${i.index}" 
+									               style="font-size: 14px; color: gray;" 
+									               th:text="'dddddd'">
+									            <!-- 텍스트  -->
+									        </label>
+									    </div>
+									</th:block>
+									
+			     				</div>
 			     			</div>
+			     			
 			     			<div class="h-auto d-flex periodFlexBox" style="padding:0;">
-			     				<small style="margin-top: 4px; text-align: center; line-height:20px;">기간 설정</small>
+			     				<small style="margin-top: 4px; text-align: center; line-height:20px; font-weight:700">기간 설정</small>
 			     				
 				     				<select id="sort-direction" style="margin-top: 4px; margin-left:5px;">
 	                                    <option value="asc" selected>년도</option>
@@ -152,10 +173,10 @@
 				     	<div id="statisticsGrid"></div>
 		     	</div>
 			</div> <!-- 두번째 탭 End Point -->
+			
 	    </div> <!-- mainTab End Point -->
 	    
-	    <!-- 거래처 검색 모달 HTML -->
-	    
+	    <!-- 거래처 검색 모달 HTML -->   
 	    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-lg">
 	            <div class="modal-content">
@@ -165,6 +186,26 @@
 	                </div>               
 	                <div class="modal-body p-0">
 	                    <div id="clientGrid">
+	                    </div>
+	                </div>
+	                <div class="modal-footer justify-content-between" >
+	                    <p><small style="color: red;">※거래처명을 클릭하여 입력하세요.</small></p>
+	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <!-- 거래처 검색 모달 HTML -->   
+	    <div class="modal fade" id="clientModal2" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	        <div class="modal-dialog modal-lg">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="modalLabel2">거래처검색</h5>
+	                   
+	                </div>               
+	                <div class="modal-body p-0">
+	                    <div id="clientGrid2">
 	                    </div>
 	                </div>
 	                <div class="modal-footer justify-content-between" >
@@ -213,12 +254,6 @@
 				                                data-bs-target="#info" type="button" role="tab" aria-controls="detail"
 				                                aria-selected="true">기본</button>
 				                        </li>
-				                        <!-- 안쓰면삭제 -->
-				                        <!-- <li class="nav-item" role="presentation">
-				                            <button class="nav-link" id="contract-tab" data-bs-toggle="tab"
-				                                data-bs-target="#progress" type="button" role="tab" aria-controls="contract-list"
-				                                aria-selected="false">상품추이</button>
-				                        </li> -->
 				                    </ul>
 								
 				                    <div class="tab-content mt-3" id="customerTabContent ">

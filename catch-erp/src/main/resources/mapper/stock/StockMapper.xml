@@ -171,7 +171,7 @@
 	<select id="selectAllSearchItemList" parameterType="ItemSearchVO" resultType="ContractItemVO">
 		WITH result as (SELECT 
 		    ci.item_code, 
-		    ci.stocks_quantity - COALESCE(SUM(sh.incomplete_quantity), 0) AS result
+		    ci.stocks_quantity - NVL(SUM(sh.incomplete_quantity), 0) AS result
 		FROM 
 		    contract_item ci
 		    LEFT JOIN saleslip_history sh ON sh.item_code = ci.item_code 
@@ -222,7 +222,7 @@
 		    		AND price < TO_NUMBER(#{maxPrice})
 		      ]]>
 		  </if>
-		  ORDER BY stocks_quantity
+		  ORDER BY result ASC
 		
 	</select>
 	

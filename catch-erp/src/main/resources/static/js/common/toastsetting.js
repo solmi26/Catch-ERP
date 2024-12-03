@@ -4,7 +4,7 @@
  * gridTime : 시간
  * gridDate : 날짜
  * gridCheckbox : 체크박스(로우넘)
- * 
+ * tooltipOut() : 부트스트랩 툴팁 함수
  * 
  * 
 */
@@ -197,3 +197,9 @@ mounted() {
 }
 }
 
+function tooltipOut(){
+	    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+	    tooltipTriggerList.map(function (tooltipTriggerEl) {
+	        return new bootstrap.Tooltip(tooltipTriggerEl);
+	    });  
+    }

@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			window.setTimeout(function(){
             	clientGrid.refreshLayout();
             	itemGrid.refreshLayout();
+            	clientGrid2.refreshLayout();
         	}, 200);
 		})
 	}
@@ -170,11 +171,21 @@ document.addEventListener("DOMContentLoaded", function () {
 	                className:'border'
 	        }],
 	        columns: [
+				{
+					header: '재고상태',
+	                name: 'stocksStatus',
+	                align: "center",
+	                width: 150,
+	                whiteSpace: 'normal',
+	                className:'border',
+	                formatter: ({ value }) =>
+			          `<span class="${value}">${value}</span>`,
+				},
 	            {
 	                header: '계약번호',
 	                name: 'conNo',
 	                align: "center",
-	                width: 250,
+	                width: 130,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                formatter: ({ value }) =>
@@ -186,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '품목코드',
 	                name: 'itemCode',
 	                align: "center",
-	                width: 200,
+	                width: 145,
 	                whiteSpace: 'normal',
 	                filter: 'select'
 	            },
@@ -194,49 +205,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '품목명',
 	                name: 'itemName',
 	                align: "center",
-	                width: 100,
-	                whiteSpace: 'normal',
-	                className:'border',
-	                filter: 'select'
-	            },
-	            {
-	                header: '현재수량(전체)',
-	                name: 'stocksQuantity',
-	                align: "center",
-	                width: 100,
-	                whiteSpace: 'normal',
-	                className:'border'
-	            },
-	            {
-	                header: '거래처코드',
-	                name: 'clientCode',
-	                align: "center",
-	                width: 200,
-	                whiteSpace: 'normal',
-	                className:'border'
-	            },
-	            {
-	                header: '거래처명',
-	                name: 'clientName',
-	                align: "center",
-	                width: 200,
-	                whiteSpace: 'normal',
-	                className:'border',
-	                filter: 'select'
-	            },
-	            {
-	                header: '입고단가', //공급가액
-	                name: 'price',
-	                align: "center",
 	                width: 150,
 	                whiteSpace: 'normal',
-	                sortable: true,
-	                sortingType: 'desc',
 	                className:'border',
-	                formatter: function (e) {
-			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
-			          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
-			        },
+	                filter: 'select'
 	            },
 	            {
 					header: '상품이미지',
@@ -251,15 +223,46 @@ document.addEventListener("DOMContentLoaded", function () {
 	               
 				},
 	            {
-					header: '상태',
-	                name: 'stocksStatus',
+	                header: '현재수량(전체)',
+	                name: 'stocksQuantity',
 	                align: "center",
-	                width: 200,
+	                width: 100,
+	                whiteSpace: 'normal',
+	                className:'border'
+	            },
+	            {
+	                header: '거래처코드',
+	                name: 'clientCode',
+	                align: "center",
+	                width: 140,
+	                whiteSpace: 'normal',
+	                className:'border'
+	            },
+	            {
+	                header: '거래처명',
+	                name: 'clientName',
+	                align: "center",
+	                width: 140,
 	                whiteSpace: 'normal',
 	                className:'border',
-	                formatter: ({ value }) =>
-			          `<span class="${value}">${value}</span>`,
-				}
+	                filter: 'select'
+	            },
+	            {
+	                header: '입고단가', //공급가액
+	                name: 'price',
+	                align: "center",
+	                width: 110,
+	                whiteSpace: 'normal',
+	                sortable: true,
+	                sortingType: 'desc',
+	                className:'border',
+	                formatter: function (e) {
+			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+			          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			        },
+	            },
+	            
+	            
         ]
     	});
 		
@@ -290,9 +293,9 @@ document.addEventListener("DOMContentLoaded", function () {
 						data.price = ele.price;
 						data.image = ele.image;
 						if(ele.result > 0){
-							data.stocksStatus = "caution";	
+							data.stocksStatus = "safety";	
 						} else {
-							data.stocksStatus = "safety";
+							data.stocksStatus = "caution";
 						}
 						
 						dataArr.push(data);	
@@ -322,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			  
 		  }, 0)
 		  let stocksStatusColumn = document.querySelector('[data-column-name="stocksStatus"]');
-		  stocksStatusColumn.setAttribute("title","금일+7일 기간의 출하예정수량이 전체재고수량보다 많을 경우 주의표시됩니다.");
+		  stocksStatusColumn.setAttribute("title","금일+7일까지 기간의 출하예정수량이 전체 재고수량보다 많을 경우 주의표시됩니다.");
 		  tooltipOut();
 		  
 		}
@@ -917,6 +920,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				gridDataArr.push(dataRow);
 			})
 			clientGrid.resetData(gridDataArr);
+			clientGrid2.resetData(gridDataArr);
 		})
 		.catch(err=> `거래처 모달 fetch 실패! ${err}`);
 		
@@ -961,12 +965,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	/*================================
     	StackInquery 재고조정보고서 모달 JS
     ==================================*/
-    function tooltipOut(){
-	    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
-	    tooltipTriggerList.map(function (tooltipTriggerEl) {
-	        return new bootstrap.Tooltip(tooltipTriggerEl);
-	    });  
-    }
+    
 
     document.getElementById('pdfButton').addEventListener('click', function() {
         const element = document.getElementById('reportContent');
@@ -989,7 +988,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		//차트
 	  const el = document.getElementById('statisticsChart');
       const data = {
-        categories: ['1월', '2월', '3월', '3월', '4월', '5월', '6월', '7월', '8월', '9월' ,'10월' ,'11월' ,'12월'],
+        categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월' ,'10월' ,'11월' ,'12월'],
         series: [
           {
             name: '입고수량',
@@ -1041,7 +1040,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
     
       /*============================
-    	StackInquery 거래처 모달 JS
+    	StackInquery 제품 분석 모달 JS
     ==============================*/    
     let statisticsGrid = new Grid({
             el: document.getElementById("statisticsGrid"),
@@ -1101,8 +1100,151 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         });
  		     
-      
-      
+      /*============================
+    	StackInquery 분석을 위한 거래처 모달 JS
+    ==============================*/    
+    let clientGrid2 = new Grid({
+            el: document.getElementById("clientGrid2"),
+            scrollX: true,
+            scrollY: true,
+            pageOptions: {
+		      useClient: true,
+		      perPage: 12,
+		    },
+            header: { height: 40 },
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                    type: 'rowNum',
+                    header: "No.",
+                    width: 50,
+                    className:'border'
+            }],
+            columns: [
+                {
+                    header: '거래처명',
+                    name: 'clientName',
+                    align: "center",
+                    width: 183,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    renderer: {
+                        type: ButtonRenderer
+                    },
+                    filter: 'select'
+                },
+                {
+                    header: '거래처코드',
+                    name: 'clientCode',
+                    align: "center",
+                    width: 183,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '대표자명',
+                    name: 'ceoName',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '회사 연락처',
+                    name: 'companyTel',
+                    align: "center",
+                    width: 120,
+                    whiteSpace: 'normal',
+                    className:'border'
+                },
+                {
+                    header: '담당자명',
+                    name: 'employeeName',
+                    align: "center",
+                    width: 110,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '담당자 연락처',
+                    name: 'employeeTel',
+                    align: "center",
+                    width: 120,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '종목',
+                    name: 'event',
+                    align: "center",
+                    width: 100,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                }
+            ]
+        });
+      //데이터 이동 이벤트함수
+    clientGrid2.on('click',function(e){
+		
+		let rowKeyNum;
+		if (e.columnName == 'clientName'){
+			rowKeyNum = ev.rowKey;	
+			let inputTag = document.getElementById('clientInput2');
+			let inputTag2 = document.getElementById('clientHiddenInput2');
+			inputTag.value = '';
+			inputTag2.value = '';				
+			inputTag.value = clientGrid.getValue(rowKeyNum, 'clientName');
+			inputTag2.value = clientGrid.getValue(rowKeyNum, 'clientCode');
+			
+			let itemListBox = document.getElementById("itemListBox")			
+			fetch("/stocks/item")
+			createCheckboxes(인덱스, 내용)										
+		}
+	})
+	
+	//품목박스 체크박스 시각효과
+	function createCheckboxes(count, labelText) {
+	    const container = document.createElement('div'); // 생성된 체크박스를 담을 컨테이너
+	
+	    for (let i = 1; i <= count; i++) {
+	        // Wrapper div
+	        const wrapper = document.createElement('div');
+	        wrapper.className = 'form-check d-flex align-items-center';
+	        wrapper.style.marginBottom = '10px';
+	
+	        // Checkbox input
+	        const checkbox = document.createElement('input');
+	        checkbox.className = 'form-check-input';
+	        checkbox.type = 'checkbox';
+	        checkbox.id = `checkbox${i}`;
+	        checkbox.style.marginRight = '10px';
+	
+	        // Label
+	        const label = document.createElement('label');
+	        label.className = 'form-check-label';
+	        label.setAttribute('for', `checkbox${i}`);
+	        label.style.fontSize = '14px';
+	        label.style.color = 'gray';
+	        label.textContent = `${labelText} ${i}`; // 전달된 텍스트 + 인덱스
+	
+	        // Append input and label to the wrapper
+	        wrapper.appendChild(checkbox);
+	        wrapper.appendChild(label);
+	
+	        // Append wrapper to the container
+	        container.appendChild(wrapper);
+	    }
+	
+	    // Append the container to the body or a specific element
+	    document.body.appendChild(container); // 필요에 따라 변경 가능
+	}
+	
  
 	//#endregion 두번째 탭 작업
 }); //End Point
