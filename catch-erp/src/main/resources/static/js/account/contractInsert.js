@@ -3,28 +3,9 @@
  */
 
 let grid;
- document.addEventListener("DOMContentLoaded", function () {  
+document.addEventListener("DOMContentLoaded", function () {  
 	
-  // 전체 모달 관련
-  class ButtonRenderer {
-    constructor(props) {
-      this.el = document.createElement("button");
-      this.el.innerText = props.value;
-      this.el.style.border = "1px solid gray";
-      this.el.style.borderRadius = "3px";
-      this.el.style.backgroundColor = "white";
-      this.el.classList.add("gridBtn");
-      /*this.el.onclick = () => {
-          console.log(this.el.innerText);             
-        };*/
-      this.el.setAttribute("data-bs-dismiss", "modal");
-    }
-    getElement() {
-      return this.el;
-    }
-  }
-
-  const Grid = tui.Grid;
+ const Grid = tui.Grid;
 
   Grid.applyTheme("default", {
     outline: {
@@ -50,6 +31,124 @@ let grid;
       },
     },
   });
+  
+  function loadGrid(){
+	// 그리드 초기화
+	  grid = new tui.Grid({
+	    el: document.querySelector('#grid'),  // 그리드 표시 위치
+	    
+	    scrollX: true,   // 가로 스크롤 사용
+	    scrollY: true,   // 세로 스크롤 사용
+	    columns: [
+	      {
+	        header: '품목',
+	        name: 'itemName',
+	        editor: 'text',
+	        align: 'left',
+	      },
+	      {
+	        header: '단가',
+	        name: 'unitPrice',
+	        editor: {
+	        	type:gridNumber
+	        },
+	        align: 'right',
+	        formatter: 
+	        	function (e) { const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  							   			  return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			 },
+	      },
+	      {
+	        header: '공급가액',
+	        name: 'supplyAmount',
+	        editor: {
+	        	type:gridNumber
+	        },
+	        align: 'right',
+	         formatter: 
+	        	function (e) { const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	        								 
+	  							   			  return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			 },
+	      },
+	      {
+	        header: '부가세',
+	        name: 'vat',
+	        editor: {
+	        	type:gridNumber
+	        },
+	        align: 'right',
+			 formatter: 
+	        	function (e) { const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  							   			  return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			 },
+	
+	      },
+	    ], 
+	    data: [{},{},{}],
+	 
+	  rowHeaders: [
+	        {
+	          type: 'checkbox',
+	          header: 
+	            `<span class="custom-input">
+	            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
+	              <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+	            </span>`
+	        ,
+	          renderer: {
+	            type: gridCheckbox
+	          }
+	        }
+	  ],
+	  });
+	
+  }
+  
+  loadGrid();
+  
+  // 그리드 다시 작성 버튼
+  document.getElementById("resetBtn").addEventListener("click", function(){
+	console.log("그리드 리셋 버튼")
+	  const initialData = [{}, {}, {}]; 
+      grid.resetData(initialData);
+  })
+  
+  // 단가를 입력하면 공급가액, 부가세 자동 계산
+  grid.on('editingFinish', (event) => {
+    const { rowKey, columnName, value } = event;
+
+    // 단가가 수정된 경우만 동작
+    if (columnName === 'unitPrice') {
+      const unitPrice = Number(value) || 0;
+      const vatRate = 0.1; // 부가세율 10%
+      
+      const supplyAmount = unitPrice; // 단가 = 공급가액
+      const vat = Math.floor(unitPrice * vatRate); // 부가세 계산
+      
+      grid.setValue(rowKey, 'supplyAmount', supplyAmount);
+      grid.setValue(rowKey, 'vat', vat);
+    }
+  });
+	
+  // 전체 모달 관련
+  class ButtonRenderer {
+    constructor(props) {
+      this.el = document.createElement("button");
+      this.el.innerText = props.value;
+      this.el.style.border = "1px solid gray";
+      this.el.style.borderRadius = "3px";
+      this.el.style.backgroundColor = "white";
+      this.el.classList.add("gridBtn");
+      /*this.el.onclick = () => {
+          console.log(this.el.innerText);             
+        };*/
+      this.el.setAttribute("data-bs-dismiss", "modal");
+    }
+    getElement() {
+      return this.el;
+    }
+  }
   
   /*============================
   	거래처 모달 JS
@@ -291,75 +390,5 @@ let grid;
 		c_grid2.resetData(dataArr);
 	})
 	//#endregion 사원조회
-	
-		 
-    	  // 그리드 초기화
-    	  grid = new tui.Grid({
-    	    el: document.querySelector('#grid'),  // 그리드 표시 위치
-    	    
-    	    scrollX: true,   // 가로 스크롤 사용
-    	    scrollY: true,   // 세로 스크롤 사용
-    	    columns: [
-    	      {
-    	        header: '품목',
-    	        name: 'itemName',
-    	        editor: 'text',
-    	        align: 'left',
-    	      },
-    	      {
-    	        header: '단가',
-    	        name: 'unitPrice',
-    	        editor: {
-    	        	type:gridNumber
-    	        },
-    	        align: 'right',
-    	        formatter: 
-    	        	function (e) { const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
-          							   			  return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
-       			 },
-    	      },
-    	      {
-    	        header: '공급가액',
-    	        name: 'supplyAmount',
-    	        editor: {
-    	        	type:gridNumber
-    	        },
-    	        align: 'right',
-    	         formatter: 
-    	        	function (e) { const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
-          							   			  return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
-       			 },
-    	      },
-    	      {
-    	        header: '부가세',
-    	        name: 'vat',
-    	        editor: {
-    	        	type:gridNumber
-    	        },
-    	        align: 'right',
-    			 formatter: 
-    	        	function (e) { const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
-          							   			  return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
-       			 },
-
-    	      },
-    	    ], 
-    	    data: [{},{},{}],
-		 
-		  rowHeaders: [
-		        {
-		          type: 'checkbox',
-		          header: 
-		            `<span class="custom-input">
-		            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-		              <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-		            </span>`
-		        ,
-		          renderer: {
-		            type: gridCheckbox
-		          }
-		        }
-		  ],
-    	  });
 
 });

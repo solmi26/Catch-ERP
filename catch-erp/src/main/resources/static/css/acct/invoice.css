@@ -155,6 +155,10 @@
 	  	padding-top: 20px !important;
 	  }
 	  
+	  .ivm{
+	  	padding-left: 20px !important;
+	  }
+	  
 	  select[readonly] {
 	  	pointer-events: none;
 	  }

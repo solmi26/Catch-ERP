@@ -202,7 +202,6 @@
 	    </div>
 	  </div>
 	</div>
-      
         
         <!-- 버튼 구역 -->
         <div class="grid-controls">
@@ -210,15 +209,14 @@
       <div class="btn-group left">
         <button type="button" class="btn btn-success appendRowBtn" id="add-item-btn">+ 항목 추가</button>
         <button type="button" class="btn btn-danger deleteRowBtn" id="delete-item-btn">- 선택 삭제</button>
+        <button type="button" class="btn btn-secondary" id="resetBtn">다시 작성</button>
       </div>
-       
        
        <!-- 버튼 그룹 (그리드 위 오른쪽) -->
       <div class="btn-group rigth">
         <button type="button" class="btn btn-success" id="save-btn">저장</button>
-        <button type="button" class="btn btn-secondary">다시 작성</button>
         <!-- 리스트로 이동하는 버튼 -->
-        <button type="button" class="btn btn-secondary">리스트</button>
+        <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/sales/contractView}'|">계약 관리</button>
       </div>
   </div>
   
