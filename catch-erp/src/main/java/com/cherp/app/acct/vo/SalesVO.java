@@ -39,6 +39,11 @@ public class SalesVO {
 	private String purcslipNo; // 구매전표번호
 	private String purchaseChitNo; //매입전표번호
 	private String clientNo; // 임시 테스트 코드
+	private String cecName;
+	private String address1;
+	private String address2;
+	private String event;
+	private String email;
 	
 	/*---------------채권/채무거래 내역----------------*/
 	private Integer logId; 			// 로그 아이디

@@ -190,6 +190,16 @@ if (invoiceModalElement) {
 		document.getElementById("j_sum").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString()+"원" : "0";
 		document.getElementById("k_acc").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString()+"원" : "0";
 		document.getElementById("j_acc").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString()+"원" : "0";
+		document.getElementById("k_com").innerHTML = result.clientCode || '무한상사';
+		document.getElementById("j_com").innerHTML = result.clientCode || '무한상사';
+		document.getElementById("k_name").innerHTML = result.cecName || '유재석';
+		document.getElementById("j_name").innerHTML = result.cecName || '유재석';
+		document.getElementById("k_add").innerHTML = (result.address1 || '대구광역시 북구 중앙대로 123') + " " +(result.address2 || '100호');
+		document.getElementById("j_add").innerHTML = (result.address1 || '대구광역시 북구 중앙대로 123') + " " +(result.address2 || '100호');
+		document.getElementById("k_job").innerHTML = result.event || '도소매, 판매업';
+		document.getElementById("j_job").innerHTML = result.event || '도소매, 판매업';
+		document.getElementById("k_email").innerHTML = result.email || 'def@gmail.com';
+		document.getElementById("j_email").innerHTML = result.email || 'def@gmail.com';
       })
       .catch((err) => {
         console.log("에러 : " + err);
@@ -293,7 +303,7 @@ if (invoiceModalElement) {
 	  });
 
 	  if (invalidRows.length > 0) {
-	    alert("작성일이 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+	    alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
 	    return;
 	  }
 	
@@ -364,7 +374,7 @@ if (invoiceModalElement) {
 	  });
 
 	  if (invalidRows.length > 0) {
-	    alert("작성일이 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+	    alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
 	    return;
 	  }
       
