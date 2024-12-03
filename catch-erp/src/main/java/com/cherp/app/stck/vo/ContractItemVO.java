@@ -43,4 +43,7 @@ public class ContractItemVO {
 	private String whCode; //창고코드
 	private int currentQuantity; //현수량(창고와 제품에 따른 조건적인 수량)
 	
+	/* 안전 재고 부족 알림을 위한 추가필드 */
+	private int result; // result = (총재고 - 7일이후 까지의 지시수량)
+	
 }

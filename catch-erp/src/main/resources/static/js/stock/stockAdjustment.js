@@ -463,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     header: '품목 코드',
                     name: 'c1',
                     align: "center",
-                    width: 203,
+                    width: 136,
                     whiteSpace: 'normal',
                     className:'border',
                     renderer: {
@@ -476,7 +476,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     header: '품목명',
                     name: 'c2',
                     align: "center",
-                    width: 203,
+                    width: 134,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '거래처',
+                    name: 'c3',
+                    align: "center",
+                    width: 134,
                     whiteSpace: 'normal',
                     className:'border',
                     filter: 'select'
@@ -506,6 +515,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			let dataRow ={};
 			dataRow.c1 = ele.itemCode;
 			dataRow.c2 = ele.itemName;
+			dataRow.c3 = ele.clientName;
 			dataArr.push(dataRow)
 		})
 		grid5.resetData(dataArr);
@@ -786,12 +796,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	
 	//엑셀다운버튼 이벤트추가
-	let purcExcelBtn = document.getElementById("purcExcelBtn");
+	/*let purcExcelBtn = document.getElementById("purcExcelBtn");
 	purcExcelBtn.addEventListener("click",function(){
 		 grid7.export('xlsx', {
     		fileName: `엑셀다운테스트.xlsx`
   		 });
-	})
+	})*/
 	
 	//#endregion 구매내역모달
 	
