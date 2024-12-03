@@ -32,7 +32,7 @@ public class SalesChitController {
 
 	// 판매전표 등록
 	@PostMapping("sales/insertSalesChit")
-	public String insertSalesChit(SalesChitVO salesChitVO) {
+	public String insertSalesChit(@RequestBody SalesChitVO salesChitVO) {
 		int rowInsert = salesChitService.salesChitInsert(salesChitVO);
 		return "sales/salesChit";
 	}

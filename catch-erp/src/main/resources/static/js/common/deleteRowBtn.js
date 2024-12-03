@@ -10,7 +10,7 @@ deletes.forEach(btn => {
 btn.addEventListener('click',  function () {
 	 grid.removeCheckedRows();
 	 
-	refreshRowNum(gird.el.id);		
+	refreshRowNum(grid.el.id);		
 	
 })
 	

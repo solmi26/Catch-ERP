@@ -38,9 +38,9 @@
                     <div class="col-md-3">
                         <label class="form-label">거래처</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="clientName">
+                            <input type="text" class="form-control" name="clientName" id="inputClientName">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
-                                    data-bs-toggle="modal" data-bs-target=""></button>
+                                    data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"></button>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -85,8 +85,32 @@
         </div>
     </div>
 </div>
+
+<!-- 거래처 모달 -->
+<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="modalLabel" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >거래처검색</h5>
+            </div>
+            <div class="modal-body p-0">
+                <div id="clientGrid">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <p><small>※거래처명을 클릭하여 입력하세요.</small></p>
+                <button type="button" class="btn btn-secondary btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Bottom Button -->
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const clientData = [[${client}]]
+    /*]]>*/
+</script>
 <script th:src="@{/js/sales/salesSlip.js}"></script>
 </body>
 </html>

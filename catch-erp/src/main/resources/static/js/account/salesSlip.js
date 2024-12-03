@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 거래처모달 그리드에 데이터 넣기(출력)
+  // 모달 그리드에 데이터 넣기(출력)
   fetch("/sales/selectAcct")
     .then((result) => result.json())
     .then((result) => {

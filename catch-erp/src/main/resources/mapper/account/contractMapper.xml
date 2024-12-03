@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 메입 계약 단가 등록, 관리 Mapper -->
+<mapper namespace="com.cherp.app.acct.mapper.ContractMapper">
+
+	<!-- 매입 단가 계약 등록(HEADER) -->
+	<insert id="insertContractH" parameterType="com.cherp.app.stck.vo.ContractItemVO">
+	<selectKey keyProperty="conNo" order="BEFORE" resultType="string">
+			SELECT domain('con_no')
+			FROM dual
+	</selectKey>
+		INSERT INTO contract(
+                con_no
+                ,con_date
+                ,con_name
+                ,client_code
+                ,con_sdate
+                ,con_edate
+                ,status
+                ,emoployee_code
+                ,emoloyee_name
+                ,summary
+                ,url
+                ,writer
+       		 )
+	        VALUES(
+	            #{conNo}
+	            ,#{conDate}
+	            ,#{conName}
+	            ,#{clientCode}
+	            ,#{conSdate}
+	            ,#{conEdate}
+	            ,#{status}
+	            ,#{emoployeeCode}
+	            ,#{emoloyeeName}
+	            ,#{summary}
+	            ,#{url}
+	            ,#{writer}
+	        )	
+	</insert>
+	
+	<!-- 매입 단가 계약 등록(BODY) -->
+	<insert id="insertContractB" parameterType="com.cherp.app.stck.vo.ContractItemVO">
+	<selectKey keyProperty="itemCode" order="BEFORE" resultType="string">
+			SELECT domain('item_code')
+			FROM dual
+	</selectKey>
+		INSERT INTO contract_item(
+	        item_code
+	        ,item_name
+	        ,price
+	        ,supply_price
+	        ,vat
+	        ,con_no
+	    )VALUES(
+	        #{itemCode}
+	        ,#{itemName}
+	        ,#{price}
+	        ,#{supplyPrice}
+	        ,#{vat}
+	        ,#{conNo}
+	    )
+	</insert>
+
+</mapper>
+
