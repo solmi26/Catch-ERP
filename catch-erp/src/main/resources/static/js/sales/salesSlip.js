@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     initSalesChitGrid();
 
+    // 판매전표 그리드
     let saleslipHistory;
     const initSaleslipHistory = () => {
 
@@ -211,16 +212,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             rowHeight: 40,
             width: 'auto',
             contextMenu: null,
-            rowHeaders: [{
-                type: 'checkbox', header: `
-                        <span class="custom-input">
-                            <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-                            <label for="all-checkbox" class="checkbox selectCheck">✔</label>
-                        </span>`, renderer: {
-                    type: gridCheckbox
-                }
-            }],
             data: [],
+            rowHeaders: [{
+                type: 'rowNum', header: "No.", width: 50, className: 'border'
+            }],
             columns: [{
                 header: '판매번호',
                 name: 'salesNo',
@@ -348,10 +343,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 200)
     });
 
+    // 거래처 그리드
     let clientGrid;
     const initClientGrid = () => {
 
-        // 그리드 객체
         clientGrid = new Grid({
             el: document.getElementById("clientGrid"),
             scrollX: true,
@@ -439,5 +434,65 @@ document.addEventListener("DOMContentLoaded", async function () {
         return clientGrid;
     }
     initClientGrid();
+
+    //모달실행 시 grid refresh를 위한 코드
+    document.getElementById('openItemModal').addEventListener('click', function () {
+        window.setTimeout(function () {
+            itemGrid.refreshLayout();
+        }, 200)
+    });
+
+    // 품목 그리드
+    let itemGrid;
+    const initItemGrid = () => {
+
+        itemGrid = new Grid({
+            el: document.getElementById("itemGrid"),
+            scrollX: true,
+            scrollY: true,
+            data: clientData,
+            header: {height: 40},
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                type: 'rowNum', header: "No.", width: 50, className: 'border'
+            }],
+            columns: [{
+                header: '품목코드',
+                name: 'itemGrid',
+                align: "center",
+                width: 183,
+                whiteSpace: 'normal',
+                className: 'border',
+                renderer: {
+                    type: ButtonRenderer
+                },
+                filter: 'select'
+            }, {
+                header: '품목명',
+                name: 'itemName',
+                hidden: true,
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            },]
+        });
+
+        //거래처 input
+        itemGrid.on("click", (ev) => {
+            const itemGridRowData = itemGrid.getRow(ev.rowKey);
+
+            if (itemGridRowData && itemGridRowData.itemName) {
+                // 특정 열(columnName)의 값 가져오기
+                // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
+                document.getElementById('inputClientName').value = itemGridRowData.itemName;
+            }
+        });
+        return itemGrid;
+    }
+    initItemGrid()
 });
 

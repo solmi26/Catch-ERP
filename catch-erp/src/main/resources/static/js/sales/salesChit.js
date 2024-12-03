@@ -841,8 +841,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 빈 값 확인 - 그리드 정보 (재고수량 음수 체크 추가)
         let hasInvalidGridData = insertSales.saleslipHistories.some(row => {
             // '재고수량'이 음수인지 체크
-            if (row['재고수량'] < 0) {
-                alert('재고수량이 음수일 수 없습니다. 값을 확인해주세요.');
+            if (row['deficiencyQuantity'] < 0) {
+                alert('부족수량이 음수일 수 없습니다. 값을 확인해주세요.');
                 return true; // 음수일 경우 오류 표시 후 중단
             }
             return false;
