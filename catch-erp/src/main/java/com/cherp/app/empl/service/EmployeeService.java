@@ -10,5 +10,6 @@ public interface EmployeeService {
 	public List<EmployeeVO> employeeList (EmployeeSearchDto search);
 	public EmployeeVO employeeInfo (EmployeeVO employee);
 	public int employeeInsert(EmployeeVO employee);
-	public List<CommonCodeVO> commonCodeList(CommonCodeVO commonCode);
+	public int employeeUpdate(EmployeeVO employee);
+	public List<CommonCodeVO> commonCodeList(String[] commonCode);
 }

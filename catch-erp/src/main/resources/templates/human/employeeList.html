@@ -42,11 +42,9 @@
                   	<div class="col align-self-start ps-0">
                   		<select class="form-select input-width-120 search-option " name="employeePosition">
                     		<option value="">전체</option>
-                    		<option value="m1">사원</option>
-		                    <option value="m2">대리</option>
-		                    <option value="과장">과장</option>
-		                    <option value="차장">차장</option>
-		                    <option value="부장">부장</option>
+                    		<th:block th:each="com : ${comList}">
+                    			<option  th:if="${com.commonCode eq '0H'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+                    		</th:block>
 		                </select>
                   	</div>
                 </div>
@@ -75,6 +73,10 @@
                   		</div>
                 		<div class="col">
 		                	<select class="form-select input-width-150 search-option" name="departmentCode">
+	                    		<option value="">전체</option>
+                    		<th:block th:each="dept : ${deptList}">
+                    			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
+                    		</th:block>
 		                 	</select>
 	                 	</div>
     	            </div>
@@ -146,12 +148,13 @@
         </div>
       </div>
 			<!--  세부 검색 구역 끝!!!! -->
-
+ <form id="generalForm" onsubmit="return false">
+ <button type="submit" class="check-null" style="display:none;"></button>
         <div class="row g-4 gap-0">
 
             <!-- 직원 세부 정보-->
             <div class="col-lg-8 pe-0">
-                <div class="card content-box">
+                <div class="card content-box employee-box">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="employeeTabs" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -163,19 +166,20 @@
                         </ul>
                         <div class="tab-content mt-3" id="employeeTabContent">
                             <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
-                                <form id="generalForm">
+                               
                                     <div class="row g-3">
                                         <div class="col-md-4 text-center">
                                             <img src="/placeholder.svg?height=100&width=100" alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">
                                             <!--  <input type="file" class="form-control form-control-sm" id="photoUpload" accept="image/*">-->
                                         </div>
                                         <div class="col-md-8 ">
+                                                    	<input type="hidden" class="form-control form-control-sm EmployeeVO" name="employeeCode" onkeypress="return false;" style="caret-color: transparent !important;">
                                         	<div class="row mb-1">
                                                 	<div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    	<label class="form-label">사원번호</label>
+                                                    	<label class="form-label">사원아이디</label>
                                                     </div>
                                                     <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                    	<input type="text" class="form-control form-control-sm EmployeeVO" name="employeeCode" readonly>
+                                                    	<input type="text" class="form-control form-control-sm EmployeeVO" name="employeeId" onkeypress="return false;" style="caret-color: transparent !important;">
                                                     </div>
                                                 </div>
                                             <div class="row mb-1">
@@ -183,7 +187,7 @@
                                             	      <label class="form-label">성명</label>
                                             	    </div>  
                                             	    <div class="col-md-8 col-sm-9 col-lg-7 ps-0">  
-                                          	    	  <input type="text" class="form-control form-control-sm EmployeeVO" name="name">
+                                          	    	  <input type="text" class="form-control form-control-sm EmployeeVO" name="name" required>
     	                                            </div>
     	                                    </div>
     	                                   	<div class="row mb-1">    
@@ -191,7 +195,7 @@
                                                     <label class="form-label">외국어성명</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="engName">
+                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="engName" required>
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
@@ -199,7 +203,7 @@
                                                     <label class="form-label">주민등록번호</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="identityNo">
+                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="identityNo" required>
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
@@ -207,7 +211,10 @@
                                                     <label class="form-label">부서코드</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                	<select class="form-select form-select-sm EmployeeVO" name="departmentCode">
+                                                	<select class="form-select form-select-sm EmployeeVO" name="departmentCode" required>
+							                    		<th:block th:each="dept : ${deptList}">
+							                    			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
+							                    		</th:block>
                                             		</select>    
                                                 </div>
                                             </div>
@@ -216,7 +223,7 @@
                                                     <label class="form-label">세대주여부</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                    <select class="form-select form-select-sm EmployeeDetailVO" name="headCheck">
+                                                    <select class="form-select form-select-sm EmployeeDetailVO" name="headCheck" required>
                                                     	<option value="o">o</option>
                                                     	<option value="x">x</option>
                                             		</select>
@@ -231,7 +238,10 @@
                                            			<label class="form-label">직위/직급</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeVO" name="employeePosition">
+                                            		<select class="form-select form-select-sm EmployeeVO" name="employeePosition" required>
+							                    		<th:block th:each="com : ${comList}">
+							                    			<option  th:if="${com.commonCode eq '0H'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+							                    		</th:block>
                                             		</select>
                                             	</div>
                                             </div>
@@ -242,7 +252,10 @@
                                             		<label class="col-form-label-sm">직책</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="duty">
+                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="duty" required>
+                                            		    <th:block th:each="com : ${comList}">
+							                    			<option  th:if="${com.commonCode eq '0K'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+							                    		</th:block>
                                             		</select>
                                             	</div>
                                         	</div>
@@ -254,7 +267,7 @@
                                            			<label class="form-label">전화번호</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="tel">
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="tel" required>
                                             	</div>
                                             </div>
                                         </div>
@@ -264,7 +277,7 @@
                                             		<label class="col-form-label-sm">모바일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="phone">
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="phone" required>
                                             	</div>
                                         	</div>
                                         </div>
@@ -274,7 +287,7 @@
                                            			<label class="form-label">이메일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email">
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email" required>
                                             	</div>
                                             </div>
                                         </div>
@@ -284,7 +297,10 @@
                                             		<label class="col-form-label-sm">재직구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeVO" name="statusType">
+                                            		<select class="form-select form-select-sm EmployeeVO" name="statusType" required>
+                                            			<th:block th:each="com : ${comList}">
+							                    			<option  th:if="${com.commonCode eq '0M'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+							                    		</th:block>
                                             		</select>
                                             	</div>
                                         	</div>
@@ -295,7 +311,10 @@
                                            			<label class="form-label">입사구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeVO" name="hireType">
+                                            		<select class="form-select form-select-sm EmployeeVO" name="hireType" required>
+                                            			<th:block th:each="com : ${comList}">
+							                    			<option  th:if="${com.commonCode eq '0L'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+							                    		</th:block>
                                             		</select>
                                             	</div>
                                             </div>
@@ -306,7 +325,7 @@
                                             		<label class="col-form-label-sm">입사일자</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="date" class="form-control form-control-sm EmployeeVO " name="hireDate">
+                                            		<input type="date" class="form-control form-control-sm EmployeeVO " name="hireDate" required>
                                             	</div>
                                         	</div>
                                         </div>
@@ -316,8 +335,12 @@
                                            			<label class="form-label">재직상태</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="empStatus">
+                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="empStatus" required>
 														<option value="" >해당없음</option>
+														<th:block th:each="com : ${comList}">
+							                    			<option  th:if="${com.commonCode eq '0J'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+							                    		</th:block>
+														
                                             		</select>
                                             	</div>
                                             </div>
@@ -335,37 +358,54 @@
                                         	
                                         <div class="col-12">
                                             <label class="form-label">주소</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2" placeholder="우편번호" name="zipcode" readonly>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2" placeholder="기본주소" name="address" readonly>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" placeholder="상세주소" name="detailAddress" readonly>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소" name="detailAddress" onkeypress="return false;" style="caret-color: transparent !important;"  required>
                                         </div>
                                     </div>
-                                </form>
+                                    
+                                
                             </div>
                             <div class="tab-pane fade" id="salary" role="tabpanel" aria-labelledby="salary-tab">
-                                <form id="salaryForm">
-                                    <div class="row g-3">
+                                    <div class="row g-3 justify-content-between ">
                                         <div class="col-md-6">
-                                            <label class="form-label">기본급</label>
-                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO" name="monthlySalary">
+                                        	<div class="row">
+												<div class="col-auto">
+		                                            <label class="form-label">기본급</label>
+												</div>                                        	
+												<div class="col">
+		                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO" name="monthlySalary" required>
+												</div>
+                                        	</div>
+                                        </div>
+                                        <div class="col-auto">
+                                        	<div class="row justify-content-end">
+	                                        	<div class="col-auto">
+	                                        		<button type="button" class="btn btn-success btn-sm appendRowBtn">추가</button>
+	                                        	</div>
+	                                        	<div class="col-auto">
+	                                        		<button type="button" class="btn btn-danger btn-sm deleteRowBtn">삭제</button>
+	                                        	</div>
+	                                        	
+                                        	</div>
                                         </div>
                                         <div class="col=12">
                                         <div id="allowanceGrid"></div>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">은행</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="bank" readonly>
+                                            <input type="hidden" class="form-control form-control-sm EmployeeDetailVO " name="bank" onkeypress="return false;" style="caret-color: transparent !important;" required>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO bank-Btn" name="bankName" onkeypress="return false;" style="caret-color: transparent !important;" required>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">계좌번호</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="accoount">
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="accoount" required>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">예금주</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="depositor">
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="depositor" required>
                                         </div>
                                     </div>
-                                </form>
                             </div>
                         </div>
                         <div class="mt-3 text-end">
@@ -378,7 +418,6 @@
                 </div>
             </div>
 			<!-- 세부 정보 끝!!! -->
-			
             <!-- 직원리스트 테이블 -->
             <div class="col-lg-4 ps-0 list-box">
                
@@ -386,10 +425,10 @@
                     
             </div>
         </div>
-
+</form>
         <!-- Action Buttons -->
         <div class="mt-3">
-            <button class="btn btn-danger btn-sm">
+            <button class="btn btn-danger btn-sm delete-Btn">
                 <i class="bi bi-trash"></i> 삭제
             </button>
             <button class="btn btn-outline-secondary btn-sm">
@@ -401,6 +440,100 @@
         </div>
     </div>
 
+<!-- 은행모달시작!!!! -->
+    <div class="modal fade" id="bankModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">은행검색</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>은행검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col ">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text p-0" style="width: 100px;">
+                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                        <option selected style="width:80px;">은행명</option>
+                                                        <option value="1" style="width:80px;">은행코드</option>
+                                                    </select>                                          
+                                                </span>
+                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="bankGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 은행모달끝!! -->
+
+<!-- 수당검색모달 -->
+<div class="modal fade" id="allowanceItemModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">수당검색</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>수당검색</h4>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row justify-content-end" >
+                                    <div class="col ">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text p-0" style="width: 100px;">
+                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
+                                                        <option selected style="width:80px;">수당명</option>
+                                                        <option value="1" style="width:80px;">수당코드</option>
+                                                    </select>                                          
+                                                </span>
+                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
+                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row">
+                            <div id="allowanceItemGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 수당검색모달끝!! -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src='@{/js/common/toastsetting.js}'></script>
 
@@ -416,6 +549,10 @@
   	  minRowHeight:25,
   	  bodyHeight:'fitToParent',
   	  minBodyHeight:'fitToParent',
+      pageOptions: {
+          useClient: true,
+          perPage: 25
+        },
       rowHeaders: [
           {
             type: 'checkbox',
@@ -507,38 +644,87 @@
     	    {
     	      header: '과세여부',
     	      name: 'allowanceCheck',
-    	          editor: {
-    	              type: 'select',
-    	              options: {
-    	                listItems: [
-    	                  { text: '과세', value: '과세' },
-    	                  { text: '비과세', value: '비과세' }
-    	                ]
-    	              }
-    	            }    	      
-    	    }
+	          
+    	    },
+    	    
     	  ],
     	  data: [
-    	    {
-    	      allowanceCode: 'a1',
-    	      allowanceName: '축하금',
-    	      allowancePrice: '3000',
-    	      allowanceCheck: '비과세'
-    	    },
-    	    {
-      	      allowanceCode: 'a3',
-      	      allowanceName: '승리금',
-      	      allowancePrice: '3000',
-      	      allowanceCheck: '과세'
-      	    }    	    
-
     	  ]
     	});
-		
+
+    //카카오 다음 map api
+        // DaumMapApi 우편번호 찾기 state 0 : 등록 / 1: 수정
+        function daumMapApi(state) {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    let addr = ''; // 주소 변수
+                    let extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        if(state == 0) {
+                            document.getElementById("detailAddress").value = extraAddr;
+                        }                        
+                    
+                    } else {
+                        document.getElementById("detailAddress").value = '';
+                    }
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    if(state == 0) {
+                        document.getElementById('zipcode').value = data.zonecode;
+                        document.getElementById("address").value = addr;
+                        // 커서를 상세주소 필드로 이동한다.
+                        document.getElementById("detailAddress").focus();
+                    }
+                }
+            }).open();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // 우편번호 검색 이벤트(Daum Api)
+            document.querySelector('.findZipCode').addEventListener('click', function () {
+                daumMapApi(0);
+            })
+
+    
+        })
+    
+    
+    
 //    	instance.resetData(newData); // Call API of instance's public method
 
 //    	Grid.applyTheme('striped'); // Call API of static method
     </script>
+    
+    <script th:src="@{/js/human/modal/bankModal.js}"></script>
+    <script th:src="@{/js/human/modal/allowanceModal.js}"></script>
+    
 	<script th:src="@{/js/human/employeeList.js}"></script>
 </html>
 

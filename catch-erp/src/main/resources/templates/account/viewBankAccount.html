@@ -32,7 +32,7 @@
   <div class="modal fade" id="accountAddModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-          <form th:action="@{/insertBacct}" method="post" name="insertForm">
+          <form th:action="@{/bacct/insertBacct}" method="post" name="insertForm">
             <div class="modal-header">
                 <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌등록</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -69,7 +69,8 @@
   <div class="modal fade" id="accountDetailModal" tabindex="-1" aria-labelledby="accountRegistrationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-          <form th:action="@{/updateBacct}" method="post" name="updateForm">
+          <form th:action="@{/bacct/updateBacct}" method="post" name="updateForm">
+          	<input type="hidden" id="bacctCode" name="bacctCode">
             <div class="modal-header">
                 <h5 class="modal-title" id="accountRegistrationModalLabel">통장계좌상세</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -99,7 +100,7 @@
                 </div> -->
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success" id="updateButton">저장(F8)</button>
+                <button type="submit" class="btn btn-success" id="updateButton">수정</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
           </form>
@@ -138,6 +139,13 @@
 	          }
 	    ],
         columns: [
+		          {
+		              header: '계좌코드',
+		              name: 'bacctCode',
+		              sortable: true,
+		              align: 'center',
+		              hidden: 'true'
+		          },
                   {
                       header: '계좌번호',
                       name: 'bacctNo',
@@ -200,7 +208,9 @@
       }); 
 
       grid.on('click', (event) => { // grid 클릭이벤트 발생 -> 계좌수정모달
+    	  console.log(grid.getValue(event.rowKey,"bacctCode"));
         if(event.columnName === 'bacctNo' && event.rowKey>=0) {
+          document.updateForm.querySelector('#bacctCode').value = grid.getValue(event.rowKey,"bacctCode");
           document.updateForm.querySelector('#bacctNo').value = grid.getValue(event.rowKey,"bacctNo");
           document.updateForm.querySelector('#bacctName').value = grid.getValue(event.rowKey,"bacctName");
           document.updateForm.querySelector('#bankName').value = grid.getValue(event.rowKey,"bankName");

@@ -3,6 +3,7 @@ package com.cherp.app.acct.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,7 @@ public class SalesController {
 	private final SalesService salesService;
 	
 	// 채권 전체 조회
+	@Secured("ROLE_USER")
 	@GetMapping("receivable/receivableList")
 	public String receivableList(Model model) {
 		List<SalesVO> receList = salesService.receivablesList();
@@ -40,6 +42,7 @@ public class SalesController {
 		return "account/regReceReduction";
 	}
 	// 채무 전체 조회
+	@Secured("ROLE_USER")
 	@GetMapping("payable/payablesList")
 	public String payablesList(Model model) {
 		List<PayablesVO> payList = salesService.payablesList();
@@ -48,6 +51,7 @@ public class SalesController {
 	}
 	
 	// 전표 관리 페이지(조회/화면) by sm
+	@Secured("ROLE_USER")
 	@GetMapping("sales/selectSlipView")
 	public String selectSlipView(Model model) {
 		List<SalesVO> salesList = salesService.selectAllSlip();
@@ -56,6 +60,7 @@ public class SalesController {
 	}
 	
 	// 전표 관리 페이지(조회/기능) by sm
+	@Secured("ROLE_USER")
 	@GetMapping("sales/selectSlip")
 	@ResponseBody
 	public List<SalesVO> selectSlip() {
@@ -63,6 +68,7 @@ public class SalesController {
 	}
 	
 	// 매입, 매출전표 삭제(기능) by sm
+	@Secured("ROLE_USER")
 	@DeleteMapping("sales/deleteSlip")
 	@ResponseBody
 	public String deleteSlip(@RequestBody List<SalesVO> salesVO) {
@@ -71,6 +77,7 @@ public class SalesController {
 	}
 	
 	// 매출전표 수정 기능 by sm
+	@Secured("ROLE_USER")
 	@PutMapping("sales/updateSales")
 	@ResponseBody
 	public String updateSales(@RequestBody SalesVO salesVO) {
@@ -79,6 +86,7 @@ public class SalesController {
 	}
 	
 	// 매출전표 수정 기능(삭제 후 추가) by sm
+	@Secured("ROLE_USER")
 	@PutMapping("sales/updateSalesDI")
 	@ResponseBody
 	public String updateSalesDI(@RequestBody List<SalesVO> salesVO) {
@@ -87,6 +95,7 @@ public class SalesController {
 	}
 	
 	// 세금계산서 상태 수정 기능(발행상태, 국세청 전송 일자) by sm
+	@Secured("ROLE_USER")
 	@PutMapping("sales/updateInvoice")
 	@ResponseBody
 	public String updateInvoice(@RequestBody List<SalesVO> salesVO) {
@@ -95,6 +104,7 @@ public class SalesController {
 	}
 	
 	// 매입, 매출전표 상세조회(기능) by sm
+	@Secured("ROLE_USER")
 	@GetMapping("sales/selectSlipInfo")
 	@ResponseBody
 	public SalesVO selectSlip(SalesVO salesVO) {
@@ -102,12 +112,14 @@ public class SalesController {
 	}
 	
 	// 매출 전표 등록(화면) by sm
+	@Secured("ROLE_USER")
 	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
 	
 	// 매출 전표 등록(기능) by sm
+	@Secured("ROLE_USER")
 	@PostMapping("sales/insertSales")
 	@ResponseBody
 	public String insertSales(@RequestBody SalesVO salesVO) {
@@ -116,6 +128,7 @@ public class SalesController {
 	}
 	
 	// 회계 계정 조회 by sm
+	@Secured("ROLE_USER")
 	@ResponseBody
 	@GetMapping("sales/selectAcct")
 	public List<SalesVO> selectAcct(Model model){
@@ -123,12 +136,14 @@ public class SalesController {
 	}
 	
 	// 매입 전표 등록(화면) by sm
+	@Secured("ROLE_USER")
 	@GetMapping("sales/insertPurchase")
 	public String insertPurchaseForm(Model model) {
 		return "account/PurchaseSlip";
 	}
 	
 	// 매입 전표 등록(기능) by sm
+	@Secured("ROLE_USER")
 	@PostMapping("sales/insertPurchase")
 	@ResponseBody
 	public String insertPurchase(@RequestBody PayablesVO payablesVO) {
@@ -137,12 +152,14 @@ public class SalesController {
 	}
 
 	// 전자세금계산서 조회 페이지(화면) by sm
+	@Secured("ROLE_USER")
 	@GetMapping("sales/invoiceListView")
 	public String invoiceListView(Model model) {
 		return "account/invoice";
 	}
 	
 	// 전자세금계산서 조회 페이지(기능) by sm
+	@Secured("ROLE_USER")
 	@GetMapping("sales/invoiceList")
 	@ResponseBody
 	public List<SalesVO> invoiceList(){
@@ -150,12 +167,14 @@ public class SalesController {
 	}
 	
 	// 매입 계약 등록 페이지
+	@Secured("ROLE_USER")
 	@GetMapping("sales/insertContractView")
 	public String insertContractView(Model model) {
 		return "account/contractInsert";
 	}
 	
 	// 매입 계약 조회 페이지
+	@Secured("ROLE_USER")
 	@GetMapping("sales/contractView")
 	public String contractView(Model model) {
 		return "account/contract";
@@ -165,6 +184,7 @@ public class SalesController {
 	 * 채무감소 등록을 위한 컨트롤러
 	 * 
 	 * */
+	@Secured("ROLE_USER")
 	@PostMapping("account/insertPayablesBalance")
 	@ResponseBody
 	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
@@ -194,6 +214,8 @@ public class SalesController {
 		}
 		return message;
 	}
+	// 채권 감소 컨트롤러
+	@Secured("ROLE_USER")
 	@PostMapping("account/insertReceivableBalance")
 	@ResponseBody
 	public String insertReceivableBalance(@RequestBody JsonNode receiables) {

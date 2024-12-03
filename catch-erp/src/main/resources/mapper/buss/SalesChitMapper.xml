@@ -106,10 +106,10 @@
         ON a.saleslip_no = b.saleslip_no
         WHERE 1 = 1
         <if test="insertDate != null">
-            AND a.insert_date = TO_DATE(#{insertDate}, 'YYYY-MM-DD')
+            AND a.insert_date >=  #{insertDate} AND a.insert_date <![CDATA[ < ]]> #{insertDate} + 1
         </if>
         <if test="deliveryDate != null">
-            AND b.delivery_date = #{deliveryDate}
+            AND b.delivery_date = #{deliveryDate} AND b.delivery_date <![CDATA[ < ]]> #{deliveryDate} + 1
         </if>
         <if test="clientName != null">
             AND a.client_name = #{clientName}

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cherp.app.empl.vo.AttItemVO;
 import com.cherp.app.empl.vo.DepartmentVO;
+import com.cherp.app.empl.vo.FixedVO;
 
 public interface RegisterService {
 	public List<DepartmentVO> deapartmentList(); //부서전체조회
@@ -19,4 +20,7 @@ public interface RegisterService {
 	public int attItemInsert(AttItemVO attItem);//근태항목 등록
 	public int attItemUpdate (AttItemVO attItem);//근태항목 수정
 	public int attItemDelete (String[] attItem); //근태항목 다건삭제
+	
+	
+	public List<FixedVO> allowanceItemList();
 }

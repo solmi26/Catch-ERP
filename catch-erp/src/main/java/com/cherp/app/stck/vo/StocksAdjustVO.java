@@ -13,6 +13,7 @@ public class StocksAdjustVO {
 	private String itemCode;      //품목코드
 	private String updateReason;  //조정 사유
 	private Long currentQuantity; //조정전 수량
+	
 	/* DBMS에는 등록하지 않은 필드 */
-	private String itemName; //품목 명 => 재고조정보고서 재조회 시 필요
+	//private String itemName; //품목 명 => 재고조정보고서 재조회 시 필요
 }

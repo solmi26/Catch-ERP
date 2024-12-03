@@ -2,6 +2,7 @@ package com.cherp.app.acct.web;
 
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,12 +22,14 @@ public class RestBacctController {
 	}
 	
 	// JSON 계좌 데이터
+	@Secured("ROLE_USER")
 	@GetMapping("api/account/bacct")
 	public List<BacctVO> bacctList() {
 		return bacctService.bacctList();
 	}
 	
 	// JSON 은행목록 데이터
+	@Secured("ROLE_USER")
 	@GetMapping("api/account/bank")
 	public List<CommonCodeVO> bankList() {
 		return bacctService.commonBankList();

@@ -535,6 +535,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		      useClient: true,
 		      perPage: 12,
 		    },
+		    
 		    header: { height: 40 },
 		    bodyHeight: 500,
 		    width: 'auto',
@@ -684,9 +685,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            whiteSpace: 'normal',
 		            editor: 'text',
 		            className:'border',		            
-		        }
-		        
-		        
+		        },	         
 		    ]
 		});
 	
@@ -785,6 +784,15 @@ document.addEventListener("DOMContentLoaded", function () {
 				
 				
 	})
+	
+	//엑셀다운버튼 이벤트추가
+	let purcExcelBtn = document.getElementById("purcExcelBtn");
+	purcExcelBtn.addEventListener("click",function(){
+		 grid7.export('xlsx', {
+    		fileName: `엑셀다운테스트.xlsx`
+  		 });
+	})
+	
 	//#endregion 구매내역모달
 	
 	
@@ -961,7 +969,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        }
 		    ]
 		});
-
+	
 	
 	// 그리드에 데이터 넣기(출력)
 	//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
@@ -1015,7 +1023,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('재고조정보고서.pdf');
+            let adjustNo = "_" + document.getElementById("adjustNo").innerHTML;
+            pdf.save(`재고조정보고서${adjustNo}.pdf`);
         });
     });
           

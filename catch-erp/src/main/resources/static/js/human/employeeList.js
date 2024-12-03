@@ -5,7 +5,7 @@ console.log("gd")
 /*
 document.querySelector('#employeeTabContent').querySelectorAll('input')
 */
-
+let currentTarget = null;
 
 document.addEventListener('DOMContentLoaded', function() {
 	
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     //셀렉트 박스에 데이터 뿌리는 반복문
+/*
     let selectBox = {employeePosition:'',
                      duty:'0K',
                      statusType:'0M',
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 			})
 		})
-
+*/
 });
 
 //셀렉트 박스에 데이터를 뿌리는 함수
@@ -97,6 +98,106 @@ grid.on('click', function (ev) {
 	}	
 })
 
+//고정수당 추가버튼
+let appends = document.querySelectorAll('.appendRowBtn')
+appends.forEach(btn => {
+	
+btn.addEventListener('click',function(){
+	allowanceGrid.appendRow();
+})
+	
+})
+
+
+//고정수당 삭제버튼
+let deletes = document.querySelectorAll('.deleteRowBtn')
+deletes.forEach(btn => {
+btn.addEventListener('click',  function () {
+	 allowanceGrid.removeCheckedRows();
+	 
+	refreshRowNum(allowanceGrid.el.id);		
+	
+})
+	
+})
+
+//열을 추가후 체크박스에 다시 숫자부여하는 코드
+function refreshRowNum (id) {
+	 window.setTimeout(function () {
+	let checkList = document.querySelectorAll('.countCheck-'+id)
+	let num = 1;
+	checkList.forEach(items => {
+		items.innerText = num;
+		num += 1;
+	})
+		
+	 }, 50)
+}
+
+
+//고정수당 모달 이벤트
+allowanceGrid.on('click',function (ev) {
+	if (ev.targetType == 'cell' && ev.columnName != 'allowancePrice') {
+	currentTarget = ev;		
+    fetch ("/employees/allItem")
+	.then(data => data.json())
+	.then(data => {
+		window.setTimeout(function(){
+        allowanceItemGrid.refreshLayout();
+        }, 200)
+		allowanceItemGrid.resetData(data)
+		allowanceItemModal.show();
+	})
+		
+	}
+})
+
+//고정수당모달 이벤트
+allowanceItemGrid.on('click',function (ev) {
+	if(ev.targetType == 'cell') {
+		let allowanceCode = allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceCode')
+		let allowanceName =	allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceName')
+		let allowanceCheck =	allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceCheck')
+		allowanceGrid.setValue(currentTarget.rowKey,'allowanceCode',allowanceCode)
+		allowanceGrid.setValue(currentTarget.rowKey,'allowanceName',allowanceName)
+		allowanceGrid.setValue(currentTarget.rowKey,'allowanceCheck',allowanceCheck)
+		
+		allowanceItemModal.hide();
+		
+		
+	}
+})
+
+
+
+
+//은행버튼 클릭 이벤트 (모달)
+document.querySelector('.bank-Btn').addEventListener('click', function () {
+    fetch ("/api/account/bank")
+	.then(data => data.json())
+	.then(data => {
+		window.setTimeout(function(){
+        bankGrid.refreshLayout();
+        }, 200)
+		bankGrid.resetData(data)
+		bankModal.show();
+	})
+})
+
+//은행모달 이벤트
+bankGrid.on('click',function (ev) {
+	if(ev.targetType == 'cell') {
+		let bank = bankGrid.getFormattedValue(ev.rowKey,'commonName')
+		let bankCode =	bankGrid.getFormattedValue(ev.rowKey,'codeRule')
+		document.querySelector('[name="bank"]').value = bankCode;
+		document.querySelector('[name="bankName"]').value = bank;
+		bankModal.hide();
+		
+		
+	}
+})
+
+
 
 //신규버튼 클릭 이벤트
 document.querySelector('#newBtn').addEventListener('click',function () {
@@ -112,6 +213,10 @@ document.querySelector('#newBtn').addEventListener('click',function () {
 //저장버튼 클릭 이벤트
 let saveBtn = document.querySelector('#saveBtn')
 saveBtn.addEventListener('click',function(){
+	if (!generalForm.checkValidity()) {
+		document.querySelector('.check-null').click()
+		return;
+	}
 	let EmployeeVO = {};
 	// EmployeeVO 필드값 넣기
 	let empInfo = document.querySelectorAll('.EmployeeVO')
@@ -164,10 +269,18 @@ saveBtn.addEventListener('click',function(){
 
 	} 
 	//만약 사용자가 수정을 할려고하면
-	else {
-		
+	else if (saveBtn.dataset.mode == 'update') {
+		fetch('/employees/emps',{
+			  method:'put',
+			  headers:{"Content-Type": "application/json", },
+			  body:JSON.stringify(EmployeeVO)
+		})
+		.then(
+			
+		)
 	}
 })
+//널체크폼
 
 
 //검색버튼 클릭 이벤트
@@ -229,7 +342,6 @@ function dataToInput (data) {
 	console.log(data)
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
 	for (let ele in data) {
-				console.log(typeof(data[ele])+' : '+data[ele])
 		//만약 배열타입이면
 		if (Array.isArray(data[ele])) {
 			console.log(data[ele])
@@ -237,7 +349,7 @@ function dataToInput (data) {
 		//받아온 json VO객체 안의 VO객체 뿌리기
 		} else if (typeof(data[ele]) == "object") {
 			for (comp in data[ele]) {
-				let input = document.querySelector(`input[name="${comp}"]`)
+				let input = document.querySelector('.employee-box').querySelector(`input[name="${comp}"]`)
 				if (input != null) {
 					input.value = data[ele][comp]
 				}
@@ -249,7 +361,7 @@ function dataToInput (data) {
 		
 		else {
 			//받아온 속성이 날짜타입인지 검사
-				let input = document.querySelector(`input[name="${ele}"]`)
+				let input = document.querySelector('.employee-box').querySelector(`input[name="${ele}"]`)
 			if (ele == "hireDate" || ele == "resignationDate") {
 				let date = dateFormatter(data[ele])
 				console.log(date)

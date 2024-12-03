@@ -71,9 +71,11 @@ aeSearchGrid.on('click', function (ev) {
 //저장버튼 클릭시 이벤트
 document.querySelector('.insert-Btn').addEventListener('click',function () {
 	//널검사
+	
 	if (validateCheck()) {
 		return;
 	}
+	
 	let row = grid.getData()
 	fetch("/employees/att",{
 		method:"post",

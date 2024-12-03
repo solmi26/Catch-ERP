@@ -85,132 +85,149 @@
 <body>
 	<div class="container-fluid p-4 bg-white">
 		<div class="row"> <!-- start first row -->
-					        <!--  세부 검색 구역 -->
-		      <div class="card mb-4 bg-white">
-		        <div class="card-body bg-light">
-		        <h3>사원정보</h3>
-		          <form>
-		          	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
-		            <div class="row mb-3 align-items-center row-gap-3">
-		            <!-- 직위/직급 -->
-		              <div class="col-md-6"><!-- 크기가 sm으로 변환시 한줄 전체차지 -->
-		                <div class="row align-items-center">
-		                	<div class="col-auto  pe-0">
-		            	      <label class="form-label me-1 mb-0 label-width">직위/직급</label>
-		                  	</div>
-		                  	<div class="col align-self-start ps-0">
-		                  		<select class="form-select input-width-120">
-		                    		<option value="">전체</option>
-		                    		<option value="사원">사원</option>
-				                    <option value="대리">대리</option>
-				                    <option value="과장">과장</option>
-				                    <option value="차장">차장</option>
-				                    <option value="부장">부장</option>
-				                </select>
-		                  	</div>
-		                </div>
-		              </div>
-		              <!-- 직위/직급 끝-->
-		              <!-- 사원 -->
-		              <div class="col">
-		                <div class="row align-items-center">
-		                	<div class="col-auto"> <!-- auto로 크기를 줘서 컨텐츠 크기만큼만 너비 차지 -->
-		                  		<label class="form-label me-2 mb-0 label-width">사원</label>
-		                  	</div>
-		                  	<div class="col">
-		                  		<input type="text" class="form-control input-width-120 me-2" placeholder="사원" />
-							</div>
-		                </div>
-		              </div>
-		              <!-- 사원끝 -->
-		            </div>
-					<!-- 2행 시작 -->
-		            <div class="row align-items-center mb-3">
-		            	<!-- 부서칸-->
-		            	<div class="col-sm-5 ">
-		              		<div class="row align-items-center">
-		              			<div class="col-auto">
-		                  			<label class="form-label me-2 mb-0 label-width">부서</label>
-		                  		</div>
-		                		<div class="col">
-				                	<select class="form-select input-width-150">
-					                   <option value="">전체</option>
-					                   <option value="경영지원팀">경영지원팀</option>
-					                   <option value="인사팀">인사팀</option>
-					                   <option value="개발팀">개발팀</option>
-					                   <option value="영업팀">영업팀</option>
-					                   <option value="마케팅팀">마케팅팀</option>
-				                 	</select>
-			                 	</div>
-		    	            </div>
-		              	</div>
-		              	<!-- 부서칸 끝! -->
-		              	<!-- 재직구분칸 시작! -->
-		              	<div class=" col-sm-7 ">
-		              		<!-- 라벨(재직구분)만 auto로 컨텐츠크기만 차지하게하고, 나머지 라디오버튼(라벨포함)에 대해서는 남는부분을 3등분 시켜 동일한 크기를 지니게함 -->
-		              		<div class="row align-items-center">
-		              			<div class="col-auto">
-		                  			<label class="form-label me-2 mb-0 label-width">재직구분</label>
-		                  		</div>
-		                  		<div class="col">
-		                    		<input class="form-check-input" type="radio" name="status" id="status2" value="regular" />
-		                    		<label  for="status2">재직</label>
-		                  		</div>
-		                  		<div class="col">
-		                    		<input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
-		                    		<label  for="status3">휴직</label>
-		                  		</div>
-		                    	<div class="col">
-		                    		<input class="form-check-input" type="radio" name="status" id="status3" value="contract" />
-		                    		<label  for="status3">퇴직</label>
-		                  		</div>
-		                	</div>
-		              	</div>
-		              	<!-- 재직구분칸끝!! -->
-		            </div>
-					<!-- 2행끝 (크기바뀌면 2행이아니라 각자 한줄임)-->
-					<!-- 3행시작 -->
-					<!--   날짜칸 시작 lg이하에서는 두줄로 표시하게 바꿈-->
-		            <div class="row mb-3 align-items-center row-gap-3">
-		            	<div class="col-lg-7 ">
+        <!--  세부 검색 구역 -->
+      <div class="card mb-4 bg-white">
+        <div class="card-body bg-light">
+        <h3>사원정보</h3>
+          <form>
+          	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
+            <div class="row mb-3 align-items-center row-gap-3">
+            <!-- 직위/직급 -->
+              <div class="col-md-6"><!-- 크기가 sm으로 변환시 한줄 전체차지 -->
+                <div class="row align-items-center">
+                	<div class="col-auto  pe-0">
+            	      <label class="form-label me-1 mb-0 label-width">직위/직급</label>
+                  	</div>
+                  	<div class="col align-self-start ps-0">
+                  		<select class="form-select input-width-120 search-option " name="employeePosition">
+                    		<option value="">전체</option>
+                    		<th:block th:each="com : ${comList}">
+                    			<option  th:if="${com.commonCode eq '0H'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+                    		</th:block>
+		                </select>
+                  	</div>
+                </div>
+              </div>
+              <!-- 직위/직급 끝-->
+              <!-- 사원 -->
+              <div class="col">
+                <div class="row align-items-center">
+                	<div class="col-auto"> <!-- auto로 크기를 줘서 컨텐츠 크기만큼만 너비 차지 -->
+                  		<label class="form-label me-2 mb-0 label-width">사원</label>
+                  	</div>
+                  	<div class="col">
+                  		<input type="text" class="form-control input-width-120 me-2 search-option" name="employeeId" placeholder="사원" />
+					</div>
+                </div>
+              </div>
+              <!-- 사원끝 -->
+            </div>
+			<!-- 2행 시작 -->
+            <div class="row align-items-center mb-3">
+            	<!-- 부서칸-->
+            	<div class="col-sm-5 ">
+              		<div class="row align-items-center">
+              			<div class="col-auto">
+                  			<label class="form-label me-2 mb-0 label-width">부서</label>
+                  		</div>
+                		<div class="col">
+		                	<select class="form-select input-width-150 search-option" name="departmentCode">
+	                    		<option value="">전체</option>
+                    		<th:block th:each="dept : ${deptList}">
+                    			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
+                    		</th:block>
+		                 	</select>
+	                 	</div>
+    	            </div>
+              	</div>
+              	<!-- 부서칸 끝! -->
+              	<!-- 재직구분칸 시작! -->
+              	<div class=" col-sm-7 ">
+              		<!-- 라벨(재직구분)만 auto로 컨텐츠크기만 차지하게하고, 나머지 라디오버튼(라벨포함)에 대해서는 남는부분을 3등분 시켜 동일한 크기를 지니게함 -->
+              		<div class="row align-items-center">
+              			<div class="col-auto">
+                  			<label class="form-label me-2 mb-0 label-width ">재직구분</label>
+                  		</div>
+                  		<div class="col">
+                    		<input class="form-check-input search-option1" type="radio" name="statusType" id="status2" value="m1" />
+                    		<label  for="status2">재직</label>
+                  		</div>
+                  		<div class="col">
+                    		<input class="form-check-input" type="radio" name="statusType" id="status3" value="m2" />
+                    		<label  for="status3">휴직</label>
+                  		</div>
+                    	<div class="col">
+                    		<input class="form-check-input" type="radio" name="statusType" id="status3" value="m3" />
+                    		<label  for="status3">퇴직</label>
+                  		</div>
+                	</div>
+              	</div>
+              	<!-- 재직구분칸끝!! -->
+            </div>
+			<!-- 2행끝 (크기바뀌면 2행이아니라 각자 한줄임)-->
+			<!-- 3행시작 -->
+			<!--   날짜칸 시작 lg이하에서는 두줄로 표시하게 바꿈-->
+            <div class="row mb-3 align-items-center row-gap-3">
+            	<div class="col-lg-7 ">
+                	<label class="form-label me-2 mb-0 label-width">입사일자</label>
+                    <input type="date" class="search-option" name="hireDateStart">
+                    <!-- &nbsp;는 공백(띄워쓰기)임 -->
+                    <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
+                  	<input type="date" class="search-option" name="hireDateEnd">
+               	</div>
+              	<div class="col-auto">                    
+                	<label class="form-label me-2 mb-0 label-width">퇴사일자</label>
+                  	<input type="date" class="search-option" name="resignationDateStart">
+                    <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
+                  	<input type="date" class="search-option" name="resingationDateEnd">                    
+              	</div>
+            </div>
+            <!-- 날짜칸끝 -->
+            <!-- 4행 시작 -->
+            <!-- between으로 각 콘텐츠를 양끝에둠 -->
+            <div class="row justify-content-between  mb-2">
+           		<div class="col ">
+	           		<div class="row ">
+              	  		<div class="col-auto ">
+                  			<label class="form-label me-2 mb-0 label-width">성명</label>
+                  		</div>
+                  		<div class="col-8 col-lg-6">
+                  			<input type="text" class="form-control input-width-200 search-option" name="employeeName" placeholder="성명" />
+                  		</div>
+                  	</div>
+                </div>
+            </div>
+            <div class="row justify-content-between">
+            	<div class="col">
+            		<div class="row">
+            			<div class="col-auto">
 		                	<label class="form-label me-2 mb-0 label-width">귀속연월</label>
-		                    <input type="month">
-		                    <!-- &nbsp;는 공백(띄워쓰기)임 -->
+            			</div>
+            			<div class="col-auto">
+		                  	<input type="month" class="search-option" name="payrollYStart">
+            			</div>
+            			<div class="col-auto">
 		                    <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
-		                  	<input type="month">
-		               	</div>
-		              	<div class="col-auto">                    
-		                	<label class="form-label me-2 mb-0 label-width">수정해야함</label>
-		                  	<input type="date">
-		                    <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
-		                  	<input type="date">                    
-		              	</div>
-		            </div>
-		            <!-- 날짜칸끝 -->
-		            <!-- 4행 시작 -->
-		            <!-- between으로 각 콘텐츠를 양끝에둠 -->
-		            <div class="row justify-content-between  mb-2">
-		           		<div class="col ">
-			           		<div class="row ">
-		              	  		<div class="col-auto ">
-		                  			<label class="form-label me-2 mb-0 label-width">성명</label>
-		                  		</div>
-		                  		<div class="col-8 col-lg-6">
-		                  			<input type="text" class="form-control input-width-200 form-cpmtrol-sm" placeholder="성명" />
-		                  		</div>
-		                  	</div>
-		                </div>
-		                <div class="col-auto row justify-content-end">
-		                	<div class="col">
-		                        <button type="button" class="btn btn-primary">검색</button>
-		                    </div>
-		                </div>
-		            </div>
-		            <!-- 4행끝 -->
-		          </form>
-		        </div>
-		      </div>
-					<!--  세부 검색 구역 끝!!!! -->
+            			</div>
+            			<div class="col-auto">
+		                  	<input type="month" class="search-option" name="payrollYEnd">                    
+            			</div>
+            		</div>                    
+              	</div>
+                <div class="col-auto">
+                	<div class="row justify-content-end">
+                		<div class="col-auto">
+	                        <button type="button" class="btn btn-primary search-btn">검색</button>
+                		</div>
+                    </div>
+                </div>
+            			
+            	</div>
+            
+            </div>
+        </div>
+      </div>
+			<!--  세부 검색 구역 끝!!!! -->
 		</div> <!-- end first row -->
 		<div class="row justify-content-end">
 			<div class="col-auto">
@@ -223,7 +240,7 @@
 				<div class="col-auto">
 					<div class="row">
 						<div class="col-auto">
-							<button type="button" class="btn btn-sm btn-danger deleteRowBtn">삭제</button>
+							<button type="button" class="btn btn-sm btn-danger delete-Btn">삭제</button>
 						</div>
 					</div>
 				</div>
@@ -272,8 +289,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary update-Btn" >저장</button>
+                    <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">닫기</button>
 
                 </div>
             </div>
@@ -281,7 +298,7 @@
     </div>
 <!-- 급여수정내역 모달 -->
 	<script th:src='@{/js/common/deleteRowBtn.js}'></script>	
-	<script>
+	<script th:inline="javascript">
 		const Grid = tui.Grid;
 	    const grid = new tui.Grid({
 	        el: document.getElementById('grid'),
@@ -304,86 +321,125 @@
 	        scrollY: false,
 	        columns: [
 	          {
-	            header: '귀속연월',
-	            name: 'payrollDate'
+	        	  header:'급여명세번호',
+	        	  name:'salaryNumber',
+	        	  hidden:true
 	          },
 	          {
-	            header: '사원코드',
-	            name: 'emoloyeeCode'
+	            header: '귀속연월',
+	            name: 'payrollYdate'
+	          },
+	          {
+	        	header:'사원아이디',
+	        	name:'employeeId'
 	          },
 	          {
 	        	header:'성명',
-	        	name:'employeeName'
+	        	name:'name'
 	          },
 	          {
 	            header: '기본급',
-	            name: 'monthlySalary'
+	            name: 'monthlySalary',
+            	formatter: function (e) {
+                    const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+                    return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+                  },
 	          },
 	          {
 	        	header:'연장수당',
-	        	name:'overtimePay'
+	        	name:'overtimeAllowance',
+	            formatter: function (e) {
+	  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
+	        	
 	          },
 	          {
 		        header:'야간수당',
-		        name:'nightPay'
+		        name:'nightAllowance',
+                formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		  		    },
 		      },
 	          {
 	            header: '주말근무수당',
-	            name: 'weekendPay'
+	            name: 'weekendAllowance',
+	            formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '지급총액',
-		        name: 'totalPayment'
+		        name: 'paymentTotal',
+	            formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+ 		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '소득세',
-		        name: 'incomeTax'
+		        name: 'incomeTax',
+	            formatter: function (e) {
+		  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '지방세',
-		        name: 'localTax'
+		        name: 'localTax',
+	            formatter: function (e) {
+  		          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+  		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '국민연금',
-		        name: 'nationalPension'
+		        name: 'nationalInsurance',
+		        formatter: function (e) {
+		  		const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
 	          },
 		      {
 		        header: '건강보험료',
-		        name: 'healthInsurance'
+		        name: 'healthInsurance',
+	            formatter: function (e) {
+	  		     const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		     return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		      },
+
 	          },
 		      {
 		        header: '고용보험료',
-		        name: 'employmentInsurance'
+		        name: 'employmentInsurance',
+	            formatter: function (e) {
+	  		    const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		     return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		    },
+		        
 	          },
 		      {
 		        header: '공제금액',
-		        name: 'totalDeductions'
+		        name: 'deductionsTotal',
+	            formatter: function (e) {
+	  		     const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  		     return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+		    },
+		        
 	          },
 		      {
 		        header: '실지급액',
-		        name: 'realPay'
+		        name: 'realPay',
+		        formatter: function (e) {
+		  		const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+		  		return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+	  		    },
+		        
 	          }
 	        ],
-	    	data:[
-	    		{
-	  	            payrollDate:'2024.11.19',
-	  	            emoloyeeCode:'2024-001',
-	  	            employeeName:'유석진',
-	  	            monthlySalary:'2,800,000',
-	  	        	overtimePay:'100,000',
-	  		        nightPay:'100,000',
-	  	            weekendPay:'100,000',
-	  		        totalPayment:'31,000,000',
-	  		        incomeTax:'100,000',
-	  		        localTax:'100,000',
-	  		        nationalPension:'100,000',
-	  		        healthInsurance:'100,000',
-	  		        employmentInsurance:'100,000',
-	  		        totalDeductions:'500,000',
-	  		        realPay:'2,600,000',
-	    			
-	    		}
-	    	]
+	    	data:[[${list}]]
 	      });
 	    
 	</script>

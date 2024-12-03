@@ -2,10 +2,10 @@ package com.cherp.app.empl.web.rest;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,10 +53,17 @@ public class RestEmployeeController {
 	public int employeeInsert (@RequestBody EmployeeVO employeeVO) {
 		return employeeService.employeeInsert(employeeVO);
 	}
+	//사원데이터 수정
+	@PutMapping("employees/emps")
+	public int employeeUpdate (@RequestBody EmployeeVO employeeVO) {
+		return employeeService.employeeUpdate(employeeVO);
+	}
+	
+	
 	
 	//공통코드 검색 다건데이터
 	@GetMapping("employees/empCommon")
-	public List<CommonCodeVO> CommonCodeSelect (CommonCodeVO commonCode) {
+	public List<CommonCodeVO> CommonCodeSelect (String[] commonCode) {
 		return employeeService.commonCodeList(commonCode);
 	}
 }

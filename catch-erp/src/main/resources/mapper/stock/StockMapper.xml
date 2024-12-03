@@ -203,6 +203,7 @@
 		    		AND price < TO_NUMBER(#{maxPrice})
 		      ]]>
 		  </if>
+		  ORDER BY stocks_quantity
 		
 	</select>
 	
@@ -231,12 +232,73 @@
 		WHERE item_code = #{itemCode}
 	</update>
 	
+	<!-- 제품의 창고별 재고 조회 -->
 	<select id="selectItemQuantityByWh" parameterType="String" resultType="ContractItemVO">
 		SELECT wh_code,item_code, 
 			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
 			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
 		FROM stocks
-		WHERE item_code = #{itemCode} AND wh_code = #{whCode}
+		WHERE item_code = #{itemCode} 
+		    AND wh_code = #{whCode}
 		GROUP BY wh_code, item_code
+	</select>
+	
+	<!-- 재고조정이력 조회 -->
+	<select id="selectAllAdjustList" parameterType="String" resultType="StocksVO">
+		SELECT s.stocks_adjust_no
+		      ,e.name AS employee_Name
+		      ,s.reg_date
+		      ,find_code(s.stocks_stocks_check) AS stocks_stocks_check
+		      ,s.update_reason
+              ,ph.purcslip_no  AS slip_no          
+              ,s.stocks_stocks
+		FROM  stocks s 
+		   JOIN employees e ON (s.employee_code = e.employee_code)
+		   JOIN purchase_history ph ON (s.log_no = ph.pur_no)
+		WHERE s.item_code = #{itemCode}
+		   <if test="whCode !='allStocks'">
+		     AND s.wh_code = #{whCode}
+		   </if> 
+		   AND TO_CHAR(s.reg_date, 'yyyy') = #{date} 
+		
+		UNION ALL
+		
+		SELECT   s.stocks_adjust_no
+		        ,e.name AS employee_Name
+		        ,s.reg_date
+		        ,find_code(s.stocks_stocks_check) AS stocks_stocks_check
+		        ,s.update_reason		          
+		        ,sh.saleslip_no AS slip_no
+		        ,s.stocks_stocks
+		FROM  stocks s 
+		   JOIN employees e ON (s.employee_code = e.employee_code)	   
+		   JOIN saleslip_history sh ON (s.log_no = sh.sales_no)
+		WHERE s.item_code = #{itemCode}
+		   <if test="whCode !='allStocks'"> 
+		     AND s.wh_code = #{whCode}
+		   </if>
+		   AND TO_CHAR(s.reg_date, 'yyyy') = #{date}
+		ORDER BY reg_date DESC, stocks_adjust_no DESC
+	</select>
+	
+	<!-- 재고조정번호에 맞는 재고조정내역 조회 -->
+	<!-- 일련번호 자재식별번호 품명 현재수량 증감수량 창고명 재고조정사유 -->
+	<select id="selectAdjustLogList" resultType="StocksVO">
+		SELECT s.stocks_adjust_no
+		      ,s.log_no
+		      ,s.item_code
+		      ,s.stocks_quantity
+		      ,s.stocks_stocks
+		      ,s.update_reason
+		      ,s.reg_date
+		      ,ci.item_name
+		      ,e.name AS employee_name
+		      ,w.wh_name
+		FROM  stocks s
+		  JOIN contract_item ci ON (s.item_code = ci.item_code)
+		  JOIN employees e ON (s.employee_code = e.employee_code)
+		  JOIN warehouse w ON (s.wh_code = w.wh_code) 
+		WHERE stocks_adjust_no = #{stocksAdjustNo}
+		ORDER BY real_no DESC
 	</select>
 </mapper>

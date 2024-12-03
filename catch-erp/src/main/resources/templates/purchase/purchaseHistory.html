@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)file:///C:/Users/admin/Downloads/%EC%9E%AC%EA%B3%A0%EB%93%B1%EB%A1%9D%EC%A1%B0%ED%9A%8C%20(1).html -->
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/stack_layout}"
+      layout:fragment="Content">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구매 조회</title>
+</head>
+
+<body>
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>구매 조회</h4>
+</div>
+
+<!-- Form -->
+<div class="card">
+    <form class="bg-light p-4 rounded card-body" id="searchForm">
+        <div class="row g-3">
+            <div class="col-md-12">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">구매일자</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control" name="insertDate">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">입고예정일</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control" name="deliveryDate">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">거래처</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="clientName">
+                            <button type="button" class="bi bi-search border px-4 btn btn-success"
+                                    data-bs-toggle="modal" data-bs-target=""></button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">품목</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="itemName">
+                            <button type="button" class="bi bi-search border px-4 btn btn-success"
+                                    data-bs-toggle="modal" data-bs-target=""></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="bi bi-search border btn btn-success px-4" id="searchButton" type="button" data-bs-toggle="dropdown"
+                style="margin:10px 0px">
+            검색
+        </button>
+    </form>
+</div>
+
+<!-- Table -->
+<div id="wrap">
+    <div id="purchaseChit"> <!--gird html이 들어가는 div태그-->
+    </div>
+</div>
+
+<!-- 판매목록 전표 모달 -->
+<div class="modal fade" id="purchaseHistoryModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">구매목록</h5>
+            </div>
+            <div class="modal-body p-0">
+                <div id="purchaseHistory">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <p><small>※구매내역을 확인하세요</small></p>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bottom Button -->
+
+<script th:src="@{/js/purchase/purchaseHistory.js}"></script>
+</body>
+</html>

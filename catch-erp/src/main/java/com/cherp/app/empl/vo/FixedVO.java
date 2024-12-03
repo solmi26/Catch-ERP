@@ -13,14 +13,6 @@ public class FixedVO {
 	private String fixedNo; //고정수당번호
 	private int allowancePrice;  //수당액
 	private String allowanceCode;  //수당번호
-
-	
-	public FixedVO (String fixedNo, int allowancePrice, String allowanceCode ) {
-		super();
-		this.fixedNo = fixedNo;
-		this.allowancePrice = allowancePrice;
-		this.allowanceCode = allowanceCode;
-	}
 	
 	//조인으로 추가할 컬럼 (수당항목테이블)
 	private String allowanceName; //수당명
