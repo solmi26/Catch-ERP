@@ -4,30 +4,81 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
 
     // 계좌 목록 조회 모달
-    let accountList = [{accCode: "000001", accName: "신한(입금)"}, {accCode: "000002", accName: "대구(출금)"},];
+    // let accountList = [{accCode: "000001", accName: "신한(입금)"}, {accCode: "000002", accName: "대구(출금)"},];
     //Build Tabulator
-    let accList = new Tabulator("#example-table", {
-        layout: "fitColumns",
-        pagination: "local",
-        data: accountList,
-        paginationSize: 6,
-        paginationSizeSelector: [3, 6, 8, 10],
-        movableColumns: true,
-        paginationCounter: "rows",
-        columns: [{title: "계좌코드", field: "accCode", width: 320, sorter: "string", headerFilter: "input"}, {
-            title: "계좌명", field: "accName", width: 440, sorter: "string", headerFilter: "input"
-        },],
-    });
+    // let accList = new Tabulator("#example-table", {
+    //     layout: "fitColumns",
+    //     pagination: "local",
+    //     data: accountList,
+    //     paginationSize: 6,
+    //     paginationSizeSelector: [3, 6, 8, 10],
+    //     movableColumns: true,
+    //     paginationCounter: "rows",
+    //     columns: [{title: "계좌코드", field: "accCode", width: 320, sorter: "string", headerFilter: "input"}, {
+    //         title: "계좌명", field: "accName", width: 440, sorter: "string", headerFilter: "input"
+    //     },],
+    // });
 
-    accList.on("cellClick", (e, cell) => {
+    function makeReceivableTabulator(accountList) {
+        let accList = new Tabulator("#example-table", {
+            layout:"fitColumns",
+            pagination:"local",
+            data: accountList,
+            paginationSize:8,
+            movableColumns:true,
+            paginationCounter:"rows",
+            paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+                return "";
+            },
+            langs:{
+                "default":{
+                    "pagination":{
+                        "first":"처음",
+                        "first_title":"처음으로",
+                        "last":"끝",
+                        "last_title":"마지막으로",
+                        "prev":"이전",
+                        "prev_title":"이전으로",
+                        "next":"다음",
+                        "next_title":"다음으로",
+                        "all":"전체",
+                    }
+                }
+            },
+            columns:[
+                {title:"계좌코드", field:"bacctCode", visible:false},
+                {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
+                {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
+                {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
+            ],
+        });
+        return accList;
+    }
 
-        const rowData = cell.getRow().getData(); // 클릭한 셀의 값
+    function fetchBacctList() {
+        fetch('/api/account/bacct')
+            .then(result => result.json())
+            .then(accountList => {
+                let accList = makeReceivableTabulator(accountList);
+                accList.on("rowClick", (e, row) => {
 
-        document.getElementById('accountInput').value = rowData.accName;
-        console.log("rowData:", rowData.accName);
-        const modalToggle = document.getElementById('accountSearchModal');
-        modalToggle.hide(modalToggle);
-    });
+                    const rowData = row.getData().bacctNo; // 클릭한 셀의 값
+                    console.log(rowData);
+
+                    document.getElementById('accountInput').value = rowData;
+
+                    const modalElement = document.getElementById('accountSearchModal');
+                    const bootstrapModal = bootstrap.Modal.getInstance(modalElement); // Bootstrap 모달 인스턴스 가져오기
+                    if (bootstrapModal) {
+                        bootstrapModal.hide(); // 모달 닫기
+                    }
+                });
+            })
+    }
+
+    fetchBacctList();
+
+
 
     class ButtonRenderer {
         constructor(props) {
@@ -751,21 +802,57 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById('saveBtn').addEventListener('click', function () {
         // 전송할 데이터
         let insertSales = {};
+
         // 마스터 정보
         // 거래처
-        insertSales.clientName = document.getElementById('inputClientName').value;
-        insertSales.clientCode = document.getElementById('inputClientCode').value;
+        insertSales.clientName = document.getElementById('inputClientName').value.trim();
+        insertSales.clientCode = document.getElementById('inputClientCode').value.trim();
         // 담당자
-        insertSales.employeeName = document.getElementById('empNameInput').value;
-        insertSales.employeeCode = document.getElementById('empCodeInput').value;
+        insertSales.employeeName = document.getElementById('empNameInput').value.trim();
+        insertSales.employeeCode = document.getElementById('empCodeInput').value.trim();
         // 입금계좌
-        insertSales.depBacct = document.getElementById('accountInput').value;
+        insertSales.depBacct = document.getElementById('accountInput').value.trim();
         // 매출계정
-        insertSales.acc = document.getElementById('accCodeInput').value;
+        insertSales.accCode = document.getElementById('accCodeInput').value.trim();
 
         // 그리드 정보
         insertSales.saleslipHistories = salesChit.getData();
 
+        // 빈 값 확인 - 마스터 정보
+        for (const [key, value] of Object.entries(insertSales)) {
+            if (key !== 'saleslipHistories' && (value === '' || value === null || value === undefined)) {
+                alert(`${key} 값이 비어 있습니다. 모든 필드를 입력해주세요.`);
+                return; // 전송 중단
+            }
+        }
+
+        // 빈 값 확인 - 그리드 정보
+        let hasEmptyGridValues = insertSales.saleslipHistories.some(row => {
+            return Object.values(row).some(value => value === '' || value === null || value === undefined);
+        });
+
+        console.log(hasEmptyGridValues)
+
+        if (hasEmptyGridValues) {
+            alert('테이블에 빈 값이 포함되어 있습니다. 모든 필드를 입력해주세요.');
+            return; // 전송 중단
+        }
+
+        // 빈 값 확인 - 그리드 정보 (재고수량 음수 체크 추가)
+        let hasInvalidGridData = insertSales.saleslipHistories.some(row => {
+            // '재고수량'이 음수인지 체크
+            if (row['재고수량'] < 0) {
+                alert('재고수량이 음수일 수 없습니다. 값을 확인해주세요.');
+                return true; // 음수일 경우 오류 표시 후 중단
+            }
+            return false;
+        });
+
+        if (hasInvalidGridData) {
+            return; // 전송 중단
+        }
+
+        // 부가세 공급가액 계산
         let vat = 0;
         let supplyPrice = 0;
         for (ele of insertSales.saleslipHistories) {
@@ -773,13 +860,18 @@ document.addEventListener("DOMContentLoaded", async function () {
             supplyPrice += ele.supplyPrice;
         }
 
-        // 부가세, 공급가액 계산
         insertSales.vat = vat;
         insertSales.supplyPrice = supplyPrice;
 
         // ajax 호출 전 확인
         console.log(insertSales);
         console.log(JSON.stringify(insertSales));
+
+        if(insertSales.saleslipHistories.value === ''){
+            console.log('전송실패')
+        }
+
+
         // ajax 호출
         fetch('/sales/insertSalesChit', {
             method: 'POST',

@@ -42,8 +42,8 @@ public class PurchaseChitServiceImpl implements PurchaseChitService {
     @Override
     public int insertPurchase(PurchaseChitVO purchaseChitVO) {
 
-        int result = purchaseChitMapper.insertPurchase(purchaseChitVO);
         // 구매 전표 등록
+        int result = purchaseChitMapper.insertPurchase(purchaseChitVO);
 
         for(int i = 0; i < purchaseChitVO.getPurchaseHistories().size(); i++){
             // purchaseChitVO 객체 가져오기

@@ -112,10 +112,10 @@
             AND b.delivery_date = #{deliveryDate} AND b.delivery_date <![CDATA[ < ]]> #{deliveryDate} + 1
         </if>
         <if test="clientName != null">
-            AND a.client_name = #{clientName}
+            AND a.client_name LIKE '%' || #{clientName} || '%'
         </if>
         <if test="itemName != null">
-            AND b.item_name = #{itemName}
+            AND b.item_name LIKE '%' || #{itemName} || '%'
         </if>
     </select>
 
@@ -138,7 +138,8 @@
             d.item_name,
             d.quantity,
             d.delivery_price,
-            d.delivery_date
+            d.delivery_date,
+            find_code(d.delivery_status) delivery_status
         FROM
             sales_chit c
             JOIN saleslip_history d ON c.saleslip_no = d.saleslip_no
