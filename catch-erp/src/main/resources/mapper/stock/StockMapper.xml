@@ -6,8 +6,10 @@
 	
 	<!-- 매입계약품목 전체조회 -->
 	<select id="selectAllItemList" resultType="ContractItemVO">
-		SELECT *
-		FROM   contract_item	
+		SELECT ci.*, cl.client_name
+		FROM   contract_item ci 
+		  JOIN contract c ON(ci.con_no = c.con_no)
+		  JOIN client cl ON(c.client_code = cl.client_code)
 	</select>
 	
 	<!-- 구매내역 조회시 필요한 조회 조건에 맞는 구매전표번호 조회 -->
@@ -104,7 +106,7 @@
 			  ,hi.saleslip_no
 			  ,hi.incomplete_quantity
 			  ,ch.client_code
-			  ,ch.client_name 
+			  ,ch.client_name
 			  ,ch.employee_code
 			  ,ch.employee_name
 			  ,ct.stocks_quantity
@@ -165,16 +167,33 @@
 		FROM   stocks
 	</select>
 	
+	<!-- 제품 조건조회 -->
 	<select id="selectAllSearchItemList" parameterType="ItemSearchVO" resultType="ContractItemVO">
+		WITH result as (SELECT 
+		    ci.item_code, 
+		    ci.stocks_quantity - NVL(SUM(sh.incomplete_quantity), 0) AS result
+		FROM 
+		    contract_item ci
+		    LEFT JOIN saleslip_history sh ON sh.item_code = ci.item_code 
+		    							   <![CDATA[ 
+		                                   AND sh.delivery_date < SYSDATE + 7
+		                                   ]]>
+		GROUP BY 
+		    ci.item_code, 
+		    ci.stocks_quantity)
 		SELECT ci.con_no
 			  ,ci.item_code
 			  ,ci.item_name
 			  ,ci.price
+			  ,ci.stocks_quantity
+			  ,ci.image
 			  ,c.client_code
 			  ,cl.client_name
+			  ,r.result
 		FROM  contract_item ci 
 		    JOIN contract c ON (ci.con_no = c.con_no)
 		   	JOIN client cl ON (c.client_code = cl.client_code)
+		   	JOIN result r ON (ci.item_code = r.item_code)
 		WHERE ci.con_no IN 
 			(SELECT con_no
 			 FROM contract
@@ -203,7 +222,7 @@
 		    		AND price < TO_NUMBER(#{maxPrice})
 		      ]]>
 		  </if>
-		  ORDER BY stocks_quantity
+		  ORDER BY result ASC
 		
 	</select>
 	

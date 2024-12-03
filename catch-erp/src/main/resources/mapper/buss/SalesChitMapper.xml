@@ -16,7 +16,9 @@
             acc_code,
             dep_bacct,
             employee_name,
-            employee_code
+            employee_code,
+            supply_price,
+            vat
         )
         VALUES (
             #{saleslipNo},
@@ -26,7 +28,9 @@
             #{accCode},
             #{depBacct},
             #{employeeName},
-            #{employeeCode}
+            #{employeeCode},
+            #{supplyPrice},
+            #{vat}
         )
     </insert>
 
@@ -64,8 +68,8 @@
     <!-- 판매전표 조회 -->
     <select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
         WITH b as (SELECT saleslip_no , SUM(delivery_price) delivery_price
-                    FROM  saleslip_history
-                    GROUP BY saleslip_no)
+                   FROM  saleslip_history
+                   GROUP BY saleslip_no)
         SELECT a.saleslip_no
                 ,insert_date
                 ,client_code
@@ -139,7 +143,10 @@
             d.quantity,
             d.delivery_price,
             d.delivery_date,
-            find_code(d.delivery_status) delivery_status
+            find_code(d.delivery_status) delivery_status,
+            e.price,
+            e.supply_price,
+            e.vat
         FROM
             sales_chit c
             JOIN saleslip_history d ON c.saleslip_no = d.saleslip_no

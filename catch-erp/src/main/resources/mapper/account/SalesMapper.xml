@@ -408,6 +408,21 @@
 		       ,(select client_name
                  from client c
                  where c.client_code = s.client_code)as client_code
+                ,(select ceo_name
+                 from client c
+                 where c.client_code = s.client_code)as cec_name
+                ,(select address
+                 from client c
+                 where c.client_code = s.client_code)as address1
+                ,(select detail_address
+                 from client c
+                 where c.client_code = s.client_code)as address2
+                ,(select event
+                 from client c
+                 where c.client_code = s.client_code)as event
+                ,(select employee_email
+                 from client c
+                 where c.client_code = s.client_code)as email
                ,client_code as client_no
 		       ,acct_name
 		       ,supply_price

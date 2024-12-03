@@ -79,35 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //#region 재고조정페이지
     //모든 그리드 객체에서 사용될 const Grid, 테마 혹은 헤더변경 없으면 같은 것 사용.
 	const Grid = tui.Grid;
-	/*const filterOptions = {
-	  type: 'text', // 필터 타입 (text, number, date 등)
-	  operatorLabel: {
-	    // 조건 한글화
-	    Select All: '같음',
-	    notEquals: '같지 않음',
-	    contains: '포함',
-	    startsWith: '시작 문자',
-	    endsWith: '끝 문자',
-	    lessThan: '보다 작음',
-	    greaterThan: '보다 큼',
-	  }
-	};
-	const filterOptions = {
-		type: "text",
-		operatorLabel: {
-			 contains: '포함됨',
-                     eq: '같음',
-                     neq: '같지 않음',
-                     startsWith: '시작함',
-                     endsWith: '끝남',
-                     greaterThan: '이후',
-                     greaterThanOrEqualTo: '이후(포함)',
-                     lessThan: '이전',
-                     lessThanOrEqualTo: '이전(포함)'
-		}
-	}
 	
-    });*/
 	Grid.applyTheme('default',  {
             outline:{
             border : '#dee2e6'
@@ -278,6 +250,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }       
         ]
     });
+    
+    
+	let stocksStatusColumn = document.querySelector("#adjustmentGrid > div > div.tui-grid-content-area > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(6)")
+	stocksStatusColumn.setAttribute("title","동일 제품의 출하 총수량이 전체재고를 초과할 수 없습니다.");	
+	
+    
     
     //#endregion 사원조회모달
 
@@ -463,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     header: '품목 코드',
                     name: 'c1',
                     align: "center",
-                    width: 203,
+                    width: 136,
                     whiteSpace: 'normal',
                     className:'border',
                     renderer: {
@@ -476,7 +454,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     header: '품목명',
                     name: 'c2',
                     align: "center",
-                    width: 203,
+                    width: 134,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select'
+                },
+                {
+                    header: '거래처',
+                    name: 'c3',
+                    align: "center",
+                    width: 134,
                     whiteSpace: 'normal',
                     className:'border',
                     filter: 'select'
@@ -506,6 +493,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			let dataRow ={};
 			dataRow.c1 = ele.itemCode;
 			dataRow.c2 = ele.itemName;
+			dataRow.c3 = ele.clientName;
 			dataArr.push(dataRow)
 		})
 		grid5.resetData(dataArr);
@@ -786,12 +774,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	
 	//엑셀다운버튼 이벤트추가
-	let purcExcelBtn = document.getElementById("purcExcelBtn");
+	/*let purcExcelBtn = document.getElementById("purcExcelBtn");
 	purcExcelBtn.addEventListener("click",function(){
 		 grid7.export('xlsx', {
     		fileName: `엑셀다운테스트.xlsx`
   		 });
-	})
+	})*/
 	
 	//#endregion 구매내역모달
 	
@@ -1328,22 +1316,21 @@ document.addEventListener("DOMContentLoaded", function () {
 	deleteBtn.addEventListener('click',  function () {
 		 grid.removeCheckedRows();
 		 
-		 refreshRowNum();		
+		 refreshRowNum2(grid.el.id);		
 		
 	})
-				
 	
 	//열을 추가후 체크박스에 다시 숫자부여하는 코드
-	function refreshRowNum () {
+	function refreshRowNum2 (id) {
 		 window.setTimeout(function () {
-			 let checkList = document.querySelectorAll('.countCheck')
-			 let num = 1;
-			 checkList.forEach(items => {
-				items.innerText = num;
-				num += 1;
-			 })
-		
-	     }, 50)
+		let checkList = document.querySelectorAll('.countCheck-'+id)
+		let num = 1;
+		checkList.forEach(items => {
+			items.innerText = num;
+			num += 1;
+		})
+			
+		 }, 50)
 	}
     
     /*===================================

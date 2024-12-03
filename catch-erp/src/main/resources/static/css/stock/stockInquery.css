@@ -1,6 +1,14 @@
     /*============================
     	StackInquery 본래 페이지 CSS
     ==============================*/
+    .tab-pane {
+    	display: none; 
+	}
+
+	.tab-pane.active {
+	    display: block; 
+	}
+	
      .price-input {
          position: relative;
      }
@@ -121,13 +129,7 @@
 	}	
 	.form-select {
 		padding: 3px 7px;
-	}
-/* 	@media (min-width: 1100px) {
-		.detailModal{
-			width: 2000px;
-		}
-	} */
-	
+	}	
 	.r1 {
 		 color: red;
 		 
@@ -147,8 +149,18 @@
 	  .increase {
 	    background-color: #ffebee !important; /* 밝은 빨강색 */
 	  }
-    
-	
+      .cautionStocks{
+      	background-color: #ffebee !important; /* 밝은 빨강색 */
+      }
+      
+      .caution{
+      	color:red;
+      	font-weight: 900;
+      }
+      
+      .clientFlexBox, .itemFlexBox{
+       border-bottom: 1px solid #ced4da;
+      }
 	/*===========================
     	StackInquery 재고조정 보고서 모달 CSS
     ==============================*/
@@ -235,6 +247,19 @@
         .table-row-height {
             height: 40px;
         }
-    
-    
+    	
+   /*=== 두번째 탭 작업 ====*/
+   #smallTag{
+   		position: sticky; 
+   		z-index: 10; 
+   		top: 0; 
+   		margin-top: 0; 
+   		font-weight: 700; 
+        display: block; 
+        white-space: nowrap; 
+        background-color: #dee2e6; 
+        text-align: center; 
+        height: 100%; 
+        color: black;
+   }
     
