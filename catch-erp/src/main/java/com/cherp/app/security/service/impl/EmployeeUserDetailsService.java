@@ -1,6 +1,8 @@
 package com.cherp.app.security.service.impl;
 
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +27,10 @@ public class EmployeeUserDetailsService implements UserDetailsService{
 		// Mapper를 활용해서 DB에 접근
 		EmployeeLoginVO employeeVO = userMapper.getEmployeeInfo(employeeId);
 		System.out.println(employeeVO);
+		System.out.println("id : " + employeeVO.getId());
+		List<String> emplRole =  userMapper.getEmployeeRole(employeeVO.getId());
+		employeeVO.setEmployeeRole(emplRole);
+
 		if(employeeVO == null) {
 			throw new UsernameNotFoundException(employeeId);
 		}

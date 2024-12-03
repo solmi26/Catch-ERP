@@ -144,14 +144,22 @@
                           header: '잔액',
                           name: 'balancem',
                           sortable: true,
-                          align: 'left'
+                          align: 'left',
+                          formatter: function (e) {
+                              const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+                              return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+                          },
                       },
                       {
                           header: '입금금액',
                           name: 'decreasePrice',
                           editor: 'text',
                           sortable: true,
-                          align: 'left'
+                          align: 'left',
+                          formatter: function (e) {
+                              const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+                              return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+                          },
                       },
                       {
                         header: '채무상태',

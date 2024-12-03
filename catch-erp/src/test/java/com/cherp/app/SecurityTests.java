@@ -14,8 +14,9 @@ public class SecurityTests {
 	
 	@Test
 	public void passwordEncoder() {
-		String pwd = "password123"; // $2a$10$P86MxK.lWRLmLpurN/7dO.hD0MaPkhxpVWeox04E2GmPD4ijClTfe
-		
+		//String pwd = "password123"; // $2a$10$P86MxK.lWRLmLpurN/7dO.hD0MaPkhxpVWeox04E2GmPD4ijClTfe
+		String pwd = "password456"; // $2a$10$e36ww.kBwlHsXk0JjylW7u/I2TtuOEAmo9Hnn/ucTAgw4.SksjBUW
+		 
 		String encPwd = passwordEncoder.encode(pwd);
 		
 		System.out.printf("변환된 값 : \n%s\n",encPwd);
