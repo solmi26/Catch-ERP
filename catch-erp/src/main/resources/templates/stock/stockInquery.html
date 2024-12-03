@@ -8,73 +8,100 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    <title>재고조회 및 관리</title>	    	    
 	    <link rel="stylesheet" th:href="@{/css/stock/stockInquery.css}" />
+	    <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
 	</head>
 	<body>
 	    <div class="container mt-4">
+	    			
 	        <!-- Header -->
-	        <div class="d-flex justify-content-between align-items-center mb-3">
-	            <h4>재고조회</h4>
-	        </div>
-	        <!-- Form -->
-	        <div class="card col-md-12">
-	          <form class="bg-light p-4 rounded card-body" id="searchForm">
-	              <div class="row g-3">
-	                  <div class="col-md-12">
-	                      <div class="row g-3">
-	                          
-	                          <div class="col-md-3">
-	                              <label class="form-label">거래처</label>
-	                              <div class="input-group">
-	                                  <input type="text" class="form-control" id="clientInput" name="clientInput">
-	                                  <input type="text" style="display:none;" class="form-control" id="clientHiddenInput" name="clientHiddenInput">
-	                                  <!-- 거래처 모달 트리거 버튼 -->
-	                                  <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-	                                  </svg></button>
-	                              </div>
-	                          </div>
-	                                                
-	                          <div class="col-md-3">
-	                            <label class="form-label">품목명</label>
-	                            <div class="input-group">
-	                                <input type="text" class="form-control" id="itemInput" name="itemInput">
-	                                <input type="text" style="display:none;" class="form-control" id="itemHiddenInput" name="itemHiddenInput">
-	                                <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#searchItemModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-	                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-	                                  </svg></button>
-	                            </div>
-	                        </div>
-	                      </div>
-	                  </div>
-	                  
-	                  <div class="col-md-6">
-	                      <label class="form-label">입력단가</label>
-	                      <div class="input-group">
-	                          <div class="price-input">
-	                              <input type="number" class="form-control" placeholder="0" name="minPrice">
-	                          </div>
-	                          <span class="input-group-text" style="border:none;">-</span>
-	                          <div class="price-input">
-	                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
-	                          </div>
-	                      </div>
-	                  </div>
-	              </div>
-	              <div style="margin-top: 10px;">
-	                <button type="button" class="btn btn-primary" id="inqueryBtn">조회하기</button>
-	              </div>
-	          </form>
-	        </div>	
-	        	        
-	        <!-- 재고조회 및 조정 페이지의 출력 될 Table -->
-	        <div class="table-responsive">
-	            <div id="wrap">
-	                <div id="inqueryGrid"> </div>
-	                <div id="pagination" class="tui-pagination"></div>
-	            </div>
-	        </div>
-		        
-	    </div>
+	        <ul class="nav nav-tabs" id="mainTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="itemList-tab" data-bs-toggle="tab"
+                        data-bs-target="#itemList" type="button" role="tab" aria-controls="itemList"
+                        aria-selected="true">재고&상품 조회</button>
+                </li>
+                 <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="#itemAnalysis-tab" data-bs-toggle="tab"
+                        data-bs-target="#itemAnalysis" type="button" role="tab" aria-controls="itemAnalysis"
+                        aria-selected="false">재고분석</button>
+                </li> 
+            </ul>
+            
+            <div class="tab-content" id="mainTabContent"> <!-- 메인탭시작 -->
+			    <div class="tab-pane fade show active" id="itemList" role="tabpanel"
+			        aria-labelledby="itemList-tab"> <!-- 첫번째 탭 시작 -->
+			        <!-- Form -->
+			        <div class="card col-md-12">
+			          <form class="bg-light p-4 rounded card-body" id="searchForm">
+			              <div class="row g-3">
+			                  <div class="col-md-12">
+			                      <div class="row g-3">
+			                          
+			                          <div class="col-md-3">
+			                              <label class="form-label">거래처</label>
+			                              <div class="input-group">
+			                                  <input type="text" class="form-control" id="clientInput" name="clientInput">
+			                                  <input type="text" style="display:none;" class="form-control" id="clientHiddenInput" name="clientHiddenInput">
+			                                  <!-- 거래처 모달 트리거 버튼 -->
+			                                  <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+			                                  </svg></button>
+			                              </div>
+			                          </div>
+			                                                
+			                          <div class="col-md-3">
+			                            <label class="form-label">품목명</label>
+			                            <div class="input-group">
+			                                <input type="text" class="form-control" id="itemInput" name="itemInput">
+			                                <input type="text" style="display:none;" class="form-control" id="itemHiddenInput" name="itemHiddenInput">
+			                                <button type="button" class="btn btn-outline-secondary mBtn" data-bs-toggle="modal" data-bs-target="#searchItemModal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+			                                  </svg></button>
+			                            </div>
+			                        </div>
+			                      </div>
+			                  </div>
+			                  
+			                  <div class="col-md-6">
+			                      <label class="form-label">입력단가</label>
+			                      <div class="input-group">
+			                          <div class="price-input">
+			                              <input type="number" class="form-control" placeholder="0" name="minPrice">
+			                          </div>
+			                          <span class="input-group-text" style="border:none;">-</span>
+			                          <div class="price-input">
+			                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
+			                          </div>
+			                      </div>
+			                  </div>
+			              </div>
+			              <div style="margin-top: 10px;">
+			                <button type="button" class="btn btn-primary" id="inqueryBtn">조회하기</button>
+			              </div>
+			          </form>
+			        </div>	
+			        	        
+			        <!-- 재고조회 및 조정 페이지의 출력 될 Table -->
+			        <div class="table-responsive">
+			            <div id="wrap">
+			                <div id="inqueryGrid"> </div>
+			                <div id="pagination" class="tui-pagination"></div>
+			            </div>
+			        </div>
+				        
+			    </div>
+		    </div> <!-- 첫번째 탭 End Point -->
+		    	
+		    <div class="tab-pane fade" id="itemAnalysis" role="tabpanel"
+        									aria-labelledby="itemAnalysis-tab"> <!-- 두번째 탭 시작 -->
+        		<div class="row">
+				     	<div id="statisticsChart"></div>
+		     	</div>	
+		     	<div class="row">
+				     	<div id="statisticsGrid"></div>
+		     	</div>
+			</div> <!-- 두번째 탭 End Point -->
+	    </div> <!-- mainTab End Point -->
 	    
 	    <!-- 거래처 검색 모달 HTML -->
 	    
@@ -122,7 +149,7 @@
 	    <!-- 거래처 상세(수정) 모달창 -->
 		<div class="modal fade" id="itemInfoModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 			    <div class="modal-dialog modal-xl ">
-			        <form method="post" th:action="@{/수정/필요}" name="updateItemForm">
+			        <form method="post" name="updateItemForm">
 			            <div class="modal-content" >
 			                <div class="modal-header">
 			                    <h5 class="modal-title" id="itemInfoModal">제품 상세</h5>
@@ -136,18 +163,19 @@
 				                                aria-selected="true">기본</button>
 				                        </li>
 				                        <!-- 안쓰면삭제 -->
-				                        <li class="nav-item" role="presentation">
+				                        <!-- <li class="nav-item" role="presentation">
 				                            <button class="nav-link" id="contract-tab" data-bs-toggle="tab"
 				                                data-bs-target="#progress" type="button" role="tab" aria-controls="contract-list"
 				                                aria-selected="false">상품추이</button>
-				                        </li>
+				                        </li> -->
 				                    </ul>
 								
 				                    <div class="tab-content mt-3" id="customerTabContent ">
-				                        <!-- 상품 상세정보 -->
+				                    
+				                        <!-- 상품 상세정보 --> <!-- 첫번째 탭 -->
 				                        <div class="tab-pane fade show active" id="info" role="tabpanel"
 				                            aria-labelledby="detail-tab">
-				                            <input type="hidden" id="clientCode" name="clientCode">
+				                            <!-- <input type="hidden" id="clientCode" name="clientCode"> -->
 				                            <div class="mb-3 row">
 				                                <label for="customerName" class="col-sm-3 col-md-6 col-form-label">거래처명[거래처코드]</label>
 				                                <div class="col-sm-6 col-md-6">
@@ -201,15 +229,11 @@
 				                                </div>
 				                            </div>
 				                            <div class="row">
-				                            	<img src = "#" height="300" width="auto" name="itemImage" class="mb-3">
-				                            	<div class="inputbox d-flex align-items-center">
-												  <label for="newImage" id="custum" class="btn btn-outline-primary">파일 첨부</label>
-												  <input type="file" id="newImage" class="form-control visually-hidden">
-												  <span id="inputbox" class="ms-3 text-secondary">선택된 파일 없음</span>
-												</div> 
+				                            	<img src = "#" height="300" width="auto" name="itemImage" class="mb-3">			            			
+												<input type="file" id="newImage">																						
 				                            </div>
-				                        </div>
-				
+				                        </div> <!-- 첫번쨰 탭 End Point -->
+										
 				                        <!-- 두번째 탭 -->
 				                        <div class="mb-3 row tab-pane fade" id="progress" role="tabpanel" aria-labelledby="contract-tab">
 				                            <!-- 계약품목 탭 내용 -->
@@ -233,7 +257,7 @@
 				                                    <button class="btn btn-outline-secondary col-sm-6 col-md-6" id="sort-trigger">정렬</button>
 				                                </div>
 				                            </div>
-				                        </div>
+				                        </div> <!-- 두번쨰 탭 End Point -->
 				                        
 				                        
 				
@@ -268,6 +292,7 @@
 								
 				            </div>
 				            <div class="modal-footer">
+				            
 				                    <button type="button" id="updateBtn" class="btn btn-success">수정</button>
 				                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				            </div>
@@ -384,10 +409,12 @@
             </div>
         </div>
     </div>    
-		 	    
+		 	        
 	<!-- pdf 파일 다운을 위한 JS -->    
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- 토스트차트 -->
+    <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
     <!-- 재고조회에 전체적용되는 JS -->
 	<script th:src="@{/js/stock/stockInquery.js}"></script>
 	</body>

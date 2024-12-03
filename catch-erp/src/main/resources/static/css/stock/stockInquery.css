@@ -148,34 +148,6 @@
 	    background-color: #ffebee !important; /* 밝은 빨강색 */
 	  }
     
-    /* 파일첨부 input 커스터마이징 */ 
-         .inputbox {
-		  position: relative;
-		}
-		
-		#newImage {
-		  display: inline-block;
-		  width: 0;
-		  height: 0;
-		  opacity: 0;
-		}
-		
-		.inputbox label {
-		  margin-bottom: 0; /* Align with text */
-		}
-		
-		.inputbox span {
-		  font-size: 0.875rem;
-		  color: #6c757d;
-		  white-space: nowrap;
-		  overflow: hidden;
-		  text-overflow: ellipsis;
-		  max-width: 250px; /* Adjust based on your layout */
-		}
-		
-		#custum:hover{
-			background-color : #cad0e7;
-		}
 	
 	/*===========================
     	StackInquery 재고조정 보고서 모달 CSS

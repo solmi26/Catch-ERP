@@ -9,7 +9,7 @@ public class TestController {
 	//YSJ TEST
 	@GetMapping("test")
 	public String testView() {
-		return "human/employeeHistoryInput";
+		return "human/attendanceElementInput";
 	}
 	// JSM TEST
 	@GetMapping("testac")
@@ -20,8 +20,8 @@ public class TestController {
 		//return "account/purchaseSlip";
 		//return "account/salesSlip";
 		// return "account/statement";
-	    return "account/modal/salesSlipModal";
-		//return "account/modal/invoicePrintModal";
+	    //return "account/modal/salesSlipModal";
+		return "account/modal/invoicePrintModal";
 		//return "account/modal/slipPrintModal";
 	}
 	// NKW TEST
