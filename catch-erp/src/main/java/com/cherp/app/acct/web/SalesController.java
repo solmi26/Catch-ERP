@@ -34,7 +34,7 @@ public class SalesController {
 	private final SalesService salesService;
 	
 	// 채권 전체 조회
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("receivable/receivableList")
 	public String receivableList(Model model) {
 		List<SalesVO> receList = salesService.receivablesList();
@@ -42,7 +42,7 @@ public class SalesController {
 		return "account/regReceReduction";
 	}
 	// 채무 전체 조회
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("payable/payablesList")
 	public String payablesList(Model model) {
 		List<PayablesVO> payList = salesService.payablesList();
@@ -184,7 +184,7 @@ public class SalesController {
 	 * 채무감소 등록을 위한 컨트롤러
 	 * 
 	 * */
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PostMapping("account/insertPayablesBalance")
 	@ResponseBody
 	public String insertPayablesBalance(@RequestBody JsonNode payables) { // JsonNode : HashMap보다 Json객체를 더 쉽게 사용할 수 있게 해줌
@@ -215,7 +215,7 @@ public class SalesController {
 		return message;
 	}
 	// 채권 감소 컨트롤러
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PostMapping("account/insertReceivableBalance")
 	@ResponseBody
 	public String insertReceivableBalance(@RequestBody JsonNode receiables) {

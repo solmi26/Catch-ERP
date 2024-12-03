@@ -21,8 +21,11 @@ public class EmployeeLoginVO{
 	private Date resignationDate; //퇴사일
 	private String hireType; //입사일
 	private String departmentCode;  //부서코드
-
+	
+	// 인사 상세
+	private Integer roleId;			// detail employee_role
 	/*Spring Security*/
 	private List<String> employeeRole; // 사원 권한
-
+	private String roleName;		// 롤 이름
+	private int id;					// employees_role PK
 }

@@ -44,7 +44,13 @@ public class SecurityController {
 	// 기본 index page 설정
 	@GetMapping("index")
 	public String goIndex() {
-		return "sales/clientList";
+		
+		return "redirect:business/clientList";
+	}
+	
+	@GetMapping("errors/access-denied")
+	public String accessDenied() {
+		return "error/accessDeniedPage";
 	}
 	
 }

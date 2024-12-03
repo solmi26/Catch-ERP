@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.security.mapper.EmployeeLoginMapper">
-	<resultMap type="EmployeeLoginVO" id="employeeInfo">
+	<!-- <resultMap type="EmployeeLoginVO" id="employeeInfo">
 		<id column="employee_id" property="employeeId"/>
 		<result column="password" property="password"/>
 		<collection property="employeeRole"
@@ -9,17 +9,26 @@
 					javaType="java.util.ArrayList">
 			<result column="role_name"/>
 		</collection>
-	</resultMap>
+	</resultMap> -->
 	
-	<select id="getEmployeeInfo" resultMap="employeeInfo" parameterType="String">
+	<select id="getEmployeeInfo"  parameterType="String" resultType="com.cherp.app.security.service.EmployeeLoginVO"><!-- resultMap="employeeInfo" -->
 		 SELECT  e.employee_code
 		 		,e.employee_id
 		        ,e.password
 		        ,er.role_name
+		        ,ed.employee_role as roleId
+		        ,er.id as id
 		 FROM   employees e  JOIN employees_detail ed 
 		                ON e.employee_code = ed.employee_code
 		                JOIN employees_role er
 		                ON ed.employee_role = er.id
 		WHERE e.employee_id = #{employeeId}
+	</select>
+	
+	<select id="getEmployeeRole" parameterType="int" resultType="string">
+		SELECT 'ROLE_'||role_name as role_name
+		FROM    employees_role
+		WHERE   id = #{id}
+		OR      parent_role = #{id}
 	</select>
 </mapper>

@@ -111,10 +111,9 @@
   <script>
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/account/bacct')
-    .then(result => result.json())
-    .then(result => {
-      //toast ui table 기본 틀 작성
+    let grid;
+
+    function makeBacctToastGrid(result) {
       const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
         el: document.querySelector('#grid'),
         data: result, // toast ui table 에 입력할 데이터값
@@ -137,7 +136,7 @@
 	              type: gridCheckbox
 	            }
 	          }
-	    ],
+	      ],
         columns: [
 		          {
 		              header: '계좌코드',
@@ -146,58 +145,57 @@
 		              align: 'center',
 		              hidden: 'true'
 		          },
-                  {
-                      header: '계좌번호',
-                      name: 'bacctNo',
-                      sortable: true,
-                      align: 'center'
-                  },
-                  {
-                      header: '계좌명',
-                      name: 'bacctName',
-                      sortable: true,
-                      filter: 'select',
-                      align: 'left'
-                  },
-                  {
-                      header: '은행명',
-                      name: 'bankName',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '적요',
-                      name: 'summary',
-                      sortable: true,
-                      align: 'left'
-                  },
-                  {
-                      header: '사용여부',
-                      name: 'useable',
-                      //formatter: 'listItemText',
-                      editor: {
-                        type: 'select',
-                        options: {
-                          listItems: [
-                            { text: '사용중', value: '사용중'},
-                            { text: '사용중지', value: '사용중지'}
-                          ]
-                        }
-                      }
+              {
+                  header: '계좌번호',
+                  name: 'bacctNo',
+                  sortable: true,
+                  align: 'center'
+              },
+              {
+                  header: '계좌명',
+                  name: 'bacctName',
+                  sortable: true,
+                  filter: 'select',
+                  align: 'left'
+              },
+              {
+                  header: '은행명',
+                  name: 'bankName',
+                  sortable: true,
+                  align: 'left'
+              },
+              {
+                  header: '적요',
+                  name: 'summary',
+                  sortable: true,
+                  align: 'left'
+              },
+              {
+                  header: '사용여부',
+                  name: 'useable',
+                  //formatter: 'listItemText',
+                  editor: {
+                    type: 'select',
+                    options: {
+                      listItems: [
+                        { text: '사용중', value: '사용중'},
+                        { text: '사용중지', value: '사용중지'}
+                      ]
+                    }
                   }
-              ]
+              }
+          ]
       });
+    }
+    fetch('/api/account/bacct')
+    .then(result => result.json())
+    .then(result => {
+      //Bacct Grid
+      makeBacctToastGrid(result);
       // js로 모달창을 열어야 할 경우 모달을 변수에 등록하여 show(), hide()를 활용해 열/닫기 구현
       const addAccountModal = new bootstrap.Modal(document.querySelector('#accountAddModal')); // 상품 상세(수정) 모달
       const detailAccountModal = new bootstrap.Modal(document.querySelector('#accountDetailModal')); // 상품 상세(수정) 모달
-      // 단축키 등록
-      document.addEventListener('keydown', (event) => {
-        
-        if(event.key === 'F2') {
-          event.preventDefault();
-          document.querySelector('#newAcc').click();
-        }
-      });
+
 
       document.querySelector('#newAcc').addEventListener('click', function () { // 신규생성모달 초기화
         document.querySelector('#bacctNo').value = '';

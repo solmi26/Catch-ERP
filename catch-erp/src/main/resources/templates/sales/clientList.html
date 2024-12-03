@@ -416,6 +416,27 @@
             table.setSort(fieldEl.options[fieldEl.selectedIndex].value, dirEl.options[dirEl.selectedIndex].value);
         });
 
+        //ClientItemToastGrid img custom renderer
+        class CustomImgRenderer {
+            constructor(props) {
+                const el = document.createElement('img');
+                const src = props.columnInfo.renderer.options;
+                el.src = String(src);
+
+                this.el = el;
+                el.style = 'height:50px;'
+                this.render(props);
+            }
+
+            getElement() {
+                return this.el;
+            }
+
+            render(props) {
+                // you can change the image link as changes the `value`
+                this.el.src = '/images/'+String(props.value);
+            }
+        }
         function makeClientItemToastGrid(clientContractItemList) {
             let grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
             el: document.querySelector('#contractItemGrid'),
@@ -454,31 +475,49 @@
                             name: 'price',
                             filter: 'select',
                             sortable: true,
-                            align: 'left'
+                            align: 'left',
+                            formatter: function (e) {
+                                const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+                                return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+                            },
                         },
                         {
                             header: '부가세',
                             name: 'vat',
                             sortable: true,
-                            align: 'left'
+                            align: 'left',
+                            formatter: function (e) {
+                                const value = e.value !== undefined && e.value !== null ? e.value : 0;
+                                return Number(value).toLocaleString() + "원";
+                            },
                         },
                         {
                             header: '총 금액',
                             name: 'totalPrice',
                             sortable: true,
-                            align: 'left'
+                            align: 'left',
+                            formatter: function (e) {
+                                const value = e.value !== undefined && e.value !== null ? e.value : 0;
+                                return Number(value).toLocaleString() + "원";
+                            },
                         },
                         {
                             header: '재고 수량',
                             name: 'stocksQuantity',
                             sortable: true,
-                            align: 'left'
+                            align: 'left',
+                            formatter: function (e) {
+                                const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+                                return String(value).toLocaleString() + "개"; // 문자열로 변환 후 포맷팅
+                            },
                         },
                         {
                             header: '이미지',
                             name: 'image',
-                            sortable: true,
-                            align: 'left'
+                            align: 'left',
+                            renderer: {
+                                type: CustomImgRenderer,
+                            }
                         },
                     ],
             });                                                                                                                                                                                                                                                      
@@ -490,6 +529,13 @@
             else { return true; }
         }
         
+        function clearGrid() {
+            let getChild = document.getElementById('contractItemGrid');
+            if(getChild.childNodes.length > 1) {
+                getChild.removeChild(getChild.childNodes[1]);
+            }
+        }
+
         function fetchClientCode(clientCode) {
             console.log(clientCode);
             fetch('/api/business/clientDetail/' + clientCode)
@@ -499,6 +545,8 @@
                 let clientContractItemList = clientTotalInfo.clientContractItemList; // 클라이언트 계약 품목 목록
                 console.log(clientContractItemList);
 
+                
+                
                 contractGrid = makeClientContractTabulator(clientContractList);
                 contractItemGrid = makeClientItemToastGrid(clientContractItemList);
 
@@ -586,6 +634,13 @@
             }).open();
         }
         
+        function refreshToastGrid() {
+            window.setTimeout(function(){
+                contractItemGrid.refreshLayout();
+            }, 200)
+            document.querySelector('#updateClientInfo').setAttribute('hidden','');
+        }
+        
         document.addEventListener('DOMContentLoaded', function () {
             
             // 우편번호 검색 이벤트(Daum Api)
@@ -602,21 +657,19 @@
 
             // 계약 탭 클릭할 시 수정 버튼 hidden처리
             document.querySelector('#contract-tab').addEventListener('click',function () {
-                window.setTimeout(function(){
-                    contractItemGrid.refreshLayout();
-                }, 200)
-                document.querySelector('#updateClientInfo').setAttribute('hidden','');
+                // 중복생성 그리드 제거
+                clearGrid();
+                refreshToastGrid();
             })
 
             // 모달 - 품목 탭 클릭 -> toastGrid 새로고침 , button type hidden
             document.querySelector('#contractItem-tab').addEventListener('click',function () {
-                window.setTimeout(function(){
-                    contractItemGrid.refreshLayout();
-                }, 200)
-                document.querySelector('#updateClientInfo').setAttribute('hidden','');
+                // 중복생성 그리드 제거
+                clearGrid();
+                refreshToastGrid();
             })
 
-            // 유효성 검사
+            // 유효성 검사 (미사용)
             function validation() {
                 /**
                  * @을 기준으로 앞 구간이 알파벳 or 숫자 조합으로 이루어져 있는지 체크
