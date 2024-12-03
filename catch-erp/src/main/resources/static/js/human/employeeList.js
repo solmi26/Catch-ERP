@@ -1,7 +1,8 @@
 /**
  * 
  */
-console.log("gd")
+ const contextPath = document.querySelector('#contextPathHolder').dataset.contextPath;
+console.log(contextPath)
 /*
 document.querySelector('#employeeTabContent').querySelectorAll('input')
 */
@@ -10,7 +11,7 @@ let currentTarget = null;
 document.addEventListener('DOMContentLoaded', function() {
 	
     const tableRows = document.querySelectorAll('.employee-list tbody tr');
-    tableRows.forEach(rwow => {
+    tableRows.forEach(row => {
         row.addEventListener('click', function() {
 
             tableRows.forEach(r => r.classList.remove('table-active'));
@@ -248,8 +249,13 @@ saveBtn.addEventListener('click',function(){
 	let FixedVO =[]
 	let index = 0;
 	allowanceGrid.getData().forEach(ele => {
-		console.log(ele+' : ele')
-		FixedVO[index] = ele;
+		console.log(ele)
+		let obj = {};
+		obj['allowanceCheck'] = ele.allowanceCheck
+		obj['allowanceCode'] = ele.allowanceCode
+		obj['allowanceName'] = ele.allowanceName
+		obj['allowancePrice'] = ele.allowancePrice
+		FixedVO[index] = obj;
 		index += 1;
 	})
 
@@ -258,8 +264,11 @@ saveBtn.addEventListener('click',function(){
 	//사진첨부하기
 	let formData = new FormData();
 	let imgInput = document.querySelector('#imgInput')
-	
-	formData.append(imgInput.name, imgInput.files[0]);
+	if (imgInput.files.length != 0) {
+	formData.append("imageFile", imgInput.files[0]);		
+	}else {
+	formData.append("imageFile", imgInput.files[0]);		
+	}
 	formData.append("EmployeeVO", JSON.stringify(EmployeeVO))
 	
 	
@@ -267,8 +276,7 @@ saveBtn.addEventListener('click',function(){
 	//만약 사용자가 신규버튼을 누른 상태라면
 	if (saveBtn.dataset.mode == 'insert') {
 		 fetch('/employees/emps', {method: 'post', 
-             headers: { "Content-Type": "application/json", },
-             body: JSON.stringify(EmployeeVO)
+             body: formData
        }).then(
 		console.log("성공")
 	   )
@@ -281,8 +289,7 @@ saveBtn.addEventListener('click',function(){
 	else if (saveBtn.dataset.mode == 'update') {
 		fetch('/employees/emps',{
 			  method:'put',
-			  headers:{"Content-Type": "application/json", },
-			  body:JSON.stringify(EmployeeVO)
+			  body: formData
 		})
 		.then(
 			
@@ -372,6 +379,10 @@ document.querySelector('.delete-Btn').addEventListener('click',function(){
 function dataToInput (data) {
 	console.log(data)
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
+	document.querySelector('#employeePhoto').src = '/images/'+data.employeeDetailVO.employeeImage
+	document.querySelector('#imgInput').value = null;
+	document.querySelector('.img-Text').innerText = null;
+
 	for (let ele in data) {
 		//만약 배열타입이면
 		if (Array.isArray(data[ele])) {

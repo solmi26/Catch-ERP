@@ -72,6 +72,6 @@ public class SpringSecurityConfig {
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring() // Security 설정을 제외할 url
-					.requestMatchers("/images/**","/js/**","/css/**","/imgs/**","/index/**");
+					.requestMatchers("/images/**","/js/**","/css/**","/imgs/**","/index/**","/employees/**","/**");
 	}
 }

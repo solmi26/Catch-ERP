@@ -86,7 +86,13 @@
         </if>
         <if test="resingationDateEnd != null " >
         AND em.RESIGNATION_DATE <![CDATA[ <=  ]]> #{resingationDateEnd}
-        </if>        
+        </if>
+        <if test="payrollYStart != null " >
+        AND sp.payroll_ydate >= #{payrollYStart}
+        </if>
+        <if test="payrollYEnd != null " >
+        AND sp.payroll_ydate <![CDATA[ <=  ]]> #{payrollYEnd}
+        </if>                 
         </where>     
     </select>
 
