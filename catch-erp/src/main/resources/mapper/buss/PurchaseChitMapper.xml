@@ -21,7 +21,8 @@
 
     <!-- 계약품목리스트 조회-->
     <select id="selectContractItem" resultType="com.cherp.app.stck.vo.ContractItemVO">
-        SELECT item_name,
+        SELECT item_code,
+               item_name,
                price,
                stocks_quantity,
                supply_price,
@@ -128,16 +129,20 @@
     <!-- 구매전표별 구매내역 보기-->
     <select id="selectPurchaseHistory" resultType="com.cherp.app.buss.vo.PurchaseHistoryVO">
         SELECT
+            b.pur_no,
             a.purcslip_no,
             a.supply_price,
             a.vat,
-            b.wh_name,
             b.item_name,
+            b.quantity,
             b.restocking_price,
-            b.restocking_status,
-            b.restocking_date
+            FIND_CODE(b.restocking_status) restocking_status,
+            b.restocking_date,
+            c.wh_name
         FROM purchase_chit a JOIN purchase_history b
         ON a.purcslip_no = b.purcslip_no
+        JOIN warehouse c
+        ON c.wh_code = b.wh_code
         WHERE a.purcslip_no = #{purcslipNo}
     </select>
 	
