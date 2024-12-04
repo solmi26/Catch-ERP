@@ -73,17 +73,31 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 	.then(data => data.json())
 	.then(data => {
 		data.forEach(ele => {
-			deduItem = ["employmentInsurance","healthInsurance","incomeTax","leaveRate","localTax",""]
-			let index = ele.allowanceHistoryVO.length + 3 > 5 ? ele.allowanceHistoryVO.length + 2 : 4 
-			let arr = []
-			arr.push(`<td>연장근무</td><td>${ele.overtimeAllowance}</td>`)
-			arr.push(`<td>야간근무</td><td>${ele.nightAllowance}</td>`)
-			arr.push(`<td>주말근무</td><td>${ele.weekendAllowance}</td>`)
+			deduItem = [{"employmentInsurance":ele.employmentInsurance},{"healthInsurance":ele.healthInsurance},{"incomeTax":ele.incomeTax},
+			{"leaveRate":ele.leaveRate},{"localTax":ele.localTax}]
 			
+			ary = deduItem;
+			let index = ele.allowanceHistoryVO.length > 3 ? ele.allowanceHistoryVO.length : 3 
+			let arr = []
+			arr.push(`<td>연장근무</td><td>${ele.overtimeAllowance}</td>소득세<td></td><td>${ele.incomeTax}</td>`)
+			arr.push(`<td>야간근무</td><td>${ele.nightAllowance}</td></td>지방세<td></td><td>${ele.localTax}</td>`)
+			arr.push(`<td>주말근무</td><td>${ele.weekendAllowance}</td></td>건강보험료<td></td><td>${ele.healthInsurance}</td>`)
+			let seq = 0;
 			ele.allowanceHistoryVO.forEach(comp => {
-				arr.push(`<td>${comp.allowanceName}</td><td>${comp.allowancePrice}</td>`)			
+				let td = `<td>${comp.allowanceName}</td><td>${comp.allowancePrice}</td>`
+				if (seq = 0) {
+					
+				} else if (seq = 1) {
+					
+				} else if (seq = 2) {
+				
+				} else {
+					
+				}
+				seq += 1;	
 			})
-			ary = arr
+			
+			
 			console.log(arr)
 			
 			printBody = ``
