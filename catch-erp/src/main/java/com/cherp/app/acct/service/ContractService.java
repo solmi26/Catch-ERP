@@ -8,7 +8,7 @@ import com.cherp.app.stck.vo.ContractItemVO;
 public interface ContractService {
 
 	//추가
-	// 매입 단가 계약 등록(HEADER)
+	// 매입 단가 계약 등록
 	public void insertContract(ContractItemVO conVO);			
 
 }
