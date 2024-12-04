@@ -59,6 +59,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
+    // 출고상태에 따른 그리드 색상 변화
+    function sortColor(){
+        saleslipHistory.getData().forEach((row) => {
+            let check = row.deliveryStatus;
+            if (check === '미완료') {
+                saleslipHistory.addRowClassName(row.rowKey, 'increase');
+            } else if(check === '완료') {
+                saleslipHistory.addRowClassName(row.rowKey, 'decrease');
+            }
+        });
+    }
+
     /*============================
              판매 내역 그리드
     ==============================*/
@@ -186,9 +198,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             let saleSlip = salesChit.getValue(ev.rowKey, 'saleslipNo');
 
+            // 판매내역 조회
             fetch('/sales/selectSaleslip/' + saleSlip)
                 .then(result => result.json())
-                .then(data => saleslipHistory.resetData(data))
+                .then(data => {
+                    saleslipHistory.resetData(data)
+                    sortColor()
+                })
                 .catch(error => alert('판매전표별 내역을 불러오지 못했습니다.'))
 
             window.setTimeout(function () {
@@ -450,7 +466,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             el: document.getElementById("itemGrid"),
             scrollX: true,
             scrollY: true,
-            data: clientData,
+            data: [],
             header: {height: 40},
             bodyHeight: 500,
             width: 'auto',
@@ -460,9 +476,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
             columns: [{
                 header: '품목코드',
-                name: 'itemGrid',
+                name: 'itemCode',
                 align: "center",
-                width: 183,
+                width: 225,
                 whiteSpace: 'normal',
                 className: 'border',
                 renderer: {
@@ -472,14 +488,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '품목명',
                 name: 'itemName',
-                hidden: true,
                 align: "center",
-                width: 100,
+                width: 225,
                 whiteSpace: 'normal',
                 className: 'border',
-                filter: 'select'
             },]
         });
+
+        window.setTimeout(function () {
+            fetch('/purchase/contractItem')
+                .then(result => result.json())
+                .then(data => itemGrid.resetData(data))
+                .catch(error => console.log(error))
+        }, 200)
 
         //거래처 input
         itemGrid.on("click", (ev) => {
@@ -488,7 +509,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (itemGridRowData && itemGridRowData.itemName) {
                 // 특정 열(columnName)의 값 가져오기
                 // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
-                document.getElementById('inputClientName').value = itemGridRowData.itemName;
+                document.getElementById('inputItemName').value = itemGridRowData.itemName;
             }
         });
         return itemGrid;
