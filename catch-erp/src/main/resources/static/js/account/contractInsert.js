@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 	      },
 	    ], 
-	    data: [{},{},{}],
+	    data: [{}],
 	 
 	  rowHeaders: [
 	        {
@@ -130,6 +130,96 @@ document.addEventListener("DOMContentLoaded", function () {
       grid.setValue(rowKey, 'vat', vat);
     }
   });
+  
+  // 저장 버튼. 매입 계약 등록.
+  document.getElementById('save-btn').addEventListener("click", function(){
+	console.log("저장 버튼 이벤트")
+	
+	// 폼 데이터 필수 값 입력 확인(계약일자, 계약명, 거래처)
+	const contractDate = document.getElementById('contract-date').value.trim();
+	const contractName = document.getElementById('contract-name').value.trim();
+	const clientCode = document.getElementById('c_clientInput2').value.trim();
+	
+	const missingFields = [];
+	if (!contractDate) missingFields.push('계약일자');
+	if (!contractName) missingFields.push('계약명');
+	if (!clientCode) missingFields.push('거래처');
+
+	if (missingFields.length > 0) {
+	    alert(`${missingFields.join(', ')}은(는) 필수 입력 값입니다.`);
+	    return; // 서버로 전송X
+	}
+	
+	// 그리드 데이터 수집 및 필수 값 입력 확인(품목명, 단가)
+	const gridData = grid.getData(); // 전체 그리드 데이터
+	const invalidRows = []; // 누락된 데이터 정보를 저장할 배열
+
+	gridData.forEach((row, index) => {
+	    const missingFields = [];
+	    if (!row.itemName) missingFields.push('품목명');
+	    //if (!row.price || row.price <= 0) missingFields.push('단가'); -> 단가는 0원 일 경우가 발생할 수도 있을 것 같아서 제외 함.
+	    
+	    if (missingFields.length > 0) {
+	        invalidRows.push(`${index + 1}행의 ${missingFields.join(', ')}이 누락되었습니다.`);
+	    }
+	});
+
+	// 누락된 데이터 확인
+	if (invalidRows.length > 0) {
+	    //alert(`※ 품목 데이터를 확인해주세요.\n\n${invalidRows.join('\n')}`);
+		alert(`${invalidRows.join('\n')}`);
+	    return; // 서버로 전송하지 않음
+	}
+
+	// 유효한 데이터만 필터링
+	const validGridData = gridData.filter(row => row.itemName && row.price > 0);
+	
+	// 데이터 받아오기
+	const contractData = {
+		 conDate: document.getElementById('contract-date').value, // 계약일자
+		 conNo: document.getElementById('contract-code').value, // 계약번호
+		 conName: document.getElementById('contract-name').value, // 계약명
+		 clientCode: document.getElementById('c_clientInput2').value, // 거래처
+		 conSdate: document.getElementById('billing-start-date').value, // 계약시작일
+		 conEdate: document.getElementById('billing-end-date').value, // 계약종료일
+		 status: document.getElementById('status').value, // 계약상태
+		 emoployeeCode: document.getElementById('c_empCode').value, // 담당자 코드
+		 emoloyeeName: document.getElementById('c_empName').value, // 담당자 이름
+		 summary: document.getElementById('description').value, // 적요
+		 writer: "차은우", // 작성자
+		 detailContraceVO:validGridData // 그리드 데이터를 detailContraceVO로 추가(디테일 테이블 추가용)
+	};
+
+	const fileInput = document.getElementById('attachment-file');
+	const file = fileInput.files[0]; // 첨부파일
+	const formData = new FormData();
+	
+	// Form 데이터에 데이터 추가
+	formData.append('contract', new Blob([JSON.stringify(contractData)], { type: 'application/json' }));
+	if (file) {
+	    formData.append('file', file); // 첨부파일 추가
+	}
+	
+	// 서버로 데이터 전송
+    fetch('/sales/insertContract', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('등록 실패');
+        }
+        return response.text();
+    })
+    .then(result => {
+        alert('등록 성공: ' + result);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('등록 실패: ' + error.message);
+    });
+});
+	
 	
   // 전체 모달 관련
   class ButtonRenderer {
