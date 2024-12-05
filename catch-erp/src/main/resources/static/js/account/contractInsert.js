@@ -229,6 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .then(result => {
         alert('등록 성공: ' + result);
+		loadGrid(); // 그리드 재로드
+		
     })
     .catch(error => {
         console.error('Error:', error);
