@@ -4,6 +4,11 @@ import org.springframework.stereotype.Service;
 
 import com.cherp.app.common.myPage.mapper.MyPageMapper;
 import com.cherp.app.empl.vo.EmployeeVO;
+import com.cherp.app.stck.web.StocksController;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Service
 public class MyPageServiceImpl implements MyPageService {
@@ -14,10 +19,6 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 	
 	
-	//시큐리티 세션에서 얻은 회원아이디로 회원이름, 이미지 조회함
-	@Override
-	public EmployeeVO getEmployeeInfo(String employeeName) {
-		return myPageMapper.selectEmployeeInfo(employeeName);
-	}
+	
 
 }

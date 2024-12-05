@@ -7,13 +7,7 @@
     <meta charset="UTF-8" />
   <title>마이페이지</title>
   <style>
-  @media (max-width: 1200px) {
-	    .static-width {
-	        width: 800px !important; /* 원하는 고정 너비 설정 */
-	        max-width: 800px;        /* 반응형 디자인을 방지 */
-	    }
-  }
-</style>
+  </style>
   </head>
   		<div class="bg-white shadow-sm rounded" style="padding: 20px;" >
 	        
@@ -48,17 +42,17 @@
 			         	
 			         	<div class="row g-3">
                                         <div class="col-md-4 text-center">
-                                            <img src="/placeholder.svg?height=100&width=100" alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">
-                                            <!--  <input type="file" class="form-control form-control-sm" id="photoUpload" accept="image/*">-->
+                                            <img src="/placeholder.svg?height=100&width=100" width="160" height="250" style="background-color:green;" alt="사원 프로필 사진" class="employee-photo mb-2" id="employeePhoto">
+                                            <input type="file" class="form-control form-control-sm" id="photoUpload">
                                         </div>
                                         <div class="col-md-8 ">
-                                                    	<input type="hidden" class="form-control form-control-sm EmployeeVO" name="employeeCode" onkeypress="return false;" style="caret-color: transparent !important;">
+                                                    	<input type="hidden" class="form-control form-control-sm EmployeeVO"  name="employeeCode" onkeypress="return false;" style="caret-color: transparent !important;">
                                         	<div class="row mb-1">
                                                 	<div class="col-sm-3 col-lg-5 col-md-4 pe-0">
                                                     	<label class="form-label">사원아이디</label>
                                                     </div>
                                                     <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                    	<input type="text" class="form-control form-control-sm EmployeeVO" name="employeeId" onkeypress="return false;" style="caret-color: transparent !important;">
+                                                    	<input type="text" class="form-control form-control-sm EmployeeVO"  th:value="${employeeVO.employeeId}" readonly name="employeeId" onkeypress="return false;" style="caret-color: transparent !important;">
                                                     </div>
                                                 </div>
                                             <div class="row mb-1">
@@ -66,7 +60,7 @@
                                             	      <label class="form-label">성명</label>
                                             	    </div>  
                                             	    <div class="col-md-8 col-sm-9 col-lg-7 ps-0">  
-                                          	    	  <input type="text" class="form-control form-control-sm EmployeeVO" name="name" required>
+                                          	    	  <input type="text" class="form-control form-control-sm EmployeeVO" name="name" readonly>
     	                                            </div>
     	                                    </div>
     	                                   	<div class="row mb-1">    
@@ -74,40 +68,26 @@
                                                     <label class="form-label">외국어성명</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="engName" required>
+                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="engName" readonly>
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">주민등록번호</label>
+                                                    <label class="form-label">생년월일</label>
                                                 </div>
-                                                <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="identityNo" required>
+                                                <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
+                                                	<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="identityNo" readonly>
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">부서코드</label>
+                                                    <label class="form-label">부서명</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                	<select class="form-select form-select-sm EmployeeVO" name="departmentCode" required>
-							                    		<th:block th:each="dept : ${deptList}">
-							                    			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
-							                    		</th:block>
-                                            		</select>    
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="departmentCode" >
                                                 </div>
                                             </div>
-                                            <div class="row mb-1 mb-sm-0 ">
-                                                <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">세대주여부</label>
-                                                </div>
-                                                <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                    <select class="form-select form-select-sm EmployeeDetailVO" name="headCheck" required>
-                                                    	<option value="o">o</option>
-                                                    	<option value="x">x</option>
-                                            		</select>
-                                                </div>
-                                            </div>
+                              
                                             
                                         </div>
                                         <!-- 사진밑 -->
@@ -117,11 +97,7 @@
                                            			<label class="form-label">직위/직급</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeVO" name="employeePosition" required>
-							                    		<th:block th:each="com : ${comList}">
-							                    			<option  th:if="${com.commonCode eq '0H'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-							                    		</th:block>
-                                            		</select>
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="employeePosition" >
                                             	</div>
                                             </div>
                                         </div>
@@ -131,11 +107,7 @@
                                             		<label class="col-form-label-sm">직책</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="duty" required>
-                                            		    <th:block th:each="com : ${comList}">
-							                    			<option  th:if="${com.commonCode eq '0K'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-							                    		</th:block>
-                                            		</select>
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="duty" >
                                             	</div>
                                         	</div>
                                         </div>
@@ -146,7 +118,7 @@
                                            			<label class="form-label">전화번호</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="tel" required>
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="tel" >
                                             	</div>
                                             </div>
                                         </div>
@@ -156,7 +128,7 @@
                                             		<label class="col-form-label-sm">모바일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="phone" required>
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="phone" >
                                             	</div>
                                         	</div>
                                         </div>
@@ -166,7 +138,7 @@
                                            			<label class="form-label">이메일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email" required>
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email" >
                                             	</div>
                                             </div>
                                         </div>
@@ -176,61 +148,29 @@
                                             		<label class="col-form-label-sm">재직구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeVO" name="statusType" required>
-                                            			<th:block th:each="com : ${comList}">
-							                    			<option  th:if="${com.commonCode eq '0M'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-							                    		</th:block>
-                                            		</select>
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email" readonly>
                                             	</div>
                                         	</div>
                                         </div>
-                                        <div class="col-md-6 mt-1">
-                                        	<div class="row">
-                                        		<div class="col-md-4 col-sm-3 col-lg-5 col-xl-4 pe-0 ">
-                                           			<label class="form-label">입사구분</label>
-                                            	</div>
-                                            	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeVO" name="hireType" required>
-                                            			<th:block th:each="com : ${comList}">
-							                    			<option  th:if="${com.commonCode eq '0L'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-							                    		</th:block>
-                                            		</select>
-                                            	</div>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-md-6 mt-1">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-4 col-xl-4 pe-0 ps-lg-0 ">
                                             		<label class="col-form-label-sm">입사일자</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="date" class="form-control form-control-sm EmployeeVO " name="hireDate" required>
+                                            		<input type="text" class="form-control form-control-sm EmployeeVO " name="hireDate" readonly>
                                             	</div>
                                         	</div>
                                         </div>
-                                        <div class="col-md-6 mt-1">
-                                        	<div class="row">
-                                        		<div class="col-md-4 col-sm-3 col-lg-5 col-xl-4 pe-0 ">
-                                           			<label class="form-label">재직상태</label>
-                                            	</div>
-                                            	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="empStatus" required>
-														<option value="" >해당없음</option>
-														<th:block th:each="com : ${comList}">
-							                    			<option  th:if="${com.commonCode eq '0J'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-							                    		</th:block>
-														
-                                            		</select>
-                                            	</div>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="col-md-6 mt-1">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-4 col-xl-4 pe-0 ps-lg-0 ">
-                                            		<label class="col-form-label-sm">퇴사일자</label>
+                                            		<label class="col-form-label-sm">근속년수</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="date" class="form-control form-control-sm EmployeeDetailVO" name="resignationDate">
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="resignationDate" readonly>
                                             	</div>
                                         	</div>
                                         </div>
@@ -242,15 +182,13 @@
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소" name="detailAddress" onkeypress="return false;" style="caret-color: transparent !important;"  required>
                                         </div>
                                     </div>
-                                    
-                                
+                                    <div class="mt-3 text-end col-md-12">
+		                            	<button type="button" class="btn btn-primary btn-sm" id="saveBtn" data-mode="insert">수정</button>
+		                     		</div>
                             </div>
-			         	
+			         		
 			         </div> <!-- 첫번째 탭 Box End point -->
-			         <div class="mt-3 text-end col-md-8">
-                            <button type="button" class="btn btn-primary btn-sm" id="saveBtn" data-mode="insert">수정</button>
-                            
-                     </div>
+			         
 			        
 	        	</div> <!-- 첫번째 탭 End Point -->
 	        	

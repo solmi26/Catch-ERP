@@ -151,7 +151,7 @@
         JOIN    fixed fx        ON      em.employee_code = fx.employee_code
         JOIN    allowance_item ai        ON      fx.allowance_code = ai.allowance_code
         JOIN    common_code cc          ON ed.bank = cc.code_rule
-
+		
 		WHERE   em.employee_code = #{employeeCode}
 		
 	</select>

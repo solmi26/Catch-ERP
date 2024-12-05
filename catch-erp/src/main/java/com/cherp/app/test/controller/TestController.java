@@ -34,10 +34,6 @@ public class TestController {
 		return "stock/stockInquery";
 	}
 	
-	@GetMapping("testMyPage")
-	public String testMyPage() {
-		return "index/main/myPage";
-	}
 	// SGW TEST
 	@GetMapping("test1")
 	public String testView2() {

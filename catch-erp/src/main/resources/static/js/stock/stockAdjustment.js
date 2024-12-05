@@ -1161,7 +1161,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		user.innerHTML = userName.value + "님 환영합니다.";
 		console.log(reporter);
 		reporter.innerText = userName.value;
-		reporter2.innerHTML = "성명: " + userName.value;	
+		reporter2.innerText = "성명: " + userName.value;	
 		
 		//일자에 값넣기
 		let inputDate = document.querySelectorAll('.inputDate');

@@ -76,15 +76,17 @@
 	  /* 헤더 CSS작업 (건우) */
 	  .kwn {
 	  	border-radius: 3px;
-	    transition: background-color 1.5s ease;
+	    transition: background-color 0.5s ease;
+	    
 	  }
 		
 	  .kwnFont{
 	  	transition: background-color 0.3s ease;
+	  	
 	  }	
 	  .kwnFont:hover{
 	  	color:white;
 	  }
 	  .kwn:hover {
-		background-color: brown;
+		background-color: #E3F6CE;
 	   }

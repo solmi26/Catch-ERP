@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
   	let reporter = document.querySelector('.reporter');
   	let reporter2 = document.querySelector('.reporter2');
     let userName = document.querySelector('#employeeName');			
-
+	console.log(userName)
 	reporter.innerText = userName.value;
 	reporter2.innerText = "성명: " + userName.value;
         
