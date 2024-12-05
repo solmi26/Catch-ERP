@@ -79,6 +79,39 @@
 		.scroll-x {
 			overflow:auto;
 		}
+		#payrollPrintModal table {
+		  width:800px;
+		  
+		
+		}
+		#payrollPrintModal table, td, th {
+		border : 2px solid black;
+		border-collapse : collapse;
+		text-align: center;
+		padding:8px;
+		}
+		#payrollPrintModal table {
+		border: 3px solid black;
+		}
+		#payrollPrintModal .background-payment{
+		background-color: rgb(216, 216, 216);
+		font-weight: 500;
+		}
+		#payrollPrintModal .bold-color {
+		background-color:rgb(20, 78, 38);
+		font-size: large;
+		color:white;
+		}
+		#payrollPrintModal tfoot {
+		border-top: 3px solid black;
+		
+		}
+		#payrollPrintModal .modal-body  {
+		margin:0 auto;}
+		#print-content{ 
+			overflow:auto;
+			max-height:700px;
+		}
 </style>
 <title>Insert title here</title>
 </head>
@@ -88,7 +121,7 @@
         <!--  세부 검색 구역 -->
       <div class="card mb-4 bg-white">
         <div class="card-body bg-light">
-        <h3>사원정보</h3>
+        <h3>급여정보</h3>
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
@@ -132,7 +165,7 @@
                   		</div>
                 		<div class="col">
 		                	<select class="form-select input-width-150 search-option" name="departmentCode">
-	                    		<option value="">전체</option>
+		                		<option value="">전체</option>
                     		<th:block th:each="dept : ${deptList}">
                     			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
                     		</th:block>
@@ -186,7 +219,7 @@
             <!-- 4행 시작 -->
             <!-- between으로 각 콘텐츠를 양끝에둠 -->
             <div class="row justify-content-between  mb-2">
-           		<div class="col ">
+           		<div class="col-xl">
 	           		<div class="row ">
               	  		<div class="col-auto ">
                   			<label class="form-label me-2 mb-0 label-width">성명</label>
@@ -195,36 +228,27 @@
                   			<input type="text" class="form-control input-width-200 search-option" name="employeeName" placeholder="성명" />
                   		</div>
                   	</div>
+                 </div>
+                 <div class="col"> 	
+                  	<div class="row">
+		              	<div class="col-auto">                    
+ 			               	<label class="form-label me-2 mb-0 label-width">근태일자</label>
+    		              	<input type="month" class="search-option" name="payrollYStart">
+  		  	                <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
+        		          	<input type="month" class="search-option" name="payrollYEnd">                    
+    		          	</div>
+                  	</div>
                 </div>
             </div>
-            <div class="row justify-content-between">
-            	<div class="col">
-            		<div class="row">
-            			<div class="col-auto">
-		                	<label class="form-label me-2 mb-0 label-width">귀속연월</label>
-            			</div>
-            			<div class="col-auto">
-		                  	<input type="month" class="search-option" name="payrollYStart">
-            			</div>
-            			<div class="col-auto">
-		                    <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
-            			</div>
-            			<div class="col-auto">
-		                  	<input type="month" class="search-option" name="payrollYEnd">                    
-            			</div>
-            		</div>                    
-              	</div>
-                <div class="col-auto">
-                	<div class="row justify-content-end">
-                		<div class="col-auto">
-	                        <button type="button" class="btn btn-primary search-btn">검색</button>
-                		</div>
+            <!-- 4행끝 -->
+            <div class="row justify-content-end">
+                <div class="col-auto row justify-content-end">
+                	<div class="col">
+                        <button type="button" class="btn btn-primary search-btn">검색</button>
                     </div>
                 </div>
-            			
-            	</div>
-            
             </div>
+          </form>
         </div>
       </div>
 			<!--  세부 검색 구역 끝!!!! -->
@@ -248,7 +272,7 @@
 					<div class="row">
 						<div class="col">
 							<button type="button" class="btn btn-sm btn-secondary">Excel</button>
-							<button type="button" class="btn btn-sm btn-secondary">인쇄</button>
+							<button type="button" class="btn btn-sm btn-secondary printModal-Btn">인쇄</button>
 						</div>				
 					</div>
 				</div>
@@ -268,10 +292,6 @@
                 <div class="modal-header">
                     <h5 class="modal-title">급여내역수정</h5>
                     <div class="action-buttons">
-                        <button class="btn btn-light btn-sm" title="새창"><i class="bi bi-box-arrow-up-right"></i></button>
-                        <button class="btn btn-light btn-sm" title="새로고침"><i class="bi bi-arrow-clockwise"></i></button>
-                        <button class="btn btn-light btn-sm" title="최소화"><i class="bi bi-dash-lg"></i></button>
-                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -297,6 +317,31 @@
         </div>
     </div>
 <!-- 급여수정내역 모달 -->
+<!-- 인쇄모달 -->
+    <div class="modal fade" id="payrollPrintModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">급여명세서</h5>
+
+                </div>
+                <div class="modal-body">
+<!-- 인쇄내용시작 -->
+<div id="print-content">
+
+</div>
+
+<!-- 인쇄내용끝 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">인쇄</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 인쇄모달끝!!! -->
+
 	<script th:src='@{/js/common/deleteRowBtn.js}'></script>	
 	<script th:inline="javascript">
 		const Grid = tui.Grid;
@@ -443,6 +488,10 @@
 	      });
 	    
 	</script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script th:src='@{/js/human/modal/payrollPrintModal.js}'></script>	
 	<script th:src='@{/js/human/modal/salModifyModal.js}'></script>
 	<script th:src="@{/js/human/paymentList.js}"></script>
 </body>

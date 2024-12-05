@@ -16,6 +16,7 @@ public class RestOrdersController {
         this.ordersService = ordersService;
     }
 
+    // 발주서 조회
     @GetMapping("ordersList")
     public List<OrdersVO> ordersList() {
         return ordersService.ordersList();

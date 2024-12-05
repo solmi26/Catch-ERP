@@ -67,6 +67,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 saleslipHistory.addRowClassName(row.rowKey, 'increase');
             } else if(check === '완료') {
                 saleslipHistory.addRowClassName(row.rowKey, 'decrease');
+            } else if(check === '진행중') {
+                saleslipHistory.addRowClassName(row.rowKey, 'ongoing');
             }
         });
     }

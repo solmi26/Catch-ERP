@@ -39,11 +39,11 @@ let datas = null;
 //모달 그리드에 데이터 전달하기
 //#region
 function dataToSalModifyGrid (salaryNumber) {
-	fetch("/employees/payroll/"+salaryNumber)
+	fetch("/employees/payroll/sel?salaryNumber="+salaryNumber)
 	.then(data => data.json())
 	.then(data => {
 		console.log(data)
-		remodelSalModifyGrid(data)
+		remodelSalModifyGrid(data[0])
 		datas = data
 	})
 }

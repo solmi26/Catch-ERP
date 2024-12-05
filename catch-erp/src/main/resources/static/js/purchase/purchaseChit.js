@@ -63,15 +63,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     fetchBacctList();
 
-    accList.on("cellClick", (e, cell) => {
-
-        const rowData = cell.getRow().getData(); // 클릭한 셀의 값
-
-        document.getElementById('accountInput').value = rowData.accName;
-        console.log("rowData:", rowData.accName);
-        const modalToggle = document.getElementById('accountSearchModal');
-        modalToggle.hide(modalToggle);
-    });
+    //     accList.on("cellClick", (e, cell) => {
+    //
+    //     const rowData = cell.getRow().getData(); // 클릭한 셀의 값
+    //
+    //     document.getElementById('accountInput').value = rowData.accName;
+    //     console.log("rowData:", rowData.accName);
+    //     const modalToggle = document.getElementById('accountSearchModal');
+    //     modalToggle.hide(modalToggle);
+    // });
 
     class ButtonRenderer {
         constructor(props) {
@@ -647,7 +647,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let deletes = document.querySelectorAll('.deleteRowBtn')
     deletes.forEach(btn => {
         btn.addEventListener('click', function () {
-            salesChit.removeCheckedRows();
+            purchaseChit.removeCheckedRows();
             refreshRowNum();
         })
 
