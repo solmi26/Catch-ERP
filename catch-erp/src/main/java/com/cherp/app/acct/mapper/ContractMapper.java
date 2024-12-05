@@ -20,12 +20,13 @@ public interface ContractMapper {
 	// 매입 단가 계약 수정 by sm
 	public int updateContractB(@Param("conNo") String conNo, @Param("itemCode") String itemCode);
 	
+	// 매입 단가 계약 전체 조회(Header) by sm
+	public List<ContractItemVO> selectContractsH();
 	
+	// 매입 단가 계약 전체 조회(Body) by sm
+	public List<ContractItemVO> selectContractsB();
 	
-	// 아래는 전부 수정해야 함
-	// 매입 단가 계약 전체 조회
-	public List<ContractItemVO> selectContracts();
-	
+	// 수정 해야 함.
 	// 매입 단가 계약 단건 조회
 	public int infoContract(ContractItemVO conVO);
 	

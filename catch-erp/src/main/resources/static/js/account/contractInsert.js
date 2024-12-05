@@ -84,6 +84,19 @@ document.addEventListener("DOMContentLoaded", function () {
 			 },
 	
 	      },
+	      {
+	        header: '합계',
+	        name: 'totalPrice',
+	        editor: {
+	        	type:gridNumber
+	        },
+	        align: 'right',
+			 formatter: 
+	        	function (e) { const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+	  							   			  return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
+			 },
+	
+	      },
 	    ], 
 	    data: [{}],
 	 
@@ -125,9 +138,11 @@ document.addEventListener("DOMContentLoaded", function () {
       
       const supplyPrice = price; // 단가 = 공급가액
       const vat = Math.floor(price * vatRate); // 부가세 계산
+      const totalPrice = supplyPrice + vat; // 합계 계산
       
       grid.setValue(rowKey, 'supplyPrice', supplyPrice);
       grid.setValue(rowKey, 'vat', vat);
+      grid.setValue(rowKey, 'totalPrice', totalPrice);
     }
   });
   
