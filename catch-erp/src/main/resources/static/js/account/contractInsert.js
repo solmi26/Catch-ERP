@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	      },
 	      {
 	        header: '단가',
-	        name: 'unitPrice',
+	        name: 'price',
 	        editor: {
 	        	type:gridNumber
 	        },
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	      },
 	      {
 	        header: '공급가액',
-	        name: 'supplyAmount',
+	        name: 'supplyPrice',
 	        editor: {
 	        	type:gridNumber
 	        },
@@ -119,14 +119,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const { rowKey, columnName, value } = event;
 
     // 단가가 수정된 경우만 동작
-    if (columnName === 'unitPrice') {
-      const unitPrice = Number(value) || 0;
+    if (columnName === 'price') {
+      const price = Number(value) || 0;
       const vatRate = 0.1; // 부가세율 10%
       
-      const supplyAmount = unitPrice; // 단가 = 공급가액
-      const vat = Math.floor(unitPrice * vatRate); // 부가세 계산
+      const supplyPrice = price; // 단가 = 공급가액
+      const vat = Math.floor(price * vatRate); // 부가세 계산
       
-      grid.setValue(rowKey, 'supplyAmount', supplyAmount);
+      grid.setValue(rowKey, 'supplyPrice', supplyPrice);
       grid.setValue(rowKey, 'vat', vat);
     }
   });
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	// 유효한 데이터만 필터링
-	const validGridData = gridData.filter(row => row.itemName && row.price > 0);
+	//const validGridData = gridData.filter(row => row.itemName && row.price > 0);
 	
 	// 데이터 받아오기
 	const contractData = {
@@ -187,13 +187,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		 emoloyeeName: document.getElementById('c_empName').value, // 담당자 이름
 		 summary: document.getElementById('description').value, // 적요
 		 writer: "차은우", // 작성자
-		 detailContraceVO:validGridData // 그리드 데이터를 detailContraceVO로 추가(디테일 테이블 추가용)
+		 detailContraceVO:grid.getData() // 그리드 데이터를 detailContraceVO로 추가(디테일 테이블 추가용)
 	};
 
 	const fileInput = document.getElementById('attachment-file');
 	const file = fileInput.files[0]; // 첨부파일
 	const formData = new FormData();
 	
+	console.log(contractData)
 	// Form 데이터에 데이터 추가
 	formData.append('contract', new Blob([JSON.stringify(contractData)], { type: 'application/json' }));
 	if (file) {

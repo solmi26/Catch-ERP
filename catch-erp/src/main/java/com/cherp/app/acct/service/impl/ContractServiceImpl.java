@@ -23,7 +23,9 @@ public class ContractServiceImpl implements ContractService{
 	public void insertContract(ContractItemVO conVO) {
 		conMapper.insertContractH(conVO); // 마스터
 		for(ContractItemVO data : conVO.getDetailContraceVO()) {
+			System.out.println(data.getItemCode());
 			conMapper.insertContractB(data); // 디테일
+			conMapper.updateContractB(conVO.getConNo() , data.getItemCode()); // conNo 업데이트
 		}
 	}
 
