@@ -24,6 +24,7 @@ public class RestWarehouseController {
         return warehouseService.whList();
     }
 
+    // 창고별 재고 수량 체크
     @GetMapping("/quantity/{whCode}/{itemCode}")
     public WarehouseVO whQuantity(@PathVariable("whCode") String whCode,
                                   @PathVariable("itemCode") String itemCode){
