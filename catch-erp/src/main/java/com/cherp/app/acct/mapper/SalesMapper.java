@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cherp.app.acct.vo.ClientPsVO;
+import com.cherp.app.acct.vo.ClientSearchVO;
 import com.cherp.app.acct.vo.InsertPayableVO;
 import com.cherp.app.acct.vo.InsertReceivableVO;
 import com.cherp.app.acct.vo.PayablesVO;
@@ -23,6 +25,9 @@ public interface SalesMapper {
 	public List<SalesVO> SelectAllClientReceivableList(String clientCode);// 채권 거래처 전체 조회
 	public List<SalesVO> selectAcctList(String debitSide); // 회계 계정 전체 조회
 	public List<SalesVO> selectAllSlip(); // 매출, 매입전표 조회
+	public List<ClientPsVO> payablesOptionList(ClientSearchVO search); // 조건에 맞는 채무내역 조회
+	public List<ClientPsVO> salesOptionList(ClientSearchVO search); // 조건에 맞는 채권 내역 조회
+	
 	public SalesVO selectSales(String no); // 매출 단건 조회
 	public SalesVO selectPurchase(String no); // 매입 단건 조회
 	
