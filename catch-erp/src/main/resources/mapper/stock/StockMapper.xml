@@ -214,10 +214,10 @@
 		 		AND ci.item_name LIKE CONCAT(#{itemInput}, '%')
 		 	</otherwise>
 		 </choose>
-		  <if test="minPrice != ''">
+		  <if test="minPrice != 0">
 		    		AND price > TO_NUMBER(#{minPrice})
 		  </if>
-		  <if test="maxPrice != ''">
+		  <if test="maxPrice != 0">
 		      <![CDATA[
 		    		AND price < TO_NUMBER(#{maxPrice})
 		      ]]>

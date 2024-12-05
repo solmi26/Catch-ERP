@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.acct.service.SalesService;
+import com.cherp.app.acct.vo.ClientPsVO;
+import com.cherp.app.acct.vo.ClientSearchVO;
 import com.cherp.app.acct.vo.PayablesVO;
 import com.cherp.app.acct.vo.SalesVO;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -56,5 +56,17 @@ public class RestSalesController {
 	@ResponseBody
 	public List<SalesVO> clientReceivablesList(@RequestBody JsonNode json) {
 		return salesService.ClientReceivableList(json.get("clientCode").asText());
+	}
+	
+	@Secured("ROLE_USER")
+	@GetMapping("api/payables/payablesInfo")
+	public List<ClientPsVO> clientOptionPayablesList(ClientSearchVO search) {
+		return salesService.payablesOptionList(search);
+	}
+	
+	@Secured("ROLE_USER")
+	@GetMapping("api/receivable/receivableInfo")
+	public List<ClientPsVO> clientOptionReceivablesList(ClientSearchVO search) {
+		return salesService.salesOptionList(search);
 	}
 }
