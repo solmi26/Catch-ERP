@@ -86,12 +86,18 @@
         </if>
         <if test="resingationDateEnd != null " >
         AND em.RESIGNATION_DATE <![CDATA[ <=  ]]> #{resingationDateEnd}
-        </if>        
+        </if>
+        <if test="payrollYStart != null " >
+        AND sp.payroll_ydate >= #{payrollYStart}
+        </if>
+        <if test="payrollYEnd != null " >
+        AND sp.payroll_ydate <![CDATA[ <=  ]]> #{payrollYEnd}
+        </if>                 
         </where>     
     </select>
 
 	<!-- 급여명세서 단건조회 -->
-	<select id="selectPayroll" resultMap="Payroll">
+	<select id="selectPayroll" resultMap="Payroll" parameterType="java.util.ArrayList" >
 	   SELECT sp.salary_number
              ,sp.payroll_ydate
              ,sp.monthly_salary
@@ -121,7 +127,10 @@
        ON     sp.employee_code = em.employee_code
        JOIN   allowance_history awhi
        ON     sp.employee_code = awhi.employee_code
-	   WHERE  sp.salary_number = #{salaryNumber}
+	   WHERE  sp.salary_number IN
+	   <foreach collection="array" item="salaryNumber" open="(" separator="," close=")">
+	    #{salaryNumber}
+	   </foreach>
 	</select>
 	
 	<!-- 급여명세서 수정하기 -->

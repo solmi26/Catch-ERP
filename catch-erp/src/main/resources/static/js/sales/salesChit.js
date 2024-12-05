@@ -3,22 +3,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 입력일자 sysdate input
     document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
 
-    // 계좌 목록 조회 모달
-    // let accountList = [{accCode: "000001", accName: "신한(입금)"}, {accCode: "000002", accName: "대구(출금)"},];
-    //Build Tabulator
-    // let accList = new Tabulator("#example-table", {
-    //     layout: "fitColumns",
-    //     pagination: "local",
-    //     data: accountList,
-    //     paginationSize: 6,
-    //     paginationSizeSelector: [3, 6, 8, 10],
-    //     movableColumns: true,
-    //     paginationCounter: "rows",
-    //     columns: [{title: "계좌코드", field: "accCode", width: 320, sorter: "string", headerFilter: "input"}, {
-    //         title: "계좌명", field: "accName", width: 440, sorter: "string", headerFilter: "input"
-    //     },],
-    // });
-
     function makeReceivableTabulator(accountList) {
         let accList = new Tabulator("#example-table", {
             layout:"fitColumns",
@@ -75,10 +59,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
             })
     }
-
     fetchBacctList();
-
-
 
     class ButtonRenderer {
         constructor(props) {
@@ -536,8 +517,24 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }
         });
+
+        salesChit.on("editingFinish", (ev) => {
+            const columnName = ev.columnName;
+            let quantity = salesChit.getValue(ev.rowKey, 'quantity');
+            let deliveryPrice = salesChit.getValue(ev.rowKey, 'deliveryPrice');
+            let supplyPrice = quantity * deliveryPrice;
+            let vat = supplyPrice * 0.1;
+            console.log(quantity + ' ' + deliveryPrice + ' ');
+            if(columnName === 'deliveryPrice') {
+                salesChit.setValue(ev.rowKey, 'supplyPrice', supplyPrice);
+                salesChit.setValue(ev.rowKey, 'vat', vat);
+            }
+        })
+
         return salesChit;
     }
+
+
 
 
     // 그리드 추가
@@ -621,6 +618,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             scrollY: true,
             header: {height: 40},
             bodyHeight: 500,
+            columnOptions: {
+                frozenCount: 4,
+                frozenBorderWidth: 1
+            },
             width: 'auto',
             contextMenu: null,
             data: [],
@@ -717,7 +718,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
         return ordersGrid;
     }
-
     // 샘플 데이터
     initordersGrid();
 
@@ -738,8 +738,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             // data.deficiencyQuantity = '디비 값 연산';
             data.deliveryPrice = '';
             data.deliveryDate = '';
-            data.supplyPrice = ele.supplyPrice;
-            data.vat = ele.vat;
+            data.supplyPrice = '';
+            data.vat = '';
             dataArr.push(data)
         })
         let selectedCtn = arr.length;
@@ -871,6 +871,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.log('전송실패')
         }
 
+        salesChit.blur();
 
         // ajax 호출
         fetch('/sales/insertSalesChit', {
@@ -888,7 +889,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             .then(result => {
                 console.log("판매전표 에러 : ", res.message)
             })
-
     })
 
     const myModal = new bootstrap.Modal('#accountSearchModal')

@@ -30,7 +30,7 @@ public class ContractController {
 	@ResponseBody
 	public String insertContract(@RequestPart("contract") ContractItemVO contractVO,
 	        					 @RequestPart(value = "file", required = false) MultipartFile file) {
-		
+		System.out.println(contractVO);
 	   conService.insertContract(contractVO);
 	   
 	    return "등록 성공";

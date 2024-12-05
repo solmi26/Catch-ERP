@@ -44,7 +44,6 @@ public class SecurityController {
 	// 기본 index page 설정
 	@GetMapping("index")
 	public String goIndex() {
-		
 		return "redirect:business/clientList";
 	}
 	

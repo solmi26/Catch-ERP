@@ -30,7 +30,7 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 		alert("값을입력하세요")
 		return;
 	}
-	fetch("/employees/dept",{
+	("/employees/dept",{
 		method:'post',
 		headers: {
 			"Content-Type":"application/json"

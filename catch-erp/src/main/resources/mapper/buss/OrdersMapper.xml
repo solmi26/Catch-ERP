@@ -13,7 +13,7 @@
 			b.item_code,
 			b.item_name,
 			b.quantity,
-			( b.quantity * e.price )        price,
+			e.price,
 			( b.quantity * e.supply_price ) supply_price,
 			( b.quantity * e.vat) 			vat
 		FROM

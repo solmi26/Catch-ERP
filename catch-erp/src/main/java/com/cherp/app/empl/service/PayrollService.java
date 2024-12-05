@@ -8,7 +8,7 @@ import com.cherp.app.empl.vo.PayrollVO;
 
 public interface PayrollService {
 	public List<PayrollVO> payrollList (EmployeeSearchDto search);
-	public PayrollVO payrollInfo (String salaryNumber);
+	public List<PayrollVO> payrollInfo (String[] salaryNumber);
 	public int payrollInsert(PayrollVO employee);
 	public int payrollUpdate(PayrollVO payroll);
 	public int payrollDelete(String[] salaryNumber);

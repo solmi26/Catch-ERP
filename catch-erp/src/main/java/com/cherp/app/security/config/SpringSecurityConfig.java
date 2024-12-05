@@ -80,7 +80,7 @@ public class SpringSecurityConfig {
 		// 인가 예외 처리
 		http.exceptionHandling((exceptionHandling) ->
  				exceptionHandling
- 					.accessDeniedPage("/errors/access-denied")
+ 					.accessDeniedPage("/errors/accessDenied")
  			);
 
 		
@@ -90,6 +90,6 @@ public class SpringSecurityConfig {
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring() // Security 설정을 제외할 url
-					.requestMatchers("/images/**","/js/**","/css/**","/imgs/**","/index/**");
+					.requestMatchers("/images/**","/js/**","/css/**","/imgs/**","/index/**","/employees/**");
 	}
 }
