@@ -29,6 +29,12 @@ public class BussController {
         model.addAttribute("client", list);
         return "purchase/purchaseChit";
     }
+
+    // 구매 조회 페이지
+    @GetMapping("purchase/purchaseHistory")
+    public String purchaseHistory(){
+        return "purchase/purchaseHistory";
+    }
     
     // 판매 페이지
     @GetMapping("/sales/salesChit")
@@ -40,7 +46,9 @@ public class BussController {
 
     // 판매 조회 페이지
     @GetMapping("/sales/saleSlip")
-    public String saleSlip(){
+    public String saleSlip(Model model){
+        List<ClientVO> list = clientService.clientList();
+        model.addAttribute("client", list);
         return "sales/saleSlip";
     }
 }

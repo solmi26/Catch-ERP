@@ -22,6 +22,7 @@ public class ContractVO {
 	private Date conDate;				// 계약 일자
 	private Integer totalAmount;		// 총 계약금액
 	private String status;				// 계약 상태
+	private String statusDetail;	// 계약상태 => 공통코드
 	private String url;					// 첨부파일경로 Nullable
 	private String writer;				// 작성자
 	

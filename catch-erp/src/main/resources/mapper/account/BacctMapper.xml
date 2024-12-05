@@ -2,7 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.acct.mapper.BacctMapper">
 	<select id="selectAllBacctList" resultType="com.cherp.app.acct.vo.BacctVO">
-		SELECT *
+		SELECT bacct_code
+              ,bacct_no
+              ,bacct_name
+              ,bank_name
+              ,summary
 		FROM   bacct
 	</select>
 	
@@ -41,6 +45,7 @@
 		UPDATE bacct
 		SET  bacct_name = #{bacctName}
 			,summary = #{summary}
+		WHERE bacct_code = #{bacctCode}
 		
 	</update>
 </mapper>

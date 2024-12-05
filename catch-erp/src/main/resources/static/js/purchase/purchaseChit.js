@@ -3,21 +3,65 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 입력일자 sysdate input
     document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);
 
-    // 계좌 목록 조회 모달
-    let accountList = [{accCode: "000001", accName: "신한(입금)"}, {accCode: "000002", accName: "대구(출금)"},];
-    //Build Tabulator
-    let accList = new Tabulator("#example-table", {
-        layout: "fitColumns",
-        pagination: "local",
-        data: accountList,
-        paginationSize: 6,
-        paginationSizeSelector: [3, 6, 8, 10],
-        movableColumns: true,
-        paginationCounter: "rows",
-        columns: [{title: "계좌코드", field: "accCode", width: 320, sorter: "string", headerFilter: "input"}, {
-            title: "계좌명", field: "accName", width: 440, sorter: "string", headerFilter: "input"
-        },],
-    });
+    // 출금계좌 테이블
+    function makeReceivableTabulator(accountList) {
+        let accList = new Tabulator("#example-table", {
+            layout:"fitColumns",
+            pagination:"local",
+            data: accountList,
+            paginationSize:8,
+            movableColumns:true,
+            paginationCounter:"rows",
+            paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+                return "";
+            },
+            langs:{
+                "default":{
+                    "pagination":{
+                        "first":"처음",
+                        "first_title":"처음으로",
+                        "last":"끝",
+                        "last_title":"마지막으로",
+                        "prev":"이전",
+                        "prev_title":"이전으로",
+                        "next":"다음",
+                        "next_title":"다음으로",
+                        "all":"전체",
+                    }
+                }
+            },
+            columns:[
+                {title:"계좌코드", field:"bacctCode", visible:false},
+                {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
+                {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
+                {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
+            ],
+        });
+        return accList;
+    }
+
+    function fetchBacctList() {
+        fetch('/api/account/bacct')
+            .then(result => result.json())
+            .then(accountList => {
+                let accList = makeReceivableTabulator(accountList);
+                accList.on("rowClick", (e, row) => {
+
+                    const rowData = row.getData().bacctNo; // 클릭한 셀의 값
+                    console.log(rowData);
+
+                    document.getElementById('accountInput').value = rowData;
+
+                    const modalElement = document.getElementById('accountSearchModal');
+                    const bootstrapModal = bootstrap.Modal.getInstance(modalElement); // Bootstrap 모달 인스턴스 가져오기
+                    if (bootstrapModal) {
+                        bootstrapModal.hide(); // 모달 닫기
+                    }
+                });
+            })
+    }
+
+    fetchBacctList();
 
     accList.on("cellClick", (e, cell) => {
 
@@ -252,6 +296,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function loadWhList() {
         let result = await fetch('/whList');
         result = await result.json();
+        // 리스트 항목을 whName과 whCode로 구성
         result = result.map(ele => ({text: ele.whName, value: ele.whCode}));
         return result;
     }
@@ -744,8 +789,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         // ajax 호출 전 확인
         console.log(insertPurchase);
         console.log(JSON.stringify(insertPurchase));
+
         // ajax 호출
-        fetch('/sales/insertSalesChit', {
+        fetch('/purchase/insertPurchaseChit', {
             method: 'POST', headers: {
                 'Content-Type': 'application/json',
             }, body: JSON.stringify(insertPurchase),
@@ -755,8 +801,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     alert("저장 완료");
                 }
             })
-            .then(result => {
-                console.log("판매전표 에러 : ", res.message)
+            .then(error => {
+                console.log("판매전표 에러 : ", error)
             })
 
     })

@@ -1,6 +1,7 @@
 package com.cherp.app.stck.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,6 +22,8 @@ public class ContractItemVO {
 	private String itemCode; 	// 품목코드
 	private int totalPrice; 	// 총금액
 	private String image; 		// 이미지
+	
+	List<ContractItemVO> detailContraceVO; // 계약 디테일 List
 
 	// 수량 연산을 위한
 	private int totalPriceHidden;
@@ -38,9 +41,23 @@ public class ContractItemVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date conEdate; //계약종료일
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+	private Date conDate; //계약일
+	private String emoloyeeName; // 담당자명
+	private String emoployeeCode; // 담당자코드
+	private String status; // 계약상태
+	private String url; // 첨부파일경로
+	private String writer; // 작성자 
+	private String conName; // 계약명
+	private String summary; // 적요
+	
 	
 	/* 창고별 수량을 알기위한 추가필드 */
 	private String whCode; //창고코드
 	private int currentQuantity; //현수량(창고와 제품에 따른 조건적인 수량)
+	
+	/* 안전 재고 부족 알림을 위한 추가필드 */
+	private int result; // result = (총재고 - 7일이후 까지의 지시수량)
 	
 }

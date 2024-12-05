@@ -16,7 +16,9 @@
             acc_code,
             dep_bacct,
             employee_name,
-            employee_code
+            employee_code,
+            supply_price,
+            vat
         )
         VALUES (
             #{saleslipNo},
@@ -26,7 +28,9 @@
             #{accCode},
             #{depBacct},
             #{employeeName},
-            #{employeeCode}
+            #{employeeCode},
+            #{supplyPrice},
+            #{vat}
         )
     </insert>
 
@@ -64,8 +68,8 @@
     <!-- 판매전표 조회 -->
     <select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
         WITH b as (SELECT saleslip_no , SUM(delivery_price) delivery_price
-                    FROM  saleslip_history
-                    GROUP BY saleslip_no)
+                   FROM  saleslip_history
+                   GROUP BY saleslip_no)
         SELECT a.saleslip_no
                 ,insert_date
                 ,client_code
@@ -106,17 +110,16 @@
         ON a.saleslip_no = b.saleslip_no
         WHERE 1 = 1
         <if test="insertDate != null">
-
             AND a.insert_date >=  #{insertDate} AND a.insert_date <![CDATA[ < ]]> #{insertDate} + 1
         </if>
         <if test="deliveryDate != null">
             AND b.delivery_date = #{deliveryDate} AND b.delivery_date <![CDATA[ < ]]> #{deliveryDate} + 1
         </if>
         <if test="clientName != null">
-            AND a.client_name = #{clientName}
+            AND a.client_name LIKE '%' || #{clientName} || '%'
         </if>
         <if test="itemName != null">
-            AND b.item_name = #{itemName}
+            AND b.item_name LIKE '%' || #{itemName} || '%'
         </if>
     </select>
 
@@ -139,7 +142,11 @@
             d.item_name,
             d.quantity,
             d.delivery_price,
-            d.delivery_date
+            d.delivery_date,
+            find_code(d.delivery_status) delivery_status,
+            e.price,
+            e.supply_price,
+            e.vat
         FROM
             sales_chit c
             JOIN saleslip_history d ON c.saleslip_no = d.saleslip_no
@@ -148,6 +155,7 @@
         d.saleslip_no = #{saleslipNo}
     </select>
 
+	<!-- 판매전표 상태별 조회 by sm -->
     <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT saleslip_no
                 ,insert_date

@@ -33,7 +33,7 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
-              <li class="nav-item active">
+              <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
                 <a
                   data-bs-toggle="collapse"
                   href="#"
@@ -43,12 +43,9 @@
                   <i class="fas fa-home"></i>
                   <p>마이페이지</p>
                 </a>
-              </li>
-              <li>
-                <form action="/logout" method="POST">
-                  <p>로그아웃</p>
-                  <button type="submit" class="btn btn-success">Logout</button>
-                </form>
+	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
+	              <button type="submit" class="btn btn-success">Logout</button>
+	            </form>
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -64,8 +61,8 @@
                 </a>
                 
               </li>
-              <li class="nav-item">
-                <a  href="/stocks/stockInquery">
+              <li class="nav-item" >
+                <a  href="/stocks/stockInquery" style="margin-bottom:0">
                   <i class="icon-drawer"></i>
                   <p>재고조회/상품관리</p>
                 </a>
@@ -80,12 +77,12 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="#">
+                      <a href="/purchase/purchaseChit">
                         <span class="sub-item">구매/판매 입력</span>
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <a href="/purchase/purchaseHistory">
                         <span class="sub-item">구매/판매 조회</span>
                       </a>
                     </li>
@@ -129,7 +126,7 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
-              <li class="nav-item active">
+              <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
                 <a
                   data-bs-toggle="collapse"
                   href="#"
@@ -139,6 +136,9 @@
                   <i class="fas fa-home"></i>
                   <p>마이페이지</p>
                 </a>
+	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
+	              <button type="submit" class="btn btn-success">Logout</button>
+	            </form>
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -210,17 +210,19 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
-              <li class="nav-item active">
+              <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
                 <a
                   data-bs-toggle="collapse"
-                  href="#dashboard"
+                  href="#"
                   class="collapsed"
                   aria-expanded="false"
                 >
                   <i class="fas fa-home"></i>
                   <p>마이페이지</p>
                 </a>
-                
+	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
+	              <button type="submit" class="btn btn-success">Logout</button>
+	            </form>
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -347,17 +349,19 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
-              <li class="nav-item active">
+              <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
                 <a
                   data-bs-toggle="collapse"
-                  href="#dashboard"
+                  href="#"
                   class="collapsed"
                   aria-expanded="false"
                 >
                   <i class="fas fa-home"></i>
                   <p>마이페이지</p>
-                  <span class="caret"></span>
                 </a>
+	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
+	              <button type="submit" class="btn btn-success">Logout</button>
+	            </form>
               </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
@@ -371,33 +375,33 @@
                   <p>기초등록</p>
                 </a>
               </li>
-			<li class="nav-item">
-			  <a href="/sales/invoiceListView">
-			    <i class="icon-film"></i>
-			    <p>전자세금계산서</p>
-			  </a>
-			</li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">
                   <i class="icon-briefcase"></i>
-                  <p>매입 계약</p>
+                  <p>매입 단가 계약</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/sales/insertContractView">
-                        <span class="sub-item">매입 계약 등록</span>
+                        <span class="sub-item">매입 단가 계약 등록</span>
                       </a>
                     </li>
                     <li>
                       <a href="/sales/contractView">
-                        <span class="sub-item">매입 계약 관리</span>
+                        <span class="sub-item">매입 단가 계약 관리</span>
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
+			<li class="nav-item">
+			  <a href="/sales/invoiceListView">
+			    <i class="icon-film"></i>
+			    <p>전자세금계산서</p>
+			  </a>
+			</li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#tables">
                   <i class="icon-map"></i>

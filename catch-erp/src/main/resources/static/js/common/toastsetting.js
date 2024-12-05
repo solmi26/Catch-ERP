@@ -4,8 +4,8 @@
  * gridTime : 시간
  * gridDate : 날짜
  * gridCheckbox : 체크박스(로우넘)
- * 
- * 
+ * tooltipOut() : 부트스트랩 툴팁 함수
+ * header nav-bar css를 위한 함수
  * 
 */
 
@@ -197,3 +197,24 @@ mounted() {
 }
 }
 
+function tooltipOut(){
+	    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+	    tooltipTriggerList.map(function (tooltipTriggerEl) {
+	        return new bootstrap.Tooltip(tooltipTriggerEl);
+	    });  
+    }
+    
+//header nav-bar css를 위한 함수
+window.addEventListener('resize', () => {
+    const headerLi = document.getElementById('headerLi');
+    if (window.innerWidth <= 992) {
+        headerLi.classList.add('ms-auto');
+    } else {
+        headerLi.classList.remove('ms-auto');
+    }
+});
+
+
+if (window.innerWidth <= 992) {
+    document.getElementById('headerLi').classList.add('ms-auto');
+}

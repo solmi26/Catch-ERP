@@ -27,5 +27,8 @@ public class PurchaseChitVO {
 	private int vat; 			 // 부가세
 	private String slipState; 	 // 전표 발행 상태
 
+	private int restockingPrice;  // 입고 단가
+	private int totalPrice; // 전표 금액 합계
+
 	List<PurchaseHistoryVO> purchaseHistories;
 }

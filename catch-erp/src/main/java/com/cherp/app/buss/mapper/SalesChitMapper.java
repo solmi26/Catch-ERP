@@ -14,17 +14,17 @@ public interface SalesChitMapper {
 	// 판매내역 등록
 	public int insertSaleslipHistory(SaleslipHistoryVO SaleslipHistoryVO);
 
+//	// 판매전표 전체 조회
+	public List<SalesChitVO> selectSalesChit();
+
 	// 판매전표별 판매내역 보기
 	public List<SaleslipHistoryVO> selectSaleslip(SaleslipHistoryVO saleslipHistoryVO,
 												  @Param("saleslipNo") String saleslipNo);
 
-	// 판매전표 전체 조회
-	public List<SalesChitVO> selectSalesChit();
-
 	// 판매전표 검색 기능
 	public List<SalesChitVO> searchSalesChit(SalesChitVO salesChitVO);
 
-	// 판매전표 전표상태별 조회
+	// 판매전표 전표상태별 조회 by sm
 	public List<SalesChitVO> selectSalesChitState(String slipState);
 
 	// 판매전표별 총 금액 조회
