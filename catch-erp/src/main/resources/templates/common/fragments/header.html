@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <!-- HeaderFragment -->
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <th:block th:fragment="headerStack">
+        
+        
         
         <div class="main-header">
           <div class="main-header-logo">
@@ -75,11 +79,12 @@
                   영업</a>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret ms-auto " style="margin-top:4px; margin-right:15px;">
-                	<span class="col">님 환영합니다.</span>
+                	<span class="col" id="user" th:text="${#authentication.principal.employeeLoginVO.name} + '님 환영합니다.'" style="font-size:14px; color:black; font-weight:700; margin-right:10px;"></span>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret ">
                 	<div class="avatar-lg col">
-	              		<img src="#" class="mt-1 avatar-img rounded-circle" style="background-color:white;">
+                		<!-- <span sec:authentication="principal.employeeLoginVO.employeeImage"></span> -->
+	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage}" class="mt-1 avatar-img rounded-circle" name="profileImg" style="background-color:white;" alt="이미지가없어용"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
               		</div>
                 </li>
               </ul>

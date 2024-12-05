@@ -15,13 +15,17 @@
 		 SELECT  e.employee_code
 		 		,e.employee_id
 		        ,e.password
+		        ,e.name
 		        ,er.role_name
 		        ,ed.employee_role as roleId
 		        ,er.id as id
+		        ,ed.employee_image
 		 FROM   employees e  JOIN employees_detail ed 
 		                ON e.employee_code = ed.employee_code
 		                JOIN employees_role er
 		                ON ed.employee_role = er.id
+		                JOIN employees_detail ed 
+		                ON e.employee_code = ed.employee_code
 		WHERE e.employee_id = #{employeeId}
 	</select>
 	

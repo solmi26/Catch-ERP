@@ -2,7 +2,8 @@
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layouts/stack_layout}"
-      layout:fragment="Content">
+      layout:fragment="Content"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 	<head>
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +12,15 @@
 	    <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
 	</head>
 	<body>
+		<input id="employeeName" th:value="${#authentication.principal.employeeLoginVO.name}" style="display:none;"></input> <!-- 시큐리티에 담긴 이름 hidden에다 넣어놈 -->
+        <input id="employeeImage" th:value="${#authentication.principal.employeeLoginVO.employeeImage}" style="display:none;"></input> <!-- 시큐리티에 담긴 사진 hidden에다 넣어놈 -->
+	
 	    <div class="bg-white shadow-sm rounded" style="padding: 20px;" >
 	    			
 	        <!-- Header -->
 	        <div class="row">
 	        		<h4 style="font-weight:900">재고조회/상품관리</h4>
-	        	</div>
+	        </div>
 	        <ul class="nav nav-tabs" id="mainTab" role="tablist">
 	        	
                 <li class="nav-item" role="presentation">
@@ -52,7 +56,7 @@
 			                                  </svg></button>
 			                              </div>
 			                          </div>
-			                                                
+			                                       
 			                          <div class="col-md-3">
 			                            <label class="form-label">품목명</label>
 			                            <div class="input-group">

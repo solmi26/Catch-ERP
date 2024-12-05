@@ -21,6 +21,7 @@ public class EmployeeLoginVO{
 	private Date resignationDate; //퇴사일
 	private String hireType; //입사일
 	private String departmentCode;  //부서코드
+	private String employeeImage; //사원코드
 	
 	// 인사 상세
 	private Integer roleId;			// detail employee_role

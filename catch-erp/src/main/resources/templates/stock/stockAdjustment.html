@@ -10,6 +10,8 @@
 	    <link rel="stylesheet" th:href="@{/css/stock/stockAdjustment.css}" />
 	</head>
 	<body>
+		<input id="employeeName" th:value="${#authentication.principal.employeeLoginVO.name}" style="display:none;"></input> <!-- 시큐리티에 담긴 id값으로 이름 hidden에다 넣어놈 -->
+        <input id="employeeImage" th:value="${#authentication.principal.employeeLoginVO.employeeImage}" style="display:none;"></input> <!-- 시큐리티에 담긴 id값으로 사진 hidden에다 넣어놈 -->
 	    <div class="bg-white shadow-sm rounded" style="padding: 20px;" >
 	        <!-- Header -->
 	        <div class="d-flex justify-content-between align-items-center mb-3">
@@ -291,7 +293,7 @@
                                         <div class="signature-content">
                                             <div class="signature-fields">
                                                 <div class="inputDate">일자: 2024-11-13</div>
-                                                <div class="reporter">성명: 김기현</div>
+                                                <div class="reporter2"></div>
                                             </div>
                                             
                                         </div>
