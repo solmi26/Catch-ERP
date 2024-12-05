@@ -80,7 +80,7 @@ public class SpringSecurityConfig {
 		// 인가 예외 처리
 		http.exceptionHandling((exceptionHandling) ->
  				exceptionHandling
- 					.accessDeniedPage("/errors/access-denied")
+ 					.accessDeniedPage("/errors/accessDenied")
  			);
 
 		
