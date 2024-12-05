@@ -52,6 +52,7 @@
 	        ,supply_price
 	        ,vat
 	        ,con_no
+	        ,total_price
 	    )VALUES(
 	        #{itemCode}
 	        ,#{itemName}
@@ -59,8 +60,15 @@
 	        ,#{supplyPrice}
 	        ,#{vat}
 	        ,#{conNo}
+	        ,#{supplyPrice} + #{vat}
 	    )
 	</insert>
+	
+	<update id="updateContractB">
+	    UPDATE contract_item
+        SET con_no = #{conNo}
+        WHERE item_code = #{itemCode}
+	</update>
 
 </mapper>
 
