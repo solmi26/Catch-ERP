@@ -48,21 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
 */
 });
 
-//셀렉트 박스에 데이터를 뿌리는 함수
-
-async function datoToSelect(name,code) {
-await fetch('/employees/empCommon?commonCode='+code)
-.then(data => data.json())
-.then(datas => {
-	document.querySelectorAll(`[name="${name}"]`).forEach(item => {
-		datas.forEach(comp => {
-			let tag = `<option value="${comp.codeRule}">${comp.commonName}</option>`;
-			item.insertAdjacentHTML('beforeend',tag);
-		})
-	})
-})
-};
-
 
 
 let readonly = [

@@ -108,7 +108,10 @@
 		}
 		#payrollPrintModal .modal-body  {
 		margin:0 auto;}
-
+		#print-content{ 
+			overflow:auto;
+			max-height:700px;
+		}
 </style>
 <title>Insert title here</title>
 </head>
@@ -325,91 +328,7 @@
                 <div class="modal-body">
 <!-- 인쇄내용시작 -->
 <div id="print-content">
-  <h1>급여명세서</h1>
-  <div>
-  <span>2024.11 </span>
-  <span></span>
-  </div>
-  <br>
-  <table>
-      <tr>
-        <td class="background-payment">성명</td>
-        <td colspan="3"></td>
-        <td class="background-payment">사번</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td class="background-payment">직급</td>
-        <td colspan="3"></td>
-        <td class="background-payment">부서</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td class="background-payment">생년월일</td>
-        <td colspan="3"></td>
-        <td class="background-payment">지급일</td>
-        <td></td>
-      </tr>
-  </table>
-<br>
-<br>
-<table>
-  <thead>
-    <tr>
-      <td colspan="2" class="bold-color">임금지급내역</td>
-      <td colspan="2" class="bold-color">공제내역</td>
-    </tr>
-    <tr>
-      <td class="background-payment">임금항목</td>
-      <td class="background-payment">지급액원(원)</td>
-      <td class="background-payment">공제항목</td>
-      <td class="background-payment">지급액원(원)</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
 
-    </tr>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td class="background-payment">총지급액</td>
-      <td></td>
-      <td class="background-payment">총공제액</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td class="background-payment">실지급액</td>
-      <td colspan="3"></td>
-    </tr>
-  </tfoot>
-</table> 
-  <br>
-  <table>
-    <tr>
-      <td colspan="3" class="bold-color">계산방법</td>
-    </tr>
-    <tr>
-      <td class="background-payment">구분</td>
-      <td class="background-payment">산출식 또는 산출방법</td>
-      <td class="background-payment">지급액(원)</td>
-    </tr>
-    <tr>
-      <td class="background-payment">연장근로수당</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td class="background-payment">야간근로수당</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td class="background-payment">주말근로수당</td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
 </div>
 
 <!-- 인쇄내용끝 -->

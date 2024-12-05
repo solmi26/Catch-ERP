@@ -72,37 +72,41 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 	fetch('/employees/payroll/sel?salaryNumber='+str.substring(1))
 	.then(data => data.json())
 	.then(data => {
-		data.forEach(ele => {
-			deduItem = [{"employmentInsurance":ele.employmentInsurance},{"healthInsurance":ele.healthInsurance},{"incomeTax":ele.incomeTax},
-			{"leaveRate":ele.leaveRate},{"localTax":ele.localTax}]
-			
-			ary = deduItem;
+		document.querySelector('#print-content').innerHTML = ""
+		for (let ele of data) {		
 			let index = ele.allowanceHistoryVO.length > 3 ? ele.allowanceHistoryVO.length : 3 
-			let arr = []
-			arr.push(`<td>연장근무</td><td>${ele.overtimeAllowance}</td>소득세<td></td><td>${ele.incomeTax}</td>`)
-			arr.push(`<td>야간근무</td><td>${ele.nightAllowance}</td></td>지방세<td></td><td>${ele.localTax}</td>`)
-			arr.push(`<td>주말근무</td><td>${ele.weekendAllowance}</td></td>건강보험료<td></td><td>${ele.healthInsurance}</td>`)
-			let seq = 0;
-			ele.allowanceHistoryVO.forEach(comp => {
-				let td = `<td>${comp.allowanceName}</td><td>${comp.allowancePrice}</td>`
-				if (seq = 0) {
-					
-				} else if (seq = 1) {
-					
-				} else if (seq = 2) {
+			let tr = "";
+			let html ="";
+			tr += `<tr><td>연장근무</td><td>${ele.overtimeAllowance}</td><td>소득세</td><td>${ele.incomeTax}</td></tr>`
+			tr += `<tr><td>야간근무</td><td>${ele.nightAllowance}</td><td>지방세</td><td>${ele.localTax}</td></tr>`
+			tr += `<tr><td>주말근무</td><td>${ele.weekendAllowance}</td><td>건강보험료</td><td>${ele.healthInsurance}</td></tr>`
+			for (let i=0; i<index; i++) {
 				
-				} else {
-					
+				let td ="<tr>";
+				if (ele.allowanceHistoryVO[i] == undefined) {
+				td += `<td></td><td></td>`					
+				}else {
+				td += `<td>${ele.allowanceHistoryVO[i].allowanceName}</td><td>${ele.allowanceHistoryVO[i].allowancePrice}</td>`
 				}
-				seq += 1;	
-			})
+				if (i == 0) {
+					td += `<td>국민연금료</td><td>${ele.nationalInsurance}</td>`
+				} else if (i == 1) {
+					td += `<td>고용보험료</td><td>${ele.employmentInsurance}</td>`
+				} else if (i == 2) {
+					td += `<td>유급휴가비</td><td>${ele.leaveRate}</td>`				
+				} else {
+					td += `<td></td><td></td>`
+				}
+				td += `</tr>`
+				tr += td
+			}
+			eles = tr;
 			
-			
-			console.log(arr)
+
 			
 			printBody = ``
 			html = 
-					`<div id="print-content">
+					`<div id="a">
 					  <h1>급여명세서</h1>
 					  <div>
 					  <span>${ele.payrollYdate}</span>
@@ -145,18 +149,8 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					    </tr>
 					  </thead>
 					  <tbody>
-					    <tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-					    </tr>
-					    <tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-					    </tr>					  </tbody>
+					  ${tr}
+					  </tbody>
 					  <tfoot>
 					    <tr>
 					      <td class="background-payment">총지급액</td>
@@ -197,7 +191,10 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					    </tr>
 					  </table>
 					</div>`
-		})
+			document.querySelector('#print-content').insertAdjacentHTML('beforeend',html);	
+			payrollPrintModal.show();	
+				
+		}
 		
 	})
 })
