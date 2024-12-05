@@ -2,17 +2,18 @@ package com.cherp.app.buss.web;
 
 import java.util.List;
 
-import com.cherp.app.buss.vo.SaleslipHistoryVO;
-import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.*;
 
 import com.cherp.app.buss.service.SalesChitService;
 import com.cherp.app.buss.vo.SalesChitVO;
+import com.cherp.app.buss.vo.SaleslipHistoryVO;
 
 @Controller
 public class SalesChitController {

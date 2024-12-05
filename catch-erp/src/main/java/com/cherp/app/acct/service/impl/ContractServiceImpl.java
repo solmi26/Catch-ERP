@@ -1,6 +1,7 @@
 package com.cherp.app.acct.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cherp.app.acct.mapper.ContractMapper;
 import com.cherp.app.acct.service.ContractService;
@@ -17,6 +18,7 @@ public class ContractServiceImpl implements ContractService{
 		this.conMapper = conMapper;
 	}
 	
+	@Transactional
 	@Override
 	public void insertContract(ContractItemVO conVO) {
 		conMapper.insertContractH(conVO); // 마스터

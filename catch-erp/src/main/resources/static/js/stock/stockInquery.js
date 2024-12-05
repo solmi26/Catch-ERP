@@ -711,7 +711,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     header: '전표번호',
                     name: 'slipNo',
                     align: "center",
-                    width: 100,
+                    width: 130,
                     whiteSpace: 'normal',
                     className:'border',
                     filter: 'select'

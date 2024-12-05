@@ -1,10 +1,14 @@
 package com.cherp.app.acct.web;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cherp.app.acct.service.ContractService;
 import com.cherp.app.stck.vo.ContractItemVO;
@@ -24,9 +28,12 @@ public class ContractController {
 	@Secured("ROLE_USER")
 	@PostMapping("sales/insertContract")
 	@ResponseBody
-	public String insertContract(@RequestBody ContractItemVO conVO) {
-		conService.insertContract(conVO);
-		return "등록 성공";
+	public String insertContract(@RequestPart("contract") ContractItemVO contractVO,
+	        					 @RequestPart(value = "file", required = false) MultipartFile file) {
+		
+	   conService.insertContract(contractVO);
+	   
+	    return "등록 성공";
 	}
 	
 }

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("stocks")
-public class StockAdjustController {
+public class StocksController {
 
 	//재고조정페이지
 	@GetMapping("/stockAdjustment") 
