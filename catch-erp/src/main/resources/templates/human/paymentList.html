@@ -107,11 +107,14 @@
 		
 		}
 		#payrollPrintModal .modal-body  {
-		margin:0 auto;}
-		#print-content{ 
-			overflow:auto;
-			max-height:700px;
+		margin:0 auto;
 		}
+		#print-content{ 
+			max-height:1500px;
+		}
+		body {
+  overflow: visible;
+}
 </style>
 <title>Insert title here</title>
 </head>
@@ -334,7 +337,7 @@
 <!-- 인쇄내용끝 -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">인쇄</button>
+                    <button type="button" class="btn btn-primary print-Btn" data-bs-dismiss="modal">인쇄</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
