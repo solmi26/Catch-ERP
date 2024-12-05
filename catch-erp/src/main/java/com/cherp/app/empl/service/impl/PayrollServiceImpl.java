@@ -23,7 +23,7 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 
 	@Override
-	public PayrollVO payrollInfo(String salaryNumber) {
+	public List<PayrollVO> payrollInfo(String[] salaryNumber) {
 		return mapper.selectPayroll(salaryNumber);
 	}
 

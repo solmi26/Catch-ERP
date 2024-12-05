@@ -47,6 +47,12 @@
         <if test="resingationDateEnd != null " >
         AND em.RESIGNATION_DATE <![CDATA[ <=  ]]> #{resingationDateEnd}
         </if>        
+        <if test="attendanceDateStart != null " >
+        AND ah.attendance_date >= #{attendanceDateStart}
+        </if>
+        <if test="attendanceDateEnd != null " >
+        AND ah.attendance_date <![CDATA[ <=  ]]> #{attendanceDateEnd}
+        </if>        
         </where>
         
 	</select>

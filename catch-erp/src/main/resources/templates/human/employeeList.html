@@ -169,8 +169,8 @@
                                
                                     <div class="row g-3">
                                         <div class="col-md-4 text-center">
-                                            <img src="/placeholder.svg?height=100&width=100" alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">
-                                            <!--  <input type="file" class="form-control form-control-sm" id="photoUpload" accept="image/*">-->
+                                            <img src="/placeholder.svg?height=100&width=100" style="height:180px;width:180px;"alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">
+                                            <input type="hidden" class="form-control form-control-sm EmployeeDetailVO" id="photoUpload" name="employeeImage">
                                         </div>
                                         <div class="col-md-8 ">
                                                     	<input type="hidden" class="form-control form-control-sm EmployeeVO" name="employeeCode" onkeypress="return false;" style="caret-color: transparent !important;">
@@ -335,7 +335,7 @@
                                            			<label class="form-label">재직상태</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="empStatus" required>
+                                            		<select class="form-select form-select-sm EmployeeDetailVO" name="empStatus">
 														<option value="" >해당없음</option>
 														<th:block th:each="com : ${comList}">
 							                    			<option  th:if="${com.commonCode eq '0J'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
@@ -351,7 +351,7 @@
                                             		<label class="col-form-label-sm">퇴사일자</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="date" class="form-control form-control-sm EmployeeDetailVO" name="resignationDate">
+                                            		<input type="date" class="form-control form-control-sm EmployeeVO" name="resignationDate">
                                             	</div>
                                         	</div>
                                         </div>
@@ -399,7 +399,7 @@
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">계좌번호</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="accoount" required>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="bacct" required>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">예금주</label>
@@ -408,13 +408,55 @@
                                     </div>
                             </div>
                         </div>
-                        <div class="mt-3 text-end">
-                            <button type="button" class="btn btn-primary btn-sm" id="saveBtn" data-mode="insert">저장</button>
-                            <button type="button" class="btn btn-secondary btn-sm" id="resetBtn">다시쓰기</button>
-                            <button type="button" class="btn btn-success btn-sm" id="newBtn">신규</button>
+                        <div class="mt-3 text-end ">
+                        <!-- 
+                        <div class="row ">
+							<div class="col-auto">
+	                            <button type="button" class="btn btn-secondary btn-sm" id="imgBtn">첨부하기</button>
+	                            <span class="px-4">사진명 : </span>
+								<span class="img-Text"></span>
+							</div>                        
+                        	<div class="col">
+	                            <button type="button" class="btn btn-secondary btn-sm" id="resetBtn">다시쓰기</button>
+	                            <button type="button" class="btn btn-success btn-sm" id="newBtn">신규</button>
+	                            <button type="button" class="btn btn-primary btn-sm" id="saveBtn" data-mode="insert">저장</button>
+	                            <input type="file" style="display:none;" accept=".jpg, .png" id="imgInput"></button>
+	                            <button type="button" class="btn btn-primary btn-sm funny-btn" ></button>
+                        	</div>
+                        </div>
+                         -->
                             
                         </div>
                     </div>
+                         <div class="row justify-conetnt-between">
+							<div class="col align-self-center">
+								<div class="row">
+									<div class="col-auto">
+			                            <button type="button" class="btn btn-secondary btn-sm ms-3 mb-3" id="imgBtn">첨부하기</button>
+									</div>
+									<div class="col-auto align-self-center ">
+			                            <span class="px-4">사진명 : </span>
+										<span class="img-Text"></span>
+									</div>
+									<div class="col-auto">
+									</div>
+								</div>
+							</div>                        
+                        	<div class="col">
+                        		<div class="row justify-content-end">
+                        			<div class="col-auto">
+			                            <button type="button" class="btn btn-secondary btn-sm" id="resetBtn">다시쓰기</button>
+                        			</div>
+                        			<div class="col-auto px-0">
+			                            <button type="button" class="btn btn-success btn-sm " id="newBtn">신규</button>
+			                        </div>    
+			                            <input type="file" style="display:none;" accept=".jpg, .png" id="imgInput"></button>
+			                        <div class="col-auto">    
+			                            <button type="button" class="btn btn-primary btn-sm mb-3 me-3" id="saveBtn" data-mode="insert">저장</button>
+			                        </div>    
+                        		</div>
+                        	</div>
+                        </div>
                 </div>
             </div>
 			<!-- 세부 정보 끝!!! -->
@@ -534,6 +576,7 @@
         </div>
     </div>
 <!-- 수당검색모달끝!! -->
+<link id="contextPathHolder" th:data-contextPath="${@environment.getProperty('server.servlet.context-path')}"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src='@{/js/common/toastsetting.js}'></script>
 
@@ -575,7 +618,7 @@
   		  	},
     	    {
     	      header: '사원번호',
-    	      name: 'employeeNo'
+    	      name: 'employeeId'
     	    },
     	    {
     	      header: '성명',
@@ -586,9 +629,14 @@
     	      name: 'departmentName',
     	    },
     	    {
-      	      header: '직위/직급명',
+      	      header: '직위/직급코드',
       	      name: 'employeePosition',
-      	    }
+      	      hidden: true
+      	    },
+    	    {
+    	     header:'직위/직급명',
+    	     name:'employeePositionName'
+    	    }
     	  ],
   	  
   	  data:[]
@@ -602,7 +650,6 @@
 	 
   document.getElementById('salary-tab').addEventListener('click', function() {
       window.setTimeout(function(){
-          grid.refreshLayout();
   		  allowanceGrid.refreshLayout();
       }, 200) 
   });
@@ -611,6 +658,7 @@
     
     const allowanceGrid = new Grid({
     	  el: document.getElementById('allowanceGrid'), // Container element
+    	  bodyHeight:250,
           rowHeaders: [
               {
                 type: 'checkbox',
@@ -725,6 +773,6 @@
     <script th:src="@{/js/human/modal/bankModal.js}"></script>
     <script th:src="@{/js/human/modal/allowanceModal.js}"></script>
     
-	<script th:src="@{/js/human/employeeList.js}"></script>
+	<script th:inline="javascript" th:src="@{/js/human/employeeList.js}"></script>
 </html>
 

@@ -20,8 +20,13 @@ public class EmployeeSearchDto {
 	private Date resignationDateStart;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date resingationDateEnd;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM")
 	private Date payrollYStart;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM")
 	private Date payrollYEnd;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date attendanceDateStart;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date attendanceDateEnd;
+	
 }
