@@ -14,6 +14,6 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry  registry) {
 		registry.addResourceHandler("/images/**") // url은 static 폴더안에있는 이름과 달라야한다
-		.addResourceLocations("file://" + uploadPath);
+		.addResourceLocations("file:///" + uploadPath);
 	}
 }
