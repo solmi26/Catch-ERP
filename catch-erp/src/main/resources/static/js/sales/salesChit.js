@@ -111,6 +111,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             scrollX: true,
             scrollY: true,
             data: clientData,
+            pageOptions: {
+                useClient: true,
+                perPage: 8,
+            },
             header: {height: 40},
             bodyHeight: 500,
             width: 'auto',
@@ -439,8 +443,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortable: true,
                 sortingType: 'desc',
                 className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                formatter: ({ value }) => {
+                    if (value === undefined || value === null || value === '') {
+                        return ''; // 비어 있는 경우 아무 값도 표시하지 않음
+                    }
+                    return Number(value).toLocaleString() + '원'; // 값이 있는 경우 포맷팅
                 },
             }, {
                 header: '공급가액',
