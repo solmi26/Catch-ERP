@@ -24,41 +24,59 @@
 		.content-box, .content-box .card-body{
 			height:100%;		
 		}
+		.shadow-box{
+		box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+		}
+		
+			  /* 그리드 전 form 관련 높이, 글자크기 */
+      .form-control,
+      .form-select,
+      .input-group-text {
+        height: 48px;
+        font-size: 1rem !important;
+      }
+      
+	/* 그리드 전 form 제목 길이 지정 */
+      .input-group-text:first-child {
+        width: 90px;
+      }
     </style>
+    <div class="bg-white shadow-sm rounded" style="padding: 20px;">
     <div class="container-fluid p-4">
         <!--  세부 검색 구역 -->
       <div class="card mb-4 bg-white">
         <div class="card-body bg-light">
-        <h3>사원정보</h3>
+        <h1>사원정보</h1>
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
             <!-- 직위/직급 -->
               <div class="col-md-6"><!-- 크기가 sm으로 변환시 한줄 전체차지 -->
                 <div class="row align-items-center">
-                	<div class="col-auto  pe-0">
-            	      <label class="form-label me-1 mb-0 label-width">직위/직급</label>
-                  	</div>
-                  	<div class="col align-self-start ps-0">
-                  		<select class="form-select input-width-120 search-option " name="employeePosition">
-                    		<option value="">전체</option>
-                    		<th:block th:each="com : ${comList}">
-                    			<option  th:if="${com.commonCode eq '0H'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-                    		</th:block>
-		                </select>
-                  	</div>
-                </div>
-              </div>
+	                <div class="col">
+		                <div class="input-group mb-3">
+						  <label class="input-group-text">직위/직급</label>
+						  <select class="form-select search-option " name="employeePosition">
+		                  		<option value="">전체</option>
+		                  		<th:block th:each="com : ${comList}">
+		                  			<option  th:if="${com.commonCode eq '0H'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+		                  		</th:block>
+						  </select>
+						</div>
+	                </div>
+                </div><!-- - -->
+              </div><!--  -->
               <!-- 직위/직급 끝-->
               <!-- 사원 -->
               <div class="col">
                 <div class="row align-items-center">
-                	<div class="col-auto"> <!-- auto로 크기를 줘서 컨텐츠 크기만큼만 너비 차지 -->
-                  		<label class="form-label me-2 mb-0 label-width">사원</label>
+                	<div class="col"> <!-- auto로 크기를 줘서 컨텐츠 크기만큼만 너비 차지 -->
+	                	<div class="input-group mb-3">
+						  <span class="input-group-text" >사원</span>
+						  <input type="text" class="form-control search-option" placeholder="사원아이디" name="employeeId" >
+						</div>
+                	
                   	</div>
-                  	<div class="col">
-                  		<input type="text" class="form-control input-width-120 me-2 search-option" name="employeeId" placeholder="사원" />
-					</div>
                 </div>
               </div>
               <!-- 사원끝 -->
@@ -66,40 +84,35 @@
 			<!-- 2행 시작 -->
             <div class="row align-items-center mb-3">
             	<!-- 부서칸-->
-            	<div class="col-sm-5 ">
+            	<div class="col ">
               		<div class="row align-items-center">
-              			<div class="col-auto">
-                  			<label class="form-label me-2 mb-0 label-width">부서</label>
+              			<div class="col">
+	              			<div class="input-group mb-3">
+							  <label class="input-group-text">부서</label>
+							  <select class="form-select search-option " name="departmentCode">
+		                    		<option value="">전체</option>
+	                    		<th:block th:each="dept : ${deptList}">
+	                    			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
+	                    		</th:block>
+							  </select>
+							</div>
                   		</div>
-                		<div class="col">
-		                	<select class="form-select input-width-150 search-option" name="departmentCode">
-	                    		<option value="">전체</option>
-                    		<th:block th:each="dept : ${deptList}">
-                    			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
-                    		</th:block>
-		                 	</select>
-	                 	</div>
     	            </div>
               	</div>
               	<!-- 부서칸 끝! -->
               	<!-- 재직구분칸 시작! -->
-              	<div class=" col-sm-7 ">
+              	<div class=" col">
               		<!-- 라벨(재직구분)만 auto로 컨텐츠크기만 차지하게하고, 나머지 라디오버튼(라벨포함)에 대해서는 남는부분을 3등분 시켜 동일한 크기를 지니게함 -->
               		<div class="row align-items-center">
-              			<div class="col-auto">
-                  			<label class="form-label me-2 mb-0 label-width ">재직구분</label>
-                  		</div>
-                  		<div class="col">
-                    		<input class="form-check-input search-option1" type="radio" name="statusType" id="status2" value="m1" />
-                    		<label  for="status2">재직</label>
-                  		</div>
-                  		<div class="col">
-                    		<input class="form-check-input" type="radio" name="statusType" id="status3" value="m2" />
-                    		<label  for="status3">휴직</label>
-                  		</div>
-                    	<div class="col">
-                    		<input class="form-check-input" type="radio" name="statusType" id="status3" value="m3" />
-                    		<label  for="status3">퇴직</label>
+              			<div class="col">
+              				<div class="input-group mb-3">
+							  <label class="input-group-text">재직구분</label>
+							  <select class="form-select search-option " name="statusType">
+	                    			<option value="m1">재직</option>
+	                    			<option value="m2">휴직</option>
+	                    			<option value="m3">퇴직</option>
+							  </select>
+							</div>
                   		</div>
                 	</div>
               	</div>
@@ -109,38 +122,44 @@
 			<!-- 3행시작 -->
 			<!--   날짜칸 시작 lg이하에서는 두줄로 표시하게 바꿈-->
             <div class="row mb-3 align-items-center row-gap-3">
-            	<div class="col-lg-7 ">
-                	<label class="form-label me-2 mb-0 label-width">입사일자</label>
-                    <input type="date" class="search-option" name="hireDateStart">
-                    <!-- &nbsp;는 공백(띄워쓰기)임 -->
-                    <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
-                  	<input type="date" class="search-option" name="hireDateEnd">
+            	<div class="col-lg col-md-12">
+            		<div class="input-group mb-3">
+            		  <span class="input-group-text">입사일자</span>
+	                  <input type="date" class="search-option form-control" name="hireDateStart">
+					  <span class="input-group-text">~</span>
+	                  <input type="date" class="search-option form-control" name="hireDateEnd">
+					</div>
+					            		
                	</div>
-              	<div class="col-auto">                    
-                	<label class="form-label me-2 mb-0 label-width">퇴사일자</label>
-                  	<input type="date" class="search-option" name="resignationDateStart">
-                    <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
-                  	<input type="date" class="search-option" name="resingationDateEnd">                    
+              	<div class="col-lg col-md-12">                    
+              		<div class="input-group mb-3">
+            		  <span class="input-group-text">퇴사일자</span>
+	                  <input type="date" class="search-option form-control" name="resignationDateStart">
+					  <span class="input-group-text">~</span>
+	                  <input type="date" class="search-option form-control" name="resingationDateEnd">
+					</div>
               	</div>
             </div>
             <!-- 날짜칸끝 -->
             <!-- 4행 시작 -->
             <!-- between으로 각 콘텐츠를 양끝에둠 -->
             <div class="row justify-content-between  mb-2">
-           		<div class="col ">
+           		<div class="col-6 ">
 	           		<div class="row ">
-              	  		<div class="col-auto ">
-                  			<label class="form-label me-2 mb-0 label-width">성명</label>
-                  		</div>
-                  		<div class="col-8 col-lg-6">
-                  			<input type="text" class="form-control input-width-200 search-option" name="employeeName" placeholder="성명" />
-                  		</div>
+              	  		<div class="col-lg col-md-12 ">
+		                	<div class="input-group mb-3">
+							  <span class="input-group-text" >사원명</span>
+							  <input type="text" class="form-control search-option" placeholder="사원명" name="employeeName" >
+							</div>                  		
+						</div>
                   	</div>
                 </div>
-                <div class="col-auto row justify-content-end">
-                	<div class="col">
-                        <button type="button" class="btn btn-primary search-btn">검색</button>
-                    </div>
+                <div class="col-lg col-md-12">
+                	<div class="row justify-content-end">
+	                	<div class="col-auto align-itself-center">
+	                        <button type="button" class="btn btn-primary search-btn">검색</button>
+	                    </div>
+                	</div>
                 </div>
             </div>
             <!-- 4행끝 -->
@@ -150,12 +169,15 @@
 			<!--  세부 검색 구역 끝!!!! -->
  <form id="generalForm" onsubmit="return false">
  <button type="submit" class="check-null" style="display:none;"></button>
-        <div class="row g-4 gap-0">
+        <div class="shadow-box row g-4 gap-0">
 
             <!-- 직원 세부 정보-->
             <div class="col-lg-8 pe-0">
-                <div class="card content-box employee-box">
-                    <div class="card-body">
+                <div class="content-box employee-box">
+                    <div class="card-body row">
+                    <!--  -->
+                   <!-- <div class="row"> -->
+                    	<div class="col align-self-start">
                         <ul class="nav nav-tabs" id="employeeTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">일반</button>
@@ -179,7 +201,7 @@
                                                     	<label class="form-label">사원아이디</label>
                                                     </div>
                                                     <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                    	<input type="text" class="form-control form-control-sm EmployeeVO" name="employeeId" onkeypress="return false;" style="caret-color: transparent !important;">
+                                                    	<input type="text" class="form-control form-control-sm EmployeeVO" name="employeeId" readonly>
                                                     </div>
                                                 </div>
                                             <div class="row mb-1">
@@ -287,7 +309,7 @@
                                            			<label class="form-label">이메일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email" required>
+                                            		<input type="email" class="form-control form-control-sm EmployeeDetailVO" name="email" required>
                                             	</div>
                                             </div>
                                         </div>
@@ -360,7 +382,7 @@
                                             <label class="form-label">주소</label>
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소" name="detailAddress" onkeypress="return false;" style="caret-color: transparent !important;"  required>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소를 입력해주세요" name="detailAddress"  required>
                                         </div>
                                     </div>
                                     
@@ -427,18 +449,17 @@
                          -->
                             
                         </div>
-                    </div>
+                        </div>
+                        <div class="col-12 align-self-end">
+                        <!--  -->
                          <div class="row justify-conetnt-between">
 							<div class="col align-self-center">
 								<div class="row">
 									<div class="col-auto">
-			                            <button type="button" class="btn btn-secondary btn-sm ms-3 mb-3" id="imgBtn">첨부하기</button>
-									</div>
-									<div class="col-auto align-self-center ">
-			                            <span class="px-4">사진명 : </span>
-										<span class="img-Text"></span>
-									</div>
-									<div class="col-auto">
+										<div class="input-group input-group mb-3">
+										  <button class="btn btn-secondary btn-sm" type="button" id="imgBtn">첨부하기</button>
+										  <input type="text" class="form-control from-control-sm img-Text" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly maxlength="20">
+										</div>
 									</div>
 								</div>
 							</div>                        
@@ -450,13 +471,18 @@
                         			<div class="col-auto px-0">
 			                            <button type="button" class="btn btn-success btn-sm " id="newBtn">신규</button>
 			                        </div>    
-			                            <input type="file" style="display:none;" accept=".jpg, .png" id="imgInput"></button>
+			                            <input type="file" style="display:none;" accept=".jpg, .png" id="imgInput">
 			                        <div class="col-auto">    
 			                            <button type="button" class="btn btn-primary btn-sm mb-3 me-3" id="saveBtn" data-mode="insert">저장</button>
 			                        </div>    
                         		</div>
-                        	</div>
+                        	<!--  </div>-->
                         </div>
+                        <!--  -->
+                        </div>
+                        </div>
+                    </div>
+                    <!-- 여기에삽입 -->
                 </div>
             </div>
 			<!-- 세부 정보 끝!!! -->
@@ -481,7 +507,7 @@
             </button>
         </div>
     </div>
-
+</div>
 <!-- 은행모달시작!!!! -->
     <div class="modal fade" id="bankModal" tabindex="-1">
         <div class="modal-dialog modal-md">
@@ -756,9 +782,13 @@
         document.addEventListener('DOMContentLoaded', function () {
             
             // 우편번호 검색 이벤트(Daum Api)
-            document.querySelector('.findZipCode').addEventListener('click', function () {
+            document.querySelectorAll('.findZipCode').forEach(ele => {
+            	ele.addEventListener('click', function () {
                 daumMapApi(0);
             })
+
+            })
+            
 
     
         })

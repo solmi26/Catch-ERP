@@ -5,8 +5,8 @@
 
 let grid = null;
 let selectData = {
-	salesChitNo: null, // 전표번호
-	type: null, // 전표유형
+  salesChitNo: null, // 전표번호
+  type: null, // 전표유형
 };
 let allSlipList;
 let isSlipDetailReadOnly = false;
@@ -49,8 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "전표번호", // 전표번호
         name: "voucherNumber",
         align: "center",
-        formatter: ({ value }) =>
-          `<a href="#" class="btn-link text-primary">${value}</a>`,
+        formatter: ({ value }) => `<a href="#" class="btn-link text-primary">${value}</a>`,
       },
       {
         header: "거래유형", // 거래유형
@@ -130,74 +129,52 @@ document.addEventListener("DOMContentLoaded", function () {
     // console.log(selectData.type);
 
     // 선택된 전표 정보 서버에서 가져오기
-    fetch(
-      `/sales/selectSlipInfo?salesChitNo=${selectData.salesChitNo}&type=${selectData.type}`
-    )
+    fetch(`/sales/selectSlipInfo?salesChitNo=${selectData.salesChitNo}&type=${selectData.type}`)
       .then((response) => response.json())
       .then((result) => {
         let data = result;
-		
-		// 선택된 전표 전송 상태에 따라 
-		
+
+        // 선택된 전표 전송 상태에 따라
+
         console.log("데이터 : ", result);
         // 가져온 데이터 필드에 삽입
-		
-		
-		// 현재 선택한 전표가 매입인지 매출인지 구분
-		if(selectData.type === "매출전표") {
-			result.invoiceStatus = allSlipList.find(slipData => slipData.salesChitNo === result.salesChitNo).invoiceStatus || null;
-			// 매출전표 관련 데이터 매핑		
-			document.getElementById("s_date").value = result.chitDate || "2024/11/01"; // 전표일자
-	      	document.getElementById("s_no").value =
-	         result.salesChitNo || result.purchaseChitNo; // 전표번호
-	        document.getElementById("s_joinInput").value =
-	         result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
-	        document.getElementById("s_clientInput").value = result.clientCode || "";
-			clientCode = result.clientNo;
-			console.log("code" + clientCode)
-	        document.getElementById("s_acctInput").value = result.acctName || "";
-	        document.getElementById("s_price").value = result.supplyPrice
-	         ? Number(result.supplyPrice).toLocaleString()
-	         : "0";
-	        document.getElementById("s_vat").value = result.vat
-	         ? Number(result.vat).toLocaleString()
-	         : "0";
-	        document.getElementById("s_amount").value = result.totalPrice
-	         ? Number(result.totalPrice).toLocaleString()
-	         : "0";
-	        document.getElementById("s_summary").value = result.summary || "";
-			
-		} else if(selectData.type === "매입전표") {
-			result.invoiceStatus = allSlipList.find(slipData => slipData.salesChitNo === result.purchaseChitNo).invoiceStatus || null;
-			// 매입전표 관련 데이터 매핑
-			document.getElementById("p_date").value = result.chitDate || "2024/11/01"; // 전표일자
-			document.getElementById("p_no").value =
-			 result.salesChitNo || result.purchaseChitNo; // 전표번호
-			document.getElementById("p_joinInput").value =
-			 result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
-			document.getElementById("p_clientInput").value = result.clientCode || "";
-			document.getElementById("p_acctInput").value = result.acctName || "";
-			document.getElementById("p_price").value = result.supplyPrice
-			 ? Number(result.supplyPrice).toLocaleString()
-			 : "0";
-			document.getElementById("p_vat").value = result.vat
-			 ? Number(result.vat).toLocaleString()
-			 : "0";
-			document.getElementById("p_amount").value = result.totalPrice
-			 ? Number(result.totalPrice).toLocaleString()
-			 : "0";
-			document.getElementById("p_summary").value = result.summary || "";
 
-		} else {
-			throw new Error("전표 유형이 존재하지 않습니다.");
-		}
-		
-		if(result.invoiceStatus) {
-			console.log(result.invoiceStatus); 
-			isSlipDetailReadOnly = result.invoiceStatus !== "미전송";
-		}
-		updateSlipDetailInputs(isSlipDetailReadOnly);		
-       
+        // 현재 선택한 전표가 매입인지 매출인지 구분
+        if (selectData.type === "매출전표") {
+          result.invoiceStatus = allSlipList.find((slipData) => slipData.salesChitNo === result.salesChitNo).invoiceStatus || null;
+          // 매출전표 관련 데이터 매핑
+          document.getElementById("s_date").value = result.chitDate || "2024/11/01"; // 전표일자
+          document.getElementById("s_no").value = result.salesChitNo || result.purchaseChitNo; // 전표번호
+          document.getElementById("s_joinInput").value = result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
+          document.getElementById("s_clientInput").value = result.clientCode || "";
+          clientCode = result.clientNo;
+          console.log("code" + clientCode);
+          document.getElementById("s_acctInput").value = result.acctName || "";
+          document.getElementById("s_price").value = result.supplyPrice ? Number(result.supplyPrice).toLocaleString() : "0";
+          document.getElementById("s_vat").value = result.vat ? Number(result.vat).toLocaleString() : "0";
+          document.getElementById("s_amount").value = result.totalPrice ? Number(result.totalPrice).toLocaleString() : "0";
+          document.getElementById("s_summary").value = result.summary || "";
+        } else if (selectData.type === "매입전표") {
+          result.invoiceStatus = allSlipList.find((slipData) => slipData.salesChitNo === result.purchaseChitNo).invoiceStatus || null;
+          // 매입전표 관련 데이터 매핑
+          document.getElementById("p_date").value = result.chitDate || "2024/11/01"; // 전표일자
+          document.getElementById("p_no").value = result.salesChitNo || result.purchaseChitNo; // 전표번호
+          document.getElementById("p_joinInput").value = result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
+          document.getElementById("p_clientInput").value = result.clientCode || "";
+          document.getElementById("p_acctInput").value = result.acctName || "";
+          document.getElementById("p_price").value = result.supplyPrice ? Number(result.supplyPrice).toLocaleString() : "0";
+          document.getElementById("p_vat").value = result.vat ? Number(result.vat).toLocaleString() : "0";
+          document.getElementById("p_amount").value = result.totalPrice ? Number(result.totalPrice).toLocaleString() : "0";
+          document.getElementById("p_summary").value = result.summary || "";
+        } else {
+          throw new Error("전표 유형이 존재하지 않습니다.");
+        }
+
+        if (result.invoiceStatus) {
+          console.log(result.invoiceStatus);
+          isSlipDetailReadOnly = result.invoiceStatus !== "미전송";
+        }
+        updateSlipDetailInputs(isSlipDetailReadOnly);
       })
       .catch((err) => {
         console.log("에러 : " + err);
@@ -222,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("/sales/selectSlip")
       .then((result) => result.json())
       .then((result) => {
-		allSlipList = result;
+        allSlipList = result;
         let dataArr = result.map((ele) => ({
           voucherNumber: ele.salesChitNo, // 전표번호
           transactionType: ele.type, // 전표유형
@@ -255,38 +232,72 @@ document.addEventListener("DOMContentLoaded", function () {
   loadGridData();
 
   // 선택 삭제 버튼
-  document
-    .querySelector("#deleteButton")
-    .addEventListener("click", function () {
-      console.log("삭제 버튼 클릭됨");
-      let selectedRows = grid.getCheckedRows(); // 체크된 데이터
-      console.log("선택된 데이터:", selectedRows);
+  document.querySelector("#deleteButton").addEventListener("click", function () {
+    console.log("삭제 버튼 클릭됨");
+    let selectedRows = grid.getCheckedRows(); // 체크된 데이터
+    console.log("선택된 데이터:", selectedRows);
 
-      if (selectedRows.length === 0) {
-        alert("삭제할 전표를 선택하세요.");
-        return;
-      }
+    if (selectedRows.length === 0) {
+      alert("삭제할 전표를 선택하세요.");
+      return;
+    }
 
-      // "미전송 상태의 전표만 전송"
-      const deletableRows = selectedRows.filter(
-        (row) => row.eTaxInvoice === "미전송"
-      );
-      const undeletableRows = selectedRows.filter(
-        (row) => row.eTaxInvoice !== "미전송"
-      );
+    // "미전송 상태의 전표만 전송"
+    const deletableRows = selectedRows.filter((row) => row.eTaxInvoice === "미전송");
+    const undeletableRows = selectedRows.filter((row) => row.eTaxInvoice !== "미전송");
 
-      // 삭제 불가능한 전표가 있을 경우 alert 창
-      if (undeletableRows.length > 0) {
-        alert("미전송 상태의 전표만 삭제할 수 있습니다.");
-        return;
-      }
+    // 삭제 불가능한 전표가 있을 경우 alert 창
+    if (undeletableRows.length > 0) {
+      alert("미전송 상태의 전표만 삭제할 수 있습니다.");
+      return;
+    }
+
+    // 전송할 데이터
+    let deleteData = deletableRows.map((row) => ({
+      salesChitNo: row.voucherNumber,
+      type: row.transactionType,
+    }));
+
+    // 서버로 삭제 요청
+    fetch("/sales/deleteSlip", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(deleteData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("삭제 요청에 실패했습니다.");
+        }
+        return response.text();
+      })
+      .then((result) => {
+        console.log("삭제 결과:", result);
+        alert("선택한 전표가 삭제되었습니다.");
+
+        // 삭제 시 그리드 다시 로드
+        loadGridData();
+      })
+      .catch((error) => {
+        console.error("삭제 요청 중 오류 발생:", error);
+        alert("전표 삭제 중 오류가 발생했습니다.");
+      });
+  });
+
+  // 모달 창에서(상세보기) 삭제 버튼
+  for (let deleteBtn of document.querySelectorAll(".deleteBtn")) {
+    deleteBtn.addEventListener("click", function () {
+      const { salesChitNo, type } = selectData;
+      console.log(salesChitNo, type);
 
       // 전송할 데이터
-      let deleteData = deletableRows.map((row) => ({
-        salesChitNo: row.voucherNumber,
-        type: row.transactionType,
-        
-      }));
+      let deleteData = [
+        {
+          salesChitNo: salesChitNo,
+          type: type,
+        },
+      ];
 
       // 서버로 삭제 요청
       fetch("/sales/deleteSlip", {
@@ -305,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((result) => {
           console.log("삭제 결과:", result);
           alert("선택한 전표가 삭제되었습니다.");
+          salesModal.hide();
 
           // 삭제 시 그리드 다시 로드
           loadGridData();
@@ -314,142 +326,101 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("전표 삭제 중 오류가 발생했습니다.");
         });
     });
-	
-	// 모달 창에서(상세보기) 삭제 버튼
-	for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
-		deleteBtn.addEventListener("click", function (){
-			const {salesChitNo, type} = selectData;
-			console.log(salesChitNo, type);
-			
-			// 전송할 데이터
-			let deleteData = [{
-				salesChitNo: salesChitNo,
-				type: type,
-			}];
-			
-			// 서버로 삭제 요청
-			fetch("/sales/deleteSlip", {
-			  method: "DELETE",
-			  headers: {
-			    "Content-Type": "application/json",
-			  },
-			  body: JSON.stringify(deleteData),
-			})
-			  .then((response) => {
-			    if (!response.ok) {
-			      throw new Error("삭제 요청에 실패했습니다.");
-			    }
-			    return response.text();
-			  })
-			  .then((result) => {
-			    console.log("삭제 결과:", result);
-			    alert("선택한 전표가 삭제되었습니다.");
-				salesModal.hide();
+  }
 
-			    // 삭제 시 그리드 다시 로드
-			    loadGridData();
-			  })
-			  .catch((error) => {
-			    console.error("삭제 요청 중 오류 발생:", error);
-			    alert("전표 삭제 중 오류가 발생했습니다.");
-			  });
-		});
-	}
-	
-	// 수정 버튼 클릭 시 수정(삭제 후 재삽입)
-	for (let updateBtn of document.querySelectorAll(".updateBtn")) {
-	  updateBtn.addEventListener("click", function (event) {
-	    const { salesChitNo, type } = selectData;
-	    console.log(salesChitNo, type);
-	
-	    // name은 alert 창에 띄울 내용, ele는 html 요소
-	    const requiredFields = [
-	      { name: "전표일자", element: document.querySelector("input[name='s_date']") },
-	      { name: "거래처", element: document.querySelector("input[name='s_clientName']") },
-	      { name: "계정명", element: document.querySelector("input[name='s_acctName']") },
-	      { name: "공급가액", element: document.querySelector("input[name='s_price']") },
-	      { name: "부가세", element: document.querySelector("input[name='s_vat']") },
-	      { name: "합계", element: document.querySelector("input[name='s_amount']") },
-	    ];
-	
-	    let isAllow = true;
-	    let noValueFields = [];
-	
-	    // 입력되었는지 확인
-	    requiredFields.forEach((field) => {
-	      console.log(field.element.value);
-	      if (!field.element.value.trim()) {
-	        isAllow = false;
-	        noValueFields.push(field.name);
-	      }
-	    });
-	
-	    // 경고창 표시
-	    if (!isAllow) {
-	      // 버튼 기본 동작 중단
-	      event.preventDefault();
-	      // 비활성화
-	      alert(`${noValueFields.join(", ")}를 입력해주세요.`);
-	      return;
-	    }
-	
-	    // 저장 로직
-	    const chitDate = document.querySelector("input[name='s_date']").value; // 전표일자
-	    const client = document.querySelector("input[name='s_clientCode']").value; // 거래처 코드
-	    const acct = document.querySelector("input[name='s_acctName']").value; // 계정명
-	    const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
-	    const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
-	    const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
-	    const writer = "오세훈"; // 작성자
-	    const balance = amount; // 채권 잔액
-	    const summary = document.querySelector("input[name='s_summary']").value; // 적요
-	    const saleslip = document.querySelector("input[name='s_joinInput']").value; // 판매전표 번호
-	
-		// 전송할 데이터	
-	    const updateData = [{
-	      salesChitNo: salesChitNo,
-	      type: type,
-	      chitDate: chitDate,
-	      clientCode: client,
-	      acctName: acct,
-	      supplyPrice: price,
-	      vat: vat,
-	      totalPrice: amount,
-	      writer: writer,
-	      recBalance: balance,
-	      summary: summary,
-	      saleslipNo: saleslip,
-	    }];
-	    
-	    	   // AJAX 요청
-		fetch("/sales/updateSalesDI", {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(updateData),
-		})
-			.then((response) => response.text())
-			.then((data) => {
-				console.log(data);
-				alert("수정이 완료되었습니다.");
-				salesModal.hide();
-				
-			// 수정 시 그리드 다시 로드
-			loadGridData();
-			})
-			.catch((error) => {
-				console.error("Error: ", error);
-				alert("서버와 연결에 실패했습니다.");
-			});
-	  });
-	  
-	}
+  // 수정 버튼 클릭 시 수정(삭제 후 재삽입)
+  for (let updateBtn of document.querySelectorAll(".updateBtn")) {
+    updateBtn.addEventListener("click", function (event) {
+      const { salesChitNo, type } = selectData;
+      console.log(salesChitNo, type);
 
-	
-	
-	// 수정 버튼 클릭 시 수정
-	/** 
+      // name은 alert 창에 띄울 내용, ele는 html 요소
+      const requiredFields = [
+        { name: "전표일자", element: document.querySelector("input[name='s_date']") },
+        { name: "거래처", element: document.querySelector("input[name='s_clientName']") },
+        { name: "계정명", element: document.querySelector("input[name='s_acctName']") },
+        { name: "공급가액", element: document.querySelector("input[name='s_price']") },
+        { name: "부가세", element: document.querySelector("input[name='s_vat']") },
+        { name: "합계", element: document.querySelector("input[name='s_amount']") },
+      ];
+
+      let isAllow = true;
+      let noValueFields = [];
+
+      // 입력되었는지 확인
+      requiredFields.forEach((field) => {
+        console.log(field.element.value);
+        if (!field.element.value.trim()) {
+          isAllow = false;
+          noValueFields.push(field.name);
+        }
+      });
+
+      // 경고창 표시
+      if (!isAllow) {
+        // 버튼 기본 동작 중단
+        event.preventDefault();
+        // 비활성화
+        alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+        return;
+      }
+
+      // 저장 로직
+      const chitDate = document.querySelector("input[name='s_date']").value; // 전표일자
+      const client = document.querySelector("input[name='s_clientCode']").value; // 거래처 코드
+      const acct = document.querySelector("input[name='s_acctName']").value; // 계정명
+      const price = parseNumber(priceInput.value); // 공급가액 (숫자로 변환)
+      const vat = parseNumber(vatInput.value); // 부가세 (숫자로 변환)
+      const amount = parseNumber(totalInput.value); // 합계 (숫자로 변환)
+      const writer = "오세훈"; // 작성자
+      const balance = amount; // 채권 잔액
+      const summary = document.querySelector("input[name='s_summary']").value; // 적요
+      const saleslip = document.querySelector("input[name='s_joinInput']").value; // 판매전표 번호
+
+      // 전송할 데이터
+      const updateData = [
+        {
+          salesChitNo: salesChitNo,
+          type: type,
+          chitDate: chitDate,
+          clientCode: client,
+          acctName: acct,
+          supplyPrice: price,
+          vat: vat,
+          totalPrice: amount,
+          writer: writer,
+          recBalance: balance,
+          summary: summary,
+          saleslipNo: saleslip,
+        },
+      ];
+
+      // AJAX 요청
+      fetch("/sales/updateSalesDI", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateData),
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data);
+          alert("수정이 완료되었습니다.");
+          salesModal.hide();
+
+          // 수정 시 그리드 다시 로드
+          loadGridData();
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+          alert("서버와 연결에 실패했습니다.");
+        });
+    });
+  }
+
+  // 수정 버튼 클릭 시 수정
+  /** 
 	for(let updateBtn of document.querySelectorAll(".updateBtn")){
 			updateBtn.addEventListener("click", function (event){
 				const {salesChitNo, type} = selectData;
@@ -539,13 +510,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		*/
 
-
   // "신규 등록" 버튼 클릭 시 드롭다운 메뉴 표시/숨기기
   document.getElementById("new").addEventListener("click", function () {
     const dropdownMenu = document.getElementById("dropdownMenu");
     // 보이는 상태(block) 숨겨진 상태(none)
-    dropdownMenu.style.display =
-      dropdownMenu.style.display === "block" ? "none" : "block";
+    dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
   });
 
   // 드롭다운 항목 클릭 이벤트
@@ -554,70 +523,68 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("dropdownMenu").style.display = "none";
   });
 
-  document
-    .querySelector(".purchase-item")
-    .addEventListener("click", function () {
-      //alert('매입전표 등록 선택됨');
-      document.getElementById("dropdownMenu").style.display = "none";
-    });
+  document.querySelector(".purchase-item").addEventListener("click", function () {
+    //alert('매입전표 등록 선택됨');
+    document.getElementById("dropdownMenu").style.display = "none";
+  });
 
   // 메뉴 외부 클릭 시 드롭다운 메뉴 숨기기
   document.addEventListener("click", function (event) {
     const dropdownMenu = document.getElementById("dropdownMenu");
     const newButton = document.getElementById("new");
 
-    if (
-      !newButton.contains(event.target) &&
-      !dropdownMenu.contains(event.target)
-    ) {
+    if (!newButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
       dropdownMenu.style.display = "none";
     }
   });
-  
+
   // 전자세금계산서 전송 상태에 따라 필드값 활성/비활성 상태 업데이트
   function updateSlipDetailInputs(isSlipDetailReadOnly) {
-	const slipDetailInputs = Array.from(document.querySelectorAll(".form-control")).filter(input => {
-		const inputName = input.getAttribute('name');
-		if(
-			inputName !== 's_no' && inputName !== 'p_no' &&
-			inputName !== 's_clientName' && inputName !== 'p_clientName' &&
-			inputName !== 's_acctName' && inputName !== 'p_acctName'
-		){
-			return true;
-		} else {
-			return false;
-		}
-	});
-	
-	if(isSlipDetailReadOnly) {
-		for(let inputEle of slipDetailInputs) {
-			inputEle.setAttribute("readonly", true);
-		}
-		for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
-			deleteBtn.disabled = true;
-		}
-		for(let updateBtn of document.querySelectorAll(".updateBtn")){
-			updateBtn.disabled = true;
-		}
-		for(let mgBtn of document.querySelectorAll(".mgBtn")) {
-			mgBtn.disabled = true;
-		}
-	} else {
-		for(let inputEle of slipDetailInputs) {
-			inputEle.removeAttribute("readonly");
-		}
-		for(let deleteBtn of document.querySelectorAll(".deleteBtn")){
-			deleteBtn.disabled = false;
-		}
-		for(let updateBtn of document.querySelectorAll(".updateBtn")){
-			updateBtn.disabled = false;
-		}
-		for(let mgBtn of document.querySelectorAll(".mgBtn")) {
-			mgBtn.disabled = false;
-		}
-	}
+    const slipDetailInputs = Array.from(document.querySelectorAll(".form-control")).filter((input) => {
+      const inputName = input.getAttribute("name");
+      if (
+        inputName !== "s_no" &&
+        inputName !== "p_no" &&
+        inputName !== "s_clientName" &&
+        inputName !== "p_clientName" &&
+        inputName !== "s_acctName" &&
+        inputName !== "p_acctName"
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    if (isSlipDetailReadOnly) {
+      for (let inputEle of slipDetailInputs) {
+        inputEle.setAttribute("readonly", true);
+      }
+      for (let deleteBtn of document.querySelectorAll(".deleteBtn")) {
+        deleteBtn.disabled = true;
+      }
+      for (let updateBtn of document.querySelectorAll(".updateBtn")) {
+        updateBtn.disabled = true;
+      }
+      for (let mgBtn of document.querySelectorAll(".mgBtn")) {
+        mgBtn.disabled = true;
+      }
+    } else {
+      for (let inputEle of slipDetailInputs) {
+        inputEle.removeAttribute("readonly");
+      }
+      for (let deleteBtn of document.querySelectorAll(".deleteBtn")) {
+        deleteBtn.disabled = false;
+      }
+      for (let updateBtn of document.querySelectorAll(".updateBtn")) {
+        updateBtn.disabled = false;
+      }
+      for (let mgBtn of document.querySelectorAll(".mgBtn")) {
+        mgBtn.disabled = false;
+      }
+    }
   }
-  
+
   // 공급가액, 부가세, 합계, 부가세 유형 필드
   const priceInput = document.querySelector("input[name='s_price']");
   const vatInput = document.querySelector("input[name='s_vat']");

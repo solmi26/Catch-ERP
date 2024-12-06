@@ -27,4 +27,7 @@ public interface PurchaseChitService {
     // 구매전표별 구매내역 보기
     public List<PurchaseHistoryVO> selectPurchaseHistory(PurchaseHistoryVO purchaseHistoryVO,
                                                          String purcslipNo);
+
+    // 구매전표 검색
+    public List<PurchaseChitVO> searchPurchaseChit(PurchaseChitVO purchaseChitVO);
 }

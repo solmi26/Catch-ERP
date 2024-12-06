@@ -3,7 +3,7 @@
  */
 
 
-
+let good;
 const salModifyModal = new bootstrap.Modal(document.getElementById('salModifyModal'))
 //#region
 
@@ -140,7 +140,6 @@ function remodelSalModifyGrid(data) {
 		        header: '지급총액',
 		        name: 'paymentTotal',
                 formatter: function (e) {
-					console.log(e)
 		          const value = e.value !== undefined || e.value !== null || Number(e.value) === NaN ? e.value : 0; // 기본값 0
 		          return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
 		        },
@@ -259,15 +258,18 @@ function remodelSalModifyGrid(data) {
 		let obj = {}
 		obj.header = data.allowanceHistoryVO[i].allowanceName
 		obj.name = data.allowanceHistoryVO[i].awhiNo
+		obj.editor = 'text'
 		obj.formatter = function (e) {
 		                const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
 		                return Number(value).toLocaleString() + "원"; }// 숫자로 변환 후 포맷팅
 		columnMiddle[i] = obj
-		
 	 }
-	 let column = columnFront.concat(columnMiddle,columnBack)
-	 console.log('시작!!!')
-	 console.log(column)
+	 let column;
+	 if (columnMiddle[0].name == null) {
+	 column = columnFront.concat(columnBack)		
+	 } else {
+	 column = columnFront.concat(columnMiddle,columnBack)
+	 }
 	 salModifyGrid.setColumns(column);
 	 salModifyGrid.resetData([{realPay:0}])
 	 for (let ele of data.allowanceHistoryVO) {
