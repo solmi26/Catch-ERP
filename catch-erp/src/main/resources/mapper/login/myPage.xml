@@ -2,5 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.common.myPage.mapper.MyPageMapper">
 	
+	<update id="updateEmployeeInfo" >
+		UPDATE employees_detail
+		SET  employee_id = #{employeeId}
+			 <if test="image != null">
+			,image = #{image}
+			</if>
+			<if test="tel != null">
+			,tel = #{tel}
+			</if>
+			<if test="phone != null">
+			,phone = #{phone}
+			</if>
+			<if test="emial != null">
+			,email = #{email}
+			</if>
+			<if test="image != null">
+			,employee_image = #{employeeImage}
+			</if>
+		WHERE employee_Code = #{employeeCode}
+	</update>
+	
+	<select id="selectEmployeeImage" parameterType="String" resultType="EmployeeVO">
+		SELECT employee_image
+		FROM   employees_detail
+		WHERE  employee_code = #{employeeCode}
+	</select>
 	
 </mapper>

@@ -38,12 +38,13 @@
 	        
 			    <div class="tab-pane fade show active" id="myInfo" role="tabpanel"
 			        aria-labelledby="myInfo-tab static-width"> <!-- 첫번째 탭 시작 -->
-			         <div class="card col-md-7 p-3">
+			         <div class="card col-md-7 p-3" style="min-width:600px;">
 			         	
 			         	<div class="row g-3">
+			         					<input type="text" style="display:none;" name="employeeCode" id="employeeCode" th:value="${employeeVO.employeeCode}">
                                         <div class="col-md-4 text-center">
-                                            <img src="/placeholder.svg?height=100&width=100" width="160" height="250" style="background-color:green;" alt="사원 프로필 사진" class="employee-photo mb-2" id="employeePhoto">
-                                            <input type="file" class="form-control form-control-sm" id="photoUpload">
+                                            <img src="#"  style="min-width:160px; min-height:210px;" alt="사원 프로필 사진" class="employee-photo mb-2" name="employeePhoto" id="employeePhoto">
+                                            <input type="file" class="form-control form-control-sm"  id="employeeImage" name="employeeImage">
                                         </div>
                                         <div class="col-md-8 ">
                                                     	<input type="hidden" class="form-control form-control-sm EmployeeVO"  name="employeeCode" onkeypress="return false;" style="caret-color: transparent !important;">
@@ -57,10 +58,10 @@
                                                 </div>
                                             <div class="row mb-1">
 	                                                <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                            	      <label class="form-label">성명</label>
+                                            	      <label class="form-label" >성명</label>
                                             	    </div>  
                                             	    <div class="col-md-8 col-sm-9 col-lg-7 ps-0">  
-                                          	    	  <input type="text" class="form-control form-control-sm EmployeeVO" name="name" readonly>
+                                          	    	  <input type="text" class="form-control form-control-sm EmployeeVO" th:value="${employeeVO.name}" name="name" readonly>
     	                                            </div>
     	                                    </div>
     	                                   	<div class="row mb-1">    
@@ -68,7 +69,7 @@
                                                     <label class="form-label">외국어성명</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="engName" readonly>
+                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.engName}" name="engName" readonly>
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
@@ -76,7 +77,7 @@
                                                     <label class="form-label">생년월일</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                                	<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="identityNo" readonly>
+                                                	<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.modifiedIdentityNo}" name="modifiedIdentityNo" readonly>
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
@@ -84,7 +85,7 @@
                                                     <label class="form-label">부서명</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="departmentCode" >
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.departmentName}"  name="departmentCode" readonly>
                                                 </div>
                                             </div>
                               
@@ -97,7 +98,7 @@
                                            			<label class="form-label">직위/직급</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="employeePosition" >
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeePosition}" name="employeePosition" >
                                             	</div>
                                             </div>
                                         </div>
@@ -107,7 +108,7 @@
                                             		<label class="col-form-label-sm">직책</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="duty" >
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.duty}" name="duty" readonly>
                                             	</div>
                                         	</div>
                                         </div>
@@ -118,7 +119,7 @@
                                            			<label class="form-label">전화번호</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="tel" >
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.tel}" name="tel" id="tel" >
                                             	</div>
                                             </div>
                                         </div>
@@ -128,7 +129,7 @@
                                             		<label class="col-form-label-sm">모바일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="phone" >
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.phone}" name="phone" id="phone" >
                                             	</div>
                                         	</div>
                                         </div>
@@ -138,7 +139,7 @@
                                            			<label class="form-label">이메일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email" >
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.duty}" name="email" id="email">
                                             	</div>
                                             </div>
                                         </div>
@@ -148,7 +149,7 @@
                                             		<label class="col-form-label-sm">재직구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="email" readonly>
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.statusType}" name="statusType" readonly>
                                             	</div>
                                         	</div>
                                         </div>
@@ -159,7 +160,7 @@
                                             		<label class="col-form-label-sm">입사일자</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeVO " name="hireDate" readonly>
+                                            		<input type="text" class="form-control form-control-sm EmployeeVO " th:value="${#dates.format(employeeVO.hireDate,'yyyy-MM-dd')}" name="hireDate" readonly>
                                             	</div>
                                         	</div>
                                         </div>
@@ -170,16 +171,16 @@
                                             		<label class="col-form-label-sm">근속년수</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="resignationDate" readonly>
+                                            		<input type="text" th:value="${#dates.year(#dates.createNow()) - #dates.year(employeeVO.hireDate)} + '년'" class="form-control form-control-sm EmployeeDetailVO" name="resignationDate" readonly>
                                             	</div>
                                         	</div>
                                         </div>
                                         	
                                         <div class="col-12">
                                             <label class="form-label">주소</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소" name="detailAddress" onkeypress="return false;" style="caret-color: transparent !important;"  required>
+                                            <input type="text" th:value="${employeeVO.employeeDetailVO.zipcode}" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
+                                            <input type="text" th:value="${employeeVO.employeeDetailVO.address}" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
+                                            <input type="text" th:value="${employeeVO.employeeDetailVO.detailAddress}" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소" name="detailAddress" onkeypress="return false;" style="caret-color: transparent !important;"  required>
                                         </div>
                                     </div>
                                     <div class="mt-3 text-end col-md-12">
@@ -208,8 +209,6 @@
         		</div> <!-- 세번째 탭 End Point -->
 			
 	   		</div> <!-- mainTab End Point -->
-  		</div>
-  		
+	   		<script th:src="@{/js/common/myPage.js}"></script>
   </body>
-  
 </html>

@@ -18,7 +18,14 @@ public class MyPageServiceImpl implements MyPageService {
 		this.myPageMapper = myPageMapper;
 	}
 	
-	
-	
+	@Override
+	public void modifyEmployeeInfo(EmployeeVO employeeVO) {
+		myPageMapper.updateEmployeeInfo(employeeVO);
+	}
+
+	@Override
+	public EmployeeVO getEmployeeImage(String employeeCode) {
+		return myPageMapper.selectEmployeeImage(employeeCode);
+	}
 
 }
