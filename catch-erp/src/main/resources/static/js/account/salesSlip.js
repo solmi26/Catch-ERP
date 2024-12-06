@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 저장 버튼 클릭 이벤트
   const target = document.getElementById("save-btn").addEventListener("click", function (event) {
-	 // 필수 입력값
+    // 필수 입력값
     // name은 alert 창에 띄울 내용, ele는 html 요소
     const requiredFields = [
       { name: "전표일자", element: document.querySelector("input[name='s_date']") },
@@ -122,13 +122,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // 경고창 표시
     if (!isAllow) {
       // 버튼 기본 동작 중단
-      event.preventDefault()
+      event.preventDefault();
       // 비활성화
       // target = true;
       alert(`${noValueFields.join(", ")}를 입력해주세요.`);
       return;
     }
-
 
     // 저장 로직
     const chitDate = document.querySelector("input[name='s_date']").value; // 전표일자
@@ -177,9 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("서버와 연결에 실패했습니다.");
       });
   });
-  
-
-
 
   // 전체 모달 관련
   class ButtonRenderer {
@@ -231,17 +227,15 @@ document.addEventListener("DOMContentLoaded", function () {
   	회계계정 모달 JS
   ==============================*/
 
-  const acctModal = new bootstrap.Modal(document.getElementById('s_acctModal'));
-  	
-  	//모달실행 시 grid refresh를 위한 코드
-  	document
-  		.getElementById("s_openAcctModal")
-  		.addEventListener("click", function() {
-  			acctModal.show();
-  			window.setTimeout(function() {
-  				grid1.refreshLayout();
-  			}, 200);
-  		});
+  const acctModal = new bootstrap.Modal(document.getElementById("s_acctModal"));
+
+  //모달실행 시 grid refresh를 위한 코드
+  document.getElementById("s_openAcctModal").addEventListener("click", function () {
+    acctModal.show();
+    window.setTimeout(function () {
+      grid1.refreshLayout();
+    }, 200);
+  });
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let grid1 = new Grid({
@@ -320,17 +314,15 @@ document.addEventListener("DOMContentLoaded", function () {
   ==============================*/
 
   // 모달 관련 JavaScript
-  const clientModal = new bootstrap.Modal(document.getElementById('s_clientModal'));
+  const clientModal = new bootstrap.Modal(document.getElementById("s_clientModal"));
 
   //모달실행 시 grid refresh를 위한 코드
-  document
-  	.getElementById("s_openClientModal")
-  	.addEventListener("click", function() {
-  		clientModal.show();
-  		window.setTimeout(function() {
-  			s_grid3.refreshLayout();
-  		}, 200);
-  	});
+  document.getElementById("s_openClientModal").addEventListener("click", function () {
+    clientModal.show();
+    window.setTimeout(function () {
+      s_grid3.refreshLayout();
+    }, 200);
+  });
 
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let s_grid3 = new Grid({
@@ -430,8 +422,8 @@ document.addEventListener("DOMContentLoaded", function () {
       inputTag2.value = s_grid3.getValue(rowKeyNum, "c7"); //거래처코드가 들어갈 hidden input
 
       console.log(inputTag.value);
-	  
-	  clientModal.hide();
+
+      clientModal.hide();
     }
   });
 
@@ -472,12 +464,12 @@ document.addEventListener("DOMContentLoaded", function () {
   /*============================
 		구매전표 모달 JS
 	==============================*/
-	
-const salesModal = new bootstrap.Modal(document.getElementById('salesModal'));	
+
+  const salesModal = new bootstrap.Modal(document.getElementById("salesModal"));
 
   //모달실행 시 grid refresh를 위한 코드
   document.getElementById("openSalesModal").addEventListener("click", function () {
-	salesModal.show();
+    salesModal.show();
     window.setTimeout(function () {
       grid2.refreshLayout();
     }, 200);
@@ -654,7 +646,7 @@ const salesModal = new bootstrap.Modal(document.getElementById('salesModal'));
         dataRow.c10 = ele.slipState;
         dataArr.push(dataRow);
       });
-	  console.log(result, dataArr);
+      console.log(result, dataArr);
       grid2.resetData(dataArr);
     });
 
