@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		          } else if (value === "상품 출고") {
 		            colorClass = "r2";
 		 		  }
-		          return `<span class="${colorClass}">${value}</span>`;
+                      return `<span class="${colorClass}">${value}</span>`;
 		        },              
             },           
             {
