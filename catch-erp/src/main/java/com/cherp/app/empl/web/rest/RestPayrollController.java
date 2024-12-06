@@ -29,9 +29,8 @@ public class RestPayrollController {
 	} 
 	
 	
-	@GetMapping("/employees/payroll/{salaryNumber}")
-	public PayrollVO payrollInfo(@PathVariable(name="salaryNumber")String salaryNumber) {
-		System.out.println(service.payrollInfo(salaryNumber));
+	@GetMapping("/employees/payroll/sel")
+	public List<PayrollVO> payrollInfo(@RequestParam(value="salaryNumber")String[] salaryNumber) {
 		return service.payrollInfo(salaryNumber);
 		
 	}

@@ -34,7 +34,8 @@ public class EmployeeVO {
 	
 //  조인으로 추가할 컬럼들
 	private String departmentName; //부서이름
-	
+	private String employeeImage; //사원이미지
+	private String employeePositionName;//직급이름
 	
 	
 	

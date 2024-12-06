@@ -1,20 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/account_layout}"
-      layout:fragment="Content">
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{common/layouts/account_layout}"
+  layout:fragment="Content"
+>
   <head>
     <meta charset="UTF-8" />
-  <title>계약조회</title>
-  
-    <style>
-    
-	h1{
-        margin-top: 20px;
-        margin-left:10px;
-        font-weight: bold;
-       }
+    <title>매입 단가 계약 관리</title>
 
+    <style>
       /* 버튼들이 고정된 위치에 나타나도록 합니다. */
       .button-group {
         display: flex;
@@ -23,33 +18,33 @@
         margin-bottom: 20px;
         justify-content: flex-start; /* 버튼 정렬 */
       }
-
     </style>
-    
   </head>
-  
+
   <body>
-  	<h1>매입 단가 계약 관리</h1>
-  	<!-- 전체 컨테이너 -->
-	<div class="container-fluid p-4">
+    <div class="bg-white shadow-sm rounded" style="padding: 20px">
+      <!-- Search Section -->
+      <div class="border-bottom pb-3 mb-4">
+        <h1>매입 단가 계약 관리</h1>
+      </div>
+      <!-- 전체 컨테이너 -->
+      <div class="container-fluid p-4">
+        <!-- 버튼 그룹-->
+        <div class="button-group">
+          <button class="btn btn-success" th:onclick="|location.href='@{/sales/insertContractView}'|">신규 등록</button>
+          <button class="btn btn-secondary">인쇄</button>
+          <button class="btn btn-secondary">Excel</button>
+        </div>
 
-  <!-- 버튼 그룹-->
-  <div class="button-group">
-    <button class="btn btn-success" th:onclick="|location.href='@{/sales/insertContractView}'|">신규 등록</button>
-    <button class="btn btn-secondary">인쇄</button>
-    <button class="btn btn-secondary">Excel</button>
-  </div>
-  
-  <!-- 그리드 -->
-  <div id="grid"></div>
-  
-  <!-- 페이지네이션 -->
-  <div id="pagination" class="tui-pagination"></div>
-  
-</div> <!-- 전체 컨테이너 끝. -->
+        <!-- 그리드 -->
+        <div id="grid"></div>
 
-<script th:src="@{/js/account/contract.js}"></script>
+        <!-- 페이지네이션 -->
+        <div id="pagination" class="tui-pagination"></div>
+      </div>
+      <!-- 전체 컨테이너 끝. -->
+    </div>
 
+    <script th:src="@{/js/account/contract.js}"></script>
   </body>
-  
 </html>

@@ -2,6 +2,8 @@ package com.cherp.app.acct.service;
 
 import java.util.List;
 
+import com.cherp.app.acct.vo.ClientPsVO;
+import com.cherp.app.acct.vo.ClientSearchVO;
 import com.cherp.app.acct.vo.InsertPayableVO;
 import com.cherp.app.acct.vo.InsertReceivableVO;
 import com.cherp.app.acct.vo.PayablesVO;
@@ -20,7 +22,8 @@ public interface SalesService {
 	public List<SalesVO> ClientReceivableList(String clientCode);	// 채권 거래처 전체 조회
 	public List<SalesVO> acctList(String debitSide);
 	public List<SalesVO> selectAllSlip(); // 매출, 매입전표 전체 조회
-	
+	public List<ClientPsVO> payablesOptionList(ClientSearchVO search); // 조건에 맞는 채무내역 조회
+	public List<ClientPsVO> salesOptionList(ClientSearchVO search); // 조건에 맞는 채권 내역 조회
 	//단건 조회
 	public SalesVO slipInfo(SalesVO salesVO);		// 매출, 매입 단건 조회
 	public PayablesVO payableInfo(PayablesVO payablesVO); // 채무거래 단건 조회

@@ -76,6 +76,11 @@
 		.modify-gird-content{
 			overflow-x:auto;
 		}
+		input[type=time]::-webkit-datetime-edit-ampm-field {
+			  display: none;
+			}
+			
+
 </style>
 <title>Insert title here</title>
 </head>
@@ -98,11 +103,9 @@
                   	<div class="col align-self-start ps-0">
                   		<select class="form-select input-width-120 search-option " name="employeePosition">
                     		<option value="">전체</option>
-                    		<option value="m1">사원</option>
-		                    <option value="m2">대리</option>
-		                    <option value="과장">과장</option>
-		                    <option value="차장">차장</option>
-		                    <option value="부장">부장</option>
+                    		<th:block th:each="com : ${comList}">
+                    			<option  th:if="${com.commonCode eq '0H'}" th:value="${com.codeRule}" th:text="${com.commonName}"></option>
+                    		</th:block>
 		                </select>
                   	</div>
                 </div>
@@ -131,6 +134,10 @@
                   		</div>
                 		<div class="col">
 		                	<select class="form-select input-width-150 search-option" name="departmentCode">
+		                		<option value="">전체</option>
+                    		<th:block th:each="dept : ${deptList}">
+                    			<option   th:value="${dept.departmentCode}" th:text="${dept.departmentName}"></option>
+                    		</th:block>
 		                 	</select>
 	                 	</div>
     	            </div>
@@ -181,7 +188,7 @@
             <!-- 4행 시작 -->
             <!-- between으로 각 콘텐츠를 양끝에둠 -->
             <div class="row justify-content-between  mb-2">
-           		<div class="col ">
+           		<div class="col-xl">
 	           		<div class="row ">
               	  		<div class="col-auto ">
                   			<label class="form-label me-2 mb-0 label-width">성명</label>
@@ -190,14 +197,26 @@
                   			<input type="text" class="form-control input-width-200 search-option" name="employeeName" placeholder="성명" />
                   		</div>
                   	</div>
+                 </div>
+                 <div class="col"> 	
+                  	<div class="row">
+		              	<div class="col-auto">                    
+ 			               	<label class="form-label me-2 mb-0 label-width">근태일자</label>
+    		              	<input type="date" class="search-option" name="attendanceDateStart">
+  		  	                <span class="me-2">&nbsp;&nbsp;&nbsp;~&nbsp;</span>
+        		          	<input type="date" class="search-option" name="attendanceDateEnd">                    
+    		          	</div>
+                  	</div>
                 </div>
+            </div>
+            <!-- 4행끝 -->
+            <div class="row justify-content-end">
                 <div class="col-auto row justify-content-end">
                 	<div class="col">
                         <button type="button" class="btn btn-primary search-btn">검색</button>
                     </div>
                 </div>
             </div>
-            <!-- 4행끝 -->
           </form>
         </div>
       </div>

@@ -1,7 +1,8 @@
 /**
  * 
  */
-console.log("gd")
+ const contextPath = document.querySelector('#contextPathHolder').dataset.contextPath;
+console.log(contextPath)
 /*
 document.querySelector('#employeeTabContent').querySelectorAll('input')
 */
@@ -10,7 +11,7 @@ let currentTarget = null;
 document.addEventListener('DOMContentLoaded', function() {
 	
     const tableRows = document.querySelectorAll('.employee-list tbody tr');
-    tableRows.forEach(rwow => {
+    tableRows.forEach(row => {
         row.addEventListener('click', function() {
 
             tableRows.forEach(r => r.classList.remove('table-active'));
@@ -46,21 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 */
 });
-
-//셀렉트 박스에 데이터를 뿌리는 함수
-
-async function datoToSelect(name,code) {
-await fetch('/employees/empCommon?commonCode='+code)
-.then(data => data.json())
-.then(datas => {
-	document.querySelectorAll(`[name="${name}"]`).forEach(item => {
-		datas.forEach(comp => {
-			let tag = `<option value="${comp.codeRule}">${comp.commonName}</option>`;
-			item.insertAdjacentHTML('beforeend',tag);
-		})
-	})
-})
-};
 
 
 
@@ -224,12 +210,15 @@ saveBtn.addEventListener('click',function(){
 		EmployeeVO[ele.name] = ele.value;
 	})
 	
-	// EmployeeDetailVO 필드값 넣기
+	// EmployeeDetailVO 
 	let EmployeeDetailVO = {}
 	let detailInfo = document.querySelectorAll('.EmployeeDetailVO')
 	detailInfo.forEach(ele => {
 		EmployeeDetailVO[ele.name] = ele.value;
 	})
+	
+	
+	
 	EmployeeVO['employeeDetailVO'] = EmployeeDetailVO 
 	
 	// EmployeeSalaryVO 필드값 넣기
@@ -245,21 +234,34 @@ saveBtn.addEventListener('click',function(){
 	let FixedVO =[]
 	let index = 0;
 	allowanceGrid.getData().forEach(ele => {
-		console.log(ele+' : ele')
-		FixedVO[index] = ele;
+		console.log(ele)
+		let obj = {};
+		obj['allowanceCheck'] = ele.allowanceCheck
+		obj['allowanceCode'] = ele.allowanceCode
+		obj['allowanceName'] = ele.allowanceName
+		obj['allowancePrice'] = ele.allowancePrice
+		FixedVO[index] = obj;
 		index += 1;
 	})
-	console.log(FixedVO+' : arr')
 
 	EmployeeVO['fixedVO'] = FixedVO;
-	console.log(EmployeeVO+' : vo')
 	
-	console.log(EmployeeVO);
+	//사진첨부하기
+	let formData = new FormData();
+	let imgInput = document.querySelector('#imgInput')
+	if (imgInput.files.length != 0) {
+	formData.append("imageFile", imgInput.files[0]);		
+	}else {
+	formData.append("imageFile", imgInput.files[0]);		
+	}
+	formData.append("EmployeeVO", JSON.stringify(EmployeeVO))
+	
+	
+	
 	//만약 사용자가 신규버튼을 누른 상태라면
 	if (saveBtn.dataset.mode == 'insert') {
 		 fetch('/employees/emps', {method: 'post', 
-             headers: { "Content-Type": "application/json", },
-             body: JSON.stringify(EmployeeVO)
+             body: formData
        }).then(
 		console.log("성공")
 	   )
@@ -272,8 +274,7 @@ saveBtn.addEventListener('click',function(){
 	else if (saveBtn.dataset.mode == 'update') {
 		fetch('/employees/emps',{
 			  method:'put',
-			  headers:{"Content-Type": "application/json", },
-			  body:JSON.stringify(EmployeeVO)
+			  body: formData
 		})
 		.then(
 			
@@ -281,7 +282,6 @@ saveBtn.addEventListener('click',function(){
 	}
 })
 //널체크폼
-
 
 //검색버튼 클릭 이벤트
 document.querySelector('.search-btn').addEventListener('click',function (ev) {
@@ -315,6 +315,29 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	
 })
 console.log('gd')
+//파일첨부버튼(미리보기 설정)
+//#region
+document.querySelector('#imgBtn').addEventListener('click',function () {
+	imgInput.click()
+})
+document.querySelector('#imgInput').addEventListener('change',function (ev) {
+	document.querySelector('.img-Text').innerText = imgInput.files[0].name
+	let img = document.querySelector('#employeePhoto')
+	if (ev.target.files.length > 0) {
+		let reader = new FileReader();
+		reader.onload = function(data) {
+			img.src = data.target.result;
+			img.width = 250;
+			img.height = 250;
+		}
+		reader.readAsDataURL(ev.target.files[0]);
+	} else {
+		img.src = "";
+	}
+})
+
+//#endregin
+
 
 //삭제버튼 클릭 이벤트
 document.querySelector('.delete-Btn').addEventListener('click',function(){
@@ -341,6 +364,10 @@ document.querySelector('.delete-Btn').addEventListener('click',function(){
 function dataToInput (data) {
 	console.log(data)
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
+	document.querySelector('#employeePhoto').src = '/images/'+data.employeeDetailVO.employeeImage
+	document.querySelector('#imgInput').value = null;
+	document.querySelector('.img-Text').innerText = null;
+
 	for (let ele in data) {
 		//만약 배열타입이면
 		if (Array.isArray(data[ele])) {

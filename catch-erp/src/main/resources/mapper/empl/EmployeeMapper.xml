@@ -32,6 +32,7 @@
 			<result column="depositor" property="depositor"/>
 			<result column="employee_image" property="employeeImage"/>
 			<result column="bank" property="bank"/>
+			<result column="bank_name" property="bankName"/>
 		</association>
 		<!-- 기본급 -->
 		<association property="employeeSalaryVO" javaType="com.cherp.app.empl.vo.EmployeeSalaryVO">
@@ -64,10 +65,13 @@
 				em.resignation_date,
 				em.hire_type,
 				em.department_code,
-                dp.department_name
+                dp.department_name,
+                ep.common_name AS employee_position_name
 		FROM    employees em
 		JOIN    department dp
         ON      em.department_code = dp.department_code
+        JOIN    common_code ep 
+        ON      ep.code_rule = em.employee_position
         <where>
         <if test="employeePosition != null and !employeePosition.equals('')">
         employee_position = #{employeePosition}
@@ -132,7 +136,7 @@
 		        ed.depositor,
 		        ed.employee_image,
 		        ed.bank,
-		        cc.common_name,
+		        cc.common_name AS bank_name,
                 es.monthly_salary,
                 fx.fixed_no,
                 fx.allowance_price,
@@ -147,6 +151,7 @@
         JOIN    fixed fx        ON      em.employee_code = fx.employee_code
         JOIN    allowance_item ai        ON      fx.allowance_code = ai.allowance_code
         JOIN    common_code cc          ON ed.bank = cc.code_rule
+		
 		WHERE   em.employee_code = #{employeeCode}
 		
 	</select>

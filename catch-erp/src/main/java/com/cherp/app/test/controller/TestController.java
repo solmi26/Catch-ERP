@@ -33,6 +33,7 @@ public class TestController {
 	public String testViewStock2() {
 		return "stock/stockInquery";
 	}
+	
 	// SGW TEST
 	@GetMapping("test1")
 	public String testView2() {
