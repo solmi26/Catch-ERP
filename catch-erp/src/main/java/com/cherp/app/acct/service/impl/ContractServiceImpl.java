@@ -1,5 +1,7 @@
 package com.cherp.app.acct.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ public class ContractServiceImpl implements ContractService{
 		this.conMapper = conMapper;
 	}
 	
+	// 매입 단가 계약 등록
 	@Transactional
 	@Override
 	public void insertContract(ContractItemVO conVO) {
@@ -27,6 +30,12 @@ public class ContractServiceImpl implements ContractService{
 			conMapper.insertContractB(data); // 디테일
 			conMapper.updateContractB(conVO.getConNo() , data.getItemCode()); // conNo 업데이트
 		}
+	}
+	
+	// 매입 단가 계약 전체 조회(Header)
+	@Override
+	public List<ContractItemVO> contractList() {
+		return conMapper.selectContractsH();
 	}
 
 }

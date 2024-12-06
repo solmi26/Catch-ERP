@@ -20,7 +20,7 @@ public interface SalesChitService {
 
     // 판매전표 검색
     public List<SalesChitVO> searchSalesChit(SalesChitVO salesChitVO);
-    
+
     // 판매전표 전표 발행 상태별 조회 by sm
     public List<SalesChitVO> selectsalesChitState(String slipState);
 

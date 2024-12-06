@@ -2,6 +2,7 @@ package com.cherp.app.buss.web;
 
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +25,7 @@ public class SalesChitController {
         this.salesChitService = salesChitService;
     }
     
-    // 판매전표 전체 조회 by sm
+    // 판매전표 전체 조회
 	@ResponseBody
     @GetMapping("sales/selectSalesChit")
 	public List<SalesChitVO> selectSalesShit(){

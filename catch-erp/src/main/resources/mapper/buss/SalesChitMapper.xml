@@ -86,11 +86,6 @@
         FROM sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
     </select>
 
-<!--    <resultMap id="SalesChitResultMap" type="com.cherp.app.buss.vo.SalesChitVO">-->
-<!--        <result property="insertDate" column="insert_date" />-->
-<!--        &lt;!&ndash; 다른 컬럼과 필드에 대한 매핑도 추가 &ndash;&gt;-->
-<!--    </resultMap>-->
-
     <!-- 판매전표 검색 -->
     <select id="searchSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT a.saleslip_no
