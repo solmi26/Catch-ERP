@@ -9,11 +9,16 @@
   <title>채무조회</title>
   <link rel="stylesheet" th:href="@{/css/sales/recReduction.css}"/>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+  .clientStyle {
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
   <div class="bg-white shadow-sm rounded" style="padding: 20px;">
     <div class="border-bottom pb-3 mb-4">
-      <h2>채무감소등록</h2>
+      <h1>채무감소등록</h1>
     </div>
     <div class="card col-md-12">
       <form class="bg-light p-4 rounded card-body" id="searchForm">
@@ -162,7 +167,9 @@
                           name: 'clientCode',
                           sortable: true,
                           filter: 'select',
-                          align: 'center'
+                          align: 'center',
+                          formatter: ({ value }) =>
+			                      `<span class="text-primary clientStyle">${value}</span>`
                       },
                       {
                           header: '거래처명',
@@ -383,7 +390,7 @@
       }
 
       //클라이언트별 총 채무 페이지
-      grid.blur();
+      // grid.blur();
       fetch('/api/account/payables')
         .then(result => result.json())
         .then((result) => {

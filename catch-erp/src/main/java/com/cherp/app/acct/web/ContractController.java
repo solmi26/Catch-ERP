@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -45,8 +46,9 @@ public class ContractController {
     // 매입 계약 전체 조회 페이지(기능) by sm
     @Secured("ROLE_MANAGER,ROLE_SALES") // 권한 설정
 	@GetMapping("sales/selectContract")
-	public String selectContracts(Model model) {
-	    return "account/invoice";
+    @ResponseBody
+	public List<ContractItemVO> selectContracts() {
+	    return conService.contractList();
 	}
     
 	// 매입 계약 등록 페이지(화면) by sm

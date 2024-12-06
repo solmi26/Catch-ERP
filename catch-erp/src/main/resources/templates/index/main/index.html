@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/sales_layout}"
+      layout:fragment="Content">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatchERP</title>
+    <style>
+        .btn-primary {
+            background-color: #4154f1;
+            border-color: #4154f1;
+        }
+    
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #3644d0;
+            border-color: #3644d0;
+        }
+    
+        .card {
+            border: none;
+        }
+    
+        .table-calendar {
+            font-size: 0.9rem;
+        }
+    
+        .table-calendar th,
+        .table-calendar td {
+            text-align: center;
+            padding: 0.5rem;
+        }
+    
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+    
+        .list-group-item {
+            border: none;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+        }
+    
+        .list-group-item:last-child {
+            margin-bottom: 0;
+        }
+        </style>
+</head>
+<body>
+    <!-- Main Content Area -->
+    <div class="col-md-12 p-3">
+        <div class="row g-4">
+            <!-- Left Calendar Section -->
+            <div class="col-md-6">
+                <div class="card shadow-sm rounded-4 bg-primary text-white p-3 mb-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="btn-group">
+                            <button class="btn btn-primary active">매입</button>
+                            <button class="btn btn-primary">결제처리</button>
+                            <button class="btn btn-light">결제현황</button>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary"><i class="bi bi-arrow-clockwise"></i></button>
+                            <button class="btn btn-primary"><i class="bi bi-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6>구매요청 및 결정서</h6>
+                            <span>2024.12.05</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6>결비 지출 품의서</h6>
+                            <span>2024.12.13</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm rounded-3" style="min-width: 518px;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <button class="btn btn-sm btn-light" id="beforeMonth"><i class="bi bi-chevron-left"></i></button>
+                            <h5 class="mb-0" id="yearMonth"></h5>
+                            <button class="btn btn-sm btn-light" id="afterMonth"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-container">
+                            <table class="table table-calendar">
+                                <thead>
+                                    <tr>
+                                        <th>일</th>
+                                        <th>월</th>
+                                        <th>화</th>
+                                        <th>수</th>
+                                        <th>목</th>
+                                        <th>금</th>
+                                        <th>토</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="calendarBody">
+                                    <!-- Calendar will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Weather Section -->
+            <div class="col-md-4">
+                <div class="card shadow-sm rounded-3 mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="btn-group">
+                                <button class="btn btn-secondary active">공지사항</button>
+                                <button class="btn btn-light">경조사/경사현</button>
+                            </div>
+                            <div>
+                                <button class="btn btn-light"><i class="bi bi-arrow-clockwise"></i></button>
+                                <button class="btn btn-light"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="text-center my-5">
+                            <p class="text-muted">결재처리 된 문서가 없습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm rounded-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">날씨정보</h5>
+                            <button class="btn btn-sm btn-light"><i class="bi bi-arrow-clockwise"></i></button>
+                        </div>
+                        <div class="text-center">
+                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                <i class="bi bi-cloud-sun fs-1 text-warning"></i>
+                                <h2 class="mb-0">13.9°</h2>
+                            </div>
+                            <p class="text-muted mb-4">맑음<br>어제보다 2.5°</p>
+                            <div class="row text-center g-3">
+                                <div class="col-3">
+                                    <div class="p-2 rounded bg-light">
+                                        <small class="d-block text-muted">미세먼지</small>
+                                        <small class="text-primary">좋음</small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="p-2 rounded bg-light">
+                                        <small class="d-block text-muted">초미세먼지</small>
+                                        <small class="text-success">보통</small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="p-2 rounded bg-light">
+                                        <small class="d-block text-muted">자외선</small>
+                                        <small class="text-warning">나쁨</small>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="p-2 rounded bg-light">
+                                        <small class="d-block text-muted">일몰</small>
+                                        <small>19-20</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right AI Tools Section -->
+            <div class="col-md-4">
+                <div class="card shadow-sm rounded-3 mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">회의실</h5>
+                            <button class="btn btn-sm btn-light"><i class="bi bi-plus"></i></button>
+                        </div>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h6>프로젝트룸 001</h6>
+                                <small class="text-muted">대회의실</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm rounded-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">검색 AI</h5>
+                            <button class="btn btn-sm btn-light"><i class="bi bi-arrow-clockwise"></i></button>
+                        </div>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <img src="https://www.google.com/s2/favicons?domain=papago.naver.com" alt="Papago" width="24">
+                                <div>
+                                    <h6 class="mb-0">Papago</h6>
+                                    <small class="text-muted">빠르고 정확한 AI 번역기</small>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <img src="https://www.google.com/s2/favicons?domain=gemini.google.com" alt="Gemini" width="24">
+                                <div>
+                                    <h6 class="mb-0">Gemini</h6>
+                                    <small class="text-muted">지능 있는고 친절한 AI로봇</small>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <img src="https://www.google.com/s2/favicons?domain=cue.chat" alt="Cue" width="24">
+                                <div>
+                                    <h6 class="mb-0">Cue</h6>
+                                    <small class="text-muted">일상을 돕는 AI챗봇</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let monthCount = 0;
+        let now = new Date();
+        let currentMonth = now.getMonth();
+        let currentYear = now.getFullYear();
+        // 이전 달 출력
+        document.querySelector('#beforeMonth').addEventListener('click', function() {
+            monthCount--;
+            if(currentMonth+1+monthCount == 0) {
+                console.log(currentYear+ "-1:"+currentMonth+":"+monthCount);
+                currentMonth = 11;
+                currentYear--;
+                monthCount = 0;
+            }
+            generateCalendar(monthCount);
+        });
+        // 이후 달 출력
+        document.querySelector('#afterMonth').addEventListener('click', function() {
+            monthCount++;
+            if(currentMonth+1+monthCount == 13) {
+                currentYear++;
+                currentMonth = 0;
+                monthCount = 0;
+                console.log(currentYear+ "+1:"+currentMonth+":"+monthCount);
+            }
+            generateCalendar(monthCount);
+        })
+        // 달력 생성 함수
+        function generateCalendar(monthCount) {
+            
+            console.log(currentYear+ ":"+currentMonth+":"+monthCount);
+            
+           
+            
+            const firstDay = new Date(currentYear, currentMonth+monthCount, 1);
+            const lastDay = new Date(currentYear, currentMonth+monthCount + 1, 0);
+            
+            const firstDayIndex = firstDay.getDay();
+            const totalDays = lastDay.getDate();
+            
+            const calendarBody = document.getElementById('calendarBody');
+            let date = 1;
+            let html = '';
+            
+            document.querySelector('#yearMonth').innerHTML = currentYear + '.' + (currentMonth+1+monthCount);
+
+            for (let i = 0; i < 6; i++) {
+                html += '<tr>';
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < firstDayIndex) {
+                        html += '<td></td>';
+                    } else if (date > totalDays) {
+                        html += '<td></td>';
+                    } else {
+                        const isToday = date === now.getDate() ? 'bg-primary text-white rounded' : '';
+                        html += `<td class="${isToday}">${date}</td>`;
+                        date++;
+                    }
+                }
+                html += '</tr>';
+                if (date > totalDays) {
+                    break;
+                }
+            }
+            
+            calendarBody.innerHTML = html;
+        }
+        
+        generateCalendar(monthCount);
+    });
+    </script>
+
+</body>
+
+</html>
