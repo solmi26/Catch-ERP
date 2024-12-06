@@ -138,7 +138,7 @@ public class SalesController {
 	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/insertPurchase")
 	public String insertPurchaseForm(Model model) {
-		return "account/PurchaseSlip";
+		return "account/purchaseSlip";
 	}
 	
 	// 매입 전표 등록(기능) by sm
