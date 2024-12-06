@@ -288,7 +288,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	//검색옵션들 들고오기
 	let str = "";
 	let option = document.querySelectorAll('.search-option')
-	let radio = document.querySelector('input[name="statusType"]:checked')
 	option.forEach(ele =>{
 		if (ele.value !== "" && ele.value != null ) {
 			str += '&' 
@@ -297,14 +296,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 			str += ele.value 
 		}
 	})
-	str += '&' 
-	str += 'statusType';
-	str += '='
-	if (radio != null) {
-		str += radio.value;
-	} else {
-		str += ""
-	}
 	parameter = '?'+str.substr(1)
 	fetch("/employees/emps"+parameter)
 	.then(data => data.json())
@@ -321,7 +312,7 @@ document.querySelector('#imgBtn').addEventListener('click',function () {
 	imgInput.click()
 })
 document.querySelector('#imgInput').addEventListener('change',function (ev) {
-	document.querySelector('.img-Text').innerText = imgInput.files[0].name
+	document.querySelector('.img-Text').value = imgInput.files[0].name
 	let img = document.querySelector('#employeePhoto')
 	if (ev.target.files.length > 0) {
 		let reader = new FileReader();
@@ -366,7 +357,7 @@ function dataToInput (data) {
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
 	document.querySelector('#employeePhoto').src = '/images/'+data.employeeDetailVO.employeeImage
 	document.querySelector('#imgInput').value = null;
-	document.querySelector('.img-Text').innerText = null;
+	document.querySelector('.img-Text').value = null;
 
 	for (let ele in data) {
 		//만약 배열타입이면

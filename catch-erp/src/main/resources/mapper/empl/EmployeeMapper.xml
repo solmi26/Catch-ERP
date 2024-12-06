@@ -148,8 +148,8 @@
 		JOIN    department dp	ON    em.department_code = dp.department_code
 		JOIN    employees_detail ed		ON      em.employee_code = ed.employee_code
         JOIN    employees_salary es        ON      em.employee_code = es.employee_code
-        JOIN    fixed fx        ON      em.employee_code = fx.employee_code
-        JOIN    allowance_item ai        ON      fx.allowance_code = ai.allowance_code
+        LEFT JOIN    fixed fx        ON      em.employee_code = fx.employee_code
+        LEFT JOIN    allowance_item ai        ON      fx.allowance_code = ai.allowance_code
         JOIN    common_code cc          ON ed.bank = cc.code_rule
 
 		WHERE   em.employee_code = #{employeeCode}

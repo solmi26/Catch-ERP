@@ -314,7 +314,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	//검색옵션들 들고오기
 	let str = "";
 	let option = document.querySelectorAll('.search-option')
-	let radio = document.querySelector('input[name="statusType"]:checked')
 	option.forEach(ele =>{
 		if (ele.value !== "" && ele.value != null ) {
 			str += '&' 
@@ -323,14 +322,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 			str += ele.value 
 		}
 	})
-	str += '&' 
-	str += 'statusType';
-	str += '='
-	if (radio != null) {
-		str += radio.value;
-	} else {
-		str += ""
-	}
 	parameter = '?'+str.substr(1)
 	fetch("/employees/payroll"+parameter)
 	.then(data => data.json())

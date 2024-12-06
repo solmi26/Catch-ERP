@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded',{
 	
 })
 mainGridDataLoad()
+
+
  
 //신규입력 모달창에서 저장클릭시 이벤트 
 document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
@@ -30,7 +32,8 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 		alert("값을입력하세요")
 		return;
 	}
-	("/employees/dept",{
+	console.log(departmentVO)
+	fetch("/employees/dept",{
 		method:'post',
 		headers: {
 			"Content-Type":"application/json"
@@ -49,6 +52,7 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 		inputs.forEach(ele => {
 			ele.value = "";
 		})
+		departmentReqModal.hide()
 	})
 		
 })
@@ -72,6 +76,7 @@ empGrid.on('click',function (ev) {
 		let name = empGrid.getFormattedValue(ev.rowKey,'name')
 		currentTarget.target.value = name;
 		currentTarget.target.nextElementSibling.value = managerCode;
+		empModal.hide()
 		
 	}
 })
