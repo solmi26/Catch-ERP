@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '재고수량',
                 name: 'c8',
                 align: "center",
-                width: 100,
+                width: 150,
                 whiteSpace: 'normal',
                 className:'border'
             }
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	            header: '사원명',
 	            name: 'c9',
 	            align: "center",
-	            width: 150,
+	            width: 135,
 	            whiteSpace: 'normal',
 	            className:'border'
             },
@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '사원 코드',
                 name: 'c10',
                 align: "center",
-                width: 80,
+                width: 135,
                 whiteSpace: 'normal',
                 className:'border'
             }       
@@ -1152,6 +1152,17 @@ document.addEventListener("DOMContentLoaded", function () {
 			
 		})
 		
+		
+		let reporter = document.querySelector('.reporter');
+		let reporter2 = document.querySelector('.reporter2');
+		let userName = document.querySelector('#employeeName');			
+		let user = document.getElementById("user");
+		
+		user.innerHTML = userName.value + "님 환영합니다.";
+		console.log(reporter);
+		reporter.innerText = userName.value;
+		reporter2.innerText = "성명: " + userName.value;	
+		
 		//일자에 값넣기
 		let inputDate = document.querySelectorAll('.inputDate');
 		inputDate.forEach(ele=>{
@@ -1162,13 +1173,21 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		})
 		
+		
+		
 		//재고조정번호 출력은 fetch처리, 실제 DB INSERT는 프로시저에서 처리됨. ,담당자에 들어갈 값은 로그인 중인 회원의 session에서 읽어올 예정
 		fetch("/stocks/stocksAdjustNo")
 		.then(result=> result.json())
 		.then(result=>{
 			document.querySelector("#adjustNo").innerHTML = result;
 		})
-	}) 
+	})       
+        
+		window.setTimeout(function(){
+            grid8.refreshLayout();
+        }, 200)
+		
+		
        
        let reportSubmit = document.getElementById('reportSubmit');
        reportSubmit.addEventListener("click", function(){			

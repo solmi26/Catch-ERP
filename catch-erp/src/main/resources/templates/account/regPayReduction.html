@@ -9,13 +9,56 @@
   <title>채무조회</title>
   <link rel="stylesheet" th:href="@{/css/sales/recReduction.css}"/>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+  .clientStyle {
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
   <div class="bg-white shadow-sm rounded" style="padding: 20px;">
-    <!-- Search Section -->
     <div class="border-bottom pb-3 mb-4">
-      <h2>채무감소등록</h2>
+      <h1>채무감소등록</h1>
     </div>
+    <div class="card col-md-12">
+      <form class="bg-light p-4 rounded card-body" id="searchForm">
+          <div class="row g-3">
+              <div class="col-md-12">
+                  <div class="row g-3">
+                      <div class="col-md-3">
+                          <label class="form-label">거래처코드</label>
+                          <div class="input-group">
+                              <input type="text" class="form-control" id="clientCodeInput" name="clientCodeInput">
+                          </div>
+                      </div>
+                                            
+                      <div class="col-md-3">
+                        <label class="form-label">거래처명</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="clientNameInput" name="clientNameInput">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">잔액</label>
+                        <div class="input-group">
+                            <div class="price-input">
+                                <input type="number" class="form-control" placeholder="0" value="0" name="minPrice">
+                            </div>
+                            <span class="input-group-text" style="border:none;">-</span>
+                            <div class="price-input">
+                                <input type="number" class="form-control" placeholder="0" value="0" name="maxPrice">
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <button type="button" class="btn btn-primary" id="searchClientBtn">조회하기</button>
+          </div>
+      </form>
+    </div>	
+    <!-- Search Section -->
     <div class="gridWrapper">
       <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountSearchModal" style="margin-bottom: 10px;">입금등록</button>
       <div id="grid"></div>
@@ -102,7 +145,7 @@
             scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
             pageOptions: {
               useClient: true,
-              perPage: 5
+              perPage: 14
             },
             rowHeaders: [
                 {
@@ -124,7 +167,9 @@
                           name: 'clientCode',
                           sortable: true,
                           filter: 'select',
-                          align: 'center'
+                          align: 'center',
+                          formatter: ({ value }) =>
+			                      `<span class="text-primary clientStyle">${value}</span>`
                       },
                       {
                           header: '거래처명',
@@ -247,6 +292,7 @@
       }
       
       function fetchBacctList() {
+        grid.blur();
         fetch('/api/account/bacct')
         .then(result => result.json())
         .then(accountList => {
@@ -314,8 +360,37 @@
         })
       }
   
+      //제품 조건 조회
+      let searchClientBtn = document.getElementById('searchClientBtn');
+      searchClientBtn.addEventListener("click", function(){
+        clientInfoList()		
+      })
+      //처음 페이지 로드시 전체 제품 로드
+      clientInfoList()
+      //제품리스트 조회 함수
+      function clientInfoList(){
+          let data = $('#searchForm').serialize();
+          fetch(`/api/payables/payablesInfo?${data}`)
+          .then(result=> result.json())
+          .then(result=> {
+            let dataArr = [];
+            result.forEach(ele=>{
+              let data = {};
+              data.clientCode = ele.clientCode;
+              data.clientName = ele.clientName;
+              data.clientBacct = ele.clientBacct;
+              data.balancem = ele.balancem;
+              data.state = ele.state;
+
+              dataArr.push(data);	
+            })
+            grid.resetData(dataArr); //그리드 resetData() 렌더링에 시간이 걸림
+          })
+          .catch(ele=> `거래처 조회 실패! + ${ele}`)
+      }
 
       //클라이언트별 총 채무 페이지
+      // grid.blur();
       fetch('/api/account/payables')
         .then(result => result.json())
         .then((result) => {

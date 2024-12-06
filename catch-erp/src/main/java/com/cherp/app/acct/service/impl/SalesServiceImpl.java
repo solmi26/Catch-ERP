@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cherp.app.acct.mapper.SalesMapper;
 import com.cherp.app.acct.service.SalesService;
+import com.cherp.app.acct.vo.ClientPsVO;
+import com.cherp.app.acct.vo.ClientSearchVO;
 import com.cherp.app.acct.vo.InsertPayableVO;
 import com.cherp.app.acct.vo.InsertReceivableVO;
 import com.cherp.app.acct.vo.PayablesVO;
@@ -255,6 +257,16 @@ public class SalesServiceImpl implements SalesService{
 	public String insertDecreaseReceivable(InsertReceivableVO insertReceivableVO) {
 		salesMapper.insertDecreaseReceivable(insertReceivableVO);
 		return insertReceivableVO.getResult();
+	}
+
+	@Override
+	public List<ClientPsVO> payablesOptionList(ClientSearchVO payables) {
+		return salesMapper.payablesOptionList(payables);
+	}
+
+	@Override
+	public List<ClientPsVO> salesOptionList(ClientSearchVO sales) {
+		return salesMapper.salesOptionList(sales);
 	}
 	
 }

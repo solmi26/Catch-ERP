@@ -101,6 +101,15 @@
     }
 
 document.addEventListener("DOMContentLoaded", function () {
+    
+    //헤더에 이름넣기
+    //이름, 이미지 넣기
+  	let reporter = document.querySelector('.reporter');
+  	let reporter2 = document.querySelector('.reporter2');
+    let userName = document.querySelector('#employeeName');			
+	console.log(userName)
+	reporter.innerText = userName.value;
+	reporter2.innerText = "성명: " + userName.value;
         
     /*!== TOAST UI GRID refresh & 공통 설정 ==!*/
     let modalBtn = document.querySelectorAll(".mBtn");
@@ -185,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '계약번호',
 	                name: 'conNo',
 	                align: "center",
-	                width: 130,
+	                width: 170,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                formatter: ({ value }) =>
@@ -197,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '품목코드',
 	                name: 'itemCode',
 	                align: "center",
-	                width: 145,
+	                width: 175,
 	                whiteSpace: 'normal',
 	                filter: 'select'
 	            },
@@ -226,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '현재수량(전체)',
 	                name: 'stocksQuantity',
 	                align: "center",
-	                width: 100,
+	                width: 150,
 	                whiteSpace: 'normal',
 	                className:'border'
 	            },
@@ -234,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '거래처코드',
 	                name: 'clientCode',
 	                align: "center",
-	                width: 140,
+	                width: 200,
 	                whiteSpace: 'normal',
 	                className:'border'
 	            },
@@ -242,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '거래처명',
 	                name: 'clientName',
 	                align: "center",
-	                width: 140,
+	                width: 200,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                filter: 'select'
@@ -251,7 +260,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '입고단가', //공급가액
 	                name: 'price',
 	                align: "center",
-	                width: 110,
+	                width: 200,
 	                whiteSpace: 'normal',
 	                sortable: true,
 	                sortingType: 'desc',
@@ -449,7 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					.then(result=>{
 						document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
 					})
-					
+					itemInfoList() //페이지그리드의 이미지도 바꿔주기
 					alert('제품 이미지가 정상적으로 변경되었습니다.')
 				})
 				.catch(err=>{console.log(`제품사진변경 실패! ${err}`)

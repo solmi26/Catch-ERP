@@ -67,6 +67,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 saleslipHistory.addRowClassName(row.rowKey, 'increase');
             } else if(check === '완료') {
                 saleslipHistory.addRowClassName(row.rowKey, 'decrease');
+            } else if(check === '진행중') {
+                saleslipHistory.addRowClassName(row.rowKey, 'ongoing');
             }
         });
     }
@@ -98,14 +100,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '판매전표번호',
                 name: 'saleslipNo',
                 align: "center",
-                width: 150,
+                width: 210,
                 whiteSpace: 'normal',
                 className: 'border'
             }, { 
                 header: '발주일자',
                 name: 'insertDate',
                 align: "center",
-                width: 200,
+                width: 210,
                 whiteSpace: 'normal',
                 editor: 'text',
                 className: 'border',
@@ -122,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'clientName',
                 editor: 'text',
                 align: "center",
-                width: 100,
+                width: 210,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
@@ -130,7 +132,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'accCode',
                 editor: 'text',
                 align: "center",
-                width: 150,
+                width: 210,
                 whiteSpace: 'normal',
                 sortingType: 'desc',
                 className: 'border'
@@ -139,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'deliveryPrice',
                 editor: 'text',
                 align: "center",
-                width: 150,
+                width: 210,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -152,7 +154,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'supplyPrice',
                 editor: 'text',
                 align: "center",
-                width: 150,
+                width: 210,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -166,7 +168,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'vat',
                 editor: 'text',
                 align: "center",
-                width: 150,
+                width: 210,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -202,8 +204,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             fetch('/sales/selectSaleslip/' + saleSlip)
                 .then(result => result.json())
                 .then(data => {
-                    saleslipHistory.resetData(data)
-                    sortColor()
+                    saleslipHistory.resetData(data);
+                    sortColor();
                 })
                 .catch(error => alert('판매전표별 내역을 불러오지 못했습니다.'))
 
@@ -228,6 +230,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             rowHeight: 40,
             width: 'auto',
             contextMenu: null,
+            columnOptions: {
+                frozenCount: 1,
+                frozenBorderWidth: 1
+            },
             data: [],
             rowHeaders: [{
                 type: 'rowNum', header: "No.", width: 50, className: 'border'
@@ -458,6 +464,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 200)
     });
 
+    window.setTimeout(function () {
+        fetch('/purchase/contractItem')
+            .then(result => result.json())
+            .then(data => itemGrid.resetData(data))
+            .catch(error => console.log(error))
+    }, 200)
+
     // 품목 그리드
     let itemGrid;
     const initItemGrid = () => {
@@ -495,14 +508,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             },]
         });
 
-        window.setTimeout(function () {
-            fetch('/purchase/contractItem')
-                .then(result => result.json())
-                .then(data => itemGrid.resetData(data))
-                .catch(error => console.log(error))
-        }, 200)
-
-        //거래처 input
+        //품목 input
         itemGrid.on("click", (ev) => {
             const itemGridRowData = itemGrid.getRow(ev.rowKey);
 

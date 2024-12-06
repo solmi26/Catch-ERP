@@ -96,7 +96,7 @@
 		FROM    client c 
 		        JOIN receivables_log rl ON c.client_code = rl.client_code
 		        JOIN sales s ON s.sales_chit_no = rl.sales_chit_no
-        WHERE   rl.client_code = #{clinetCode}
+        WHERE   rl.client_code = #{clientCode}
 	</select>
 	
 	<!-- 매출전표 전체 조회 -->
@@ -455,6 +455,56 @@
                ,purcslip_no
 		FROM purchase p
 		WHERE purchase_chit_no = #{purchaseChitNo}
+	</select>
+	
+	<select id="payablesOptionList" parameterType="com.cherp.app.acct.vo.ClientSearchVO" resultType="com.cherp.app.acct.vo.ClientPsVO">
+		SELECT
+		    client_bacct,
+		    client_code,
+		    client_name,
+		    balancem,
+		    state
+		FROM client
+		WHERE 1 != 2
+			<if test="clientCodeInput != ''">
+		 		AND client_code LIKE CONCAT(#{clientCodeInput}, '%')
+		 	</if>
+		 	<if test="clientNameInput != ''">
+		 		AND client_name LIKE CONCAT(#{clientNameInput}, '%')
+		 	</if>
+			<if test="minPrice != ''">
+			    	AND balancem >= #{minPrice}
+			</if>
+			<if test="maxPrice != ''">
+			      	<![CDATA[
+			    		AND balancem <= #{maxPrice}
+			      	]]>
+			</if>
+	</select>
+	
+	<select id="salesOptionList" parameterType="com.cherp.app.acct.vo.ClientSearchVO" resultType="com.cherp.app.acct.vo.ClientPsVO">
+		SELECT
+		    client_bacct,
+		    client_code,
+		    client_name,
+		    balancek,
+		    state
+		FROM client
+		WHERE 1 != 2
+		 	<if test="clientCodeInput != ''">
+		 		AND client_code LIKE CONCAT(#{clientCodeInput}, '%')
+		 	</if>
+		 	<if test="clientNameInput != ''">
+		 		AND client_name LIKE CONCAT(#{clientNameInput}, '%')
+		 	</if>
+			<if test="minPrice != ''">
+			    	AND balancek >= #{minPrice}
+			</if>
+			<if test="maxPrice != ''">
+			      	<![CDATA[
+			    		AND balancek <= #{maxPrice}
+			      	]]>
+			</if>
 	</select>
 
 </mapper>

@@ -1,10 +1,5 @@
 @charset "UTF-8";
 
-       h1{
-        margin-top: 20px;
-        margin-left:10px;
-        font-weight: bold;
-       }
       /* 버튼 고정 */
       .button-group {
         display: flex;

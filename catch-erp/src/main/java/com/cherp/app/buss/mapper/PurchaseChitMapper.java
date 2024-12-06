@@ -33,4 +33,6 @@ public interface PurchaseChitMapper {
 	// 구매전표별 구매내역 보기
 	public List<PurchaseHistoryVO> selectPurchaseHistory(PurchaseHistoryVO purchaseHistoryVO,
 														 @Param("purcslipNo") String purcslipNo);
+
+	public List<PurchaseChitVO> searchPurchaseChit(PurchaseChitVO purchaseChitVO);
 }
