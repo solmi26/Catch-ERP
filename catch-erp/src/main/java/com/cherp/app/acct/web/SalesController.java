@@ -49,8 +49,8 @@ public class SalesController {
 		return "account/regPayReduction";
 	}
 	
-	// 전표 관리 페이지(조회/화면) by sm
-	@Secured("ROLE_USER")
+	// 전표 관리 페이지(전체 조회/화면) by sm
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/selectSlipView")
 	public String selectSlipView(Model model) {
 		List<SalesVO> salesList = salesService.selectAllSlip();
@@ -58,8 +58,8 @@ public class SalesController {
 		return "account/statement";
 	}
 	
-	// 전표 관리 페이지(조회/기능) by sm
-	@Secured("ROLE_USER")
+	// 전표 관리 페이지(전체 조회/기능) by sm
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/selectSlip")
 	@ResponseBody
 	public List<SalesVO> selectSlip() {
@@ -67,7 +67,7 @@ public class SalesController {
 	}
 	
 	// 매입, 매출전표 삭제(기능) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@DeleteMapping("sales/deleteSlip")
 	@ResponseBody
 	public String deleteSlip(@RequestBody List<SalesVO> salesVO) {
@@ -76,7 +76,7 @@ public class SalesController {
 	}
 	
 	// 매출전표 수정 기능 by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PutMapping("sales/updateSales")
 	@ResponseBody
 	public String updateSales(@RequestBody SalesVO salesVO) {
@@ -85,7 +85,7 @@ public class SalesController {
 	}
 	
 	// 매출전표 수정 기능(삭제 후 추가) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PutMapping("sales/updateSalesDI")
 	@ResponseBody
 	public String updateSalesDI(@RequestBody List<SalesVO> salesVO) {
@@ -94,7 +94,7 @@ public class SalesController {
 	}
 	
 	// 세금계산서 상태 수정 기능(발행상태, 국세청 전송 일자) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PutMapping("sales/updateInvoice")
 	@ResponseBody
 	public String updateInvoice(@RequestBody List<SalesVO> salesVO) {
@@ -103,7 +103,7 @@ public class SalesController {
 	}
 	
 	// 매입, 매출전표 상세조회(기능) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/selectSlipInfo")
 	@ResponseBody
 	public SalesVO selectSlip(SalesVO salesVO) {
@@ -111,14 +111,14 @@ public class SalesController {
 	}
 	
 	// 매출 전표 등록(화면) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/insertSales")
 	public String insertSalesForm(Model model) {
 		return "account/salesSlip";
 	}
 	
 	// 매출 전표 등록(기능) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PostMapping("sales/insertSales")
 	@ResponseBody
 	public String insertSales(@RequestBody SalesVO salesVO) {
@@ -127,7 +127,7 @@ public class SalesController {
 	}
 	
 	// 회계 계정 조회 by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@ResponseBody
 	@GetMapping("sales/selectAcct")
 	public List<SalesVO> selectAcct(Model model){
@@ -135,14 +135,14 @@ public class SalesController {
 	}
 	
 	// 매입 전표 등록(화면) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/insertPurchase")
 	public String insertPurchaseForm(Model model) {
 		return "account/PurchaseSlip";
 	}
 	
 	// 매입 전표 등록(기능) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PostMapping("sales/insertPurchase")
 	@ResponseBody
 	public String insertPurchase(@RequestBody PayablesVO payablesVO) {
@@ -151,32 +151,18 @@ public class SalesController {
 	}
 
 	// 전자세금계산서 조회 페이지(화면) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/invoiceListView")
 	public String invoiceListView(Model model) {
 		return "account/invoice";
 	}
 	
 	// 전자세금계산서 조회 페이지(기능) by sm
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/invoiceList")
 	@ResponseBody
 	public List<SalesVO> invoiceList(){
 		return salesService.invoiceList();
-	}
-	
-	// 매입 계약 등록 페이지
-	@Secured("ROLE_USER")
-	@GetMapping("sales/insertContractView")
-	public String insertContractView(Model model) {
-		return "account/contractInsert";
-	}
-	
-	// 매입 계약 조회 페이지
-	@Secured("ROLE_USER")
-	@GetMapping("sales/contractView")
-	public String contractView(Model model) {
-		return "account/contract";
 	}
 	
 	/**
