@@ -61,8 +61,14 @@ aeSearchGrid.on('click', function (ev) {
 	if (ev.targetType == 'cell'){
 	let attName = aeSearchGrid.getFormattedValue(ev.rowKey,'attName');
 	let attCode = aeSearchGrid.getFormattedValue(ev.rowKey,'attCode');
+	let commonName = aeSearchGrid.getFormattedValue(ev.rowKey,'commonName');
+	if (commonName == '휴가' || commonName == '공제' ) {
+		grid.setValue(currentTarget.rowKey,'attendanceTime',null);
+		grid.setValue(currentTarget.rowKey,'leaveTime',null);
+	}
 		grid.setValue(currentTarget.rowKey,'attCode',attCode);	
 		grid.setValue(currentTarget.rowKey,'attName',attName);
+		grid.setValue(currentTarget.rowKey,'commonName',commonName);
 		
 		aeSearchModal.hide();
 	}	
