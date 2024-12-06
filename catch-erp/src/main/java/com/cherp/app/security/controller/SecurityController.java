@@ -44,10 +44,10 @@ public class SecurityController {
 	// 기본 index page 설정
 	@GetMapping("index")
 	public String goIndex() {
-		return "redirect:business/clientList";
+		return "index/main/index";
 	}
 	
-	@GetMapping("errors/access-denied")
+	@GetMapping("errors/accessDenied")
 	public String accessDenied() {
 		return "error/accessDeniedPage";
 	}

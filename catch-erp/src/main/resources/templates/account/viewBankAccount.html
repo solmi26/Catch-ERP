@@ -14,13 +14,18 @@
     .modal-dialog {
         max-width: 800px;
     }
+    h1 {
+	    margin-top: 20px;
+	    margin-left: 10px;
+	    font-weight: bold;
+	}
   </style>
 </head>
 <body>
   <!-- Search Section -->
  <div class="bg-white shadow-sm rounded" style="padding: 20px;">
   <div class="border-bottom pb-3 mb-4">
-    <h2>계좌 리스트</h2>
+    <h1>계좌 리스트</h1>
   </div>
   <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountAddModal" style="margin-bottom: 10px;">신규(F2)</button>
   <div class="gridWrapper">
@@ -40,17 +45,17 @@
             <div class="modal-body">
             	<div class="mb-3">
                   <label for="bankName" class="form-label">은행명</label>
-                  <select class="form-select" id="bankName" name="bankName">
+                  <select class="form-select" id="bankName" name="bankName" required>
                         <!-- 은행 목록 fetch 동적 추가 -->
                   </select>
                 </div>
                 <div class="mb-3">
                     <label for="accountCode" class="form-label">계좌번호</label>
-                    <input type="text" class="form-control" id="bacctNo" name="bacctNo" placeholder="계좌번호">
+                    <input type="text" class="form-control" id="bacctNo" name="bacctNo" placeholder="계좌번호" required>
                 </div>
                 <div class="mb-3">
                     <label for="accountName" class="form-label">계좌명</label>
-                    <input type="text" class="form-control" id="bacctName" name="bacctName" placeholder="계좌명">
+                    <input type="text" class="form-control" id="bacctName" name="bacctName" placeholder="계좌명" required>
                 </div>
                 <div class="mb-3">
                     <label for="remarks" class="form-label">적요</label>
