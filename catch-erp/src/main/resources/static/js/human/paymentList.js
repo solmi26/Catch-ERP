@@ -106,7 +106,44 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 			
 			printBody = ``
 			html = 
-					`<div id="a">
+					`
+					<style>
+							#payrollPrintModal table {
+		  width:800px;
+		  
+		
+		}
+		#payrollPrintModal table, td, th {
+		border : 2px solid black;
+		border-collapse : collapse;
+		text-align: center;
+		padding:8px;
+		}
+		#payrollPrintModal table {
+		border: 3px solid black;
+		}
+		#payrollPrintModal .background-payment{
+		background-color: rgb(216, 216, 216);
+		font-weight: 500;
+		}
+		#payrollPrintModal .bold-color {
+		background-color:rgb(20, 78, 38);
+		font-size: large;
+		color:white;
+		}
+		#payrollPrintModal tfoot {
+		border-top: 3px solid black;
+		
+		}
+		#payrollPrintModal .modal-body  {
+		margin:0 auto;}
+		#print-content{ 
+			overflow:auto;
+			max-height:700px;
+		}
+		</style>			
+					
+					<div id="a">
 					  <h1>급여명세서</h1>
 					  <div>
 					  <span>${ele.payrollYdate}</span>
@@ -175,7 +212,7 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					      <td class="background-payment">지급액(원)</td>
 					    </tr>
 					    <tr>
-					      <td class="background-payment">연장근로수당</td>
+					      <td class="background-payment" style="background-color:black">연장근로수당</td>
 					      <td></td>
 					      <td></td>
 					    </tr>
@@ -200,6 +237,68 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 })
 //#endregion
 
+//인쇄버튼클릭시
+//#region
+/*
+document.querySelector('.print-Btn').addEventListener('click',function () {
+    const element = document.getElementById('print-content');
+	   html2canvas(element,{width:1500,height:1500}).then(function(canvas) { //저장 영역 div id
+		
+	    // 캔버스를 이미지로 변환
+	    var imgData = canvas.toDataURL('image/png');
+		window.open(imgData);
+	    var imgWidth = 190; // 이미지 가로 길이(mm) / A4 기준 210mm
+	    var pageHeight = imgWidth * 1.414;  // 출력 페이지 세로 길이 계산 A4 기준
+	    var imgHeight = canvas.height * imgWidth/ canvas.width;
+	    var heightLeft = imgHeight;
+	    var margin = 10; // 출력 페이지 여백설정
+	    var doc = new jspdf.jsPDF('p', 'mm');
+	    var position = 0;
+	       
+	    // 첫 페이지 출력
+	    doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+	    heightLeft -= pageHeight;
+	         
+	    // 한 페이지 이상일 경우 루프 돌면서 출력
+	    while (heightLeft >= 20) {
+	        position = heightLeft - imgHeight;
+	        doc.addPage();
+	        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+	        heightLeft -= pageHeight;
+	    }
+	 
+	    // 파일 저장
+	    doc.save('file-name.pdf');
+
+		  
+	});
+})
+*/
+/*
+  document.querySelector(".print-Btn").addEventListener("click", () => {
+    const element = document.getElementById("print-content");
+    html2pdf()
+      .from(element)
+      .set({
+        margin: 1,
+        filename: "example.pdf",
+        html2canvas: { scale: 1 },
+        jsPDF: { orientation: "portrait" },
+      })
+      .save();
+  });
+  */
+ 
+       document.querySelector('.print-Btn').onclick = function(){
+        var element = document.querySelector('#print-content');
+				html2pdf().from(element).toPdf().get('pdf').set({
+  scale: 0.8  // 출력 크기를 80%로 축소
+}).save();
+      }
+      
+ //#endregion
+
+
 //메인그리드 데이터 불러오기
 function datoToGrid() {
 	fetch("/employees/payroll")
@@ -215,7 +314,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	//검색옵션들 들고오기
 	let str = "";
 	let option = document.querySelectorAll('.search-option')
-	let radio = document.querySelector('input[name="statusType"]:checked')
 	option.forEach(ele =>{
 		if (ele.value !== "" && ele.value != null ) {
 			str += '&' 
@@ -224,14 +322,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 			str += ele.value 
 		}
 	})
-	str += '&' 
-	str += 'statusType';
-	str += '='
-	if (radio != null) {
-		str += radio.value;
-	} else {
-		str += ""
-	}
 	parameter = '?'+str.substr(1)
 	fetch("/employees/payroll"+parameter)
 	.then(data => data.json())

@@ -125,8 +125,8 @@
        FROM   salary_payroll sp
        JOIN   employees em
        ON     sp.employee_code = em.employee_code
-       JOIN   allowance_history awhi
-       ON     sp.employee_code = awhi.employee_code
+	   LEFT JOIN   allowance_history awhi
+	   ON     sp.employee_code = awhi.employee_code
 	   WHERE  sp.salary_number IN
 	   <foreach collection="array" item="salaryNumber" open="(" separator="," close=")">
 	    #{salaryNumber}
