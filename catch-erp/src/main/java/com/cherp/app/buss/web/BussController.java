@@ -4,6 +4,7 @@ import com.cherp.app.buss.service.ClientService;
 import com.cherp.app.buss.vo.ClientVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class BussController {
     }
 
     // 구매 페이지
+    @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("purchase/purchaseChit")
     public String purchaseChit(Model model) {
         List<ClientVO> list = clientService.clientList();
@@ -31,12 +33,16 @@ public class BussController {
     }
 
     // 구매 조회 페이지
+    @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("purchase/purchaseHistory")
-    public String purchaseHistory(){
+    public String purchaseHistory(Model model){
+        List<ClientVO> list = clientService.clientList();
+        model.addAttribute("client", list);
         return "purchase/purchaseHistory";
     }
     
     // 판매 페이지
+    @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("/sales/salesChit")
     public String salesChit(Model model) {
         List<ClientVO> list = clientService.clientList();
@@ -45,6 +51,7 @@ public class BussController {
     }
 
     // 판매 조회 페이지
+    @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("/sales/saleSlip")
     public String saleSlip(Model model){
         List<ClientVO> list = clientService.clientList();

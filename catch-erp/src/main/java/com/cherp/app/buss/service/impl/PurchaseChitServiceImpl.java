@@ -65,5 +65,10 @@ public class PurchaseChitServiceImpl implements PurchaseChitService {
         return purchaseChitMapper.selectPurchaseHistory(purchaseHistoryVO, purcslipNo);
     }
 
+    @Override
+    public List<PurchaseChitVO> searchPurchaseChit(PurchaseChitVO purchaseChitVO) {
+        return purchaseChitMapper.searchPurchaseChit(purchaseChitVO);
+    }
+
 
 }

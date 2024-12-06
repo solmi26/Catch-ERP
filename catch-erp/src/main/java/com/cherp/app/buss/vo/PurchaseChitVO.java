@@ -30,5 +30,8 @@ public class PurchaseChitVO {
 	private int restockingPrice;  // 입고 단가
 	private int totalPrice; // 전표 금액 합계
 
+	private Date restockingDate; // 입고예정일
+	private String itemName; // 폼목명
+
 	List<PurchaseHistoryVO> purchaseHistories;
 }
