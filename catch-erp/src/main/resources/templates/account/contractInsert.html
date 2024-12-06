@@ -1,278 +1,253 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/account_layout}"
-      layout:fragment="Content">
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{common/layouts/account_layout}"
+  layout:fragment="Content"
+>
   <head>
     <meta charset="UTF-8" />
     <title>매입 단가 계약 등록</title>
-    
-	<style>
-	 
-	  h1{
-        margin-top: 20px;
-        margin-left:10px;
-        font-weight: bold;
-       }
-	
-	  /* 그리드 전 form 관련 높이, 글자크기 */
+
+    <style>
+      /* 그리드 전 form 관련 높이, 글자크기 */
       .form-control,
       .form-select,
       .input-group-text {
         height: 48px;
         font-size: 1rem !important;
       }
-      
+
       /* 그리드 전 form 제목 길이 지정 */
       .input-group-text {
         width: 120px;
       }
-	
-	 /* 버튼 그룹 기본 설정 */
-	  .btn-group {
-	    display: flex;
-	    gap: 5px; /* 버튼 간 간격 */
-	    font-size: 18px;
-	    margin-bottom: 10px;
-	  }
-	  	
-	  .btn img {
-	    width: 20px;
-	    height: 20px;
-	  }
-	
-	  /* 그리드 위 영역 */
-	  .grid-controls {
-	    display: flex;
-	    justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
-	    align-items: center;
-	    margin-top:50px;
-	    
-	  }
-	  		
-	 /* 파일 선택 버튼 크기 조정 */
-	  .file-input-large::-webkit-file-upload-button {
-	    font-size: 1rem;
-	    padding: 0.9rem 1rem;
-	    background-color: #e8e8e8;
-	    border: none;
-	    border-radius: 0.25rem;
-	    cursor: pointer;
-	  }
-	
-	  .file-input-large::-webkit-file-upload-button:hover {
-	    background-color: #0056b3;
-	  }
-	
-	  .file-input-large::-ms-browse {
-	    font-size: 1rem;
-	    padding: 0.5rem 1rem;
-	    background-color: #007bff;
-	    color: white;
-	    border: none;
-	    border-radius: 0.25rem;
-	    cursor: pointer;
-	  }
-	  
-	</style>
-	
+
+      /* 버튼 그룹 기본 설정 */
+      .btn-group {
+        display: flex;
+        gap: 5px; /* 버튼 간 간격 */
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .btn img {
+        width: 20px;
+        height: 20px;
+      }
+
+      /* 그리드 위 영역 */
+      .grid-controls {
+        display: flex;
+        justify-content: space-between; /* 양쪽 끝으로 버튼 그룹 배치 */
+        align-items: center;
+        margin-top: 50px;
+      }
+
+      /* 파일 선택 버튼 크기 조정 */
+      .file-input-large::-webkit-file-upload-button {
+        font-size: 1rem;
+        padding: 0.9rem 1rem;
+        background-color: #e8e8e8;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+
+      .file-input-large::-webkit-file-upload-button:hover {
+        background-color: #0056b3;
+      }
+
+      .file-input-large::-ms-browse {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+      }
+    </style>
   </head>
 
   <body>
-  <h1>매입 단가 계약 등록</h1>
-   <!-- 페이지 컨테이너 -->
-    <div class="container-fluid p-4">
-    
-      <form>  
-      <!-- 계약일자, 거래처 -->
-	<div class="row mb-3">
-	  <!-- 계약일자 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약일자</span>
-	      <input type="date" class="form-control" id="contract-date" />
-	    </div>
-	  </div>
-	  <!-- 계약번호 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약번호</span>
-	      <input type="text" class="form-control" id="contract-code" value="-" readonly />
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 계약코드, 계약명 -->
-	<div class="row mb-3">
-	  <!-- 계약명 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약명</span>
-	      <input type="text" class="form-control" id="contract-name" placeholder="계약명" />
-	    </div>
-	  </div>
-	  <!-- 거래처 -->
-       <div class="col-md-4">
-         <div class="input-group input-group-sm">
-           <span class="input-group-text">거래처</span>
-           <input
-             type="text"
-             class="form-control"
-             placeholder="거래처 선택"
-             name="c_clientName"
-             id="c_clientInput"
-             readonly="readonly"
-           />
-         <input type="text" style="display:none" id="c_clientInput2" name="c_clientCode">
-           <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="c_openClientModal">
-             <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
-           </button>
-         </div>
-       </div>
-     </div>
-	
-	<!-- 계약시작일, 계약종료일 -->
-	<div class="row mb-3">
-	  <!-- 계약시작일 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약시작일</span>
-	      <input type="date" class="form-control" id="billing-start-date" />
-	    </div>
-	  </div>
-	  <!-- 계약종료일 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약종료일</span>
-	      <input type="date" class="form-control" id="billing-end-date" />
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 계약상태, 계약담당자 -->
-	<div class="row mb-3">
-	  <!-- 계약 상태 -->
-	  <div class="col-md-4">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">계약상태</span>
-	      <select class="form-select" id="status">
-	        <option value="g1" selected="selected">진행</option>
-	        <option value="g2">종료</option>
-	        <option value="g3">보류</option>
-	        <option value="g4">해지</option>
-	      </select>
-	    </div>
-	  </div>
-	  <!-- 담당자 -->
-       <div class="col-md-4">
-         <div class="input-group input-group-sm">
-           <span class="input-group-text">담당자</span>
-           <input
-             type="text"
-             class="form-control"
-             placeholder="계약 담당자 선택"
-             name="c_empName"
-             id="c_empName"
-             readonly="readonly"
-           />
-         <input type="text" style="display:none" id="c_empCode" name="c_empCode">
-           <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#empModal" id="c_openEmpModal">
-             <span><img alt="돋보기" src="/img/icon/glasses.png"></span>
-           </button>
-         </div>
-       </div>
-	</div>
-	
-	<!-- 적요 -->
-	<div class="row mb-3">
-	  <div class="col-md-8">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">적요</span>
-	      <input type="text" class="form-control" id="description" placeholder="적요" />
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- 첨부 -->
-	<div class="row mb-3">
-	  <div class="col-md-8">
-	    <div class="input-group input-group-sm">
-	      <span class="input-group-text">첨부</span>
-	      <input type="file" id="attachment-file" class="form-control file-input-large" />
-	    </div>
-	  </div>
-	</div>
-        
-        <!-- 버튼 구역 -->
-        <div class="grid-controls">
-		<!-- 버튼 그룹 (그리드 위 왼쪽) -->
-      <div class="btn-group left">
-        <button type="button" class="btn btn-success appendRowBtn" id="add-item-btn">+ 항목 추가</button>
-        <button type="button" class="btn btn-danger deleteRowBtn" id="delete-item-btn">- 선택 삭제</button>
-        <button type="button" class="btn btn-secondary" id="resetBtn">다시 작성</button>
+    <div class="bg-white shadow-sm rounded" style="padding: 20px">
+      <!-- Search Section -->
+      <div class="border-bottom pb-3 mb-4">
+        <h1>매입 단가 계약 등록</h1>
       </div>
-       
-       <!-- 버튼 그룹 (그리드 위 오른쪽) -->
-      <div class="btn-group rigth">
-        <button type="button" class="btn btn-success" id="save-btn">저장</button>
-        <!-- 리스트로 이동하는 버튼 -->
-        <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/sales/contractView}'|">계약 관리</button>
-      </div>
-  </div>
-  
-  	<!-- 그리드 -->
-	<div id="grid"></div>
-    
-        </form>
-        
-    </div> <!-- 페이지 컨테이너 끝 -->
-      
-     <!-- 거래처 검색 모달 HTML -->
-	    <div class="modal fade" id="c_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-	        <div class="modal-dialog modal-lg">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <h5 class="modal-title" id="modalLabel">거래처검색</h5>
-	                   
-	                </div>               
-	                <div class="modal-body p-0">
-	                    <div id="c_clientGrid">
-	                    </div>
-	                </div>
-	                <div class="modal-footer justify-content-between" >
-	                    <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
-	                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	    
-	    <!-- 담당자 검색 모달 HTML -->
-	    <div class="modal fade" id="c_empModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <h5 class="modal-title" id="modalLabel">담당자 조회</h5>
-	                    
-	                </div>
-	                <div class="modal-body">                  
-	                    
-	                    <div id="empGrid"></div>
-	                </div>
-	                <div class="modal-footer justify-content-between">
-	                   	<p class="msg"><small>※ 사원코드를 클릭하여 입력하세요.</small></p>
-	                    <div>	                        
-	                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
+      <!-- 페이지 컨테이너 -->
+      <div class="container-fluid p-4">
+        <form>
+          <!-- 계약일자, 거래처 -->
+          <div class="row mb-3">
+            <!-- 계약일자 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약일자</span>
+                <input type="date" class="form-control" id="contract-date" />
+              </div>
+            </div>
+            <!-- 계약번호 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약번호</span>
+                <input type="text" class="form-control" id="contract-code" value="-" readonly />
+              </div>
+            </div>
+          </div>
 
- 
-    <script th:src="@{/js/common/appendRowBtn.js}"></script>	
-	<script th:src="@{/js/common/deleteRowBtn.js}"></script>	
+          <!-- 계약코드, 계약명 -->
+          <div class="row mb-3">
+            <!-- 계약명 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약명</span>
+                <input type="text" class="form-control" id="contract-name" placeholder="계약명" />
+              </div>
+            </div>
+            <!-- 거래처 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">거래처</span>
+                <input type="text" class="form-control" placeholder="거래처 선택" name="c_clientName" id="c_clientInput" readonly="readonly" />
+                <input type="text" style="display: none" id="c_clientInput2" name="c_clientCode" />
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="c_openClientModal">
+                  <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 계약시작일, 계약종료일 -->
+          <div class="row mb-3">
+            <!-- 계약시작일 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약시작일</span>
+                <input type="date" class="form-control" id="billing-start-date" />
+              </div>
+            </div>
+            <!-- 계약종료일 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약종료일</span>
+                <input type="date" class="form-control" id="billing-end-date" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 계약상태, 계약담당자 -->
+          <div class="row mb-3">
+            <!-- 계약 상태 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약상태</span>
+                <select class="form-select" id="status">
+                  <option value="g1" selected="selected">진행</option>
+                  <option value="g2">종료</option>
+                  <option value="g3">보류</option>
+                  <option value="g4">해지</option>
+                </select>
+              </div>
+            </div>
+            <!-- 담당자 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">담당자</span>
+                <input type="text" class="form-control" placeholder="계약 담당자 선택" name="c_empName" id="c_empName" readonly="readonly" />
+                <input type="text" style="display: none" id="c_empCode" name="c_empCode" />
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#empModal" id="c_openEmpModal">
+                  <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 적요 -->
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">적요</span>
+                <input type="text" class="form-control" id="description" placeholder="적요" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 첨부 -->
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">첨부</span>
+                <input type="file" id="attachment-file" class="form-control file-input-large" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 버튼 구역 -->
+          <div class="grid-controls">
+            <!-- 버튼 그룹 (그리드 위 왼쪽) -->
+            <div class="btn-group left">
+              <button type="button" class="btn btn-success appendRowBtn" id="add-item-btn">+ 항목 추가</button>
+              <button type="button" class="btn btn-danger deleteRowBtn" id="delete-item-btn">- 선택 삭제</button>
+              <button type="button" class="btn btn-secondary" id="resetBtn">다시 작성</button>
+            </div>
+
+            <!-- 버튼 그룹 (그리드 위 오른쪽) -->
+            <div class="btn-group rigth">
+              <button type="button" class="btn btn-success" id="save-btn">저장</button>
+              <!-- 리스트로 이동하는 버튼 -->
+              <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/sales/contractView}'|">계약 관리</button>
+            </div>
+          </div>
+
+          <!-- 그리드 -->
+          <div id="grid"></div>
+        </form>
+      </div>
+      <!-- 페이지 컨테이너 끝 -->
+    </div>
+
+    <!-- 거래처 검색 모달 HTML -->
+    <div class="modal fade" id="c_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">거래처검색</h5>
+          </div>
+          <div class="modal-body p-0">
+            <div id="c_clientGrid"></div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 담당자 검색 모달 HTML -->
+    <div class="modal fade" id="c_empModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">담당자 조회</h5>
+          </div>
+          <div class="modal-body">
+            <div id="empGrid"></div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <p class="msg"><small>※ 사원코드를 클릭하여 입력하세요.</small></p>
+            <div>
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script th:src="@{/js/common/appendRowBtn.js}"></script>
+    <script th:src="@{/js/common/deleteRowBtn.js}"></script>
     <script th:src="@{/js/account/contractInsert.js}"></script>
   </body>
-  
 </html>
