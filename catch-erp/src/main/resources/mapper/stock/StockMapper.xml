@@ -215,11 +215,11 @@
 		 	</otherwise>
 		 </choose>
 		  <if test="minPrice != 0">
-		    		AND price > TO_NUMBER(#{minPrice})
+		    		AND price >= TO_NUMBER(#{minPrice})
 		  </if>
 		  <if test="maxPrice != 0">
 		      <![CDATA[
-		    		AND price < TO_NUMBER(#{maxPrice})
+		    		AND price <= TO_NUMBER(#{maxPrice})
 		      ]]>
 		  </if>
 		  ORDER BY result ASC

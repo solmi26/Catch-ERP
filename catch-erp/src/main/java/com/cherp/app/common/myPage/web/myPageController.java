@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cherp.app.common.myPage.service.MyPageService;
+import com.cherp.app.common.myPage.vo.ModifiedInfoVO;
 import com.cherp.app.empl.service.EmployeeService;
 import com.cherp.app.empl.vo.EmployeeVO;
 import com.cherp.app.security.service.LoginVO;
@@ -30,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class myPageController {
 	
@@ -41,10 +43,11 @@ public class myPageController {
 	private final MyPageService myPageService;
 	
 	//마이페이지 초기정보 로딩 (3개탭 모두)
+	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK") 
 	@GetMapping("/myPage")
 	public String myPage(Model model) { 
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		EmployeeVO employeeCodeVO = new EmployeeVO(); 
+		EmployeeVO employeeCodeVO = new EmployeeVO();  
 		employeeCodeVO.setEmployeeCode("63"); //loginVO.getEmployeeLoginVO().getEmployeeCode()
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
@@ -53,9 +56,10 @@ public class myPageController {
 	}
 	
 	@PostMapping("/modifyEmployeeInfo")
-	public void modifyEmployeeInfo(@RequestPart("imageFile") MultipartFile imageFile, @RequestBody EmployeeVO employeeVO){
+	@ResponseBody
+	public void modifyEmployeeInfo(@RequestPart("imageFile") MultipartFile imageFile, ModifiedInfoVO modifiedInfoVO){
 		System.out.println("이미지내놔" + imageFile);
-		System.out.println(employeeVO);
+		System.out.println(modifiedInfoVO);
 		//저장경로 설정
 		String fileName = imageFile.getOriginalFilename();
 		//날짜 폴더생성
@@ -74,8 +78,8 @@ public class myPageController {
         }
 		
 		//DB 저장 처리
-		employeeVO.setEmployeeImage(setImagePath(uploadFileName)); 
-		myPageService.modifyEmployeeInfo(employeeVO);
+		modifiedInfoVO.setEmployeeImage(setImagePath(uploadFileName)); 
+		myPageService.modifyEmployeeInfo(modifiedInfoVO);
 	}
 	
 	/* 파일저장를 위한 private 메서드 */
@@ -98,7 +102,7 @@ public class myPageController {
 		return uploadFileName.replace(File.separator, "/");
 	}
 	
-	//나의 사진
+	//나의 사진 조회
 	@GetMapping("/employeeDetailInfo/{employeeCode}")
 	@ResponseBody
 	public EmployeeVO getEmployeeImage (@PathVariable("employeeCode") String employeeCode) {

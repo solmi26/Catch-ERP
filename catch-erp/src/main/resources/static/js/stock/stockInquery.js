@@ -302,9 +302,9 @@ document.addEventListener("DOMContentLoaded", function () {
 						data.price = ele.price;
 						data.image = ele.image;
 						if(ele.result > 0){
-							data.stocksStatus = "safety";	
+							data.stocksStatus = "양호";	
 						} else {
-							data.stocksStatus = "caution";
+							data.stocksStatus = "주의";
 						}
 						
 						dataArr.push(data);	
@@ -317,14 +317,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		
 		function sortColor2(){
 	      stockInqueryGrid.getData().forEach((row) => {
-			  let check = row.stocksStatus === "caution";
+			  let check = row.stocksStatus === "주의";
 			  if (check) {
 			      stockInqueryGrid.addRowClassName(row.rowKey, "cautionStocks");
 			  }
 		  });
 		  window.setTimeout(function(){
-			  let cautionArr = document.querySelectorAll(".caution");
-			  let safetyArr = document.querySelectorAll(".safety");
+			  let cautionArr = document.querySelectorAll(".주의");
+			  let safetyArr = document.querySelectorAll(".양호");
 			  cautionArr.forEach(ele=>{			
 				ele.innerHTML = "주의";
 			  })
@@ -338,6 +338,25 @@ document.addEventListener("DOMContentLoaded", function () {
 		  tooltipOut();
 		  
 		}
+		
+		stockInqueryGrid.on('onGridMounted', function() {
+    // 대상 헤더 셀 선택
+    let redStar = document.querySelector("#inqueryGrid > div > div.tui-grid-content-area.tui-grid-no-scroll-y > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)");
+
+    if (redStar) {
+        // 기존 헤더 텍스트 가져오기
+        let originalText = redStar.textContent.trim();
+
+        // 앞 4글자 제외한 나머지 텍스트 가져오기
+        let updatedText = originalText.substring(4);
+
+        // 새로운 텍스트 설정
+        redStar.innerHTML = `<span style="color:red"> * </span><span>${updatedText}</span>`;
+    }
+});
+		
+		
+		
 		
 		/*!== 제품 상세조회 모달 ==!*/
 		let totalQuantity; //제품 상세정보띄울때 전체재고를 저장하기 위함, 콤보박스 누를때 전체재고수량 보관하기위함

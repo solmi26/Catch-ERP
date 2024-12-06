@@ -5,7 +5,7 @@
 /*==========================================
 	  공통사용되는 토스트 UI Grid 렌더러 Class
 ============================================*/
-
+	
     class ImageRenderer {
         constructor(props) {
             this.el = document.createElement('img');
@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 className:'border'
             },
             {
-                header: '출하수량',
+                header:  "출하수량",
                 name: 'c6',
                 align: "center",
                 width: 85,
@@ -255,7 +255,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	let stocksStatusColumn = document.querySelector("#adjustmentGrid > div > div.tui-grid-content-area > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(6)")
 	stocksStatusColumn.setAttribute("title","동일 제품의 출하 총수량이 전체재고를 초과할 수 없습니다.");	
 	
-    
+	grid.on('onGridMounted',function(){
+		let redStar = document.querySelector("#adjustmentGrid > div > div.tui-grid-content-area > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(6)")
+		redStar.innerHTML = `<span>출하수량</span><span style="color:red"> *</span>`
+	})
+	
+	
+		
+	
+	
+   
     
     //#endregion 사원조회모달
 
@@ -1020,6 +1029,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let overHandleCheck = false; // 출고수량의 재고초과 체크
     let reportBtn = document.getElementById("reportBtn");
     reportBtn.addEventListener("mouseover",function(){
+		grid.blur(); //조정버튼에 마우스 올라가면 자동으로 페이지내 그리드 blur() 처리
 		if(grid.getRowCount()<1){		
 			reportBtn.removeAttribute("data-bs-toggle");	
 		}

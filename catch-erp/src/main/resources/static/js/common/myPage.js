@@ -68,15 +68,25 @@
   
   let modifiedBtn = document.getElementById('saveBtn');
   modifiedBtn.addEventListener('click',function(){
+	
+		
 	  let tel = document.getElementById('tel');
-	  let phone = document.getElementById('phone');
-	  let email = document.getElementById('email');
+	  let phone = document.getElementById('phone'); //필수입력값
+	  let email = document.getElementById('email'); //필수입력값
 	  let zipcode = document.getElementById('zipcode');
-	  let address = document.getElementById('address');
-	  let detailAddress = document.getElementById('detailAddress');
-	  
+	  let address = document.getElementById('address'); //필수입력값
+	  let detailAddress = document.getElementById('detailAddress'); //필수입력값
 	  let employeeImage = document.getElementById('employeeImage');				
 	  let employeeCode = document.getElementById('employeeCode');
+	  
+	  if(phone.value == '' || email.value == '' || address.value == '' || detailAddress.value == ''){
+		alert("필수 입력란을 확인하세요.");
+		return;
+	  }
+	  if(isHpFormat(phone.value) == false){
+		alert("모바일 입력란 형식을 확인하세요.");
+		return;
+	  }
 	  
 	  let formData = new FormData();
 	  formData.append('imageFile', employeeImage.files[0]);
@@ -88,12 +98,9 @@
 	  formData.append('detailAddress', detailAddress.value);
 	  formData.append('employeeCode', employeeCode.value);
 	  
-	  console.log(formData);
-	  
-	  
-				for (const data of formData.entries()) {
-					console.log(data);
-				};
+	/*for (const data of formData.entries()) {
+		console.log(data);
+	};*/
 	  
 	  fetch("/modifyEmployeeInfo",{
 			method: 'post',
@@ -114,4 +121,11 @@
 			alert("사원정보 변경 중 에러가 발생했습니다.")
 		})
   })
-
+  
+  	function isHpFormat(hp){
+		if(hp == ""){
+			return true;	
+		}	
+		var phoneRule = /^(01[0]{1})[0-9]{4}[0-9]{4}$/;	
+		return phoneRule.test(hp);
+	}
