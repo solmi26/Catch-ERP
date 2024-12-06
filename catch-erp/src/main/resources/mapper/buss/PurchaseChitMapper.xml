@@ -126,6 +126,34 @@
         FROM purchase_chit a JOIN b ON a.purcslip_no = b.purcslip_no
     </select>
 
+    <!-- 구매전표 검색 -->
+    <select id="searchPurchaseChit" resultType="com.cherp.app.buss.vo.PurchaseChitVO">
+        SELECT a.purcslip_no
+        ,insert_date
+        ,client_code
+        ,client_name
+        ,supply_price
+        ,employee_name
+        ,employee_code
+        ,vat
+        ,slip_state
+        FROM purchase_chit a JOIN purchase_history b
+        ON a.purcslip_no = b.purcslip_no
+        WHERE 1 = 1
+        <if test="insertDate != null">
+            AND a.insert_date >=  #{insertDate} AND a.insert_date <![CDATA[ < ]]> #{insertDate} + 1
+        </if>
+        <if test="restockingDate != null">
+            AND b.restocking_date = #{restockingDate} AND b.restocking_date <![CDATA[ < ]]> #{restockingDate} + 1
+        </if>
+        <if test="clientName != null">
+            AND a.client_name LIKE '%' || #{clientName} || '%'
+        </if>
+        <if test="itemName != null">
+            AND b.item_name LIKE '%' || #{itemName} || '%'
+        </if>
+    </select>
+
     <!-- 구매전표별 구매내역 보기-->
     <select id="selectPurchaseHistory" resultType="com.cherp.app.buss.vo.PurchaseHistoryVO">
         SELECT

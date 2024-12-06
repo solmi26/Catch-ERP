@@ -83,14 +83,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '구매전표번호',
                 name: 'purcslipNo',
                 align: "center",
-                width: 150,
+                width: 250,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
                 header: '발주일자',
                 name: 'insertDate',
                 align: "center",
-                width: 200,
+                width: 250,
                 whiteSpace: 'normal',
                 editor: 'text',
                 className: 'border',
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'clientName',
                 editor: 'text',
                 align: "center",
-                width: 100,
+                width: 250,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'totalPrice',
                 editor: 'text',
                 align: "center",
-                width: 150,
+                width: 250,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'supplyPrice',
                 editor: 'text',
                 align: "center",
-                width: 150,
+                width: 250,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 name: 'vat',
                 editor: 'text',
                 align: "center",
-                width: 150,
+                width: 250,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -176,7 +176,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             fetch('/purchase/PurchaseHistory/' + purcslipNo)
                 .then(result => result.json())
-                .then(data => purchaseHistory.resetData(data))
+                .then(data => {
+                    purchaseHistory.resetData(data);
+                    sortColor();
+                })
                 .catch(error => console.log(error))
 
             window.setTimeout(function () {
@@ -199,6 +202,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             bodyHeight: 400,
             rowHeight: 40,
             width: 'auto',
+            columnOptions: {
+                frozenCount: 1,
+                frozenBorderWidth: 1
+            },
             contextMenu: null,
             rowHeaders: [{
                 type: 'rowNum', header: "No.", width: 50, className: 'border'
@@ -304,6 +311,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     initPurchaseHistory();
 
+    // 출고상태에 따른 그리드 색상 변화
+    function sortColor(){
+        purchaseHistory.getData().forEach((row) => {
+            let check = row.restockingStatus;
+            if (check === '미완료') {
+                purchaseHistory.addRowClassName(row.rowKey, 'increase');
+            } else if(check === '완료') {
+                purchaseHistory.addRowClassName(row.rowKey, 'decrease');
+            } else if(check === '진행중') {
+                purchaseHistory.addRowClassName(row.rowKey, 'ongoing');
+            }
+        });
+    }
+
     document.getElementById('searchButton').addEventListener('click', () => {
         const formData = new FormData(document.getElementById('searchForm'));
         const params = new URLSearchParams();
@@ -314,7 +335,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         }
 
-        fetch(`/sales/selectpurchaseChit/search?${params.toString()}`)
+        fetch(`/purchase/PurchaseHistory/search?${params.toString()}`)
             .then(result => result.json())
             .then(data => {
                 purchaseChit.resetData(data);
@@ -323,5 +344,169 @@ document.addEventListener("DOMContentLoaded", async function () {
                 console.error('Error fetching data:', error);
             });
     })
+
+    //모달실행 시 grid refresh를 위한 코드
+    document.getElementById('openClientModal').addEventListener('click', function () {
+        window.setTimeout(function () {
+            clientGrid.refreshLayout();
+        }, 200)
+    });
+
+    // 거래처 그리드
+    let clientGrid;
+    const initClientGrid = () => {
+
+        clientGrid = new Grid({
+            el: document.getElementById("clientGrid"),
+            scrollX: true,
+            scrollY: true,
+            data: clientData,
+            header: {height: 40},
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                type: 'rowNum', header: "No.", width: 50, className: 'border'
+            }],
+            columns: [{
+                header: '거래처명',
+                name: 'clientName',
+                align: "center",
+                width: 183,
+                whiteSpace: 'normal',
+                className: 'border',
+                renderer: {
+                    type: ButtonRenderer
+                },
+                filter: 'select'
+            }, {
+                header: '거래처코드',
+                name: 'clientCode',
+                hidden: true,
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '대표자명',
+                name: 'ceoName',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '회사 연락처',
+                name: 'companyTel',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border'
+            }, {
+                header: '담당자명',
+                name: 'employeeName',
+                align: "center",
+                width: 110,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '담당자 연락처',
+                name: 'employeeTel',
+                align: "center",
+                width: 120,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }, {
+                header: '종목',
+                name: 'event',
+                align: "center",
+                width: 100,
+                whiteSpace: 'normal',
+                className: 'border',
+                filter: 'select'
+            }]
+        });
+
+        //거래처 input
+        clientGrid.on("click", (ev) => {
+            const clientRowData = clientGrid.getRow(ev.rowKey);
+
+            if (clientRowData && clientRowData.clientName) {
+                // 특정 열(columnName)의 값 가져오기
+                // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
+                document.getElementById('inputClientName').value = clientRowData.clientName;
+            }
+        });
+        return clientGrid;
+    }
+    initClientGrid();
+
+    //모달실행 시 grid refresh를 위한 코드
+    document.getElementById('openItemModal').addEventListener('click', function () {
+        window.setTimeout(function () {
+            itemGrid.refreshLayout();
+        }, 200)
+    });
+
+    window.setTimeout(function () {
+        fetch('/purchase/contractItem')
+            .then(result => result.json())
+            .then(data => itemGrid.resetData(data))
+            .catch(error => console.log(error))
+    }, 200)
+
+    // 품목 그리드
+    let itemGrid;
+    const initItemGrid = () => {
+
+        itemGrid = new Grid({
+            el: document.getElementById("itemGrid"),
+            scrollX: true,
+            scrollY: true,
+            data: [],
+            header: {height: 40},
+            bodyHeight: 500,
+            width: 'auto',
+            contextMenu: null,
+            rowHeaders: [{
+                type: 'rowNum', header: "No.", width: 50, className: 'border'
+            }],
+            columns: [{
+                header: '품목코드',
+                name: 'itemCode',
+                align: "center",
+                width: 225,
+                whiteSpace: 'normal',
+                className: 'border',
+                renderer: {
+                    type: ButtonRenderer
+                },
+                filter: 'select'
+            }, {
+                header: '품목명',
+                name: 'itemName',
+                align: "center",
+                width: 225,
+                whiteSpace: 'normal',
+                className: 'border',
+            },]
+        });
+
+        //품목 input
+        itemGrid.on("click", (ev) => {
+            const itemGridRowData = itemGrid.getRow(ev.rowKey);
+
+            if (itemGridRowData && itemGridRowData.itemName) {
+                // 특정 열(columnName)의 값 가져오기
+                // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
+                document.getElementById('inputItemName').value = itemGridRowData.itemName;
+            }
+        });
+        return itemGrid;
+    }
+    initItemGrid()
 });
 

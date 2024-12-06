@@ -57,6 +57,13 @@ public class PurchaseChitController {
 		return purchaseChitService.selectPurchaseChit();
 	}
 
+	// 구매전표 검색 조회
+	@ResponseBody
+	@GetMapping("purchase/PurchaseHistory/search")
+	public List<PurchaseChitVO> searchPurchaseChit(@ModelAttribute PurchaseChitVO purchaseChitVO){
+		return purchaseChitService.searchPurchaseChit(purchaseChitVO);
+	}
+
 	// 구매전표별 구매내역 보기
 	@ResponseBody
 	@GetMapping("purchase/PurchaseHistory/{purcslipNo}")
