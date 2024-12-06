@@ -193,6 +193,7 @@ document.querySelector('#newBtn').addEventListener('click',function () {
 		ele.value = null;
 		
 	})
+	allowanceGrid.resetData([]);
 })
 
 
