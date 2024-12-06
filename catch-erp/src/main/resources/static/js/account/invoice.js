@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // 그리드 초기화
   grid = new tui.Grid({
     el: document.querySelector("#grid"), // 그리드를 표시할 DOM 요소의 id 지정
-    //data: gridData, // gridData를 불러와서 그리드로 렌더링
     scrollX: true,
     scrollY: true,
     pageOptions: {

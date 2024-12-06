@@ -77,15 +77,18 @@
                ,con_date
                ,con_name
                ,client_code
+			   ,(SELECT client_name
+                 FROM client d
+                 WHERE d.client_code = c.client_code) client_name
                ,con_sdate
                ,con_edate
-               ,status
+               ,FIND_CODE(status) status
                ,emoployee_code
                ,emoloyee_name
                ,summary
                ,url
                ,writer
-         FROM contract
+         FROM contract c
 	</select>
 	
 	
