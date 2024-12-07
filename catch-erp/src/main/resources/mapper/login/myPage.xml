@@ -35,4 +35,25 @@
 		WHERE  employee_code = #{employeeCode}
 	</select>
 	
+	<!-- <select > 작업중
+		SELECT ah.att_history_code,
+	               em.employee_code,
+	               em.employee_id,
+	               em.name,
+	               ah.attendance_date,
+	               ah.att_code,
+			       ah.attendance_time,
+			       ah.leave_time,
+	               NUMBER_TO_MINUTE(ah.total_worktime) AS total_worktime ,
+	               NUMBER_TO_MINUTE(ah.overtime_worktime) AS overtime_worktime,
+	               NUMBER_TO_MINUTE(ah.night_worktime) AS night_worktime,
+	               NUMBER_TO_MINUTE(ah.weekend_worktime) AS weekend_worktime,
+	               ai.att_name
+               
+		FROM   att_history ah
+		JOIN   employees em           ON ah.employee_code = em.employee_code
+        JOIN   att_item ai         ON ah.att_code = ai.att_code
+        
+        WHERE  ah.att_history_code = #{attHistoryCode}
+	</select> -->
 </mapper>

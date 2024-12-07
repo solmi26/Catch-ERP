@@ -178,7 +178,7 @@
       scrollY: false,
       rowHeaders: [{
                     type: 'rowNum',
-                    header: "일자",
+                    header: "No.",
                     width: 50,
                     className:'border'
             }],
@@ -188,14 +188,6 @@
     	 name:'attHistoryCode',
     	 hidden:true
     	},
-        {
-          header: '사원아이디',
-          name: 'employeeId'
-        },
-        {
-          header: '성명',
-          name: 'name'
-        },
         {
           header: '날짜',
           name: 'attendanceDate',
@@ -211,8 +203,24 @@
         {
           header: '퇴근시간',
           name: 'leaveTime',
-
+        },
+        {
+          header: '연장 근로시간',
+          name: 'overtimeWorktime',
+        },
+        {
+          header: '야간 근로시간',
+          name: 'nightWorktime',
+        },
+        {
+          header: '주말 근로시간',
+          name: 'weekendWorktime',
+        },
+        {
+          header: '총 근로시간',
+          name: 'totalWorktime',
         }
+        
       ],
       data: [
     	  {

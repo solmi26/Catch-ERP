@@ -12,4 +12,5 @@ public class WarehouseVO {
     // 매입계약품목
     private String itemCode; // 품목 코드
     private int stocksQuantity; // 재고
+    private int currentQuantity; // 현재 재고 (추가자: 건우)
 }
