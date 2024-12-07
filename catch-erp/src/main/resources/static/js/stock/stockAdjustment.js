@@ -1310,12 +1310,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	})   
 	
-	// 그리드에 데이터 넣기(출력) 
+	// 그리드에 데이터 넣기(출력) 담당자
 	fetch('/employees/emps')
 	.then(result => result.json())
 	.then(result => {
+		console.log(result)
+		let filteredResult = result.filter(ele=>{
+			return ele.departmentName == "영업팀" || ele.departmentName == "믈류팀"; 
+		})
 		let dataArr = [];
-		result.forEach(ele=>{
+		filteredResult.forEach(ele=>{
 			let data = {};
 			data.c1 = ele.employeeCode;
 			data.c2 = ele.name;

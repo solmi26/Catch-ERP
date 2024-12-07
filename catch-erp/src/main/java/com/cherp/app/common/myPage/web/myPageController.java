@@ -48,7 +48,7 @@ public class myPageController {
 	public String myPage(Model model) { 
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		EmployeeVO employeeCodeVO = new EmployeeVO();  
-		employeeCodeVO.setEmployeeCode("63"); //loginVO.getEmployeeLoginVO().getEmployeeCode()
+		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode()
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		model.addAttribute("employeeVO", employeeVO);

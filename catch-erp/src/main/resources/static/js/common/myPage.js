@@ -126,6 +126,6 @@
 		if(hp == ""){
 			return true;	
 		}	
-		var phoneRule = /^(01[0]{1})[0-9]{4}[0-9]{4}$/;	
+		var phoneRule = /^(01[0]{3})[0-9]{4}[0-9]{4}$/;	
 		return phoneRule.test(hp);
 	}
