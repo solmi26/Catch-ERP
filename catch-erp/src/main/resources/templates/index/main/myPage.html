@@ -33,11 +33,11 @@
                         data-bs-target="#myAttendance" type="button" role="tab" aria-controls="myAttendance"
                         aria-selected="false">근태 조회</button>
                 </li>
-                <!-- <li class="nav-item" role="presentation">
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="#mySalary-tab" data-bs-toggle="tab" 
                         data-bs-target="#mySalary" type="button" role="tab" aria-controls="mySalary"
                         aria-selected="false">급여 조회</button>
-                </li>  -->
+                </li> 
             </ul>
 	        
 	        <div class="tab-content" id="mainTabContent"> <!-- 메인탭시작 -->
@@ -84,8 +84,8 @@
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
                                                 	<input type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.modifiedIdentityNo}" name="modifiedIdentityNo" readonly>
-                                                </div>-->
-                                            </div> 
+                                                </div>
+                                            </div> -->
                                             <div class="row mb-1">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
                                                     <label class="form-label">부서명</label>
@@ -229,7 +229,16 @@
 									</div> <!-- 근태 정보 그리드 끝 -->
 					           </div>
 					       </div> <!--  세부 검색 구역 끝!!!! -->
+								
+								
 							
+							<!-- 버튼용 로우 -->
+							<div class="row">
+								<div class="col">
+									<button type="button" class="btn btn-sm btn-secondary">Excel</button>
+									<button type="button" class="btn btn-sm btn-secondary">인쇄</button>
+								</div>
+							</div>
 						</div> <!-- 근태탭 페이지 End Point (모달 미포함) -->
 						
 						<!-- <!-- 근태 세부정보 모달 -->
@@ -264,16 +273,17 @@
 					                </div>
 					            </div>
 					        </div>
-					    </div> 근태 세부정보 모달 EndPoint --> 
+					    </div> 근태 세부정보 모달 EndPoint --> -->
 
 									
         		</div> <!-- 두번째 탭 End Point -->
         		
-        		<!-- <div class="tab-pane fade" id="mySalary" role="tabpanel"
-        									aria-labelledby="mySalary-tab"> 세번째 탭 시작
+        		<div class="tab-pane fade" id="mySalary" role="tabpanel"
+        									aria-labelledby="mySalary-tab"> <!-- 세번째 탭 시작 -->
+        							
         									
         									
-        		</div> 세번째 탭 End Point -->
+        		</div> <!-- 세번째 탭 End Point -->
 			
 	   		</div> <!-- mainTab End Point -->
 	   		

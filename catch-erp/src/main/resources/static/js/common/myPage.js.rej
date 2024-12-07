@@ -1,0 +1,9 @@
+diff a/catch-erp/src/main/resources/static/js/common/myPage.js b/catch-erp/src/main/resources/static/js/common/myPage.js	(rejected hunks)
+@@ -252,5 +252,6 @@
+ 	window.addEventListener("resize", function() {
+   		attendanceGrid.refresh();
+\ No newline at end of file
++	});
+ 	
+ 	/*============================================
+   ====================세 번째 탭 근태정보 관련=========
