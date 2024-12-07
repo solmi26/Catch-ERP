@@ -45,9 +45,10 @@ public class myPageController {
 	//마이페이지 초기정보 로딩 (3개탭 모두)
 	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK") 
 	@GetMapping("/myPage")
-	public String myPage(Model model) { 
-		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		EmployeeVO employeeCodeVO = new EmployeeVO();  
+	public String myPage(Model model) {
+		EmployeeVO employeeCodeVO = new EmployeeVO();
+		
+		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
 		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode()
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
@@ -57,9 +58,9 @@ public class myPageController {
 	
 	@PostMapping("/modifyEmployeeInfo")
 	@ResponseBody
-	public void modifyEmployeeInfo(@RequestPart("imageFile") MultipartFile imageFile, ModifiedInfoVO modifiedInfoVO){
-		System.out.println("이미지내놔" + imageFile);
-		System.out.println(modifiedInfoVO);
+	public void modifyEmployeeInfo(@RequestPart(value= "imageFile", required = false) MultipartFile imageFile, ModifiedInfoVO modifiedInfoVO){
+		
+		
 		//저장경로 설정
 		String fileName = imageFile.getOriginalFilename();
 		//날짜 폴더생성

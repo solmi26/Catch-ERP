@@ -89,7 +89,9 @@
 	  }
 	  
 	  let formData = new FormData();
-	  formData.append('imageFile', employeeImage.files[0]);
+	  if(document.querySelector("#employeeImage").value != ''){
+	  	formData.append('imageFile', employeeImage.files[0]);
+	  }
 	  formData.append('tel', tel.value); 
 	  formData.append('phone', phone.value);
 	  formData.append('email', email.value);
@@ -126,6 +128,6 @@
 		if(hp == ""){
 			return true;	
 		}	
-		var phoneRule = /^(01[0]{3})[0-9]{4}[0-9]{4}$/;	
+		var phoneRule = /^010\d{8}$/;
 		return phoneRule.test(hp);
 	}
