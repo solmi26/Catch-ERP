@@ -44,7 +44,7 @@
               <ul class="navbar-nav topbar-nav align-items-center w-100 ms-auto " style="justify-content: flex-start;">
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn" id="headerLi">
                   <span class=""><a
-                    class="nav-link dropdown-toggle"
+                    class="nav-link dropdown-toggle ka"
                     href="/stocks/stockInquery"
                     style="font-size:16px; color:black; 
                     padding:40px;"
@@ -54,7 +54,7 @@
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn">
                   <a
-                    class="nav-link dropdown-toggle " 
+                    class="nav-link dropdown-toggle ka" 
                     href="/employees/employee"
                     style="font-size:16px; color:black; padding:40px;"
                   >
@@ -63,28 +63,28 @@
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn">
                   <a
-                    class="nav-link dropdown-toggle "                  
+                    class="nav-link dropdown-toggle ka"                  
                     href="/sales/invoiceListView"
-                    style="font-size:16px; color:black; padding:40px;"
+                    style="font-size:16px; color:black; padding:40px; "
                   >
                   회계</a>
                 </li>
 
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn">
                   <a 
-                  class="nav-link dropdown-toggle "                  
+                  class="nav-link dropdown-toggle ka"                  
                   href="indexSales.html"
                   style="font-size:16px; color:black; padding:40px;"
                   >
                   영업</a>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret ms-auto " style="margin-top:4px; margin-right:15px;">
-                	<span class="col" id="user" th:text="${#authentication.principal.employeeLoginVO.name} + '님 환영합니다.'" style="font-size:14px; color:black; font-weight:700; margin-right:10px;"></span>
+                	<span class="col" id="user" th:text="${#authentication.principal.employeeLoginVO.name} + '님 환영합니다.'" style="font-size:14px; color:black; font-weight:500; margin-right:10px;"></span>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret ">
-                	<div style="background-color:white; width:55px; height:55px; border-radius:100%;">
+                	<div style=" width:55px; height:55px; border-radius:100%;">
                 		<!-- <span sec:authentication="principal.employeeLoginVO.employeeImage"></span> -->
-	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage}" class="mt-1 avatar-img rounded-circle " name="profileImg" style="background-color:white;" alt="이미지없다"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
+	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage} ? ${#authentication.principal.employeeLoginVO.employeeImage} : '/img/imageNo.jpg'" class="mt-1 avatar-img rounded-circle " name="profileImg" style="background-color:white; border:2px solid gray;" alt="이미지없다"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
               		</div>
                 </li>
               </ul>
