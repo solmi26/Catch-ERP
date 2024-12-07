@@ -1,7 +1,13 @@
 /**
+ * 다음 API관련
+ * 나의 정보 탭 정보수정
+ * 근태 조회
  * 
  */
-
+  
+  /*============================================
+  ====================다음 API===================
+  ==============================================*/
   function daumMapApi(state) {
       new daum.Postcode({
           oncomplete: function(data) {
@@ -66,6 +72,11 @@
 
   })
   
+  
+  /*============================================
+  ====================첫번째 탭 수정버튼 이벤트 ========
+  ==============================================*/
+  
   let modifiedBtn = document.getElementById('saveBtn');
   modifiedBtn.addEventListener('click',function(){
 	
@@ -123,7 +134,7 @@
 			alert("사원정보 변경 중 에러가 발생했습니다.")
 		})
   })
-  
+  	//휴대폰번호 유효성 체크
   	function isHpFormat(hp){
 		if(hp == ""){
 			return true;	
@@ -131,3 +142,219 @@
 		var phoneRule = /^010\d{8}$/;
 		return phoneRule.test(hp);
 	}
+	
+  /*============================================
+  ====================두 번째 탭 근태정보 관련=========
+  ==============================================*/
+  /*-- 근태정보 페이지 그리드 --*/
+   const Grid = tui.Grid;
+   Grid.applyTheme('default',  {
+            outline:{
+            border : '#dee2e6'
+        },
+        cell: {
+            normal: {
+                border: '#dee2e6'
+            },
+            header: {
+                background: '#f8f9fa',
+                text: 'black'
+            },
+            focused: {
+                background: '#f8f9fa',
+                border: '#f64a4a'
+            },
+            evenRow: {
+                background: 'white'
+            },
+            oddRow: {
+                background: 'white'
+            }
+        }
+    });
+    const attendanceGrid = new Grid({
+      el: document.getElementById('attendanceGrid'),
+      scrollX: false,
+      scrollY: false,
+      rowHeaders: [{
+                    type: 'rowNum',
+                    header: "일자",
+                    width: 50,
+                    className:'border'
+            }],
+      columns: [
+    	{
+    	 header:'근태기록번호',
+    	 name:'attHistoryCode',
+    	 hidden:true
+    	},
+        {
+          header: '사원아이디',
+          name: 'employeeId'
+        },
+        {
+          header: '성명',
+          name: 'name'
+        },
+        {
+          header: '날짜',
+          name: 'attendanceDate',
+        },
+        {
+          header: '근태유형',
+          name: 'attName'
+        },
+        {
+          header: '출근시간',
+          name: 'attendanceTime',
+        },
+        {
+          header: '퇴근시간',
+          name: 'leaveTime',
+
+        }
+      ],
+      data: [
+    	  {
+    		employeeCode:'2024-01',
+    		employeeName:'유석진',
+    		attendanceDate:'2024.11.19',
+    		attName:'정상출근',
+    		attendanceTime:'08:59',
+    		leaveTime:'18:01'
+    	  },
+    	  {
+    		employeeCode:'2024-01',
+    		employeeName:'유석진',
+    		attendanceDate:'2024.11.19',
+    		attName:'정상출근',
+    		attendanceTime:'08:59',
+    		leaveTime:'18:01'
+    	  },
+    	  {
+    		employeeCode:'2024-01',
+    		employeeName:'유석진',
+    		attendanceDate:'2024.11.19',
+    		attName:'정상출근',
+    		attendanceTime:'08:59',
+    		leaveTime:'18:01'
+    	  },
+    	  {
+    		employeeCode:'2024-01',
+    		employeeName:'유석진',
+    		attendanceDate:'2024.11.19',
+    		attName:'정상출근',
+    		attendanceTime:'08:59',
+    		leaveTime:'18:01'
+    	  },
+    	  ]
+    });
+    
+    //그리드 클릭 이벤트
+	 attendanceGrid.on('click',function (ev) {
+		console.log(ev)
+		if (ev.targetType == 'cell') {
+			window.setTimeout(function(){
+	        atModifyGrid.refreshLayout();
+	        }, 200)
+	        let code = attendanceGrid.getFormattedValue(ev.rowKey,'attHistoryCode')
+	        dataToatModifyGrid(code)
+			atModifyModal.show()
+		}
+	 })
+	 
+	 
+	 /* -- 근태정보상세 모달의 그리드 -- */
+	 const atModifyGrid = new Grid({
+        el: document.getElementById('atModifyGrid'), // Container element
+        scrollX: true,
+        scrollY: false,
+        width:1100,
+        columns: [
+            {
+	            header: '근태기록번호',
+	            name: 'attHistoryCode',
+	            hidden:true
+            },
+            {
+	            header: '사원번호',
+	            name: 'employeeCode',
+	            hidden:true
+            },
+            {
+			    header:'사원아이디',
+			    name:'employeeId',
+			    ignored:true
+			},
+            {
+	            header: ' 성명',
+	            name: 'name',
+	            ignored:true
+            },
+            {
+	            header: '날짜',
+	            name: 'attendanceDate',
+		        editor: {
+		          type:'datePicker',
+		          options:{
+		          	language: 'ko'
+		          },
+		        }
+            },
+            {
+	            header: '근태유형코드',
+	            name: 'attCode',
+	            hidden:true
+            },
+            {
+				header:'근태유형',
+				name:'attName',
+				ignored:true
+			},
+            {
+	            header: '출근시간',
+	            name: 'attendanceTime',
+	            editor: {
+	            type: gridTime,
+	            }
+            },
+            {
+	            header: '퇴근시간',
+	            name: 'leaveTime',
+	            editor: {
+	            type: gridTime,
+	            }
+            },
+	        {
+	            header: '총근로시간',
+	            name: 'totalWorktime',
+	            editor: {
+	            type: gridTime,
+	            }
+	            },
+            {
+	            header: '연장근로시간',
+	            name: 'overtimeWorktime',
+	            editor: {
+	            type: gridTime,
+	            }
+	            },
+            {
+	            header: '심야근무시간',
+	            name: 'nightWorktime',
+	            editor: {
+	            type: gridTime,
+	            }
+	            },
+            {
+	            header: '주간근무시간',
+	            name: 'weekendWorktime',
+	            editor: {
+	            type: gridTime,
+	            }
+            }
+        ],
+        data: [
+        ]
+        });
+	
