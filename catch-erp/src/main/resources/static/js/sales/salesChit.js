@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             data: clientData,
             pageOptions: {
                 useClient: true,
-                perPage: 8,
+                perPage: 12,
             },
             header: {height: 40},
             bodyHeight: 500,
@@ -192,10 +192,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
                 document.getElementById('inputClientName').value = clientRowData.clientName;
                 document.getElementById('inputClientCode').value = clientRowData.clientCode;
+
+                const ChangeEvent = new Event("change");
+                document.getElementById('inputClientName').dispatchEvent(ChangeEvent);
+
             }
         });
-
-
+        
         return clientGrid;
     }
 
@@ -222,6 +225,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             el: document.getElementById('humanGrid'),
             scrollX: true,
             scrollY: true,
+            pageOptions: {
+                useClient: true,
+                perPage: 12,
+            },
             header: {height: 40},
             bodyHeight: 500,
             width: 'auto',
@@ -287,47 +294,47 @@ document.addEventListener("DOMContentLoaded", async function () {
     ==============================*/
 
     // 모달 관련 JavaScript
-    const accCodeModal = document.getElementById('accCodeGrid')
-
-    window.setTimeout(function () {
-        fetch('/acctList')
-            .then(result => result.json())
-            .then(data => accCodeGrid.resetData(data))
-            .catch(error => alert("매출계정 데이터를 조회하는데 실패"))
-    }, 200)
-
-    //모달실행 시 grid refresh를 위한 코드
-    document.getElementById('openAccCodeModal').addEventListener('click', function () {
-        window.setTimeout(function () {
-            accCodeGrid.refreshLayout();
-        }, 200)
-    });
-
-    let accCodeGrid;
-    const initAccCodeGrid = () => {
-        accCodeGrid = new Grid({
-            el: document.getElementById('accCodeGrid'), scrollX: false, scrollY: true, bodyHeight: 350, rowHeaders: [{
-                type: 'rowNum', header: "No.", width: 50, className: 'border'
-            }],
-
-            columns: [{
-                header: "계정 코드",
-                name: "acctCode",
-                align: "center",
-                renderer: {
-                    type: ButtonRenderer
-                },
-            }, {
-                header: "계정명", name: "acctName", sortingType: "asc", sortable: true, align: "center",
-            }], showDummyRows: true,
-        });
-
-        return accCodeGrid;
-    }
-
-    const accCodeData = [{}]
-
-    const createdAccCodeGrid = initAccCodeGrid();
+    // const accCodeModal = document.getElementById('accCodeGrid')
+    //
+    // window.setTimeout(function () {
+    //     fetch('/acctList')
+    //         .then(result => result.json())
+    //         .then(data => accCodeGrid.resetData(data))
+    //         .catch(error => alert("매출계정 데이터를 조회하는데 실패"))
+    // }, 200)
+    //
+    // //모달실행 시 grid refresh를 위한 코드
+    // document.getElementById('openAccCodeModal').addEventListener('click', function () {
+    //     window.setTimeout(function () {
+    //         accCodeGrid.refreshLayout();
+    //     }, 200)
+    // });
+    //
+    // let accCodeGrid;
+    // const initAccCodeGrid = () => {
+    //     accCodeGrid = new Grid({
+    //         el: document.getElementById('accCodeGrid'), scrollX: false, scrollY: true, bodyHeight: 350, rowHeaders: [{
+    //             type: 'rowNum', header: "No.", width: 50, className: 'border'
+    //         }],
+    //
+    //         columns: [{
+    //             header: "계정 코드",
+    //             name: "acctCode",
+    //             align: "center",
+    //             renderer: {
+    //                 type: ButtonRenderer
+    //             },
+    //         }, {
+    //             header: "계정명", name: "acctName", sortingType: "asc", sortable: true, align: "center",
+    //         }], showDummyRows: true,
+    //     });
+    //
+    //     return accCodeGrid;
+    // }
+    //
+    // const accCodeData = [{}]
+    //
+    // const createdAccCodeGrid = initAccCodeGrid();
 
     /*============================
              판매 등록 그리드
@@ -587,18 +594,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     initClientGrid();
 
     // 그리드에 데이터 넣기(출력)
-    createdAccCodeGrid.resetData(accCodeData);
+    // createdAccCodeGrid.resetData(accCodeData);
 
     //매출계정 input
-    accCodeGrid.on("click", (ev) => {
-        const columnName = ev.columnName;
-
-        if (columnName === 'acctCode') {
-            // 특정 열(columnName)의 값 가져오기
-            const columnValue = accCodeGrid.getValue(ev.rowKey, 'acctName');
-            document.getElementById('accCodeInput').value = columnValue;
-        }
-    });
+    // accCodeGrid.on("click", (ev) => {
+    //     const columnName = ev.columnName;
+    //
+    //     if (columnName === 'acctCode') {
+    //         // 특정 열(columnName)의 값 가져오기
+    //         const columnValue = accCodeGrid.getValue(ev.rowKey, 'acctName');
+    //         document.getElementById('accCodeInput').value = columnValue;
+    //     }
+    // });
 
 
     // 발주서 모달
@@ -613,13 +620,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             ordersGrid.refreshLayout();
         }, 200)
     })
-
-    window.setTimeout(function () {
-        fetch('/ordersList')
-            .then(result => result.json())
-            .then(data => ordersGrid.resetData(data))
-            .catch(error => console.log(error))
-    }, 200)
 	
 	//발주서 클릭시 선택건 제외하고 띄워주기
 	let orderModalTriggerBtn = document.getElementById('orderModal');
@@ -638,12 +638,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 				ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
 			})
             .catch(error => console.log(error))
-			
+
 	})
-	
 
     let ordersGrid;
-    const initordersGrid = () => {
+    const initOrdersGrid = () => {
         ordersGrid = new Grid({
             el: document.getElementById('ordersGrid'),
             scrollX: true,
@@ -751,7 +750,31 @@ document.addEventListener("DOMContentLoaded", async function () {
         return ordersGrid;
     }
     // 샘플 데이터
-    initordersGrid();
+    initOrdersGrid();
+
+    let inputClientName = document.getElementById('inputClientName');
+
+    inputClientName.addEventListener('change', ()=> {
+        let inputClientNameValue = document.getElementById('inputClientName').value;
+        console.log('이벤트 리스너 안')
+        if(inputClientNameValue !== ''){
+            console.log("발주서 if 안")
+            window.setTimeout(function () {
+                fetch('/clientOrderList/' + inputClientNameValue)
+                    .then(result => result.json())
+                    .then(data => ordersGrid.resetData(data))
+                    .catch(error => console.log(error))
+            }, 200)
+        } else {
+            console.log("발주서 else 안")
+            window.setTimeout(function () {
+                fetch('/ordersList')
+                    .then(result => result.json())
+                    .then(data => ordersGrid.resetData(data))
+                    .catch(error => console.log(error))
+            }, 200)
+        }
+    })
 
     //발주서 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
     let orderInputBtn = document.getElementById('orderInputBtn');
