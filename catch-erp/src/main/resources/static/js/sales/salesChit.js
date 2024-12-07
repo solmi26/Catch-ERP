@@ -629,12 +629,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 				}
 				console.log(data);
                 let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
-                let clientCode = document.getElementById("inputClientCode");
+                let clientName = document.getElementById("inputClientName");
                 salesChit.getData().forEach(ele => {
                     existentNo.push(ele.orderNo);
                 })
                 let filteredData = data.filter(ele => {
-                    return !existentNo.includes(ele.orderNo) && clientCode == ele.clientCode;
+                    return !existentNo.includes(ele.orderNo) && clientName == ele.clientName;
                 })
                 console.log(filteredData);
                 ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
