@@ -235,7 +235,7 @@
 		 let monthConditionBox = document.getElementById('monthCondition');
 		 let yearCondition = yearConditionBox.options[yearConditionBox.selectedIndex].value;
 		 let monthCondition = monthConditionBox.options[monthConditionBox.selectedIndex].value;
-		 let employeeCode = '133';//document.getElementById('employeeCode').value;
+		 let employeeCode = document.getElementById('employeeCode').value;
 		 if(yearCondition == 'year' || monthCondition == 'month'){
 			alert('조회하실 기간을 설정해주세요.')
 			return;
@@ -248,6 +248,10 @@
 			.catch(err=>{`근태정보 조회 실패! ${err}`})
 		 }
 	 })
+	
+	document.querySelector("#myAttendance-tab").addEventListener("click",function(){
+		window.setTimeout(function(){attendanceGrid.refresh();},300);
+	})
 	
 	window.addEventListener("resize", function() {
   		attendanceGrid.refresh();

@@ -13,6 +13,12 @@
 	    font-weight: 500; 
 	    border: 1px solid #ced4da; 
   }
+  .tab-pane {
+    display: none; /* 기본적으로 숨김 */
+	}
+	.tab-pane.active {
+	    display: block; /* 활성화된 탭만 보이도록 설정 */
+	}
   </style>
   </head>
   		<div class="bg-white shadow-sm rounded" style="padding: 20px;" >
@@ -33,11 +39,11 @@
                         data-bs-target="#myAttendance" type="button" role="tab" aria-controls="myAttendance"
                         aria-selected="false">근태 조회</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <!-- <li class="nav-item" role="presentation">
                     <button class="nav-link" id="#mySalary-tab" data-bs-toggle="tab" 
                         data-bs-target="#mySalary" type="button" role="tab" aria-controls="mySalary"
                         aria-selected="false">급여 조회</button>
-                </li> 
+                </li>  -->
             </ul>
 	        
 	        <div class="tab-content" id="mainTabContent"> <!-- 메인탭시작 -->
@@ -229,16 +235,7 @@
 									</div> <!-- 근태 정보 그리드 끝 -->
 					           </div>
 					       </div> <!--  세부 검색 구역 끝!!!! -->
-								
-								
 							
-							<!-- 버튼용 로우 -->
-							<div class="row">
-								<div class="col">
-									<button type="button" class="btn btn-sm btn-secondary">Excel</button>
-									<button type="button" class="btn btn-sm btn-secondary">인쇄</button>
-								</div>
-							</div>
 						</div> <!-- 근태탭 페이지 End Point (모달 미포함) -->
 						
 						<!-- <!-- 근태 세부정보 모달 -->
@@ -273,16 +270,14 @@
 					                </div>
 					            </div>
 					        </div>
-					    </div> 근태 세부정보 모달 EndPoint --> -->
+					    </div> 근태 세부정보 모달 EndPoint --> 
 
 									
         		</div> <!-- 두번째 탭 End Point -->
         		
         		<div class="tab-pane fade" id="mySalary" role="tabpanel"
         									aria-labelledby="mySalary-tab"> <!-- 세번째 탭 시작 -->
-        							
-        									
-        									
+</div>        									
         		</div> <!-- 세번째 탭 End Point -->
 			
 	   		</div> <!-- mainTab End Point -->

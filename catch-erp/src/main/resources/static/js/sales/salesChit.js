@@ -623,18 +623,35 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetch('/ordersList')
             .then(result => result.json())
             .then(data => {
+				if(document.getElementById("inputClientName").value == ''){
+					alert("발주서를 조회할 거래처를 선택해주세요.");
+					return;
+				}
+				console.log(data);
                 let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
+                let clientCode = document.getElementById("inputClientCode");
                 salesChit.getData().forEach(ele => {
                     existentNo.push(ele.orderNo);
                 })
                 let filteredData = data.filter(ele => {
-                    return !existentNo.includes(ele.orderNo);
+                    return !existentNo.includes(ele.orderNo) && clientCode == ele.clientCode;
                 })
                 console.log(filteredData);
                 ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
             })
             .catch(error => console.log(error))
     })
+
+	//발주서버튼 mouse over 이벤트
+	let orderBtn = document.getElementById('orderModal');
+	orderBtn.addEventListener('mouseover',function(){
+		if(document.getElementById("inputClientName").value == ''){
+			orderBtn.removeAttribute('data-bs-toggle');
+		}
+		if(document.getElementById("inputClientName").value != ''){
+			orderBtn.setAttribute("data-bs-toggle","modal")
+		}
+	})
 
     let ordersGrid;
     const initOrdersGrid = () => {
@@ -746,7 +763,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 샘플 데이터
     initOrdersGrid();
 
-    let inputClientName = document.getElementById('inputClientName');
+/*    let inputClientName = document.getElementById('inputClientName');
 
     inputClientName.addEventListener('change', () => {
         let inputClientNameValue = document.getElementById('inputClientName').value;
@@ -768,7 +785,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     .catch(error => console.log(error))
             }, 200)
         }
-    })
+    })*/
 
     //발주서 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
     let orderInputBtn = document.getElementById('orderInputBtn');

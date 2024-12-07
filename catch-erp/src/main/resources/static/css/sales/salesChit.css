@@ -44,3 +44,10 @@
     color: #0052cc;
     width: 100px;
 }
+/* readonly 배경색 하얀색으로 */
+input[readonly] {
+	    background-color: white !important; 
+	    color: black;
+	    font-weight: 500; 
+	    border: 1px solid #ced4da; 
+	}
