@@ -4,6 +4,8 @@ package com.cherp.app.empl.vo;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @NoArgsConstructor // 기본생성자
@@ -18,7 +20,7 @@ public class EmployeeVO {
 	private String employeePosition;  //직위,직급 ex)사장,대리,부장,과장
 	private String statusType; //재직 구분 ex) 재직 휴직 퇴직
 	private Date resignationDate; //퇴사일
-	private String hireType; //입사일
+	private String hireType; //입사구분
 	private String departmentCode;  //부서코드
 	
 //인사세부정보

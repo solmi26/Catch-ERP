@@ -204,7 +204,7 @@ function tooltipOut(){
 	    });  
     }
     
-//header nav-bar css를 위한 함수
+/*//header nav-bar css를 위한 함수
 window.addEventListener('resize', () => {
     const headerLi = document.getElementById('headerLi');
     if (window.innerWidth <= 992) {
@@ -217,4 +217,4 @@ window.addEventListener('resize', () => {
 
 if (window.innerWidth <= 992) {
     document.getElementById('headerLi').classList.add('ms-auto');
-}
+}*/

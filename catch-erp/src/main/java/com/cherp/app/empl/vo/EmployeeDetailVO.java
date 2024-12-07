@@ -25,6 +25,16 @@ public class EmployeeDetailVO {
 	//조인으로 추가될 컬럼
 	private String bankName;
 	
-	
+	// 가공된 주민등록번호
+	private String modifiedIdentityNo; 
+
+    public void setIdentityNo(String identityNo) {
+        this.identityNo = identityNo;
+        if (identityNo != null && identityNo.length() >= 7) {
+            this.modifiedIdentityNo = identityNo.substring(0, 6) + "-" + identityNo.charAt(7) + "******";
+        } else {
+            this.modifiedIdentityNo = "";
+        }
+    }
 	
 }

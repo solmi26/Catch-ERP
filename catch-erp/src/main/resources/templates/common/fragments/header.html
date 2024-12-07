@@ -82,9 +82,9 @@
                 	<span class="col" id="user" th:text="${#authentication.principal.employeeLoginVO.name} + '님 환영합니다.'" style="font-size:14px; color:black; font-weight:700; margin-right:10px;"></span>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret ">
-                	<div class="avatar-lg col">
+                	<div style="background-color:white; width:55px; height:55px; border-radius:100%;">
                 		<!-- <span sec:authentication="principal.employeeLoginVO.employeeImage"></span> -->
-	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage}" class="mt-1 avatar-img rounded-circle" name="profileImg" style="background-color:white;" alt="이미지가없어용"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
+	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage}" class="mt-1 avatar-img rounded-circle " name="profileImg" style="background-color:white;" alt="이미지없다"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
               		</div>
                 </li>
               </ul>
