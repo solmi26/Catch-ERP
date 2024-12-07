@@ -249,7 +249,7 @@
 	          }
 	        },
 	        {
-	          header: '근태유형',
+	          header: '근태명',
 	          name: 'attName',
 	          validation: { required: true },
 	        },
@@ -258,10 +258,27 @@
 	          name: 'attCode',
 	     	  hidden:true,     
 		    },
+		    {
+		      header:'근태유형',
+		      name:'commonName',
+		      hidden:'true',
+		     	  relations: [
+		     	       {
+		     	         targetNames: ['attendanceTime', 'leaveTime'],
+		     	         editable({ value }) {
+		     	           return value !== '공제' && value !== '휴가' ;
+		     	         },
+		     	       }]
+		    },
 	        {
 	          header: '출근시간',
 	          name: 'attendanceTime',
-	          validation: { required: true },	          
+	          validatorFn: function (value, row, columnName) {
+	              return { 
+	                valid: true,
+
+	              };
+	            },	          
 	          editor: {
 	        	  type:gridTime
 	          }
@@ -269,7 +286,6 @@
 	        {
 	          header: '퇴근시간',
 	          name: 'leaveTime',
-	          validation: { required: true },	          
 	          editor: {
 	        	  type:gridTime
 	          }

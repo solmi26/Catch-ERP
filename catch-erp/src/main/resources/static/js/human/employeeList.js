@@ -69,6 +69,9 @@ let readonly = [
 grid.on('click', function (ev) {
 	if (ev.targetType == 'cell') {
 		document.querySelector('#saveBtn').dataset.mode = 'update';
+		document.querySelector('.employee-box').querySelectorAll('.hide-opt').forEach(ele => {
+		ele.style = 'opacity:100;'
+		})
 		console.log(ev);
 		window.setTimeout(function(){
 		allowanceGrid.refreshLayout();
@@ -193,6 +196,10 @@ document.querySelector('#newBtn').addEventListener('click',function () {
 		ele.value = null;
 		
 	})
+	document.querySelector('.employee-box').querySelectorAll('.hide-opt').forEach(ele => {
+		ele.style = 'opacity:0;'
+	})
+	allowanceGrid.resetData([]);
 })
 
 
@@ -409,3 +416,21 @@ function dateFormatter (date) {
 	return result;
 }
 
+//예외처리
+
+let hire;
+let resign;
+//퇴사일자 예외처리
+document.querySelector('.employee-box').querySelectorAll('[type="date"]').forEach(ele => {
+	ele.addEventListener('change',function (ev) {
+	let hireDate = document.querySelector('.employee-box').querySelector('[name="hireDate"]')
+	resignationDate = document.querySelector('.employee-box').querySelector('[name="resignationDate"]')
+	hire = new Date(hireDate.value)
+	resign = new Date(resignationDate.value)
+	if (hire > resign) {
+		alert("날짜를 다시 입력해주세요");
+		ev.target.value = "";
+		ev.target.focus()
+	}
+})
+})

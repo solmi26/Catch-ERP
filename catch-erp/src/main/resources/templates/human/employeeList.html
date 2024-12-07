@@ -40,6 +40,9 @@
       .input-group-text:first-child {
         width: 90px;
       }
+      .hide-opt {
+      	opacity:0;
+      }
     </style>
     <div class="bg-white shadow-sm rounded" style="padding: 20px;">
     <div class="container-fluid p-4">
@@ -191,7 +194,17 @@
                                
                                     <div class="row g-3">
                                         <div class="col-md-4 text-center">
-                                            <img src="/placeholder.svg?height=100&width=100" style="height:180px;width:180px;"alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">
+                                        	<div class="row">
+                                        		<div class="col-12">
+		                                            <img src="/placeholder.svg?height=100&width=100" onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2024/10/11/00/13/hummingbird-9111853_1280.jpg'" style="height:200px;width:260px;"alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">                                        		
+                                        		</div>
+                                        		<div class="col-12">
+                                        			<div class="input-group input-group-sm mb-3">
+										  				<button class="btn btn-secondary btn-sm" type="button" id="imgBtn">첨부하기</button>
+										  				<input type="text" class="form-control from-control-sm img-Text" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly maxlength="20">
+													</div>
+                                        		</div>
+                                        	</div>
                                             <input type="hidden" class="form-control form-control-sm EmployeeDetailVO" id="photoUpload" name="employeeImage">
                                         </div>
                                         <div class="col-md-8 ">
@@ -289,7 +302,7 @@
                                            			<label class="form-label">전화번호</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="tel" required>
+                                            		<input type="tel" class="form-control form-control-sm EmployeeDetailVO" name="tel" required>
                                             	</div>
                                             </div>
                                         </div>
@@ -299,7 +312,7 @@
                                             		<label class="col-form-label-sm">모바일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" name="phone" required>
+                                            		<input type="tel" class="form-control form-control-sm EmployeeDetailVO" name="phone" required>
                                             	</div>
                                         	</div>
                                         </div>
@@ -351,7 +364,7 @@
                                             	</div>
                                         	</div>
                                         </div>
-                                        <div class="col-md-6 mt-1">
+                                        <div class="col-md-6 mt-1 hide-opt">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-5 col-xl-4 pe-0 ">
                                            			<label class="form-label">재직상태</label>
@@ -367,7 +380,7 @@
                                             	</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 mt-1">
+                                        <div class="col-md-6 mt-1 hide-opt">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-4 col-xl-4 pe-0 ps-lg-0 ">
                                             		<label class="col-form-label-sm">퇴사일자</label>
@@ -396,7 +409,7 @@
 		                                            <label class="form-label">기본급</label>
 												</div>                                        	
 												<div class="col">
-		                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO" name="monthlySalary" required>
+		                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO" name="monthlySalary" max="9999999999" min="0" required>
 												</div>
                                         	</div>
                                         </div>
