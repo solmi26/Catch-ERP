@@ -64,6 +64,34 @@
 	    )
 	</insert>
 	
+	<!-- 매입 단가 계약 수정(HEADER) -->
+	<update id="updateContractHeader" parameterType="com.cherp.app.stck.vo.ContractItemVO">
+		UPDATE  contract
+		SET     con_date = #{conDate}
+                ,con_name = #{conName}
+                ,client_code = #{clientCode}
+                ,con_sdate =  #{conSdate}
+                ,con_edate = #{conEdate}
+                ,status = #{status}
+                ,emoployee_code = #{emoployeeCode}
+                ,emoloyee_name = #{emoloyeeName}
+                ,summary  =  #{summary}
+                ,url = #{url}
+                ,writer = #{writer}
+		WHERE con_no = #{conNo}
+	</update>
+	
+	<!-- 매입 단가 계약 수정(BODY) -->
+	<update id="updateContractBody" parameterType="com.cherp.app.stck.vo.ContractItemVO">
+		UPDATE contract_item
+		SET    	item_name = #{itemName}
+	        	,price = #{price}
+	        	,supply_price = #{supplyPrice}
+	        	,vat = #{vat}
+	        	,total_price = #{totalPrice}
+	  WHERE item_code = #{itemCode}
+	</update>
+	
 	<!-- 매입 단가 계약 수정 -> 계약 번호 업데이트(BODY) -->
 	<update id="updateContractB">
 	    UPDATE contract_item

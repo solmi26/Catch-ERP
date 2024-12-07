@@ -19,5 +19,9 @@ public interface ContractService {
 	// 매입 단가 계약 단건 조회
 	public ContractItemVO contractInfo(String no);
 	
+	
+	// 수정
+	// 매입 단가 계약 수정
+	public void updateContract(ContractItemVO conVO);
 
 }
