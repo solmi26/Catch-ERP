@@ -5,36 +5,43 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function makeReceivableTabulator(accountList) {
         let accList = new Tabulator("#example-table", {
-            layout:"fitColumns",
-            pagination:"local",
+            layout: "fitColumns",
+            pagination: "local",
             data: accountList,
-            paginationSize:8,
-            movableColumns:true,
-            paginationCounter:"rows",
-            paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+            paginationSize: 8,
+            movableColumns: true,
+            paginationCounter: "rows",
+            paginationCounter: function (pageSize, currentRow, currentPage, totalRows, totalPages) {
                 return "";
             },
-            langs:{
-                "default":{
-                    "pagination":{
-                        "first":"처음",
-                        "first_title":"처음으로",
-                        "last":"끝",
-                        "last_title":"마지막으로",
-                        "prev":"이전",
-                        "prev_title":"이전으로",
-                        "next":"다음",
-                        "next_title":"다음으로",
-                        "all":"전체",
+            langs: {
+                "default": {
+                    "pagination": {
+                        "first": "처음",
+                        "first_title": "처음으로",
+                        "last": "끝",
+                        "last_title": "마지막으로",
+                        "prev": "이전",
+                        "prev_title": "이전으로",
+                        "next": "다음",
+                        "next_title": "다음으로",
+                        "all": "전체",
                     }
                 }
             },
-            columns:[
-                {title:"계좌코드", field:"bacctCode", visible:false},
-                {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
-                {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
-                {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
-            ],
+            columns: [{title: "계좌코드", field: "bacctCode", visible: false}, {
+                title: "계좌번호",
+                field: "bacctNo",
+                width: 220,
+                sorter: "string",
+                headerFilter: "input"
+            }, {title: "은행명", field: "bankName", width: 220, sorter: "string", headerFilter: "input"}, {
+                title: "계좌명",
+                field: "bacctName",
+                width: 330,
+                sorter: "string",
+                headerFilter: "input"
+            },],
         });
         return accList;
     }
@@ -59,6 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 });
             })
     }
+
     fetchBacctList();
 
     class ButtonRenderer {
@@ -107,22 +115,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // 그리드 객체
         clientGrid = new Grid({
-            el: document.getElementById("clientGrid"),
-            scrollX: true,
-            scrollY: true,
-            data: clientData,
-            pageOptions: {
-                useClient: true,
-                perPage: 12,
-            },
-            header: {height: 40},
-            bodyHeight: 500,
-            width: 'auto',
-            contextMenu: null,
-            rowHeaders: [{
+            el: document.getElementById("clientGrid"), scrollX: true, scrollY: true, data: clientData, pageOptions: {
+                useClient: true, perPage: 12,
+            }, header: {height: 40}, bodyHeight: 500, width: 'auto', contextMenu: null, rowHeaders: [{
                 type: 'rowNum', header: "No.", width: 50, className: 'border'
-            }],
-            columns: [{
+            }], columns: [{
                 header: '거래처명',
                 name: 'clientName',
                 align: "center",
@@ -132,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 renderer: {
                     type: ButtonRenderer
                 },
-                filter: 'select'
+                filter: 'select',
             }, {
                 header: '거래처코드',
                 name: 'clientCode',
@@ -198,7 +195,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             }
         });
-        
+
         return clientGrid;
     }
 
@@ -222,21 +219,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     let humanGrid;
     const initHumanGrid = () => {
         humanGrid = new Grid({
-            el: document.getElementById('humanGrid'),
-            scrollX: true,
-            scrollY: true,
-            pageOptions: {
-                useClient: true,
-                perPage: 12,
-            },
-            header: {height: 40},
-            bodyHeight: 500,
-            width: 'auto',
-            contextMenu: null,
-            rowHeaders: [{
+            el: document.getElementById('humanGrid'), scrollX: true, scrollY: true, pageOptions: {
+                useClient: true, perPage: 12,
+            }, header: {height: 40}, bodyHeight: 500, width: 'auto', contextMenu: null, rowHeaders: [{
                 type: 'rowNum', header: "No.", width: 50, className: 'border'
-            }],
-            columns: [{
+            }], columns: [{
                 header: '사원 코드',
                 name: 'employeeCode',
                 align: "center",
@@ -371,12 +358,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }],
             data: [],
-            columns: [
-				{
-                header: '발주번호', name: 'orderNo', align: "center", width: 150, whiteSpace: 'normal', className: 'border', hidden:'true'
-            },
-				{
-                header: '품목코드', name: 'itemCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
+            columns: [{
+                header: '발주번호',
+                name: 'orderNo',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className: 'border',
+                hidden: 'true'
+            }, {
+                header: '품목코드', name: 'itemCode',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className: 'border',
             }, {
                 header: '품목명',
                 name: 'itemName',
@@ -386,7 +381,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 editor: 'text',
                 className: 'border'
             }, {
-                header: '수량',
+                header: '요구수량',
                 name: 'quantity',
                 editor: 'text',
                 align: "center",
@@ -403,8 +398,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 formatter: 'listItemText',
                 editor: {
-                    type: 'select',
-                    options: {
+                    type: 'select', options: {
                         listItems: whList
                     }
                 },
@@ -454,7 +448,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortable: true,
                 sortingType: 'desc',
                 className: 'border',
-                formatter: ({ value }) => {
+                formatter: ({value}) => {
                     if (value === undefined || value === null || value === '') {
                         return ''; // 비어 있는 경우 아무 값도 표시하지 않음
                     }
@@ -471,8 +465,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortingType: 'desc',
                 className: 'border',
                 formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                }
+                    if (value === undefined || value === null || value === '') {
+                        return ''; // 비어 있는 경우 아무 값도 표시하지 않음
+                    }
+                    return Number(value).toLocaleString() + '원'; // 값이 있는 경우 포맷팅
+                },
             }, {
                 header: '부가세',
                 name: 'vat',
@@ -484,14 +481,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortingType: 'desc',
                 className: 'border',
                 formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                }
+                    if (value === undefined || value === null || value === '') {
+                        return ''; // 비어 있는 경우 아무 값도 표시하지 않음
+                    }
+                    return Number(value).toLocaleString() + '원'; // 값이 있는 경우 포맷팅
+                },
             }, {
                 header: '출하 예정일',
                 name: 'deliveryDate',
                 editor: {
-                    type: 'datePicker',
-                    options: {
+                    type: 'datePicker', options: {
                         language: 'ko', // 한국어 설정
                     }
                 },
@@ -543,7 +542,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             let supplyPrice = quantity * deliveryPrice;
             let vat = supplyPrice * 0.1;
             console.log(quantity + ' ' + deliveryPrice + ' ');
-            if(columnName === 'deliveryPrice') {
+            if (columnName === 'deliveryPrice') {
                 salesChit.setValue(ev.rowKey, 'supplyPrice', supplyPrice);
                 salesChit.setValue(ev.rowKey, 'vat', vat);
             }
@@ -551,9 +550,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         return salesChit;
     }
-
-
-
 
     // 그리드 추가
     let appends = document.querySelectorAll('.appendRowBtn')
@@ -620,26 +616,25 @@ document.addEventListener("DOMContentLoaded", async function () {
             ordersGrid.refreshLayout();
         }, 200)
     })
-	
-	//발주서 클릭시 선택건 제외하고 띄워주기
-	let orderModalTriggerBtn = document.getElementById('orderModal');
-	orderModalTriggerBtn.addEventListener('click', function(){
-		fetch('/ordersList')
+
+    //발주서 클릭시 선택건 제외하고 띄워주기
+    let orderModalTriggerBtn = document.getElementById('orderModal');
+    orderModalTriggerBtn.addEventListener('click', function () {
+        fetch('/ordersList')
             .then(result => result.json())
             .then(data => {
-				let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
-				salesChit.getData().forEach(ele=>{
-					existentNo.push(ele.orderNo);
-				})
-				let filteredData = data.filter(ele=>{
-					return !existentNo.includes(ele.orderNo);
-				})
-				console.log(filteredData);
-				ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
-			})
+                let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
+                salesChit.getData().forEach(ele => {
+                    existentNo.push(ele.orderNo);
+                })
+                let filteredData = data.filter(ele => {
+                    return !existentNo.includes(ele.orderNo);
+                })
+                console.log(filteredData);
+                ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
+            })
             .catch(error => console.log(error))
-
-	})
+    })
 
     let ordersGrid;
     const initOrdersGrid = () => {
@@ -650,8 +645,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             header: {height: 40},
             bodyHeight: 500,
             columnOptions: {
-                frozenCount: 4,
-                frozenBorderWidth: 1
+                frozenCount: 4, frozenBorderWidth: 1
             },
             width: 'auto',
             contextMenu: null,
@@ -754,10 +748,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let inputClientName = document.getElementById('inputClientName');
 
-    inputClientName.addEventListener('change', ()=> {
+    inputClientName.addEventListener('change', () => {
         let inputClientNameValue = document.getElementById('inputClientName').value;
         console.log('이벤트 리스너 안')
-        if(inputClientNameValue !== ''){
+        if (inputClientNameValue !== '') {
             console.log("발주서 if 안")
             window.setTimeout(function () {
                 fetch('/clientOrderList/' + inputClientNameValue)
@@ -923,7 +917,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log(insertSales);
         console.log(JSON.stringify(insertSales));
 
-        if(insertSales.saleslipHistories.value === ''){
+        if (insertSales.saleslipHistories.value === '') {
             console.log('전송실패')
         }
 
@@ -931,14 +925,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // ajax 호출
         fetch('/sales/insertSalesChit', {
-            method: 'POST',
-            headers: {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(insertSales),
+            }, body: JSON.stringify(insertSales),
         })
             .then(result => {
-                if(result.status === 200) {
+                if (result.status === 200) {
                     alert("저장 완료");
                 }
             })
@@ -946,6 +938,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                 console.log("판매전표 에러 : ", res.message)
             })
     })
+
+    // onGridMounted 이벤트 사용
+    salesChit.on('onGridMounted', () => {
+        // 특정 컬럼의 헤더를 선택
+        const headerCell = document.querySelector('#salesChit .tui-grid-header-area .tui-grid-cell[data-column-name="whCode"]');
+
+        if (headerCell) {
+            // 빨간색 * 추가 및 헤더 텍스트 수정
+            headerCell.innerHTML = '<span style="color: red;">*</span> 창고';
+        }
+    });
 
     const myModal = new bootstrap.Modal('#accountSearchModal')
 });

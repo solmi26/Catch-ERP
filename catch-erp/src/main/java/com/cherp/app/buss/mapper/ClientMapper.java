@@ -10,9 +10,11 @@ import java.util.List;
 public interface ClientMapper {
 	// 거래처 전체 조회
 	public List<ClientVO> selectClientList();
-	
+	public List<ClientVO> salesClientList();
+	public List<ClientVO> purchaseClientList();
+
 	public List<ClientPsVO> gwSelectAllClientList();     // 거래처 목록 조회 - GW
-	
+
 	public ClientPsVO selectClientInfo(String clientCode); 				// 거래처 단건 조회 (거래처 상세 조회) - GW
 	public List<ContractVO> selectAllClientContract(String clientCode); // 거래처 계약 전체 조회(거래처 상세 조회 -> 거래처 계악조회) - GW
 	public List<ContractVO> selectAllClientContractItem(String conNo);  // 거래처 계약 상품 전체 조회(거래처 상세 조회 -> 거래처 계약품목조회) -GW 
