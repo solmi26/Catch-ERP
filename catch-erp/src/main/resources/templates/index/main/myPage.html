@@ -206,21 +206,22 @@
 					        <!--  근태조회 -->
 					       <div class="card mb-4 bg-white">
 					           <div class="card-body">
-						           <select  id="sort-direction" style="margin-top: 4px; margin-left:5px;">
-	                                    <option value="asc" selected>년도</option>
+						           <select  id="yearCondition" style="margin-top: 4px; margin-left:5px;">
+	                                    <option value="year" selected>년도</option>
 	                                    <option th:each="year : ${#numbers.sequence(2024, 2014)}" 
 									           th:value="${year}" 
 									           th:text="${year}">
 									    </option>
 	                                </select>
-	                                <select id="sort-direction" style="margin-top: 4px; margin-left:5px;">
-	                                    <option value="asc" selected>월</option>
+	                                <select id="monthCondition" style="margin-top: 4px; margin-left:5px;">
+	                                    <option value="month" selected>월</option>
 	                                    <option th:each="year : ${#numbers.sequence(1, 12)}" 
 									           th:value="${year}" 
 									           th:text="${year}">
 									    </option>
 	                                </select>
-	                                <button class="btn btn-primary" style="margin-top: 4px; margin-bottom:5px; padding:0px; margin-left:10px;">조회</button>
+	                                <button id="attendanceInqueryBtn" class="btn btn-primary" style="margin-top: 4px; margin-bottom:5px; padding:0px; margin-left:10px;">조회</button>
+	                                <span style="color:red; margin-left:5px;"><small> ※ 월 단위로 조회가 가능합니다.</small></span>
 	                                <div class="row mb-4 "> <!-- 근태 정보 그리드 -->
 										<div class="col">
 											<div id="attendanceGrid"></div>
@@ -240,8 +241,8 @@
 							</div>
 						</div> <!-- 근태탭 페이지 End Point (모달 미포함) -->
 						
-						<!-- 근태 세부정보 모달 -->
-					    <div class="modal fade" id="atModifyModal" tabindex="-1">
+						<!-- <!-- 근태 세부정보 모달 -->
+					 <!--    <div class="modal fade" id="atModifyModal" tabindex="-1">
 					        <div class="modal-dialog modal-xl">
 					            <div class="modal-content">
 					                <div class="modal-header">
@@ -256,8 +257,8 @@
 					                                <h4>근태 세부정보</h4>
 					                            </div>
 					
-					                        </div> <!--검색창끝-->
-					                        <!--근태세부테이블-->
+					                        </div> 검색창끝
+					                        근태세부테이블
 					                        <div class="row modify-gird-content">
 					                            <div id="attendanceDetailGrid"></div>
 					                        </div>
@@ -272,7 +273,7 @@
 					                </div>
 					            </div>
 					        </div>
-					    </div> <!-- 근태 세부정보 모달 EndPoint -->
+					    </div> 근태 세부정보 모달 EndPoint --> -->
 
 									
         		</div> <!-- 두번째 탭 End Point -->

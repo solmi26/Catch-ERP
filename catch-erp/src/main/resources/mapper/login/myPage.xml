@@ -58,6 +58,6 @@
         
         WHERE  em.employee_code = #{employeeCode}
            AND TO_CHAR(attendance_date, 'YYYY-MM') = #{yearCondition} || '-' || #{monthCondition}
-        
+        ORDER BY attendance_date ASC
 	</select> 
 </mapper>

@@ -175,7 +175,8 @@
     const attendanceGrid = new Grid({
       el: document.getElementById('attendanceGrid'),
       scrollX: false,
-      scrollY: false,
+      scrollY: true,
+      bodyHeight: 700,
       rowHeaders: [{
                     type: 'rowNum',
                     header: "No.",
@@ -225,7 +226,29 @@
       
     });
     	
-    	attendanceGrid.resetData(attendanceList);
+    	attendanceGrid.resetData(attendanceList); //근태정보 초기로드. 현재기준 년도,월로 근태정보 조회
 	 
 	 
+	 let attendanceInqueryBtn = document.getElementById('attendanceInqueryBtn');
+	 attendanceInqueryBtn.addEventListener('click', function(){
+		 let yearConditionBox = document.getElementById('yearCondition'); document.getElementById('yearCondition')
+		 let monthConditionBox = document.getElementById('monthCondition');
+		 let yearCondition = yearConditionBox.options[yearConditionBox.selectedIndex].value;
+		 let monthCondition = monthConditionBox.options[monthConditionBox.selectedIndex].value;
+		 let employeeCode = '133';//document.getElementById('employeeCode').value;
+		 if(yearCondition == 'year' || monthCondition == 'month'){
+			alert('조회하실 기간을 설정해주세요.')
+			return;
+		 } else {
+			fetch(`/attendance?employeeCode=${employeeCode}&yearCondition=${yearCondition}&monthCondition=${monthCondition}`)
+			.then(result => result.json())
+			.then(result => {
+				attendanceGrid.resetData(result)
+			})
+			.catch(err=>{`근태정보 조회 실패! ${err}`})
+		 }
+	 })
 	
+	window.addEventListener("resize", function() {
+  		attendanceGrid.refresh();
+	});

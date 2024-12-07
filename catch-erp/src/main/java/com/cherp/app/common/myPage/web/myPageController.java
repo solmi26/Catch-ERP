@@ -57,8 +57,8 @@ public class myPageController {
 		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
-		model.addAttribute("employeeVO", employeeVO);
-		model.addAttribute("attendanceList", attendanceList);
+		model.addAttribute("employeeVO", employeeVO); //사원 정보
+		model.addAttribute("attendanceList", attendanceList); //최신 근태정보
 		return "index/main/myPage";
 		
 		
@@ -120,6 +120,7 @@ public class myPageController {
 	
 	//근태정보 조회
 	@GetMapping("/attendance")
+	@ResponseBody
 	public List<AttendanceVO> getAttendanceInfo (AttendanceSearchVO searchVO){
 		return myPageService.getAttendance(searchVO);
 	}
