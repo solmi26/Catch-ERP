@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +50,14 @@ public class ContractController {
     @ResponseBody
 	public List<ContractItemVO> selectContracts() {
 	    return conService.contractList();
+	}
+    
+    // 매입 계약 상세 조회 페이지(기능) by sm
+    @Secured("ROLE_MANAGER,ROLE_SALES") // 권한 설정
+	@GetMapping("sales/infoContract")
+    @ResponseBody
+	public ContractItemVO infoContract(@RequestParam("conNo") String conNo) {
+	    return conService.contractInfo(conNo);
 	}
     
 	// 매입 계약 등록 페이지(화면) by sm

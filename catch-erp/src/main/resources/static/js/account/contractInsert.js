@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 그리드 다시 작성 버튼
   document.getElementById("resetBtn").addEventListener("click", function () {
     console.log("그리드 리셋 버튼");
-    const initialData = [{}, {}, {}];
+    const initialData = [{}];
     grid.resetData(initialData);
   });
 

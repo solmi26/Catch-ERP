@@ -2,11 +2,22 @@
  * 계약 조회, 상세조회, 수정 페이지
  */
 
-let grid = null;
+let c_grid = null;
 document.addEventListener("DOMContentLoaded", function () {
+	
+	// 계약 수정 모달
+	const conModalElement = document.getElementById("conModal");
+	
+	// conModal이 존재하는 경우 Modal 인스턴스 생성
+	if (conModalElement) {
+	  conModal = new bootstrap.Modal(conModalElement);
+	} else {
+	  console.error("conModal 요소가 없습니다.");
+	}
+	
   // 그리드 초기화
-  const grid = new tui.Grid({
-    el: document.querySelector("#grid"),
+  c_grid = new tui.Grid({
+    el: document.querySelector("#c_grid"),
     scrollX: true,
     scrollY: true,
     pageOptions: {
@@ -61,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("/sales/selectContract")
       .then((result) => result.json())
       .then((result) => {
-        console.log(result);
+        //console.log(result);
 
         let dataArr = result.map((ele) => ({
           contractNumber: ele.conNo,
@@ -74,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
           emp: ele.emoloyeeName,
         }));
 
-        grid.resetData(dataArr);
+        c_grid.resetData(dataArr);
       });
   }
 
@@ -82,10 +93,63 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let currentTarget = null; // 현재 클릭된 대상
 
-  grid.on("click", (ev) => {
-    const row = grid.getRow(ev.rowKey);
-
+  c_grid.on("click", (ev) => {
+    const row = c_grid.getRow(ev.rowKey);
+	console.log(row);
     // 선택된 계약 정보 서버에서 가져오기
-    fetch("").then().then();
+    fetch(`/sales/infoContract?conNo=${row.contractNumber}`)
+	.then((response) => response.json())
+	.then((result) => {
+		console.log("result::",result)
+		
+		document.getElementById("contract-date").value = result.conDate;
+		document.getElementById("contract-code").value = result.conNo; 	
+		document.getElementById("contract-name").value = result.conName;
+		document.getElementById("c_clientInput").value = result.clientName;
+		document.getElementById("c_clientInput2").value = result.clientCode;
+		document.getElementById("billing-start-date").value = result.conSdate;
+		document.getElementById("billing-end-date").value = result.conEdate;
+		document.getElementById("status").value = getStatusValue(result.status);
+		document.getElementById("c_empName").value = result.emoloyeeName;
+		document.getElementById("c_empCode").value = result.emoployeeCode;
+		document.getElementById("description").value = result.summary;
+		document.getElementById("attachment-url").value = result.url;
+		// 하단 grid 요소에 resetData메서드를 사용해서 항목 추가
+		// resetData 사용법 참조: https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/docs/ko/getting-started.md#데이터-입력하기
+		grid.resetData(result.detailContraceVO);
+	});
+	
+	if (ev.columnName === "contractNumber") {
+	    currentTarget = ev;
+	    conModal.show();
+		window.setTimeout(function () {
+		 grid.refreshLayout();
+		}, 200);
+	}
+	  
   });
+  
+  function getStatusValue(status) {
+	let value = '';
+	
+	switch(status) {
+		case "진행":
+			value = "g1";
+			break;
+		case "종료":
+			value = "g2";
+			break;
+		case "보류":
+			value = "g3";
+		case "해지":
+			value = "g4";
+			break;
+		default:
+			value = "";
+			console.warn(`해당하는 계약 상태가 없습니다. status: ${status}`);
+			break;
+	}
+	
+	return value;
+  }
 });

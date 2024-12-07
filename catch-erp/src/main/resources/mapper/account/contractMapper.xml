@@ -104,5 +104,39 @@
         FROM contract_item
 	</select>
 	
+	<!-- 계약 상세 조회(Header) -->
+	<select id="infoContractH" resultType="com.cherp.app.stck.vo.ContractItemVO">
+		SELECT con_no
+               ,con_date
+               ,con_name
+               ,client_code
+			   ,(SELECT client_name
+                 FROM client d
+                 WHERE d.client_code = c.client_code) client_name
+               ,con_sdate
+               ,con_edate
+               ,FIND_CODE(status) status
+               ,emoployee_code
+               ,emoloyee_name
+               ,summary
+               ,url
+               ,writer
+         FROM contract c
+         WHERE con_no = #{no}
+	</select>
+	
+	<!-- 계약 상세 조회(Body) -->
+	<select id="infoContractB" resultType="com.cherp.app.stck.vo.ContractItemVO">
+		         SELECT item_code
+                ,item_name
+                ,price
+                ,supply_price
+                ,vat
+                ,con_no
+                ,total_price
+        FROM contract_item
+        WHERE con_no = #{no}
+	</select>
+	
 </mapper>
 

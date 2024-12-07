@@ -15,6 +15,9 @@ public interface ContractService {
 	
 	// 조회
 	// 매입 단가 계약 조회
-	public List<ContractItemVO> contractList(); 	
+	public List<ContractItemVO> contractList(); 
+	// 매입 단가 계약 단건 조회
+	public ContractItemVO contractInfo(String no);
+	
 
 }

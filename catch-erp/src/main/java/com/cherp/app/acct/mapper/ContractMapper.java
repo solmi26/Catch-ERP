@@ -26,9 +26,10 @@ public interface ContractMapper {
 	// 매입 단가 계약 전체 조회(Body) by sm
 	public List<ContractItemVO> selectContractsB();
 	
-	// 수정 해야 함.
-	// 매입 단가 계약 단건 조회
-	public int infoContract(ContractItemVO conVO);
+	// 매입 단가 계약 세부 조회(Header) by sm
+	public ContractItemVO infoContractH(String no);
+	// 매입 단가 계약 세부 조회(Body) by sm
+	public List<ContractItemVO> infoContractB(String no);
 	
 
 }
