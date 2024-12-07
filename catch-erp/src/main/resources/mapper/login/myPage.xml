@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cherp.app.common.myPage.mapper.MyPageMapper">
 	
+	<!-- 본인의 사원정보수정 -->
 	<update id="updateEmployeeInfo" parameterType="ModifiedInfoVO">
 		UPDATE employees_detail
 		SET  
@@ -29,13 +30,14 @@
 		WHERE employee_Code = #{employeeCode}
 	</update>
 	
+	<!-- 사원이미지조회 -->
 	<select id="selectEmployeeImage" parameterType="String" resultType="EmployeeVO">
 		SELECT employee_image
 		FROM   employees_detail
 		WHERE  employee_code = #{employeeCode}
 	</select>
 	
-	<!-- <select > 작업중
+	<select id="selectAttendance" parameterType="AttendanceVO"> 
 		SELECT ah.att_history_code,
 	               em.employee_code,
 	               em.employee_id,
@@ -51,9 +53,11 @@
 	               ai.att_name
                
 		FROM   att_history ah
-		JOIN   employees em           ON ah.employee_code = em.employee_code
-        JOIN   att_item ai         ON ah.att_code = ai.att_code
+		  JOIN   employees em ON (ah.employee_code = em.employee_code)
+          JOIN   att_item ai ON (ah.att_code = ai.att_code)
         
-        WHERE  ah.att_history_code = #{attHistoryCode}
-	</select> -->
+        WHERE  em.employee_code = #{employeeCode}
+           AND TO_CHAR(attendance_date, 'YYYY-MM') = #{yearCondition} || '-' || #{monthCondition}
+        ORDER BY attendance_date ASC
+	</select> 
 </mapper>

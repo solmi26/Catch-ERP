@@ -175,7 +175,8 @@
     const attendanceGrid = new Grid({
       el: document.getElementById('attendanceGrid'),
       scrollX: false,
-      scrollY: false,
+      scrollY: true,
+      bodyHeight: 700,
       rowHeaders: [{
                     type: 'rowNum',
                     header: "No.",
@@ -222,147 +223,32 @@
         }
         
       ],
-      data: [
-    	  {
-    		employeeCode:'2024-01',
-    		employeeName:'유석진',
-    		attendanceDate:'2024.11.19',
-    		attName:'정상출근',
-    		attendanceTime:'08:59',
-    		leaveTime:'18:01'
-    	  },
-    	  {
-    		employeeCode:'2024-01',
-    		employeeName:'유석진',
-    		attendanceDate:'2024.11.19',
-    		attName:'정상출근',
-    		attendanceTime:'08:59',
-    		leaveTime:'18:01'
-    	  },
-    	  {
-    		employeeCode:'2024-01',
-    		employeeName:'유석진',
-    		attendanceDate:'2024.11.19',
-    		attName:'정상출근',
-    		attendanceTime:'08:59',
-    		leaveTime:'18:01'
-    	  },
-    	  {
-    		employeeCode:'2024-01',
-    		employeeName:'유석진',
-    		attendanceDate:'2024.11.19',
-    		attName:'정상출근',
-    		attendanceTime:'08:59',
-    		leaveTime:'18:01'
-    	  },
-    	  ]
+      
     });
-    
-    //그리드 클릭 이벤트
-	 attendanceGrid.on('click',function (ev) {
-		console.log(ev)
-		if (ev.targetType == 'cell') {
-			window.setTimeout(function(){
-	        atModifyGrid.refreshLayout();
-	        }, 200)
-	        let code = attendanceGrid.getFormattedValue(ev.rowKey,'attHistoryCode')
-	        dataToatModifyGrid(code)
-			atModifyModal.show()
-		}
+    	
+    	attendanceGrid.resetData(attendanceList); //근태정보 초기로드. 현재기준 년도,월로 근태정보 조회
+	 
+	 
+	 let attendanceInqueryBtn = document.getElementById('attendanceInqueryBtn');
+	 attendanceInqueryBtn.addEventListener('click', function(){
+		 let yearConditionBox = document.getElementById('yearCondition'); document.getElementById('yearCondition')
+		 let monthConditionBox = document.getElementById('monthCondition');
+		 let yearCondition = yearConditionBox.options[yearConditionBox.selectedIndex].value;
+		 let monthCondition = monthConditionBox.options[monthConditionBox.selectedIndex].value;
+		 let employeeCode = '133';//document.getElementById('employeeCode').value;
+		 if(yearCondition == 'year' || monthCondition == 'month'){
+			alert('조회하실 기간을 설정해주세요.')
+			return;
+		 } else {
+			fetch(`/attendance?employeeCode=${employeeCode}&yearCondition=${yearCondition}&monthCondition=${monthCondition}`)
+			.then(result => result.json())
+			.then(result => {
+				attendanceGrid.resetData(result)
+			})
+			.catch(err=>{`근태정보 조회 실패! ${err}`})
+		 }
 	 })
-	 
-	 
-	 /* -- 근태정보상세 모달의 그리드 -- */
-	 const atModifyGrid = new Grid({
-        el: document.getElementById('atModifyGrid'), // Container element
-        scrollX: true,
-        scrollY: false,
-        width:1100,
-        columns: [
-            {
-	            header: '근태기록번호',
-	            name: 'attHistoryCode',
-	            hidden:true
-            },
-            {
-	            header: '사원번호',
-	            name: 'employeeCode',
-	            hidden:true
-            },
-            {
-			    header:'사원아이디',
-			    name:'employeeId',
-			    ignored:true
-			},
-            {
-	            header: ' 성명',
-	            name: 'name',
-	            ignored:true
-            },
-            {
-	            header: '날짜',
-	            name: 'attendanceDate',
-		        editor: {
-		          type:'datePicker',
-		          options:{
-		          	language: 'ko'
-		          },
-		        }
-            },
-            {
-	            header: '근태유형코드',
-	            name: 'attCode',
-	            hidden:true
-            },
-            {
-				header:'근태유형',
-				name:'attName',
-				ignored:true
-			},
-            {
-	            header: '출근시간',
-	            name: 'attendanceTime',
-	            editor: {
-	            type: gridTime,
-	            }
-            },
-            {
-	            header: '퇴근시간',
-	            name: 'leaveTime',
-	            editor: {
-	            type: gridTime,
-	            }
-            },
-	        {
-	            header: '총근로시간',
-	            name: 'totalWorktime',
-	            editor: {
-	            type: gridTime,
-	            }
-	            },
-            {
-	            header: '연장근로시간',
-	            name: 'overtimeWorktime',
-	            editor: {
-	            type: gridTime,
-	            }
-	            },
-            {
-	            header: '심야근무시간',
-	            name: 'nightWorktime',
-	            editor: {
-	            type: gridTime,
-	            }
-	            },
-            {
-	            header: '주간근무시간',
-	            name: 'weekendWorktime',
-	            editor: {
-	            type: gridTime,
-	            }
-            }
-        ],
-        data: [
-        ]
-        });
 	
+	window.addEventListener("resize", function() {
+  		attendanceGrid.refresh();
+	});

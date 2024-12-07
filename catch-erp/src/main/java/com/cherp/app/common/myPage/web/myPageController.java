@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cherp.app.common.myPage.service.MyPageService;
+import com.cherp.app.common.myPage.vo.AttendanceSearchVO;
 import com.cherp.app.common.myPage.vo.ModifiedInfoVO;
 import com.cherp.app.empl.service.EmployeeService;
+import com.cherp.app.empl.vo.AttendanceVO;
 import com.cherp.app.empl.vo.EmployeeVO;
 import com.cherp.app.security.service.LoginVO;
 
@@ -43,14 +46,22 @@ public class myPageController {
 	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK") 
 	@GetMapping("/myPage")
 	public String myPage(Model model) {
+		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
-		
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode()
+		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
-		model.addAttribute("employeeVO", employeeVO);
+		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
+		AttendanceSearchVO searchVO = new AttendanceSearchVO();
+		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
+		
+		model.addAttribute("employeeVO", employeeVO); //사원 정보
+		model.addAttribute("attendanceList", attendanceList); //최신 근태정보
 		return "index/main/myPage";
+		
+		
 	}
 	
 	@PostMapping("/modifyEmployeeInfo")
@@ -107,5 +118,10 @@ public class myPageController {
 		return myPageService.getEmployeeImage(employeeCode);
 	}
 	
-	
+	//근태정보 조회
+	@GetMapping("/attendance")
+	@ResponseBody
+	public List<AttendanceVO> getAttendanceInfo (AttendanceSearchVO searchVO){
+		return myPageService.getAttendance(searchVO);
+	}
 }
