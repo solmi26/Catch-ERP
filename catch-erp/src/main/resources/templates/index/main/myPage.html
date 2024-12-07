@@ -285,6 +285,12 @@
         		</div> <!-- 세번째 탭 End Point -->
 			
 	   		</div> <!-- mainTab End Point -->
+	   		
+	   		 <script th:inline="javascript">
+		        // 컨트롤러에서 전달된 attendanceList 데이터를 JSON 형태로 선언하는 방식임.
+		        var attendanceList = /*[[${attendanceList}]]*/ [];
+		        
+		    </script>
 	   		<script th:src="@{/js/common/myPage.js}"></script>
   </body>
 </html>
