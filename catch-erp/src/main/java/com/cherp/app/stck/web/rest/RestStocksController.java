@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("stocks")
-public class RestStockAdjustController {
+public class RestStocksController {
 
 	private final StockService stockAdjustService;
 	private final ClientService clientService;

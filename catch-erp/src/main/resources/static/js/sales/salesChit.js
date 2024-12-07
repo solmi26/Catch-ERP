@@ -371,7 +371,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }],
             data: [],
-            columns: [{
+            columns: [
+				{
+                header: '발주번호', name: 'orderNo', align: "center", width: 150, whiteSpace: 'normal', className: 'border', hidden:'true'
+            },
+				{
                 header: '품목코드', name: 'itemCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
             }, {
                 header: '품목명',
@@ -517,11 +521,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                     fetch('/quantity/' + whCode + '/' + itemCode)
                         .then(result => result.json())
                         .then(data => {
-                            salesChit.setValue(ev.rowKey, 'stocksQuantity', data.stocksQuantity)
+                            salesChit.setValue(ev.rowKey, 'stocksQuantity', data.currentQuantity)
                             let quantity = salesChit.getValue(ev.rowKey, 'quantity');
-                            let deficiencyQuantity = Number(data.stocksQuantity) - Number(quantity);
+                            let deficiencyQuantity = Number(data.currentQuantity) - Number(quantity);
                             // 부족수량 체크
-                            if (Number(data.stocksQuantity) >= Number(quantity)) {
+                            if (Number(data.currentQuantity) >= Number(quantity)) {
                                 salesChit.setValue(ev.rowKey, 'deficiencyQuantity', 'X');
                             } else {
                                 salesChit.setValue(ev.rowKey, 'deficiencyQuantity', deficiencyQuantity)
@@ -616,6 +620,26 @@ document.addEventListener("DOMContentLoaded", async function () {
             ordersGrid.refreshLayout();
         }, 200)
     })
+	
+	//발주서 클릭시 선택건 제외하고 띄워주기
+	let orderModalTriggerBtn = document.getElementById('orderModal');
+	orderModalTriggerBtn.addEventListener('click', function(){
+		fetch('/ordersList')
+            .then(result => result.json())
+            .then(data => {
+				let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
+				salesChit.getData().forEach(ele=>{
+					existentNo.push(ele.orderNo);
+				})
+				let filteredData = data.filter(ele=>{
+					return !existentNo.includes(ele.orderNo);
+				})
+				console.log(filteredData);
+				ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
+			})
+            .catch(error => console.log(error))
+
+	})
 
     let ordersGrid;
     const initOrdersGrid = () => {
@@ -730,8 +754,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let inputClientName = document.getElementById('inputClientName');
 
-
-
     inputClientName.addEventListener('change', ()=> {
         let inputClientNameValue = document.getElementById('inputClientName').value;
         console.log('이벤트 리스너 안')
@@ -763,6 +785,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         //price에 넣을 데이터를 위한 fetch함수 필요
         arr.forEach(ele => {
             let data = {};
+            data.orderNo = ele.orderNo;
             data.itemCode = ele.itemCode;
             data.itemName = ele.itemName;
             data.price = ele.price;
