@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -31,7 +32,11 @@ public class SpringSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
-
+	// AesBytesEncryptor 사용을 위한 Bean등록
+    @Bean
+    AesBytesEncryptor aesBytesEncryptor() {
+        return new AesBytesEncryptor("test","1a2b3c");
+    }
 	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

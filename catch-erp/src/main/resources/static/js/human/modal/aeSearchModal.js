@@ -26,7 +26,11 @@ columns: [
     name: 'attName',
     sortingType: 'asc',
     sortable: true
-    }
+    },
+    {
+	 header:'근태유형',
+	 name:'commonName'
+	}
 ],
 data: [
     {

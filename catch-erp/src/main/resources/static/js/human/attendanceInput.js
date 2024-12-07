@@ -61,8 +61,14 @@ aeSearchGrid.on('click', function (ev) {
 	if (ev.targetType == 'cell'){
 	let attName = aeSearchGrid.getFormattedValue(ev.rowKey,'attName');
 	let attCode = aeSearchGrid.getFormattedValue(ev.rowKey,'attCode');
+	let commonName = aeSearchGrid.getFormattedValue(ev.rowKey,'commonName');
+	if (commonName == '휴가' || commonName == '공제' ) {
+		grid.setValue(currentTarget.rowKey,'attendanceTime',null);
+		grid.setValue(currentTarget.rowKey,'leaveTime',null);
+	}
 		grid.setValue(currentTarget.rowKey,'attCode',attCode);	
 		grid.setValue(currentTarget.rowKey,'attName',attName);
+		grid.setValue(currentTarget.rowKey,'commonName',commonName);
 		
 		aeSearchModal.hide();
 	}	
@@ -77,6 +83,14 @@ document.querySelector('.insert-Btn').addEventListener('click',function () {
 	}
 	
 	let row = grid.getData()
+	let flag = nullCheck(row)
+	console.log(flag)
+	if (flag == false ) {
+		alert("값을 입력하세요")
+		return;
+	}
+	
+		
 	fetch("/employees/att",{
 		method:"post",
 		headers:{"Content-Type":"application/json"},
@@ -95,4 +109,24 @@ function validateCheck () {
 		alert("값을 입력해주세요")
 		return true;
 	}
+}
+function nullCheck (data) {
+	
+	for (let ele of data) {
+		console.log(ele)
+		console.log(ele.commonName)
+		
+		if ((ele.commonName !== '휴가') || (ele.commonName !== '공제')) {
+			if (ele.attendanceTime == null) {
+				alert("출근시간 입력")
+				grid.focus(ele.rowKey, 'attendanceTime')
+				return false ; 
+			} else if (ele.leaveTime == null) {
+				grid.focus(ele.rowKey, 'leaveTime')
+				alert("퇴근시간 입력")
+				return false;
+			}
+		}
+	}
+	return true;
 }

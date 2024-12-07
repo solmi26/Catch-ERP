@@ -114,7 +114,6 @@
 		<foreach collection="array" item="attHistoryCode" open="(" separator="," close=")">
 			#{attHistoryCode}
 		</foreach>
-	
 	</delete>
 
 </mapper>
