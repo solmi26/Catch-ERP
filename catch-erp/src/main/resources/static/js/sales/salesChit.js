@@ -365,7 +365,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 width: 150,
                 whiteSpace: 'normal',
                 className: 'border',
-                hidden: 'true'
+                hidden: 'true',
             }, {
                 header: '품목코드', name: 'itemCode',
                 align: "center",
@@ -378,12 +378,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
-                editor: 'text',
+                editable: false,
                 className: 'border'
             }, {
                 header: '요구수량',
                 name: 'quantity',
-                editor: 'text',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -398,14 +397,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 formatter: 'listItemText',
                 editor: {
-                    type: 'select', options: {
+                    type: 'select',
+                    options: {
                         listItems: whList
                     }
                 },
                 className: 'border'
             }, {
                 header: '재고수량',
-                editor: "text",
                 name: 'stocksQuantity',
                 align: "center",
                 width: 100,
@@ -414,7 +413,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부족수량',
                 name: 'deficiencyQuantity',
-                editor: "text",
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -424,10 +422,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '단가',
                 name: 'price',
-                editor: 'text',
                 align: "center",
-                width: 150,
                 whiteSpace: 'normal',
+                width: 150,
                 sortable: true,
                 sortingType: 'desc',
                 className: 'border',
@@ -435,7 +432,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
             }, {
-                header: '출고 단가',
+                header: '출고단가',
                 name: 'deliveryPrice',
                 editor: {
                     type: 'text', options: {
@@ -457,7 +454,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -473,7 +469,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -490,8 +485,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '출하 예정일',
                 name: 'deliveryDate',
                 editor: {
-                    type: 'datePicker', options: {
+                    type: 'datePicker',
+                    options: {
                         language: 'ko', // 한국어 설정
+                        selectableRanges: [[new Date(), new Date(9999, 11, 31)]]
                     }
                 },
                 align: "center",
@@ -618,29 +615,29 @@ document.addEventListener("DOMContentLoaded", async function () {
     })
 
     //발주서 클릭시 선택건 제외하고 띄워주기
-    let orderModalTriggerBtn = document.getElementById('orderModal');
-    orderModalTriggerBtn.addEventListener('click', function () {
-        fetch('/ordersList')
-            .then(result => result.json())
-            .then(data => {
-				if(document.getElementById("inputClientName").value == ''){
-					alert("발주서를 조회할 거래처를 선택해주세요.");
-					return;
-				}
-				console.log(data);
-                let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
-                let clientName = document.getElementById("inputClientName");
-                salesChit.getData().forEach(ele => {
-                    existentNo.push(ele.orderNo);
-                })
-                let filteredData = data.filter(ele => {
-                    return !existentNo.includes(ele.orderNo) && clientName == ele.clientName;
-                })
-                console.log(filteredData);
-                ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
-            })
-            .catch(error => console.log(error))
-    })
+    // let orderModalTriggerBtn = document.getElementById('orderModal');
+    // orderModalTriggerBtn.addEventListener('click', function () {
+    //     fetch('/ordersList')
+    //         .then(result => result.json())
+    //         .then(data => {
+	// 			if(document.getElementById("inputClientName").value == ''){
+	// 				alert("발주서를 조회할 거래처를 선택해주세요.");
+	// 				return;
+	// 			}
+	// 			console.log(data);
+    //             let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
+    //             let clientName = document.getElementById("inputClientName");
+    //             salesChit.getData().forEach(ele => {
+    //                 existentNo.push(ele.orderNo);
+    //             })
+    //             let filteredData = data.filter(ele => {
+    //                 return !existentNo.includes(ele.orderNo) && clientName == ele.clientName;
+    //             })
+    //             console.log(filteredData);
+    //             ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
+    //         })
+    //         .catch(error => console.log(error))
+    // })
 
 	//발주서버튼 mouse over 이벤트
 	let orderBtn = document.getElementById('orderModal');
@@ -763,7 +760,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 샘플 데이터
     initOrdersGrid();
 
-/*    let inputClientName = document.getElementById('inputClientName');
+    let inputClientName = document.getElementById('inputClientName');
 
     inputClientName.addEventListener('change', () => {
         let inputClientNameValue = document.getElementById('inputClientName').value;
@@ -785,7 +782,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     .catch(error => console.log(error))
             }, 200)
         }
-    })*/
+    })
 
     //발주서 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
     let orderInputBtn = document.getElementById('orderInputBtn');
@@ -880,17 +877,30 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 입금계좌
         insertSales.depBacct = document.getElementById('accountInput').value.trim();
         // 매출계정
-        insertSales.accCode = document.getElementById('accCodeInput').value.trim();
+        // insertSales.accCode = document.getElementById('accCodeInput').value.trim();
 
         // 그리드 정보
         insertSales.saleslipHistories = salesChit.getData();
 
         // 빈 값 확인 - 마스터 정보
-        for (const [key, value] of Object.entries(insertSales)) {
-            if (key !== 'saleslipHistories' && (value === '' || value === null || value === undefined)) {
-                alert(`${key} 값이 비어 있습니다. 모든 필드를 입력해주세요.`);
-                return; // 전송 중단
-            }
+        if(insertSales.clientName === '') {
+            alert('거래처명을 입력하세요.')
+            return;
+        }
+
+        if(insertSales.employeeName === '') {
+            alert('담당자명을 입력하세요.')
+            return;
+        }
+
+        if(insertSales.depBacct === '') {
+            alert('입금계좌를 입력하세요.')
+            return;
+        }
+
+        if(insertSales.saleslipHistories.length === 0) {
+            alert('발주서를 불러와 작성해주세요.')
+            return;
         }
 
         // 빈 값 확인 - 그리드 정보
@@ -909,7 +919,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let hasInvalidGridData = insertSales.saleslipHistories.some(row => {
             // '재고수량'이 음수인지 체크
             if (row['deficiencyQuantity'] < 0) {
-                alert('부족수량이 음수일 수 없습니다. 값을 확인해주세요.');
+                alert('창고 수량이 부족합니다. 담당자에게 확인 부탁드립니다.');
                 return true; // 음수일 경우 오류 표시 후 중단
             }
             return false;
@@ -959,11 +969,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     // onGridMounted 이벤트 사용
     salesChit.on('onGridMounted', () => {
         // 특정 컬럼의 헤더를 선택
-        const headerCell = document.querySelector('#salesChit .tui-grid-header-area .tui-grid-cell[data-column-name="whCode"]');
+        const wh = document.querySelector('#salesChit .tui-grid-header-area .tui-grid-cell[data-column-name="whCode"]');
+        const deliveryPrice = document.querySelector('#salesChit .tui-grid-header-area .tui-grid-cell[data-column-name="deliveryPrice"]');
 
-        if (headerCell) {
+        if (wh) {
             // 빨간색 * 추가 및 헤더 텍스트 수정
-            headerCell.innerHTML = '<span style="color: red;">*</span> 창고';
+            wh.innerHTML = '창고<span style="color: red;">*</span>';
+        }
+        if (deliveryPrice) {
+            deliveryPrice.innerHTML = '출고단가<span style="color: red;">*</span>';
         }
     });
 

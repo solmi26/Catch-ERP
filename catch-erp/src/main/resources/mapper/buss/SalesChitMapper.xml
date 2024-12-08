@@ -82,6 +82,7 @@
                 ,slip_state
                 ,delivery_price
         FROM sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
+        ORDER BY a.saleslip_no DESC
     </select>
 
     <!-- 판매전표 검색 -->
