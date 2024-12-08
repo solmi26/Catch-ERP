@@ -3,6 +3,7 @@
  */
 
 let grid;
+
 document.addEventListener("DOMContentLoaded", function () {
   const Grid = tui.Grid;
 
@@ -38,13 +39,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       scrollX: true, // 가로 스크롤 사용
       scrollY: true, // 세로 스크롤 사용
+	 
       columns: [
-        {
-          header: "품목",
-          name: "itemName",
-          editor: "text",
-          align: "left",
-        },
+		{
+		  header: " ", // 기본 헤더 텍스트
+		  name: 'itemName',
+		  editor: 'text',
+		  align: 'left',
+		},
         {
           header: "단가",
           name: "price",
@@ -95,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         },
       ],
+	  
       data: [{}],
 
       rowHeaders: [
@@ -113,6 +116,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   loadGrid();
+  
+  grid.on('onGridMounted',function(){
+        let redStar = document.querySelector("#grid > div > div.tui-grid-content-area > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)")
+        redStar.innerHTML = `<span>품목 </span><span style="color:red">*</span>`
+     })
 
   // 그리드 다시 작성 버튼
   document.getElementById("resetBtn").addEventListener("click", function () {

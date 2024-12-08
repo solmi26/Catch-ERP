@@ -25,7 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
       perPage: 15,
     },
     columns: [
-      { header: "계약번호", name: "contractNumber", align: "center", sortable: true }, // 계약번호
+      { header: "계약번호", name: "contractNumber", align: "center", sortable: true,
+	  formatter: ({ value }) =>
+	           `<a href="#" class="btn-link text-primary">${value}</a>`,
+	   }, // 계약번호
       { header: "계약명", name: "contractName", align: "center", sortable: true }, // 계약명
       { header: "거래처", name: "client", align: "center", sortable: true }, // 거래처
       { header: "계약일자", name: "contractDate", align: "center", sortable: true }, // 계약일

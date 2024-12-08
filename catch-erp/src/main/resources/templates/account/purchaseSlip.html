@@ -79,7 +79,7 @@
             <!-- 전표일자 -->
             <div class="col-md-4">
               <div class="input-group input-group-sm">
-                <span class="input-group-text">전표일자</span>
+                <span class="input-group-text">전표일자&nbsp;<span class="msg">*</span></span>
                 <input type="date" class="form-control" name="p_date" />
               </div>
             </div>
@@ -107,7 +107,7 @@
             <!-- 거래처 -->
             <div class="col-md-4">
               <div class="input-group input-group-sm">
-                <span class="input-group-text">거래처</span>
+                <span class="input-group-text">거래처&nbsp;<span class="msg">*</span></span>
                 <input type="text" class="form-control" placeholder="거래처 선택" name="p_clientName" id="p_clientInput" readonly="readonly" />
                 <input type="text" style="display: none" id="p_clientInput2" name="p_clientCode" />
                 <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="p_openClientModal">
@@ -133,7 +133,7 @@
             <!-- 계정명 -->
             <div class="col-md-4">
               <div class="input-group input-group-sm">
-                <span class="input-group-text">계정명</span>
+                <span class="input-group-text">계정명&nbsp;<span class="msg">*</span></span>
                 <input type="text" class="form-control" placeholder="회계계정 선택" name="p_acctName" id="p_acctInput" readonly="readonly" />
                 <input type="text" style="display: none" id="p_acctInput2" name="p_acctCode" />
                 <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="p_openAcctModal">
@@ -148,14 +148,14 @@
             <!-- 공급가액 -->
             <div class="col-md-4">
               <div class="input-group input-group-sm">
-                <span class="input-group-text color">공급가액</span>
+                <span class="input-group-text color">공급가액(원)&nbsp;<span class="msg">*</span></span>
                 <input type="text" class="form-control" placeholder="공급가액" name="p_price" id="p_price" />
               </div>
             </div>
             <!-- 부가세 -->
             <div class="col-md-4">
               <div class="input-group input-group-sm">
-                <span class="input-group-text color">부가세</span>
+                <span class="input-group-text color">부가세(원)&nbsp;<span class="msg">*</span></span>
                 <input type="text" class="form-control" placeholder="부가세" name="p_vat" />
               </div>
             </div>
@@ -165,7 +165,7 @@
           <div class="row mb-3">
             <div class="col-md-8">
               <div class="input-group input-group-sm">
-                <span class="input-group-text color">합계</span>
+                <span class="input-group-text color">합계(원)&nbsp;<span class="msg">*</span></span>
                 <input type="text" class="form-control" name="p_amount" id="p_amount" placeholder="합계" />
               </div>
             </div>
