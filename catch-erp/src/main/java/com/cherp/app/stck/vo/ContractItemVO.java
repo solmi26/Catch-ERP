@@ -22,6 +22,7 @@ public class ContractItemVO {
 	private String itemCode; 	// 품목코드
 	private int totalPrice; 	// 총금액
 	private String image; 		// 이미지
+	private Boolean deleted = false; // 삭제
 	
 	List<ContractItemVO> detailContraceVO; // 계약 디테일 List
 

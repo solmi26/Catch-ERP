@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,11 +52,82 @@ public class ContractController {
 	    return conService.contractList();
 	}
     
+    // 매입 계약 상세 조회 페이지(기능) by sm
+    @Secured("ROLE_MANAGER,ROLE_SALES") // 권한 설정
+	@GetMapping("sales/infoContract")
+    @ResponseBody
+	public ContractItemVO infoContract(@RequestParam("conNo") String conNo) {
+	    return conService.contractInfo(conNo);
+	}
+    
 	// 매입 계약 등록 페이지(화면) by sm
 	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("sales/insertContractView")
 	public String insertContractView(Model model) {
 		return "account/contractInsert";
+	}
+	
+	 /**
+     * 매입 단가 계약 수정 처리 메서드(기능)  by sm
+     * @param contractVO 클라이언트에서 전달받은 계약 정보
+     * @param file 클라이언트에서 전달받은 첨부 파일
+     * @return 처리 결과 메시지
+     */
+    @Secured("ROLE_MANAGER,ROLE_SALES") // 권한 설정
+	@PostMapping("sales/updateContract")
+	@ResponseBody // HTTP 응답으로 문자열 반환.
+	public String updateContract(@RequestPart("contract") ContractItemVO contractVO,
+	        					 @RequestPart(value = "file", required = false) MultipartFile file) {
+       
+        // 파일 삭제 처리
+        if (Boolean.TRUE.equals(contractVO.getDeleted())) {
+            ContractItemVO existingContract = conService.contractInfo(contractVO.getConNo());
+            if (existingContract != null && existingContract.getUrl() != null) {
+                String existingFilePath = uploadPath + File.separator + existingContract.getUrl().replace("/", File.separator);
+                File existingFile = new File(existingFilePath);
+
+                if (existingFile.exists()) {
+                    existingFile.delete(); // 기존 파일 삭제
+                }
+                
+                contractVO.setUrl(null); // URL 제거
+            }
+        }
+
+    	
+    	// 파일 업로드 처리
+		if(file != null && !file.isEmpty()) {  // 파일이 존재하고 비어 있지 않은 경우에 처리.
+			// 날짜별 디렉토리 생성
+			String folderPath = makeFolder();
+			String  originalFilename = file.getOriginalFilename(); // 파일 원본 이름 가져오기.
+			
+			 // 파일 저장 경로 설정
+			String uniqueFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+		    String filePath = uploadPath + File.separator + folderPath + File.separator + uniqueFilename;
+			
+			// 파일 객체 생성 및 저장
+			File dest = new File(filePath);
+			try {
+				file.transferTo(dest);  // MultipartFile 객체의 데이터를 파일로 저장.
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			// VO에 DB에 저장할 파일 경로 설정
+	        String dbFilePath = folderPath.replace(File.separator, "/") + "/" + originalFilename;
+	        contractVO.setUrl(dbFilePath);
+		}
+		
+	    // 상태 초기화
+	    contractVO.setDeleted(false);
+		
+		// DB에 저장
+	   conService.updateContract(contractVO);
+	   
+	    return "수정 성공";
 	}
     
     /**

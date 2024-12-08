@@ -32,10 +32,34 @@ public class ContractServiceImpl implements ContractService{
 		}
 	}
 	
+	// 매입 단가 계약 수정
+	@Override
+	public void updateContract(ContractItemVO conVO) {
+		conMapper.updateContractHeader(conVO); // 마스터
+		for(ContractItemVO data : conVO.getDetailContraceVO()) {
+			conMapper.updateContractBody(data); // 디테일
+		}
+	}
+	
 	// 매입 단가 계약 전체 조회(Header)
 	@Override
 	public List<ContractItemVO> contractList() {
 		return conMapper.selectContractsH();
+	}
+	
+	//  매입 단가 계약 상세 조회 
+	@Override
+	public ContractItemVO contractInfo(String no) {
+        // 마스터 데이터 조회
+        ContractItemVO masterData = conMapper.infoContractH(no);
+
+        // 디테일 데이터 조회
+        List<ContractItemVO> detailData = conMapper.infoContractB(no);
+
+        // 마스터 데이터에 디테일 데이터 추가
+        masterData.setDetailContraceVO(detailData);
+
+        return masterData;
 	}
 
 }
