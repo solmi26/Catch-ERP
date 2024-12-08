@@ -174,7 +174,7 @@
     });
     const attendanceGrid = new Grid({
       el: document.getElementById('attendanceGrid'),
-      scrollX: false,
+      scrollX: true,
       scrollY: true,
       bodyHeight: 700,
       rowHeaders: [{
@@ -187,38 +187,48 @@
     	{
     	 header:'근태기록번호',
     	 name:'attHistoryCode',
+    	 width: 140,
     	 hidden:true
     	},
         {
           header: '날짜',
+          width: 140,
           name: 'attendanceDate',
         },
         {
           header: '근태유형',
+          width: 140,
           name: 'attName'
+          
         },
         {
           header: '출근시간',
+          width: 140,
           name: 'attendanceTime',
         },
         {
           header: '퇴근시간',
+          width: 140,
           name: 'leaveTime',
         },
         {
           header: '연장 근로시간',
+          width: 140,
           name: 'overtimeWorktime',
         },
         {
           header: '야간 근로시간',
+          width: 140,
           name: 'nightWorktime',
         },
         {
           header: '주말 근로시간',
+          width: 140,
           name: 'weekendWorktime',
         },
         {
           header: '총 근로시간',
+          width: 140,
           name: 'totalWorktime',
         }
         
@@ -244,15 +254,19 @@
 			.then(result => result.json())
 			.then(result => {
 				attendanceGrid.resetData(result)
+				window.setTimeout(function(){attendanceGrid.refreshLayout();},200);
 			})
 			.catch(err=>{`근태정보 조회 실패! ${err}`})
 		 }
 	 })
 	
+	
+	//토스트 그리드 refreshLayout().... 
 	document.querySelector("#myAttendance-tab").addEventListener("click",function(){
-		window.setTimeout(function(){attendanceGrid.refresh();},300);
+		console.log('체킹')
+		window.setTimeout(function(){attendanceGrid.refreshLayout();},200);
 	})
 	
 	window.addEventListener("resize", function() {
-  		attendanceGrid.refresh();
+  		attendanceGrid.refreshLayout();
 	});

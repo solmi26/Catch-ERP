@@ -6,7 +6,7 @@
  * gridCheckbox : 체크박스(로우넘)
  * tooltipOut() : 부트스트랩 툴팁 함수
  * header nav-bar css를 위한 함수
- * 
+ * saveExcel(grid) : 토스트 그리드 엑셀다운 
 */
 
 
@@ -218,3 +218,22 @@ window.addEventListener('resize', () => {
 if (window.innerWidth <= 992) {
     document.getElementById('headerLi').classList.add('ms-auto');
 }*/
+
+//토스트 그리드 엑셀다운
+function saveExcel(grid){
+		let userName = document.getElementById('loginUserName').value; //header.html에 hidden input값을 읽어온다.
+		var today = new Date();
+		var year = today.getFullYear();
+		var month = ('0' + (today.getMonth() + 1)).slice(-2);
+		var day = ('0' + today.getDate()).slice(-2);
+		var dateString = year + month + day + "_" + userName;
+		const options = {
+			/*includeHeader: true,
+			includeHiddenColumns: false,
+			onlySelected: false,*/
+			fileName: `${dateString}.xlsx`,
+		};
+		
+		grid.export('xlsx',options);
+	
+	}
