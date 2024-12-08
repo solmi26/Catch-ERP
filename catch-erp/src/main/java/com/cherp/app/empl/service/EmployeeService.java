@@ -12,4 +12,8 @@ public interface EmployeeService {
 	public int employeeInsert(EmployeeVO employee);
 	public int employeeUpdate(EmployeeVO employee);
 	public List<CommonCodeVO> commonCodeList(String[] commonCode);
+	public int employeeDelete (String[] employeeCode);
+	
+	public int statusTypeUpdate (List<EmployeeVO> employee);
+	
 }

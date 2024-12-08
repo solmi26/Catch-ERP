@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/human_layout}"
+      layout:fragment="Content">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="container-fluid bg-white shadow-sm rounded p-4">
+		<div class="row justify-content-start">
+			<div class="col-xl-6 col-lg-8 col-md-10 col-sm-12">
+					<div class="row justify-content-between mb-2">
+						<div class="col">
+							<h3>공제항목목록</h3>
+						</div>
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<input class="form-control form-control-sm" type="text">					
+								</div>
+								<div class="col-auto">
+									<button type="button" class="btn btn-success btn-sm" >검색</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<nav>
+						  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+						    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#dedu-tab" type="button" role="tab" aria-controls="nav-home" aria-selected="true">공제항목</button>
+						    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#income-tab" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">소득세</button>
+						  </div>
+						</nav>
+					</div>
+					<div class="tab-content row" id="nav-tabContent">
+					  <div class="tab-pane fade show active" id="dedu-tab" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+						<div class="border" id="deduGrid"></div>
+					  
+					  </div>
+					  <div class="tab-pane fade" id="income-tab" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+						<div class="border" id="incomeGrid"></div>
+					  
+					  </div>
+					</div>					
+
+				</div>
+				
+
+			
+			</div>
+		</div>
+
+<!-- 공제수정모달!!!1 -->
+    <div class="modal fade" id="deduModifyModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">공제수정</h5>
+
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>공제수정</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row g-3 align-items-center">
+                            <div class="card">
+                                <div class="card-body">
+                                          <input type="hidden" id="inputPassword6" class="form-control form-control-sm modify-input" readonly aria-describedby="passwordHelpInline" name="deductionsCode">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label">공제명</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" aria-describedby="passwordHelpInline"  required name="deductionsName">
+                                        </div>
+                                    </div>                                    
+                                   <div class="row justify-content-center align-items-center">
+                                       <div class="col-3">
+                                         <label for="inputPassword6" class="col-form-label">공제율</label>
+                                       </div>
+                                       <div class="col">
+                                         <input type="number" id="inputPassword6" max="100" min="0" step="0.1" required class="form-control form-control-sm modify-input" name="deductionsDeductible" aria-describedby="passwordHelpInline" >
+                                       </div>
+                                   </div> 
+
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary dedu-save-Btn" >저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 공제수정모달끝!!! -->
+    <div class="modal fade" id="incomeModifyModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">소득세수정</h5>
+
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>소득세수정</h4>
+                            </div>
+
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row g-3 align-items-center">
+                            <div class="card">
+                                <div class="card-body">
+                                          <input type="hidden" id="inputPassword6" class="form-control form-control-sm modify-input" readonly aria-describedby="passwordHelpInline" name="deductionsCode">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-3">
+                                          <label for="inputPassword6" class="col-form-label">공제명</label>
+                                        </div>
+                                        <div class="col">
+                                          <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" aria-describedby="passwordHelpInline"  required name="deductionsName">
+                                        </div>
+                                    </div>                                    
+                                   <div class="row justify-content-center align-items-center">
+                                       <div class="col-3">
+                                         <label for="inputPassword6" class="col-form-label">공제율</label>
+                                       </div>
+                                       <div class="col">
+                                         <input type="number" id="inputPassword6" max="100" min="0" step="0.1" required class="form-control form-control-sm modify-input" name="deductionsDeductible" aria-describedby="passwordHelpInline" >
+                                       </div>
+                                   </div> 
+                                   <div class="row justify-content-center align-items-center">
+                                       <div class="col-3">
+                                         <label for="inputPassword6" class="col-form-label">최소금액</label>
+                                       </div>
+                                       <div class="col">
+                                         <input type="number" id="inputPassword6" max="9999999999" min="0" step="1" required class="form-control form-control-sm modify-input" name="minval" aria-describedby="passwordHelpInline" >
+                                       </div>
+                                   </div> 
+                                   <div class="row justify-content-center align-items-center">
+                                       <div class="col-3">
+                                         <label for="inputPassword6" class="col-form-label">최대금액</label>
+                                       </div>
+                                       <div class="col">
+                                         <input type="number" id="inputPassword6" max="9999999999" min="0" step="1" required class="form-control form-control-sm modify-input" name="maxval" aria-describedby="passwordHelpInline" >
+                                       </div>
+                                   </div> 
+
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary income-save-Btn" >저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+ <!-- 소득세수정모달 -->
+ 
+ <!-- 소득세수정모달끝 -->
+	<script th:inline="javascript">
+		const Grid = tui.Grid;
+		const deduGrid = new Grid({
+			  el: document.getElementById('deduGrid'), // Container element
+		      width: 650,
+		      bodyHeight: 600,
+		      rowHeaders: [
+		          {
+		            type: 'checkbox',
+		            header: `
+		              <span class="custom-input">
+		              <input type="checkbox" id="all-checkbox-1" class="hidden-input" name="_checked" />
+		            	<label for="all-checkbox-1" class="checkbox selectCheck">✔</label>
+		          	</span>
+		          `,
+		            renderer: {
+		              type: gridCheckbox
+		            }
+		          }
+		        ],
+		      scrollX: true,
+		      scrollY: false,
+			  columns: [
+			    {
+			      header: '공제코드',
+			      name: 'deductionsCode',
+			      hidden:true
+			    },
+			    {
+			      header: '공제명',
+			      name: 'deductionsName'
+			    },
+			    {
+			      header: '공제율',
+			      name: 'deductionsDeductible',
+     		      formatter: function (e) {
+				  		return e.value + "%"; // 숫자로 변환 후 포맷팅
+			      },
+			    },
+			  ],
+			  data: [[${deduList}]],
+			showDummyRows: true
+			});
+		
+		const incomeGrid = new Grid({
+			  el: document.getElementById('incomeGrid'), // Container element
+		      width: 650,
+		      bodyHeight: 600,
+		      rowHeaders: [
+		          {
+		            type: 'checkbox',
+		            header: `
+		              <span class="custom-input">
+		              <input type="checkbox" id="all-checkbox-1" class="hidden-input" name="_checked" />
+		            	<label for="all-checkbox-1" class="checkbox selectCheck">✔</label>
+		          	</span>
+		          `,
+		            renderer: {
+		              type: gridCheckbox
+		            }
+		          }
+		        ],
+		      scrollX: true,
+		      scrollY: false,
+			  columns: [
+			    {
+			      header: '공제코드',
+			      name: 'deductionsCode',
+			      hidden:true
+			    },
+			    {
+			      header: '공제명',
+			      name: 'deductionsName'
+			    },
+			    {
+			      header: '공제율',
+			      name: 'deductionsDeductible',
+     		      formatter: function (e) {
+				  		return e.value + "%"; // 숫자로 변환 후 포맷팅
+			      },
+			    },
+			    {
+			      header:'최소금액',
+			      name:'minval',
+     		      formatter: function (e) {
+				  		const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+				  		return (Number(value)/10000).toLocaleString() + "만원"; // 숫자로 변환 후 포맷팅
+			      },
+			    },
+			    {
+			      header:'최대금액',
+			      name:'maxval',
+     		      formatter: function (e) {
+				  		const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
+				  		return (Number(value)/10000).toLocaleString() + "만원"; // 숫자로 변환 후 포맷팅
+			      },
+			      
+			    }
+			  ],
+			  data: [[${incomeList}]],
+			showDummyRows: true
+			});
+	</script>
+
+	<script th:src="@{/js/human/deductionsItem.js}"></script>
+
+</body>
+</body>
+</html>

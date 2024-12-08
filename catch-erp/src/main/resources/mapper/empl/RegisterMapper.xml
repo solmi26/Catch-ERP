@@ -3,13 +3,22 @@
 <mapper namespace="com.cherp.app.empl.mapper.RegisterMapper">
     <!-- 부서목록 조회 -->
 	<select id="selectAllDepartment" resultType="com.cherp.app.empl.vo.DepartmentVO">
-		SELECT dp.department_code,
+		WITH count_list AS (
+        SELECT department_code,
+               COUNT(employee_code) AS count
+        FROM employees
+        GROUP BY department_code)
+        
+        SELECT dp.department_code,
 		       dp.department_name,
 		       dp.manager_code,
-		       em.name
+		       em.name,
+               NVL(cl.count,0) AS COUNT
 		FROM   department dp
 		LEFT JOIN   employees em
 		ON     dp.manager_code = em.employee_code
+        LEFT JOIN count_list cl
+        ON dp.department_code = cl.department_code
 	</select>
 	
 	<!-- 부서단건 조회 -->
@@ -55,13 +64,24 @@
 	
 	<!-- 근태항목 조회 -->
 	<select id="selectAttItemList" resultType="com.cherp.app.empl.vo.AttItemVO" >
-		SELECT ai.att_code,
+        WITH count_list AS (
+        SELECT count(att_history_code) AS count,
+               att_code
+        FROM   att_history
+        GROUP BY att_code
+        )
+        
+        SELECT ai.att_code,
 		       ai.att_status,
 		       ai.att_name,
-               cc.common_name
+               cc.common_name,
+               NVL(cl.count,0) AS count
 		FROM   att_item ai
         JOIN   common_code cc
         ON     ai.att_status = cc.code_rule
+        LEFT JOIN count_list cl
+        ON ai.att_code = cl.att_code
+
 	</select>
 	
 	<!-- 근태항목 단건조회 -->
@@ -101,14 +121,120 @@
 		</foreach>
 	</delete>
 
-
+	<!-- 수당항목 -->
 	<!-- 수당조회 -->
-	<select id="selectAllowanceItemList" resultType="com.cherp.app.empl.vo.FixedVO">
-		SELECT allowance_code,
-               allowance_name,
-               allowance_check
-        FROM   allowance_item
+	<select id="selectAllowanceItemList" resultType="com.cherp.app.empl.vo.AllowanceVO">
+        WITH fixed_list AS (
+        SELECT allowance_code,
+               count(fixed_no) AS fl_count
+        FROM   fixed
+        GROUP BY allowance_code)
+        
+		SELECT ai.allowance_code,
+               ai.allowance_name,
+               ai.allowance_check,
+               NVL(fl_count,0) AS count
+        FROM   allowance_item ai
+        LEFT JOIN fixed_list fl
+        ON ai.allowance_code = fl.allowance_code
 	</select>
-
-
+	<!-- 수당단건조회 -->
+	
+	<!-- 수당항목 단건조회 -->
+	<select id="selectAllowanceItem" parameterType="string" resultType="com.cherp.app.empl.vo.AllowanceVO">
+		SELECT allowance_code,
+		       allowance_name,
+		       allowance_check
+		FROM   allowance_item
+		WHERE  allowance_code = #{allowanceCode}
+	</select>
+	
+	<!-- 수당항목 등록 -->
+	<insert id="insertAllowanceItem" parameterType="com.cherp.app.empl.vo.AllowanceVO">
+		INSERT INTO allowance_item (allowance_code
+		                     ,allowance_name
+		                     ,allowance_check)
+		                     
+		VALUES               (#{allowanceCode}
+		                     ,#{allowanceName}
+		                     ,#{allowanceCheck})                     
+	
+	</insert>
+	
+	<!-- 수당항목 수정 -->
+	<update id="updateAllowanceItem" parameterType="com.cherp.app.empl.vo.AllowanceVO">
+		UPDATE allowance_item
+		SET   allowance_code = #{allowanceCode},
+		      allowance_name = #{allowanceName},
+		      allowance_check = #{allowanceCheck}
+		WHERE allowance_code = #{allowanceCode}
+	</update>
+	
+	<!-- 수당항목 다건삭제 -->
+	<delete id="deleteAllowanceItem" parameterType="java.util.ArrayList">
+		DELETE FROM allowance_item
+		WHERE allowance_code IN
+		<foreach collection="array" item="allowanceCode" open="(" separator="," close=")">
+			#{allowanceCode}
+		</foreach>
+	</delete>
+	
+	
+	<!-- 공제항목 -->
+	
+	<!-- 공제조회 -->
+	<select id="selectDeductionsItemList" resultType="com.cherp.app.empl.vo.DeductionsVO">
+		SELECT deductions_code,
+               deductions_name,
+               deductions_deductible
+        FROM   deductions_item 
+        WHERE  deductions_name <![CDATA[ <>  ]]> '소득세'
+	</select>
+	<!-- 소득세조회 -->
+	<select id="selectIncomeTaxList" resultType="com.cherp.app.empl.vo.DeductionsVO">
+		SELECT   deductions_code,
+                 deductions_name,
+                 deductions_deductible,
+                 minval,
+                 maxval,
+                 income_tax
+        FROM     deductions_item 
+        WHERE    deductions_name = '소득세'
+        ORDER BY minval
+	</select>
+	
+	<!-- 공제항목 단건조회 -->
+	<select id="selectDeductionsItem" parameterType="string" resultType="com.cherp.app.empl.vo.DeductionsVO">
+		SELECT deductions_code,
+		       deductions_name,
+		       deductions_deductible,
+		       minval,
+               maxval,
+               income_tax
+		FROM   deductions_item
+		WHERE  deductions_code = #{deductionsCode}
+	</select>
+	<!-- 소득세 단건조회 -->
+	
+	<!-- 공제항목 수정 -->
+	<update id="updateDeductionsItem" parameterType="com.cherp.app.empl.vo.DeductionsVO">
+		UPDATE deductions_item
+		<set>
+			  deductions_code = #{deductionsCode},
+		      deductions_name = #{deductionsName},
+		      deductions_deductible = #{deductionsDeductible},
+		
+      	   <if test="minval != null">
+	           minval = #{minval},
+	       </if>
+      	   <if test="maxval != null">
+	           maxval = #{maxval},
+	       </if>
+      	   <if test="incomeTax != null">
+	           income_tax = #{incomeTax},
+	       </if>
+		</set>
+		WHERE deductions_code = #{deductionsCode}
+	</update>
+	
 </mapper>

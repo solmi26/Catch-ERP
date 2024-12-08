@@ -206,8 +206,8 @@ document.querySelector('#newBtn').addEventListener('click',function () {
 //저장버튼 클릭 이벤트
 let saveBtn = document.querySelector('#saveBtn')
 saveBtn.addEventListener('click',function(){
-	if (!generalForm.checkValidity()) {
-		document.querySelector('.check-null').click()
+	//인풋 유효성검사
+	if (!formValidity()){
 		return;
 	}
 	let EmployeeVO = {};
@@ -270,10 +270,13 @@ saveBtn.addEventListener('click',function(){
 		 fetch('/employees/emps', {method: 'post', 
              body: formData
        }).then(
-		console.log("성공")
+		alert("사원정보가 등록되었습니다.")
 	   )
 	   .catch(
-		console.log("실패")
+
+	   )
+	   .finally(
+		document.querySelector('.search-btn').click()	
 	   )
 
 	} 
@@ -284,7 +287,10 @@ saveBtn.addEventListener('click',function(){
 			  body: formData
 		})
 		.then(
-			
+		alert("사원정보가 수정되었습니다.")
+		)
+		.finally(
+		document.querySelector('.search-btn').click()	
 		)
 	}
 })
@@ -303,13 +309,23 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 			str += ele.value 
 		}
 	})
+	let status = document.querySelector('.search-form').querySelector('[name="statusType"]')
+	let delBtn = document.querySelector('.delete-Btn')
+	if (status.value == 'm3') {
+		delBtn.innerText = '삭제'
+		delBtn.dataset.mode = 'delete'
+	} else {
+		delBtn.innerText = '퇴사'
+		delBtn.dataset.mode = 'update'
+		
+	}
 	parameter = '?'+str.substr(1)
 	fetch("/employees/emps"+parameter)
 	.then(data => data.json())
 	.then(data => {
 		grid.resetData(data)
+		
 	})
-	
 	
 })
 console.log('gd')
@@ -338,6 +354,7 @@ document.querySelector('#imgInput').addEventListener('change',function (ev) {
 
 
 //삭제버튼 클릭 이벤트
+/*
 document.querySelector('.delete-Btn').addEventListener('click',function(){
 	let check = grid.getCheckedRows()
 	//널체크
@@ -347,9 +364,42 @@ document.querySelector('.delete-Btn').addEventListener('click',function(){
 	fetch('/employees/att',{method:'delete'}
 	)
 })
+*/
 
-
-
+//다건 퇴직,삭제처리
+document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
+	let check = grid.getCheckedRows()
+	console.log("gd")
+	let mode = ev.target.dataset.mode
+	if (check.length == 0) {
+		return;
+	}
+	if (mode == 'update') {
+		fetch('/employees/statusType',{
+			method:'put',
+			headers:{'Content-Type':'application/json'},
+			body:JSON.stringify(check)
+		})
+		.then(
+			alert("사원이 퇴직처리 되었습니다.")
+		)
+		.then(
+			document.querySelector('.search-btn').click()
+		)
+	} else if (mode =='delete') {
+		let str = ''
+		check.forEach(ele => {
+			str += ','
+			str += ele.employeeCode
+		})
+		fetch('/employees/emps?employeeCode='+str.substring(1),
+		{method:'delete',})
+		.then(data => {alert("사원정보가 삭제되었습니다.")})
+		.then(
+			data => {document.querySelector('.search-btn').click()}
+		)
+	}
+})
 
 
 
@@ -415,6 +465,50 @@ function dateFormatter (date) {
 	let result = `${year}-${month}-${day}`
 	return result;
 }
+/*		window.setTimeout(function(){
+		allowanceGrid.refreshLayout();
+		}, 200)
+		*/
+//폼 유효성 검사
+function formValidity() {
+	let flag =true;
+	let generalinput = document.querySelector('#general').querySelectorAll('input')
+	for (let input of generalinput) {
+		if (!input.checkValidity()) {
+			flag = false;
+			document.querySelector('#general-tab').click()
+			input.reportValidity()
+			break;
+		}
+	}
+	if (!flag) {
+		return flag;
+	}
+	let generalselect = document.querySelector('#general').querySelectorAll('select')
+	for (let select of generalselect) {
+		if (!select.checkValidity()) {
+			flag = false;
+			document.querySelector('#general-tab').click()
+			select.reportValidity()
+			break;
+		}
+	}
+	if (!flag) {
+		return flag;
+	}
+	
+	let salary = document.querySelector('#salary').querySelectorAll('input')
+	for (let input of salary) {
+		if (!input.checkValidity()) {
+			flag = false;
+			document.querySelector('#salary-tab').click()
+			input.reportValidity()
+			break;
+		}
+	}
+	return flag;
+}	
+
 
 //예외처리
 
@@ -433,4 +527,42 @@ document.querySelector('.employee-box').querySelectorAll('[type="date"]').forEac
 		ev.target.focus()
 	}
 })
+//퇴직일자 예외처리
 })
+document.querySelector('.employee-box').querySelector('[name="resignationDate"]').addEventListener('change',function (e) {
+	let statusType = document.querySelector('.employee-box').querySelector('[name="statusType"]')
+	if (statusType.value != 'm3') {
+		e.target.value=""
+		statusType.focus()
+		alert("재직구분을 퇴직으로 지정해주세요")
+		
+	}
+})
+//재직상태 예외처리
+document.querySelector('.employee-box').querySelector('[name="empStatus"]').addEventListener('change',function (e) {
+	let statusType = document.querySelector('.employee-box').querySelector('[name="statusType"]')
+	if (statusType.value == 'm1') {
+		e.target.value=""
+		statusType.focus()
+		alert("재직구분을 다시 지정해주세요")
+		
+	}
+})
+//숫자포맷 인풋
+document.querySelectorAll('.number-format').forEach(ele => {
+	ele.addEventListener('change',function (ev) {
+		let value = ev.target.value
+		if (isNaN(Number(value))) {
+			ev.target.value = ""
+			ev.target.focus()
+			alert("숫자를 입력해 주세요.")
+			
+		}
+		if (Number(ev.target.value) < 0) {
+			ev.target.value = ""
+			ev.target.focus()
+			alert("-없이 입력해 주세요.")
+		}
+	})
+})
+

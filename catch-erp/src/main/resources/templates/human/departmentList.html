@@ -88,7 +88,7 @@
                                          <label for="inputPassword6" class="col-form-label">부서장</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input" name="name" aria-describedby="passwordHelpInline" >
+                                         <input type="text" id="inputPassword6" readonly class="form-control form-control-sm insert-input" name="name" aria-describedby="passwordHelpInline" >
                                          <input type="hidden" id="inputPassword6" class="form-control form-control-sm insert-input" name="managerCode"  aria-describedby="passwordHelpInline" >
                                        </div>
                                    </div> 
@@ -150,7 +150,7 @@
                                          <label for="inputPassword6" class="col-form-label">부서장</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" name="name" aria-describedby="passwordHelpInline" >
+                                         <input type="text" id="inputPassword6" readonly class="form-control form-control-sm modify-input" name="name" aria-describedby="passwordHelpInline" >
                                          <input type="hidden" id="inputPassword6" class="form-control form-control-sm modify-input" name="managerCode"  aria-describedby="passwordHelpInline" >
                                        </div>
                                    </div> 
@@ -162,7 +162,7 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary modify-save-Btn" data-bs-dismiss="modal">저장</button>
+                    <button type="button" class="btn btn-primary modify-save-Btn" >저장</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
@@ -258,6 +258,10 @@
 			    {
 			     header:'부서장',
 			     name:'name'
+			    },
+			    {
+			     header:'총원',
+			     name:'count'
 			    }
 			  ],
 			  data: [
