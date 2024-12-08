@@ -166,5 +166,6 @@
                 ,find_code(slip_state) as slip_state
         FROM sales_chit
         WHERE slip_state = #{slipState}
+        ORDER BY insert_date desc
     </select>
 </mapper>

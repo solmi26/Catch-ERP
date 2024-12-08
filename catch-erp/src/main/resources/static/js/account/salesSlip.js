@@ -242,6 +242,10 @@ document.addEventListener("DOMContentLoaded", function () {
     el: document.getElementById("s_acctGrid"),
     scrollX: true,
     scrollY: true,
+	pageOptions: {
+	  useClient: true,
+	  perPage: 12,
+	},
     header: { height: 40 },
     bodyHeight: 500,
     width: "auto",
@@ -332,6 +336,10 @@ document.addEventListener("DOMContentLoaded", function () {
     el: document.getElementById("s_clientGrid"),
     scrollX: true,
     scrollY: true,
+	pageOptions: {
+	  useClient: true,
+	  perPage: 12,
+	},
     header: { height: 40 },
     bodyHeight: 500,
     width: "auto",
@@ -488,6 +496,10 @@ document.addEventListener("DOMContentLoaded", function () {
     el: document.getElementById("salesGrid"),
     scrollX: true,
     scrollY: true,
+	pageOptions: {
+	  useClient: true,
+	  perPage: 12,
+	},
     header: { height: 40 },
     bodyHeight: 500,
     width: "auto",
