@@ -349,6 +349,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         clientGrid = new Grid({
             el: document.getElementById("clientGrid"),
+            pageOptions: {
+                useClient: true, perPage: 12,
+            },
             scrollX: true,
             scrollY: true,
             data: clientData,
@@ -455,6 +458,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         itemGrid = new Grid({
             el: document.getElementById("itemGrid"),
+            pageOptions: {
+                useClient: true, perPage: 12,
+            },
             scrollX: true,
             scrollY: true,
             data: [],
@@ -469,7 +475,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '품목코드',
                 name: 'itemCode',
                 align: "center",
-                width: 225,
+                width: 215,
                 whiteSpace: 'normal',
                 className: 'border',
                 renderer: {
@@ -480,7 +486,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '품목명',
                 name: 'itemName',
                 align: "center",
-                width: 225,
+                width: 215,
                 whiteSpace: 'normal',
                 className: 'border',
             },]
