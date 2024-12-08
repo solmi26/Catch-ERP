@@ -615,29 +615,26 @@ document.addEventListener("DOMContentLoaded", async function () {
     })
 
     //발주서 클릭시 선택건 제외하고 띄워주기
-    // let orderModalTriggerBtn = document.getElementById('orderModal');
-    // orderModalTriggerBtn.addEventListener('click', function () {
-    //     fetch('/ordersList')
-    //         .then(result => result.json())
-    //         .then(data => {
-	// 			if(document.getElementById("inputClientName").value == ''){
-	// 				alert("발주서를 조회할 거래처를 선택해주세요.");
-	// 				return;
-	// 			}
-	// 			console.log(data);
-    //             let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
-    //             let clientName = document.getElementById("inputClientName");
-    //             salesChit.getData().forEach(ele => {
-    //                 existentNo.push(ele.orderNo);
-    //             })
-    //             let filteredData = data.filter(ele => {
-    //                 return !existentNo.includes(ele.orderNo) && clientName == ele.clientName;
-    //             })
-    //             console.log(filteredData);
-    //             ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
-    //         })
-    //         .catch(error => console.log(error))
-    // })
+     let orderModalTriggerBtn = document.getElementById('orderModal');
+     orderModalTriggerBtn.addEventListener('click', function () {
+	 			if(document.getElementById("inputClientName").value == ''){
+	 				alert("발주서를 조회할 거래처를 선택해주세요.");
+	 				
+	 			}
+                 let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
+                 let clientName = document.getElementById("inputClientName").value;
+                 salesChit.getData().forEach(ele => {
+                     existentNo.push(ele.orderNo);
+                 })
+                 console.log(existentNo);
+                 console.log(clientName);
+                 console.log(ordersGrid.getData());
+                 let filteredData = ordersGrid.getData().filter(ele => {
+                     return !existentNo.includes(ele.orderNo) && clientName === ele.clientName;
+                 })
+                 console.log(filteredData);
+                 ordersGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
+     })
 
 	//발주서버튼 mouse over 이벤트
 	let orderBtn = document.getElementById('orderModal');
