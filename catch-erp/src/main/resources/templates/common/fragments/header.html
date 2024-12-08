@@ -42,7 +42,7 @@
             <div class="container-fluid" style="border-bottom:1px solid gray; ">
               
 
-              <ul class="navbar-nav topbar-nav align-items-center w-100 ms-auto " style="justify-content: flex-start; ">
+              <ul class="navbar-nav topbar-nav align-items-center w-100 ms-auto " style="justify-content: flex-start; box-shadow:0;">
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn" id="headerLi" style="margin-left:15px;">
                   <span class=""><a
                     class="nav-link dropdown-toggle do-hyeon-regular"
@@ -74,7 +74,7 @@
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn">
                   <a 
                   class="nav-link dropdown-toggle do-hyeon-regular"                  
-                  href="indexSales.html"
+                  href="/business/clientList"
                   style="font-size:18px; color:black; padding:40px;"
                   >
                   영업</a>
@@ -84,7 +84,7 @@
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret " style="margin-right:25px;">
                 	<div style=" width:55px; height:55px; border-radius:100%;">
-	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage} ? ${#authentication.principal.employeeLoginVO.employeeImage} : '/img/imageNo.jpg'" class="mt-1 avatar-img rounded-circle " name="profileImg" style="background-color:white; border:2px solid gray;" alt="이미지없다"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
+	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage} ? ${#authentication.principal.employeeLoginVO.employeeImage} : '/img/imageNo.jpg'" class="mt-1 avatar-img rounded-circle " name="profileImg" style="background-color:white; padding: 0.3em; border:1px solid black;" alt="이미지없다"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
               		</div>
                 </li>
               </ul>

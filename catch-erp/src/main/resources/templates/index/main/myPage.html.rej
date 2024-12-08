@@ -1,9 +1,0 @@
-diff a/catch-erp/src/main/resources/templates/index/main/myPage.html b/catch-erp/src/main/resources/templates/index/main/myPage.html	(rejected hunks)
-@@ -33,7 +33,6 @@
-                         data-bs-target="#myAttendance" type="button" role="tab" aria-controls="myAttendance"
-                         aria-selected="false">근태 조회</button>
-                 </li>
--                <li class="nav-item" role="presentation">
-                 <!-- <li class="nav-item" role="presentation">
-                     <button class="nav-link" id="#mySalary-tab" data-bs-toggle="tab" 
-                         data-bs-target="#mySalary" type="button" role="tab" aria-controls="mySalary"
