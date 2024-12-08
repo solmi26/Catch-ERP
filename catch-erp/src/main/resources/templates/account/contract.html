@@ -79,7 +79,7 @@
                 <span class="input-group-text">거래처</span>
                 <input type="text" class="form-control" placeholder="거래처 선택" name="c_clientName" id="c_clientInput" readonly="readonly" />
                 <input type="text" style="display: none" id="c_clientInput2" name="c_clientCode" />
-                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="c_openClientModal">
+                <button class="btn btn-outline-secondary" type="button" id="c_openClientModal">
                   <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
                 </button>
               </div>
@@ -124,7 +124,7 @@
                 <span class="input-group-text">담당자</span>
                 <input type="text" class="form-control" placeholder="계약 담당자 선택" name="c_empName" id="c_empName" readonly="readonly" />
                 <input type="text" style="display: none" id="c_empCode" name="c_empCode" />
-                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#empModal" id="c_openEmpModal">
+                <button class="btn btn-outline-secondary" type="button" id="c_openEmpModal">
                   <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
                 </button>
               </div>
@@ -151,18 +151,8 @@
               </div>
             </div>
           </div>
-
-          <!-- 버튼 구역 -->
-          <div class="grid-controls">
-            <!-- 버튼 그룹 (그리드 위 왼쪽) -->
-            <div class="btn-group left">
-              <button type="button" class="btn btn-success appendRowBtn" id="add-item-btn">+ 항목 추가</button>
-              <button type="button" class="btn btn-danger deleteRowBtn" id="delete-item-btn">- 선택 삭제</button>
-              <button type="button" class="btn btn-secondary" id="resetBtn">다시 작성</button>
-            </div>
-
-          </div>
-
+          	  <br>
+              <button type="button" class="btn btn-secondary" id="resetBtn" hidden>다시 작성</button>
           <!-- 그리드 -->
           <div id="grid"></div>
         </form>
@@ -172,9 +162,12 @@
           <!-- 모달 본문 끝. -->
           
           <!-- 모달 푸터 -->
-          <div class="modal-footer">
+          <div class="modal-footer justify-content-between">
+          	<p class="msg"><small>※ 항목의 추가나 삭제가 필요한 경우, 계약 상태를 변경한 후 새 계약으로 등록해주세요.</small></p>
+            <div>
             <button type="button" class="btn btn-success" id="updateBtn">수정</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
           </div>
         </div>
       </div>
@@ -183,7 +176,7 @@
     
     
     <!-- 거래처 검색 모달 HTML -->
-    <div class="modal fade" id="c_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade bg-dark bg-opacity-50" id="c_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -201,7 +194,7 @@
     </div>
 
     <!-- 담당자 검색 모달 HTML -->
-    <div class="modal fade" id="c_empModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade bg-dark bg-opacity-50" id="c_empModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -221,8 +214,6 @@
     </div>
      <button hidden id="save-btn"></button>
 
-	 <script th:src="@{/js/common/appendRowBtn.js}"></script>
-    <script th:src="@{/js/common/deleteRowBtn.js}"></script>
     <script th:src="@{/js/account/contractInsert.js}"></script>
     <script th:src="@{/js/account/contract.js}"></script>
   </body>

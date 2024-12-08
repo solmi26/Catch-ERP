@@ -235,16 +235,12 @@ document.addEventListener("DOMContentLoaded", function () {
           return response.text();
         })
         .then((result) => {
-          alert("수정 성공: " + result);
+			alert("수정이 완료되었습니다.");
+			conModal.hide();
 
-  		// 그리드 데이터 초기화
-          grid.resetData([{}]);
-          
-          // 폼 초기화
-          document.getElementById("contractForm").reset();
-          
-          // 첨부파일 초기화
-          document.getElementById("attachment-file").value = "";
+			// 수정 시 그리드 다시 로드
+			loadGridData();
+			
         })
         .catch((error) => {
           console.error("Error:", error);
