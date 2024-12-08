@@ -239,7 +239,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((result) => {
 			alert("수정이 완료되었습니다.");
 			conModal.hide();
-			document.getElementById("attachment-file").value = "";
+			document.getElementById("attachment-file").value = ""; // 파일 필드 초기화
+			document.getElementById("attachment-url").dataset.deleted = "false"; // 삭제 플래그 초기화
 			
 			// 수정 시 그리드 다시 로드
 			loadGridData();
@@ -259,4 +260,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	    document.getElementById("attachment-url").dataset.deleted = "true"; // 삭제 플래그 설정
 	});
 
+	// 모달이 닫힐 때 초기화
+	conModalElement.addEventListener("hidden.bs.modal", function () {
+	    document.getElementById("attachment-file").value = "";
+	    document.getElementById("attachment-url").value = "";
+	    document.getElementById("attachment-url").dataset.deleted = "false"; // 삭제 플래그 초기화
+	});
 });

@@ -89,7 +89,7 @@ public class ContractController {
                 if (existingFile.exists()) {
                     existingFile.delete(); // 기존 파일 삭제
                 }
-
+                
                 contractVO.setUrl(null); // URL 제거
             }
         }
@@ -120,6 +120,9 @@ public class ContractController {
 	        String dbFilePath = folderPath.replace(File.separator, "/") + "/" + originalFilename;
 	        contractVO.setUrl(dbFilePath);
 		}
+		
+	    // 상태 초기화
+	    contractVO.setDeleted(false);
 		
 		// DB에 저장
 	   conService.updateContract(contractVO);
