@@ -10,6 +10,20 @@
 */
 
 
+// 필수 값 빨간 * 표시
+class RequiredColumnHeader {
+  constructor(props) {
+    const columnInfo = props.columnInfo; // 해당 컬럼의 정보
+    const el = document.createElement('div');
+    el.className = 'msg'; // 필요한 경우 스타일 클래스 지정
+    el.innerHTML = `${columnInfo.header} <span style="color: red;">*</span>`; // 헤더에 HTML 추가
+    this.el = el;
+  }
+
+  getElement() {
+    return this.el; // 생성된 엘리먼트를 반환
+  }
+}
 
 
 

@@ -80,7 +80,7 @@
               <!-- 전표일자 -->
               <div class="col-md-4">
                 <div class="input-group input-group-sm">
-                  <span class="input-group-text">전표일자</span>
+                  <span class="input-group-text">전표일자&nbsp;<span class="msg">*</span></span>
                   <input type="date" class="form-control" name="s_date" />
                 </div>
               </div>
@@ -108,7 +108,7 @@
               <!-- 거래처 -->
               <div class="col-md-4">
                 <div class="input-group input-group-sm">
-                  <span class="input-group-text">거래처</span>
+                  <span class="input-group-text">거래처&nbsp;<span class="msg">*</span></span>
                   <input type="text" class="form-control" placeholder="거래처 선택" name="s_clientName" id="s_clientInput" readonly="readonly" />
                   <input type="text" style="display: none" id="s_clientInput2" name="s_clientCode" />
                   <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clientModal" id="s_openClientModal">
@@ -134,7 +134,7 @@
               <!-- 계정명 -->
               <div class="col-md-4">
                 <div class="input-group input-group-sm">
-                  <span class="input-group-text">계정명</span>
+                  <span class="input-group-text">계정명&nbsp;<span class="msg">*</span></span>
                   <input type="text" class="form-control" placeholder="회계계정 선택" name="s_acctName" id="s_acctInput" readonly="readonly" />
                   <input type="text" style="display: none" id="s_acctInput2" name="s_acctCode" />
                   <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#acctModal" id="s_openAcctModal">
@@ -149,14 +149,14 @@
               <!-- 공급가액 -->
               <div class="col-md-4">
                 <div class="input-group input-group-sm">
-                  <span class="input-group-text color">공급가액</span>
+                  <span class="input-group-text color">공급가액(원)&nbsp;<span class="msg">*</span></span>
                   <input type="text" class="form-control" placeholder="공급가액" name="s_price" id="s_price" />
                 </div>
               </div>
               <!-- 부가세 -->
               <div class="col-md-4">
                 <div class="input-group input-group-sm">
-                  <span class="input-group-text color">부가세</span>
+                  <span class="input-group-text color">부가세(원)&nbsp;<span class="msg">*</span></span>
                   <input type="text" class="form-control" placeholder="부가세" name="s_vat" />
                 </div>
               </div>
@@ -166,7 +166,7 @@
             <div class="row mb-3">
               <div class="col-md-8">
                 <div class="input-group input-group-sm">
-                  <span class="input-group-text color">합계</span>
+                  <span class="input-group-text color">합계(원)&nbsp;<span class="msg">*</span></span>
                   <input type="text" class="form-control" name="s_amount" id="s_amount" placeholder="합계" />
                 </div>
               </div>
@@ -206,6 +206,7 @@
           </div>
           <div class="modal-body p-0">
             <div id="s_clientGrid"></div>
+            <div id="pagination_s1" class="tui-pagination"></div>
           </div>
           <div class="modal-footer justify-content-between">
             <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
@@ -224,6 +225,7 @@
           </div>
           <div class="modal-body p-0">
             <div id="s_acctGrid"></div>
+            <div id="pagination_s2" class="tui-pagination"></div>
           </div>
           <div class="modal-footer justify-content-between">
             <p class="msg"><small>※ 회계코드를 클릭하여 입력해주세요.</small></p>
@@ -249,6 +251,7 @@
             </div>
 
             <div id="salesGrid"></div>
+            <div id="pagination_s3" class="tui-pagination"></div>
           </div>
           <div class="modal-footer justify-content-between">
             <div>
