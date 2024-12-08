@@ -78,7 +78,24 @@ public class ContractController {
 	@ResponseBody // HTTP 응답으로 문자열 반환.
 	public String updateContract(@RequestPart("contract") ContractItemVO contractVO,
 	        					 @RequestPart(value = "file", required = false) MultipartFile file) {
-	   // 파일 업로드 처리
+       
+        // 파일 삭제 처리
+        if (Boolean.TRUE.equals(contractVO.getDeleted())) {
+            ContractItemVO existingContract = conService.contractInfo(contractVO.getConNo());
+            if (existingContract != null && existingContract.getUrl() != null) {
+                String existingFilePath = uploadPath + File.separator + existingContract.getUrl().replace("/", File.separator);
+                File existingFile = new File(existingFilePath);
+
+                if (existingFile.exists()) {
+                    existingFile.delete(); // 기존 파일 삭제
+                }
+
+                contractVO.setUrl(null); // URL 제거
+            }
+        }
+
+    	
+    	// 파일 업로드 처리
 		if(file != null && !file.isEmpty()) {  // 파일이 존재하고 비어 있지 않은 경우에 처리.
 			// 날짜별 디렉토리 생성
 			String folderPath = makeFolder();
@@ -96,6 +113,8 @@ public class ContractController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
 			
 			// VO에 DB에 저장할 파일 경로 설정
 	        String dbFilePath = folderPath.replace(File.separator, "/") + "/" + originalFilename;

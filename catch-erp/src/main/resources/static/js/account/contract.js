@@ -210,6 +210,8 @@ document.addEventListener("DOMContentLoaded", function () {
         summary: document.getElementById("description").value, // 적요
         writer: "차은우", // 작성자
         detailContraceVO: grid.getData(), // 그리드 데이터를 detailContraceVO로 추가(디테일 테이블 추가용)
+		url: document.getElementById("attachment-url").value || null, // URL 값 사용
+		deleted: document.getElementById("attachment-url").dataset.deleted === "true", // 삭제 여부 플래그
       };
 
       const fileInput = document.getElementById("attachment-file");
@@ -237,7 +239,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((result) => {
 			alert("수정이 완료되었습니다.");
 			conModal.hide();
-
+			document.getElementById("attachment-file").value = "";
+			
 			// 수정 시 그리드 다시 로드
 			loadGridData();
 			
@@ -247,4 +250,13 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("수정 실패: " + error.message);
         });
     });
+	
+	// 삭제 버튼 클릭 이벤트
+	document.getElementById("delete-attachment").addEventListener("click", function () {
+	    // 첨부파일 관련 필드 초기화
+	    document.getElementById("attachment-file").value = "";
+	    document.getElementById("attachment-url").value = ""; // URL도 초기화
+	    document.getElementById("attachment-url").dataset.deleted = "true"; // 삭제 플래그 설정
+	});
+
 });
