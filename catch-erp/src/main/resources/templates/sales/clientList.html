@@ -14,10 +14,11 @@
           cursor: pointer;
         }
     </style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/luxon@2.3.1/build/global/luxon.min.js"></script>
 </head>
 
 <body>
-    <div class="bg-white shadow-sm rounded" style="padding: 20px;">
+    <div class="bg-white shadow-sm rounded kwBorder" style="padding: 20px;">
 	    <!-- Search Section -->
 	    <div class="border-bottom pb-3 mb-4">
 	      <h1>거래처 리스트</h1>
@@ -266,7 +267,7 @@
                                 <div class="mb-3 row tab-pane fade" id="contract-list" role="tabpanel" aria-labelledby="contract-tab">
                                     <!-- 계약품목 탭 내용 -->
                                     <div class="col-sm-9">
-                                        <div class="input-group">
+                                        <!--<div class="input-group">
                                             <select class="form-select form-control" id="sort-field">
                                                 <option value="conName" selected>계약 명</option>
                                                 <option value="conDate">계약 일자</option>
@@ -282,7 +283,7 @@
                                             </select>
                                     
                                             <button class="btn btn-outline-secondary" id="sort-trigger">정렬</button>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div id="contractGrid"></div> <!-- modal tabulator 사용 -->
                                 </div>
@@ -431,10 +432,7 @@
             return grid;
         }
         
-        //makeClientContractTabulator Sort Trigger
-        document.getElementById("sort-trigger").addEventListener("click", function(){
-            table.setSort(fieldEl.options[fieldEl.selectedIndex].value, dirEl.options[dirEl.selectedIndex].value);
-        });
+        
 
         //ClientItemToastGrid img custom renderer
         class CustomImgRenderer {
@@ -572,6 +570,18 @@
                 getChild.removeChild(getChild.childNodes[1]);
             }
         }
+        //makeClientContractTabulator Sort Trigger
+        /*document.getElementById("sort-trigger").addEventListener("click", function() {
+            // 선택한 필드와 정렬 방향 가져오기
+            const sortField = fieldEl.options[fieldEl.selectedIndex].value;
+            const sortDir = dirEl.options[dirEl.selectedIndex].value;
+
+            // Tabulator Grid 정렬 설정
+            contractGrid.setSort(sortField, sortDir);
+
+            // 그리드 강제 업데이트
+            contractGrid.redraw(); // 필요 시 강제로 그리드 다시 그리기
+        });*/
 
         function fetchClientCode(clientCode) {
             console.log(clientCode);
