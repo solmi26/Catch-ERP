@@ -87,12 +87,10 @@
 	  .kwn {
 	  	border-radius: 5px;
 	    transition: background-color 0.3s ease;
-	   
-	    
 	  }
 		
 	  .kwn:hover {
-		background-color: #E3F6CE;
+		background-color: #8AA65B;
 	   }
 	  
 	  /* 구글폰트 적용 */

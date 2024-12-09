@@ -122,6 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.getElementById("c_empCode").value = result.emoployeeCode;
 		document.getElementById("description").value = result.summary;
 		document.getElementById("attachment-url").value = result.url;
+		document.getElementById("attachment-url-up").value = result.updateUrl;
+		document.getElementById("fileName").href = "/fileDownload?file=" + result.updateUrl + `&fileName=${result.url}`;
+		
 		// 하단 grid 요소에 resetData메서드를 사용해서 항목 추가
 		// resetData 사용법 참조: https://github.com/nhn/tui.grid/blob/master/packages/toast-ui.grid/docs/ko/getting-started.md#데이터-입력하기
 		grid.resetData(result.detailContraceVO);
@@ -218,6 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
         summary: document.getElementById("description").value, // 적요
         writer: "차은우", // 작성자
         detailContraceVO: grid.getData(), // 그리드 데이터를 detailContraceVO로 추가(디테일 테이블 추가용)
+        updateUrl : document.getElementById("attachment-url-up").value || null,
 		url: document.getElementById("attachment-url").value || null, // URL 값 사용
 		deleted: document.getElementById("attachment-url").dataset.deleted === "true", // 삭제 여부 플래그
       };

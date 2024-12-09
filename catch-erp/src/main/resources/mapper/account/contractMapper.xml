@@ -22,6 +22,7 @@
                 ,summary
                 ,url
                 ,writer
+                ,update_url
        		 )
 	        VALUES(
 	            #{conNo}
@@ -36,6 +37,7 @@
 	            ,#{summary}
 	            ,#{url}
 	            ,#{writer}
+	            ,#{updateUrl}
 	        )	
 	</insert>
 	
@@ -78,6 +80,7 @@
                 ,summary  =  #{summary}
                 ,url = #{url}
                 ,writer = #{writer}
+                ,update_url = #{updateUrl}
 		WHERE con_no = #{conNo}
 	</update>
 	
@@ -149,6 +152,7 @@
                ,emoloyee_name
                ,summary
                ,url
+               ,update_url
                ,writer
          FROM contract c
          WHERE con_no = #{no}
