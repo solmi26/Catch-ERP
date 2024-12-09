@@ -6,35 +6,43 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 출금계좌 테이블
     function makeReceivableTabulator(accountList) {
         let accList = new Tabulator("#example-table", {
-            layout:"fitColumns",
-            pagination:"local",
+            layout: "fitColumns",
+            pagination: "local",
             data: accountList,
-            paginationSize:8,
-            movableColumns:true,
-            paginationCounter:"rows",
-            paginationCounter:function(pageSize, currentRow, currentPage, totalRows, totalPages){
+            paginationSize: 8,
+            movableColumns: true,
+            paginationCounter: "rows",
+            paginationCounter: function (pageSize, currentRow, currentPage, totalRows, totalPages) {
                 return "";
             },
-            langs:{
-                "default":{
-                    "pagination":{
-                        "first":"처음",
-                        "first_title":"처음으로",
-                        "last":"끝",
-                        "last_title":"마지막으로",
-                        "prev":"이전",
-                        "prev_title":"이전으로",
-                        "next":"다음",
-                        "next_title":"다음으로",
-                        "all":"전체",
+            langs: {
+                "default": {
+                    "pagination": {
+                        "first": "처음",
+                        "first_title": "처음으로",
+                        "last": "끝",
+                        "last_title": "마지막으로",
+                        "prev": "이전",
+                        "prev_title": "이전으로",
+                        "next": "다음",
+                        "next_title": "다음으로",
+                        "all": "전체",
                     }
                 }
             },
-            columns:[
-                {title:"계좌코드", field:"bacctCode", visible:false},
-                {title:"계좌번호", field:"bacctNo", width:220, sorter:"string", headerFilter:"input"},
-                {title:"은행명", field:"bankName", width:220, sorter:"string", headerFilter:"input"},
-                {title:"계좌명", field:"bacctName", width:330, sorter:"string", headerFilter:"input"},
+            columns: [{title: "계좌코드", field: "bacctCode", visible: false}, {
+                title: "계좌번호",
+                field: "bacctNo",
+                width: 220,
+                sorter: "string",
+                headerFilter: "input"
+            }, {title: "은행명", field: "bankName", width: 220, sorter: "string", headerFilter: "input"}, {
+                title: "계좌명",
+                field: "bacctName",
+                width: 330,
+                sorter: "string",
+                headerFilter: "input"
+            },
             ],
         });
         return accList;
@@ -99,11 +107,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 background: '#f8f9fa', text: 'black'
             }, focused: {
                 background: '#f8f9fa', border: '#f64a4a'
-            }, evenRow: {
-                background: 'white'
-            }, oddRow: {
-                background: 'white'
-            }
+            },
         }
     });
 
@@ -341,7 +345,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 250,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border'
             }, {
                 header: '창고',
@@ -360,8 +363,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '수량',
                 name: 'quantity',
-                editor: 'text',
-                defaultValue : 1,
+                defaultValue: 1,
+                editor: "text",
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -371,7 +374,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '총 금액',
                 name: 'totalPrice',
-                editor: 'text',
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
@@ -385,7 +387,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '총 금액',
                 name: 'totalPriceHidden',
                 hidden: true,
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -395,7 +396,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '단가',
                 name: 'price',
-                editor: 'text',
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
@@ -408,7 +408,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                editor: 'text',
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
@@ -422,7 +421,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '공급가액',
                 name: 'supplyPriceHidden',
                 hidden: true,
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -432,7 +430,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                editor: 'text',
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
@@ -445,7 +442,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vatHidden',
-                editor: 'text',
                 hidden: true,
                 align: "center",
                 width: 150,
@@ -460,7 +456,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const columnName = ev.columnName;
 
-            if(columnName === 'quantity'){
+            if (columnName === 'quantity') {
                 let quantity = ev.value;
 
                 // 총 금액 증가
@@ -480,8 +476,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 purchaseChit.setValue(ev.rowKey, 'vat', sumVat)
             }
 
-
-
         })
 
         return purchaseChit;
@@ -498,6 +492,37 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.setTimeout(function () {
             itemListGrid.refreshLayout();
         }, 200)
+    })
+
+    //품목 클릭시 선택건 제외하고 띄워주기
+    let itemModalTriggerBtn = document.getElementById('contractItemModal');
+    itemModalTriggerBtn.addEventListener('click', function () {
+        if (document.getElementById("inputClientName").value == '') {
+            alert("품목을 조회할 거래처를 선택해주세요.");
+            return;
+        }
+        let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
+        let clientName = document.getElementById("inputClientName").value;
+        purchaseChit.getData().forEach(ele => {
+            existentNo.push(ele.itemCode);
+        })
+        let filteredData = itemListGrid.getData().filter(ele => {
+            return !existentNo.includes(ele.itemCode) && clientName === ele.clientName;
+        })
+        itemListGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
+        console.log(itemListGrid.getData());
+        console.log(filteredData);
+    })
+
+    //발주서버튼 mouse over 이벤트
+    let itemBtn = document.getElementById('contractItemModal');
+    itemBtn.addEventListener('mouseover', function () {
+        if (document.getElementById("inputClientName").value == '') {
+            itemBtn.removeAttribute('data-bs-toggle');
+        }
+        if (document.getElementById("inputClientName").value != '') {
+            itemBtn.setAttribute("data-bs-toggle", "modal")
+        }
     })
 
     let itemListGrid;
@@ -523,20 +548,23 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
             data: [],
             columns: [{
-                header: '품목코드', name: 'itemCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
+                header: '품목코드',
+                name: 'itemCode',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className: 'border'
             }, {
                 header: '품목명',
                 name: 'itemName',
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 filter: 'select'
             }, {
                 header: '재고수량',
                 name: 'stocksQuantity',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -546,7 +574,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '총 금액',
                 name: 'totalPrice',
-                editor: 'text',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -560,7 +587,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '총 금액',
                 name: 'totalPriceHidden',
                 hidden: true,
-                editor: 'text',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -570,7 +596,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '단가',
                 name: 'price',
-                editor: 'text',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -583,7 +608,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -596,7 +620,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                editor: 'text',
                 hidden: true,
                 align: "center",
                 width: 150,
@@ -607,7 +630,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -620,7 +642,16 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                editor: 'text',
+                hidden: true,
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+            }, {
+                header: '거래처명',
+                name: 'clientName',
                 hidden: true,
                 align: "center",
                 width: 150,
@@ -681,6 +712,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     //         .then(data => whGrid.resetData(data))
     //         .catch(error => alert("창고 조회 실패입니다."))
     // }, 200)
+
+    let inputClientName = document.getElementById('inputClientName');
+
+    inputClientName.addEventListener('change', () => {
+        let inputClientNameValue = document.getElementById('inputClientName').value;
+        if (inputClientNameValue !== '') {
+            window.setTimeout(function () {
+                fetch('/purchase/contractItem/' + inputClientNameValue)
+                    .then(result => result.json())
+                    .then(data => itemListGrid.resetData(data))
+                    .catch(error => console.log(error))
+            }, 200)
+        }
+    })
 
     //발주서 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
     let itemInputBtn = document.getElementById('itemInputBtn');
@@ -776,6 +821,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 그리드 정보
         insertPurchase.purchaseHistories = purchaseChit.getData();
 
+        // 빈 값 확인하기 - 마스터 정보
+        if (insertPurchase.clientName === '') {
+            alert('거래처명을 입력하세요');
+            return;
+        }
+
+        if (insertPurchase.employeeName === '') {
+            alert('담당자명을 입력하세요.');
+            return;
+        }
+
+        if (insertPurchase.witBacct === '') {
+            alert('입금계좌를 입력하세요.')
+            return;
+        }
+
+        if (insertPurchase.purchaseHistories.length === 0) {
+            alert('품목을 불러와 작성해주세요.')
+            return;
+        }
+
         // 부가세, 공급가액 합계 계산
         let vat = 0;
         let supplyPrice = 0;
@@ -800,6 +866,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             .then(result => {
                 if (result.status === 200) {
                     alert("저장 완료");
+                    location.reload();
                 }
             })
             .then(error => {
@@ -808,19 +875,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     })
 
-    let inputClientName = document.getElementById('inputClientName');
-
-    inputClientName.addEventListener('change', () => {
-        let inputClientNameValue = document.getElementById('inputClientName').value;
-        if(inputClientNameValue !== '') {
-            window.setTimeout(function () {
-                fetch('/purchase/contractItem/' + inputClientNameValue)
-                    .then(result => result.json())
-                    .then(data => itemListGrid.resetData(data))
-                    .catch(error => console.log(error))
-            }, 200)
+    // onGridMounted 이벤트 사용
+    setTimeout(() => {
+        const wh = document.querySelector('#purchaseChit .tui-grid-header-area .tui-grid-cell[data-column-name="whCode"]');
+        const quantity = document.querySelector('#purchaseChit .tui-grid-header-area .tui-grid-cell[data-column-name="quantity"]');
+        if (wh) {
+            wh.innerHTML = '창고<span style="color: red;">*</span>';
         }
-    })
+
+        if(quantity) {
+            quantity.innerHTML = '수량<span style="color: red;">*</span>';
+        }
+    }, 100);
 
     const myModal = new bootstrap.Modal('#accountSearchModal')
 });
