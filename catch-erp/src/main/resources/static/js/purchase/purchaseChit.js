@@ -201,6 +201,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
                 document.getElementById('inputClientName').value = clientRowData.clientName;
                 document.getElementById('inputClientCode').value = clientRowData.clientCode;
+
+                const ChangeEvent = new Event("change");
+                document.getElementById('inputClientName').dispatchEvent(ChangeEvent);
             }
         });
 
@@ -497,13 +500,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 200)
     })
 
-    window.setTimeout(function () {
-        fetch('/purchase/contractItem')
-            .then(result => result.json())
-            .then(data => itemListGrid.resetData(data))
-            .catch(error => console.log(error))
-    }, 200)
-
     let itemListGrid;
     const initItemListGrid = () => {
 
@@ -519,8 +515,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             rowHeaders: [{
                 type: 'checkbox', header: `
                       <span class="custom-input">
-                          <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-                          <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+                          <input type="checkbox" id="all-checkbox3" class="hidden-input" name="_checked" />
+                          <label for="all-checkbox3" class="checkbox selectCheck">✔</label>
                       </span>`, renderer: {
                     type: gridCheckbox
                 }
@@ -810,6 +806,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                 console.log("판매전표 에러 : ", error)
             })
 
+    })
+
+    let inputClientName = document.getElementById('inputClientName');
+
+    inputClientName.addEventListener('change', () => {
+        let inputClientNameValue = document.getElementById('inputClientName').value;
+        if(inputClientNameValue !== '') {
+            window.setTimeout(function () {
+                fetch('/purchase/contractItem/' + inputClientNameValue)
+                    .then(result => result.json())
+                    .then(data => itemListGrid.resetData(data))
+                    .catch(error => console.log(error))
+            }, 200)
+        }
     })
 
     const myModal = new bootstrap.Modal('#accountSearchModal')

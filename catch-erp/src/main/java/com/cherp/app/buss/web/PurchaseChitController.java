@@ -30,9 +30,9 @@ public class PurchaseChitController {
 
     // 구매전표 등록을 위한 품목 조회
 	@ResponseBody
-	@GetMapping("purchase/contractItem")
-	public List<ContractItemVO> selectContractItem(){
-		return purchaseChitService.selectContractItem();
+	@GetMapping("purchase/contractItem/{clientName}")
+	public List<ContractItemVO> selectContractItem(@PathVariable("clientName") String clientName){
+		return purchaseChitService.selectContractItem(clientName);
 	}
 
 	// 수량에 맞게 가격 변화

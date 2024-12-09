@@ -149,11 +149,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 height: 40,
                 position: 'bottom', // or 'top'
                 columnContent: {
-                    saleslipNo: {
-                        template: function (valueMap) {
-                            return `MIN: ${Math.floor(valueMap.min).toLocaleString()}<br>MAX: ${Math.floor(valueMap.max).toLocaleString()}`;
-                        }
-                    },
                     deliveryPrice: {
                         template: function (valueMap) {
                             return `평균 금액: ${Math.floor(valueMap.avg).toLocaleString()}<br>총 금액: ${Math.floor(valueMap.sum).toLocaleString()}`;

@@ -248,19 +248,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
 
             }, {
-                header: '출고단가',
-                name: 'restockingPrice',
-                editor: 'text',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                }
-            }, {
                 header: '입고상태',
                 name: 'restockingStatus',
                 editor: 'text',
