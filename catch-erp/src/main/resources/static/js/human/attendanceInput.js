@@ -16,6 +16,14 @@ document.querySelector(".addBtn").addEventListener('click',function() {
 
 let currentTarget = null;
 
+//그리드 크기 새로고침
+window.addEventListener(`resize`, function() {
+		window.setTimeout(function(){
+			grid.refreshLayout();
+			}, 200)     	  
+    });
+
+
 //인사발령입력 테이블의 이벤트
 grid.on('click',function (ev) {
 	console.log(ev)

@@ -19,7 +19,10 @@ public interface EmployeeMapper {
 	public int deleteEmployee (String[] employeeCode);//인사기본삭제
 	public int deleteEmployeeDetail (String[] employeeCode);//인사세부정보삭제
 	public int deleteEmployeeSalary (String[] employeeCode);//인사급여정보삭제
-	public int deleteFixed (String[] employeeCode);
+	public int deleteFixed (String[] employeeCode); //고정수당삭제
+	public int deleteAttHistory (String[] employeeCode);//근태기록삭제
+	public int deleteSalaryPayroll (String[] employeeCode);//급여명세서삭제
+	public int deleteAllowanceHistory (String[] employeeCode);//수당기록삭제
 	
 	
 	public int updateStatusType (List<EmployeeVO> employee); //사원다건 퇴직처리

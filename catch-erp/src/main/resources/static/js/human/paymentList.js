@@ -14,7 +14,13 @@ grid.on('click',function (ev) {
 		
 	}
 })
-
+//그리드 크기 새로고침
+window.addEventListener(`resize`, function() {
+		window.setTimeout(function(){
+			grid.refreshLayout();
+			}, 200)     	  
+    });
+    
 //급여수정내역 저장버튼 클릭시
 //#region
 document.querySelector('.update-Btn').addEventListener('click',function () {

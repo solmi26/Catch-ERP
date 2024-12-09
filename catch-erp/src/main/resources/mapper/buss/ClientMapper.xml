@@ -106,17 +106,20 @@
 	</select>
 	
 	<select id="selectAllClientContractItem" resultType="com.cherp.app.buss.vo.ContractVO">
-		SELECT   ITEM_NAME
-				,PRICE
-				,STOCKS_QUANTITY
-				,SUPPLY_PRICE
-				,VAT
-				,CON_NO
-				,ITEM_CODE
-				,TOTAL_PRICE
-				,IMAGE
-		FROM    CONTRACT_ITEM
-		WHERE   CON_NO = #{conNO}
+		SELECT   ci.ITEM_NAME
+		        ,ci.PRICE
+		        ,ci.STOCKS_QUANTITY
+		        ,ci.SUPPLY_PRICE
+		        ,ci.VAT
+		        ,ci.CON_NO
+		        ,ci.ITEM_CODE
+		        ,ci.TOTAL_PRICE
+		        ,ci.IMAGE
+		FROM    CONTRACT_ITEM ci JOIN CONTRACT ct
+		                         ON   ci.CON_NO = ct.CON_NO
+		                         JOIN CLIENT c
+		                         ON   ct.client_code = c.client_code
+		WHERE   c.client_code = #{clientCode}
 	</select>
 	<insert id="insertClient" parameterType="com.cherp.app.acct.vo.ClientPsVO">
 		INSERT INTO client
