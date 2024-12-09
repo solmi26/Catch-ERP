@@ -465,10 +465,8 @@ function dateFormatter (date) {
 	let result = `${year}-${month}-${day}`
 	return result;
 }
-/*		window.setTimeout(function(){
-		allowanceGrid.refreshLayout();
-		}, 200)
-		*/
+
+		
 //폼 유효성 검사
 function formValidity() {
 	let flag =true;
@@ -564,5 +562,15 @@ document.querySelectorAll('.number-format').forEach(ele => {
 			alert("-없이 입력해 주세요.")
 		}
 	})
+})
+
+//주민번호 예외처리
+document.querySelector('[name="identityNo"]').addEventListener('change',function (ev) {
+	let leng = ev.target.value.length
+	if (leng != 13) {
+		ev.target.value = ""
+		alert("주민등록번호 형식에 맞춰주세요.")
+		ev.target.focus()
+	}
 })
 

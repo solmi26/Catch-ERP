@@ -6,17 +6,19 @@
 
 <th:block th:fragment="footer">
         
-	  <footer class="d-flex flex-wrap  align-items-center py-3 my-4 border-top" style="height:100px;">
-	    <div class="col-md-4 d-flex align-items-center">
-	      <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-	        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-	      </a>
-	      <span class="mb-3 mb-md-0 text-muted">&copy; Catch ERP </span>
+	  <footer>
+	    <div class="d-flex flex-wrap  justify-content-center align-items-center border-top" style="height:100px;">
+		    <div class="col-md-1.5 d-flex align-items-center" style="margin-right:10px;">
+		      <!-- <a href="/" class="mb-3 me-2 mb-md-1 text-muted text-decoration-none lh-1"> -->
+		        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg> <!-- 로고들어가면될듯 -->
+		      <!-- </a> -->
+		      <span class="mb-3 mb-md-0 text-muted" style="font-size:15px;">&copy; Catch ERP </span>
+		    </div>
+		
+		    <ul class="nav col-md-1 justify-content-start list-unstyled d-flex" >
+		      <li class="ms-2"><a class="text-muted" href="https://github.com/KunWooNam/Catch-ERP" ><i class="bi bi-github" style="width:50px; height:50px;"></i></a></li>
+		    </ul>
 	    </div>
-	
-	    <ul class="nav col-md-4 justify-content-start list-unstyled d-flex">
-	      <li class="ms-3"><a class="text-muted" href="https://github.com/KunWooNam/Catch-ERP"><i class="bi bi-github"></i></a></li>
-	    </ul>
 	  </footer>
 
 </th:block>

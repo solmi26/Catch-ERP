@@ -354,6 +354,7 @@
 	    const grid = new tui.Grid({
 	        el: document.getElementById('grid'),
 	        width:'auto',
+	        bodyHeight:401,
 	        rowHeaders: [
 	            {
 	              type: 'checkbox',
@@ -368,6 +369,10 @@
 	              }
 	            }
 	          ],
+	          pageOptions: {
+	        	  useClient: true,
+	              perPage: 10
+	          }, 
 	        scrollX: true,
 	        scrollY: false,
 	        columns: [

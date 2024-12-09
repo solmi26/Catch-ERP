@@ -86,7 +86,7 @@
             el.src = String(src);
 
             this.el = el;
-            el.style = 'height:75px;'
+            el.style = 'height:60px; width:60px; padding: 0 2px;'
             this.render(props);
         }
 
@@ -141,12 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
             focused: {
                 background: '#f8f9fa',
                 border: '#f64a4a'
-            },
-            evenRow: {
-                background: 'white'
-            },
-            oddRow: {
-                background: 'white'
             }
         }
     });
@@ -171,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	        header: { height: 40 },
 	        bodyHeight: 600,
 	        rowHeight: 80,
-	        width: '100%',
+	        //width: '100%',
 	        contextMenu: null,
 	       rowHeaders: [{
 	                type: 'rowNum',
@@ -194,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '계약번호',
 	                name: 'conNo',
 	                align: "center",
-	                width: 170,
+	                //width: 170,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                formatter: ({ value }) =>
@@ -206,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '품목코드',
 	                name: 'itemCode',
 	                align: "center",
-	                width: 175,
+	               // width: 175,
 	                whiteSpace: 'normal',
 	                filter: 'select'
 	            },
@@ -214,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '품목명',
 	                name: 'itemName',
 	                align: "center",
-	                width: 150,
+	               // width: 150,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                filter: 'select'
@@ -223,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					header: '상품이미지',
 	                name: 'image',
 	                align: "center",
-	                width: 100,
+	               // width: 100,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                renderer: {
@@ -235,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '현재수량(전체)',
 	                name: 'stocksQuantity',
 	                align: "center",
-	                width: 150,
+	               // width: 150,
 	                whiteSpace: 'normal',
 	                className:'border'
 	            },
@@ -243,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '거래처코드',
 	                name: 'clientCode',
 	                align: "center",
-	                width: 200,
+	               // width: 200,
 	                whiteSpace: 'normal',
 	                className:'border'
 	            },
@@ -251,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '거래처명',
 	                name: 'clientName',
 	                align: "center",
-	                width: 200,
+	                //width: 200,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                filter: 'select'
@@ -260,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	                header: '입고단가', //공급가액
 	                name: 'price',
 	                align: "right",
-	                width: 200,
+	               // width: 200,
 	                whiteSpace: 'normal',
 	                sortable: true,
 	                sortingType: 'desc',
@@ -339,21 +333,13 @@ document.addEventListener("DOMContentLoaded", function () {
 		  
 		}
 		
-		stockInqueryGrid.on('onGridMounted', function() {
-    // 대상 헤더 셀 선택
-    let redStar = document.querySelector("#inqueryGrid > div > div.tui-grid-content-area.tui-grid-no-scroll-y > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)");
-
-    if (redStar) {
-        // 기존 헤더 텍스트 가져오기
-        let originalText = redStar.textContent.trim();
-
-        // 앞 4글자 제외한 나머지 텍스트 가져오기
-        let updatedText = originalText.substring(4);
-
-        // 새로운 텍스트 설정
-        redStar.innerHTML = `<span style="color:red"> * </span><span>${updatedText}</span>`;
-    }
-});
+	stockInqueryGrid.on('onGridMounted', function() {
+    	// 대상 헤더 셀 선택
+	    let redStar = document.querySelector("#inqueryGrid > div > div.tui-grid-content-area.tui-grid-no-scroll-y > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)");
+		let originalText = redStar.textContent.trim();
+		let updatedText = originalText.substring(4);
+		redStar.innerHTML = `<span style="color:red"> * </span><span>${updatedText}</span>`;
+	});
 		
 		
 		
@@ -369,7 +355,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				.then(result=> {
 					let clientValue = result.clientName + '[' + result.clientCode + ']';
 					let contractPeriod = result.conSdate + '  ~  ' + result.conEdate;
-					document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
+					if(result.image != null){
+						document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
+					} else{
+						document.querySelector('img[name="itemImage"]').src = '/img/noImage.png';
+					}
 					setValueByName('clientNameAndCode', clientValue)
 					setValueByName('conNo', result.conNo)
 					setValueByName('itemCode', result.itemCode)
@@ -449,10 +439,60 @@ document.addEventListener("DOMContentLoaded", function () {
 		updateBtn.addEventListener('click',function(){
 			const newImgTag2 = document.getElementById('newImage');
 			if(newImgTag2.value === ''){
-				alert("변경하실 이미지 파일를 선택해주세요.");
-				return;
+				alert("변경하실 이미지 파일을 선택해주세요.")
+	            return;
 			}
 			
+			/*Swal.fire({
+	            title: "결제하시겠습니까?",
+	            text: `계좌번호 : ${row.getData().bacctNo} 은행명: ${row.getData().bankName}`,
+	            icon: "warning",
+	            showCancelButton: true,
+	            confirmButtonColor: "#3085d6",
+	            cancelButtonColor: "#d33",
+	            confirmButtonText: "결제",
+	            cancelButtonText: "취소"
+	          }).then((result) => {
+	            if (result.isConfirmed) {
+	              Swal.fire({
+	                title: "결제되었습니다",
+	                text: `계좌번호 : ${row.getData().bacctNo} 결제완료`,
+	                icon: "warning",
+	                confirmButtonText: "완료"
+	              }).then((result => {
+	                if(result.isConfirmed) {
+	                  // 여기서 DB업데이트가 실행되어야함
+	                  // 채무거래 테이블
+	                  
+	                  let bacctInfo = row.getData();
+	                  let arr = {
+	                    receivableList, bacctInfo
+	                  }
+	                  let receivables = {
+	                    method: 'POST',
+	                    body: JSON.stringify(arr),
+	                    headers: {
+	                        'Content-Type' : 'application/json'
+	                    }
+	                  };
+	                  fetch('/account/insertReceivableBalance', receivables)
+	                  // .then(result => result.json())
+	                  .then(result => {
+	                    console.log(result);
+	                    if(result==='success') {
+	                      location.reload(true);
+	                    } else {
+	                      alert("결제가 취소되었습니다.")
+	                    }
+	                  })
+	                }
+	              }))
+	            }
+	          });*/
+			 
+            
+	         
+				
 			let response = confirm("제품의 사진을 변경하시겠습니까?")
 			if(response){
 				let newImgTag = document.getElementById('newImage');				

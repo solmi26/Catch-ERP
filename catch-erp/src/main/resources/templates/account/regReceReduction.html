@@ -14,13 +14,13 @@
   </style>
 </head>
 <body>
-  <div class="bg-white shadow-sm rounded" style="padding: 20px;">
+  <div class="bg-white shadow-sm rounded kwBorder" style="padding: 20px;">
     <!-- Search Section -->
     <div class="border-bottom pb-3 mb-4">
       <h1>채권감소등록</h1>
     </div>
     <div class="card col-md-12">
-      <form class="bg-light p-4 rounded card-body" id="searchForm">
+      <form class="bg-light p-4 rounded card-body kwBorder" id="searchForm">
           <div class="row g-3">
               <div class="col-md-12">
                   <div class="row g-3">
@@ -113,9 +113,9 @@
                               <tfoot class="ledge-footer">
                                   <tr>
                                     <td colspan="3" style="text-align: center; font-weight: bold; color: red; font-size: 15px;" >누계</td>
-                                    <td id="totIncrease"></td>
-                                    <td id="totDecrease"></td>
-                                    <td id="totBalance"></td>
+                                    <td id="totIncrease" style="text-align: right;"></td>
+                                    <td id="totDecrease" style="text-align: right;"></td>
+                                    <td id="totBalance" style="text-align: right;"></td>
                                   </tr>
                                 </tfoot>
                           </table>
@@ -175,20 +175,20 @@
                         name: 'clientName',
                         filter: 'select',
                         sortable: true,
-                        align: 'left'
+                        align: 'center'
                     },
                     {
                         header: '거래처 계좌',
                         name: 'clientBacct',
                         filter: 'select',
                         sortable: true,
-                        align: 'left'
+                        align: 'center'
                     },      
                     {
                         header: '잔액',
                         name: 'balancek',
                         sortable: true,
-                        align: 'left',
+                        align: 'right',
                         formatter: function (e) {
                           const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
                           return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
@@ -199,7 +199,7 @@
                         name: 'decreasePrice',
                         editor: 'text',
                         sortable: true,
-                        align: 'left',
+                        align: 'right',
                         formatter: function (e) {
                           const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
                           return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
@@ -209,7 +209,7 @@
                       header: '채무상태',
                       name: 'state',
                       sortable: true,
-                      align: 'left'
+                      align: 'center'
                     }
                 ],
         });                                                                                                                                                                                                                                                      
@@ -271,20 +271,29 @@
         let decreaseTot = 0; // 감소금액 누계
         for (const rec of clientReceivableList) {
           document.querySelector('#payClientName').innerHTML = `<strong>거래처:</strong> ${rec.clientName}`;
+          increaseTot += rec.increasePrice;
+          decreaseTot += rec.decreasePrice;
           balanceTot += rec.increasePrice - rec.decreasePrice;
           layout += `<tr>
                         <td>${rec.recDate}</td>
                         <td>${rec.acctName}</td>
                         <td>${rec.summary}</td>
-                        <td>${rec.increasePrice}</td>
-                        <td>${rec.decreasePrice}</td>
-                        <td>${balanceTot}</td>
+                        <td style="text-align: right;">${rec.increasePrice.toString()
+                        	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} 원</td>
+                        <td style="text-align: right;">${rec.decreasePrice.toString()
+                      	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} 원</td>
+                        <td style="text-align: right;">${balanceTot.toString()
+                      	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} 원</td>
                       </tr>`;
         }
-        document.querySelector('#totIncrease').innerHTML = increaseTot;
-        document.querySelector('#totDecrease').innerHTML = decreaseTot;
-        document.querySelector('#totBalance').innerHTML = increaseTot - decreaseTot;
         ledgeBody.insertAdjacentHTML('beforeend', layout);
+        
+        document.querySelector('#totIncrease').innerHTML = increaseTot.toString()
+  	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원';
+        document.querySelector('#totDecrease').innerHTML = decreaseTot.toString()
+  	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원';
+        document.querySelector('#totBalance').innerHTML = (increaseTot - decreaseTot).toString()
+  	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원';
       })
     }
 
@@ -332,9 +341,9 @@
                     }
                   };
                   fetch('/account/insertReceivableBalance', receivables)
-                  // .then(result => result.json())
+                  .then(result => result.text())
                   .then(result => {
-                    console.log(result);
+                    console.log("채권결제중: " , result);
                     if(result==='success') {
                       location.reload(true);
                     } else {

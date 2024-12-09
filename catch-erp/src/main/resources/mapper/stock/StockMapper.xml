@@ -76,11 +76,11 @@
 	    	</otherwise>
 	    </choose>
 	    <if test="startDate != 'noDate'">
-	    		AND hi.restocking_date > #{startDate}
+	    		AND hi.restocking_date > TO_DATE(#{startDate})
 	    </if>
 	    <if test="endDate != 'noDate'">
 	    	 <![CDATA[ 
-	    		AND hi.restocking_date < #{endDate}
+	    		AND hi.restocking_date < TO_DATE(#{endDate})
 	     	 ]]>
 	    </if>
 	    AND hi.restocking_status != 'b3'
@@ -144,11 +144,11 @@
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND hi.delivery_date > #{startDate}
+		    		AND hi.delivery_date > TO_DATE(#{startDate})
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.delivery_date < #{endDate}
+		    		AND hi.delivery_date < TO_DATE(#{endDate})
 		     	 ]]>
 		    </if>
 		    AND delivery_status != 'b3'
@@ -317,7 +317,7 @@
 		  JOIN contract_item ci ON (s.item_code = ci.item_code)
 		  JOIN employees e ON (s.employee_code = e.employee_code)
 		  JOIN warehouse w ON (s.wh_code = w.wh_code) 
-		WHERE stocks_adjust_no = #{stocksAdjustNo}
+		WHERE stocks_adjust_no = TO_NUMBER(#{stocksAdjustNo})
 		ORDER BY real_no DESC
 	</select>
 </mapper>

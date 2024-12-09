@@ -23,7 +23,7 @@
 </head>
 <body>
   <!-- Search Section -->
- <div class="bg-white shadow-sm rounded" style="padding: 20px;">
+ <div class="bg-white shadow-sm rounded kwBorder" style="padding: 20px;">
   <div class="border-bottom pb-3 mb-4">
     <h1>계좌 리스트</h1>
   </div>
@@ -44,17 +44,17 @@
             </div>
             <div class="modal-body">
             	<div class="mb-3">
-                  <label for="bankName" class="form-label">은행명</label>
+                  <label for="bankName" class="form-label">은행명<span class="redStar">*</span></label>
                   <select class="form-select" id="bankName" name="bankName" required>
                         <!-- 은행 목록 fetch 동적 추가 -->
                   </select>
                 </div>
                 <div class="mb-3">
-                    <label for="accountCode" class="form-label">계좌번호</label>
+                    <label for="accountCode" class="form-label">계좌번호<span class="redStar">*</span></label>
                     <input type="text" class="form-control" id="bacctNo" name="bacctNo" placeholder="계좌번호" required>
                 </div>
                 <div class="mb-3">
-                    <label for="accountName" class="form-label">계좌명</label>
+                    <label for="accountName" class="form-label">계좌명<span class="redStar">*</span></label>
                     <input type="text" class="form-control" id="bacctName" name="bacctName" placeholder="계좌명" required>
                 </div>
                 <div class="mb-3">
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="saveButton">저장(F8)</button>
+                <button type="button" class="btn btn-success" id="saveButton">저장</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
           </form>
@@ -82,6 +82,7 @@
             </div>
             <div class="modal-body">
             	<div class="mb-3">
+                  <label for="bankName" class="form-label">은행명</label>
                   <input type="text" class="form-control" id="bankName" name="bankName" placeholder="은행명" readonly="readonly">
                 </div>
                 <div class="mb-3">
@@ -117,9 +118,16 @@
   //toast ui data값 입력(추후 db와 연결해서 값 출력해아함)
   document.addEventListener('DOMContentLoaded', function() {
     let grid;
+    
+    // Javascript
+    window.addEventListener('resize', function(){
+        console.log('resize event!');
+
+        grid.refresh
+    });
 
     function makeBacctToastGrid(result) {
-      const grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
+      grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)
         el: document.querySelector('#grid'),
         data: result, // toast ui table 에 입력할 데이터값
         scrollX: true,
@@ -223,7 +231,7 @@
       })
       // 신규 계좌 생성 모달
       // 저장 버튼 클릭 이벤트
-      saveButton.addEventListener('click', function() {
+      document.querySelector('#saveButton').addEventListener('click', function() {
         console.log('계좌 등록 시작');
         //event.preventDefault(); // 이벤트 일시 정지
 

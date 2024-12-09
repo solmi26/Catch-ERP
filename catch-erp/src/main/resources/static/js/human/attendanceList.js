@@ -17,7 +17,11 @@ datoToGrid ()
 	}
  })
 //#endregion 그리드클릭이벤트
-
+window.addEventListener(`resize`, function() {
+		window.setTimeout(function(){
+			grid.refreshLayout();
+			}, 200)     	  
+    });   
 //수정모달 그리드 이벤트
 //#region
 atModifyGrid.on('click',function(ev){

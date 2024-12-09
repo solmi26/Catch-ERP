@@ -54,12 +54,17 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return employeemapper.insertEmployee(employee);
 	}
 	@Override
-	public List<CommonCodeVO> commonCodeList(String[] commonCode) {
-		return employeemapper.selectCommonCodeList(commonCode);
+	public int employeeUpdate(EmployeeVO employee) {
+		String identity = employee.getEmployeeDetailVO().getIdentityNo();
+		byte[] encrypt = aesEncoder.encrypt(identity.getBytes(StandardCharsets.UTF_8));
+		employee.getEmployeeDetailVO().setIdentityNo(byteToString(encrypt));
+		
+		
+		return employeemapper.updateEmployee(employee);
 	}
 	@Override
-	public int employeeUpdate(EmployeeVO employee) {
-		return employeemapper.updateEmployee(employee);
+	public List<CommonCodeVO> commonCodeList(String[] commonCode) {
+		return employeemapper.selectCommonCodeList(commonCode);
 	}
 	@Override
 	public int statusTypeUpdate(List<EmployeeVO> employee) {
@@ -69,9 +74,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public int employeeDelete(String[] employeeCode) {
 		int salary = employeemapper.deleteEmployeeSalary(employeeCode);
 		int detail = employeemapper.deleteEmployeeDetail(employeeCode);
-		int emp = employeemapper.deleteEmployee(employeeCode);
 		int fixed = employeemapper.deleteFixed(employeeCode);
-		return (salary + detail + emp + fixed)/4;
+		int attHi = employeemapper.deleteAttHistory(employeeCode);
+		int allHi = employeemapper.deleteAllowanceHistory(employeeCode);
+		int pay = employeemapper.deleteSalaryPayroll(employeeCode);
+		int emp = employeemapper.deleteEmployee(employeeCode);
+
+		return (salary + detail + emp + fixed+attHi+pay+allHi)/7;
 	}
 	
 	public String byteToString (byte[] bytes) {
