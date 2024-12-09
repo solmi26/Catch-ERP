@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 조정 페이지 그리드 객체     	
     let grid = new Grid({
         el: document.getElementById('adjustmentGrid'),
-        scrollX: true,
+        scrollX: false,
         scrollY: true,
          row: {
 		    even: {
@@ -129,14 +129,14 @@ document.addEventListener("DOMContentLoaded", function () {
         header: { height: 40 },
         bodyHeight: 500,
         rowHeight: 40,
-        width: 'auto',
+        //width: 'auto',
         contextMenu: null,
         columns: [
             {
                 header: '구매/판매내역 No.',
                 name: 'c1',
                 align: "center",
-                width: 170,
+                //width: 170,
                 whiteSpace: 'normal',
                 className:'border'               
             },
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '품목코드',
                 name: 'c2',
                 align: "center",
-                width: 150,
+                //width: 150,
                 whiteSpace: 'normal',
                 className:'border'              
             },
@@ -152,14 +152,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '품목명',
                 name: 'c3',
                 align: "center",
-                width: 170,
+                //width: 170,
                 whiteSpace: 'normal'
             },
             {
                 header: '재고조정사유',
                 name: 'c4',
                 align: "center",
-                width: 150,
+                //width: 150,
                 whiteSpace: 'normal',
                 className:'border',
                 formatter: ({ value }) => {
@@ -177,15 +177,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '지시수량',
                 name: 'c5',
                 align: "center",
-                width: 100,
+                //width: 100,
                 whiteSpace: 'normal',                
                 className:'border'
             },
             {
-                header:  "출하수량",
+                header:  " ",
                 name: 'c6',
                 align: "center",
-                width: 85,
+                //width: 85,
                 whiteSpace: 'normal',
                 editor: 'text',
                 validation: {
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '입고수량',
                 name: 'c7',
                 align: "center",
-                width: 85,
+                //width: 85,
                 whiteSpace: 'normal',
                 editor: 'text',
                 validation: {
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '재고수량',
                 name: 'c8',
                 align: "center",
-                width: 150,
+                //width: 150,
                 whiteSpace: 'normal',
                 className:'border'
             }
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	             header: '창고명',
 	             name: 'c11',
 	             align: "center",
-	             width: 150,
+	             //width: 150,
 	             whiteSpace: 'normal',
 	             className:'border'
              },
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	            header: '사원명',
 	            name: 'c9',
 	            align: "center",
-	            width: 135,
+	            //width: 135,
 	            whiteSpace: 'normal',
 	            className:'border'
             },
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '사원 코드',
                 name: 'c10',
                 align: "center",
-                width: 135,
+                //width: 135,
                 whiteSpace: 'normal',
                 className:'border'
             }       

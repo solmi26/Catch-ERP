@@ -66,23 +66,26 @@
 			                          </div>
 			                  
 			                  
-			                  	  <div class="col-md-3">
-				                      <label class="form-label">입력단가(이상)</label>
+			                  	  <div class="col-md-2">
+				                      <label class="form-label">입력단가</label>
 				                      <div class="input-group">
 				                          <div class="price-input">
-				                              <input type="number" class="form-control" placeholder="0" name="minPrice">
+				                              <input type="number" class="form-control" placeholder="0" name="minPrice"> 
 				                          </div>
 				                      </div>
 			                      </div>
-			                      <div class="col-md-3" >
+			                      <div class="col-md-2" >
 			                      	<div >
-			                          <label class="form-label" >입력단가(이하)</label>
+			                          <label class="form-label" ><p></p></label>
 			                          <div class="input-group">
 				                          <div class="price-input">
 				                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
 				                          </div>
 			                          </div>
 			                         </div>
+			                      </div>
+			                      <div class="col-md-2">
+			                      	<p></p>
 			                      </div>
 			                      
 			              	</div>
@@ -255,7 +258,7 @@
 			        <form method="post" name="updateItemForm">
 			            <div class="modal-content" >
 			                <div class="modal-header">
-			                    <h5 class="modal-title" id="itemInfoModal" style="font-size:18.2px;">제품 상세</h5>
+			                    <h5 class="modal-title" id="itemInfoModal" style="font-size:18.2px;">자재 상세</h5>
 			                </div>
 			                <div class="d-flex flex-wrap">
 				                <div class="modal-body col-lg-6 col-sm-12 col-md-12 ">
@@ -328,8 +331,8 @@
 				                                </div>
 				                            </div>
 				                            <div class="row">
-				                            	<img src = "#" height="300" width="auto" name="itemImage" class="mb-3">			            			
-												<input type="file" id="newImage" class="form-control" style="width:400px; margin-left:13px;">																						
+				                            	<img src = "#" height="300" id="itemImage" width="auto" name="itemImage" class="mb-3">			            			
+												<input type="file" accept="image/*" id="newImage" class="form-control" style="width:400px; margin-left:13px;">																						
 				                            </div>
 				                        </div> <!-- 첫번쨰 탭 End Point -->
 										
@@ -360,9 +363,9 @@
 								
 				            </div>
 				            <div class="modal-footer">
-				            
-				                    <button type="button" id="updateBtn" class="btn btn-success">수정</button>
-				                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+			            		<button type="button" id="deleteBtn" class="btn btn-danger">사진 삭제</button>
+			                    <button type="button" id="updateBtn" class="btn btn-success">사진 수정</button>
+			                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				            </div>
 			            </div>		            
 			        </form>

@@ -80,25 +80,25 @@
   	//숫자있는 체크박스 (석진제작)	    -> 템플릿 공통코드로 병합
  	//ClientItemToastGrid img custom renderer
     class CustomImgRenderer {
-        constructor(props) {
-            const el = document.createElement('img');
-            const src = props.columnInfo.renderer.options;
-            el.src = String(src);
-
-            this.el = el;
-            el.style = 'height:60px; width:60px; padding: 0 2px;'
-            this.render(props);
-        }
-
-        getElement() {
-            return this.el;
-        }
-
-        render(props) {
-            // you can change the image link as changes the value
-            this.el.src = '/images/'+String(props.value);
-        }
-    }
+	    constructor(props) {
+	        const el = document.createElement('img');
+	        el.style = 'height:50px; width:50px; padding: 2px 2px;';
+	        this.el = el;
+	        this.render(props);
+	    }
+	
+	    getElement() {
+	        return this.el;
+	    }
+	
+	    render(props) {
+	        // 엑박방지 기본이미지	        
+	        const defaultImage = '/img/noImage.jpg';
+	
+	        // null이나 빈 문자열인 경우 기본이미지를 사용
+	        this.el.src = props.value ? `/images/${String(props.value)}` : defaultImage;
+	    }
+	}
 
 document.addEventListener("DOMContentLoaded", function () {
     
@@ -160,11 +160,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	        scrollY: false,
 	        pageOptions: {
 		      useClient: true,
-		      perPage: 8,
+		      perPage: 20,
 		    },
 	        header: { height: 40 },
 	        bodyHeight: 600,
-	        rowHeight: 80,
+	        rowHeight: 60,
 	        //width: '100%',
 	        contextMenu: null,
 	       rowHeaders: [{
@@ -175,10 +175,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	        }],
 	        columns: [
 				{
-					header: '재고상태',
+					header: ' ', //공백을 안주면 name값이 강제로 들어감 
 	                name: 'stocksStatus',
 	                align: "center",
-	                width: 150,
+	                //width: 150,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                formatter: ({ value }) =>
@@ -217,18 +217,24 @@ document.addEventListener("DOMContentLoaded", function () {
 					header: '상품이미지',
 	                name: 'image',
 	                align: "center",
-	               // width: 100,
+	                width: 70,
 	                whiteSpace: 'normal',
 	                className:'border',
 	                renderer: {
                     	type: CustomImgRenderer,
                     }
-	               
 				},
-	            {
+				{
+	                header: '출하예정수량(D+7)',
+	                name: 'outQuantity',
+	                align: "right",
+	               // width: 150,
+	                whiteSpace: 'normal',
+	                className:'border'
+	            },{
 	                header: '현재수량(전체)',
 	                name: 'stocksQuantity',
-	                align: "center",
+	                align: "right",
 	               // width: 150,
 	                whiteSpace: 'normal',
 	                className:'border'
@@ -291,6 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
 						data.itemCode = ele.itemCode;
 						data.itemName = ele.itemName;
 						data.stocksQuantity = ele.stocksQuantity;
+						data.outQuantity = ele.outQuantity;
 						data.clientCode = ele.clientCode;
 						data.clientName = ele.clientName;
 						data.price = ele.price;
@@ -300,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
 						} else {
 							data.stocksStatus = "주의";
 						}
-						
 						dataArr.push(data);	
 					})
 					stockInqueryGrid.resetData(dataArr); //그리드 resetData() 렌더링에 시간이 걸림
@@ -333,16 +339,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		  
 		}
 		
-/*	stockInqueryGrid.on('onGridMounted', function() {
+	stockInqueryGrid.on('onGridMounted', function() {
     	// 대상 헤더 셀 선택
 	    let redStar = document.querySelector("#inqueryGrid > div > div.tui-grid-content-area.tui-grid-no-scroll-y > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)");
-		let originalText = redStar.textContent.trim();
-		let updatedText = originalText.substring(4);
-		redStar.innerHTML = `<span style="color:red"> * </span><span>${updatedText}</span>`;
-		window.setTimeout(function(){
-			stockInqueryGrid.refreshLayout();
-		},200)
-	});*/
+		redStar.innerHTML = `<span>재고상태</span><span style="color:red">*</span>`;
+	});
 		
 		
 		
@@ -361,7 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					if(result.image != null){
 						document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
 					} else{
-						document.querySelector('img[name="itemImage"]').src = '/img/noImage.png';
+						document.querySelector('img[name="itemImage"]').src = '/img/noImage.jpg';
 					}
 					setValueByName('clientNameAndCode', clientValue)
 					setValueByName('conNo', result.conNo)
@@ -371,7 +372,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					setValueByName('contractPeriod', contractPeriod)
 					setValueByName('currentQuantity', result.stocksQuantity)
 					totalQuantity = result.stocksQuantity;
-					
+					/*let savedImage = document.querySelector('#newImage');
+					savedImage.value = result.image;*/
 					//창고종류 콤보박스에 창고정보 불러오기 fetch안의 fetch
 					fetch("/whList")
 					.then(result=> result.json())
@@ -437,7 +439,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			 }
 		})
 		
-		/*수정버튼 클릭시 제품사진 변경*/ 
+		/*사진 수정버튼 클릭시 제품사진 변경*/ 
 		let updateBtn = document.getElementById('updateBtn');
 		updateBtn.addEventListener('click',function(){
 			const newImgTag2 = document.getElementById('newImage');
@@ -493,8 +495,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	            }
 	          });*/
 			 
-            
-	         
+            const file = newImgTag2.files[0];
+	        if (!file.type.startsWith("image/")) {
+		        alert("이미지 파일만 업로드 가능합니다.");
+		        return;
+		    }
 				
 			let response = confirm("제품의 사진을 변경하시겠습니까?")
 			if(response){
@@ -521,15 +526,44 @@ document.addEventListener("DOMContentLoaded", function () {
 						document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
 					})
 					itemInfoList() //페이지그리드의 이미지도 바꿔주기
-					alert('제품 이미지가 정상적으로 변경되었습니다.')
+					alert('자재 이미지가 정상적으로 변경되었습니다.')
 				})
 				.catch(err=>{console.log(`제품사진변경 실패! ${err}`)
-						alert("제품 이미지 변경 중 에러가 발생했습니다.")
+						alert("자재 이미지 변경 중 에러가 발생했습니다.");
 				})
 			}
 		})
 		
-		//엑셀버튼 테스트중
+		//사진 삭제버튼 클릭 시 사진 삭제 
+		let deleteBtn = document.getElementById('deleteBtn');
+		deleteBtn.addEventListener('click',function(){
+			let itemImage = document.getElementById("itemImage");
+			let srcVal = itemImage.src;
+			const isNoImage = "/img/noImage.jpg";
+
+			if (srcVal.endsWith(isNoImage)) {
+			    alert("삭제할 자재 이미지가 없습니다.")
+			    return;
+			} 
+			
+			let checkOpinion = confirm("정말로 자재의 이미지를 삭제하시겠습니까?");
+	        if(!checkOpinion){
+				return;
+			} else {
+				let itemCode = document.getElementById('itemCode').value;
+				fetch(`/stocks/deleteImage/${itemCode}`)
+				.then(result)
+				.then(result=>{
+					alert('자재 이미지가 정상적으로 삭제되었습니다.');
+					itemInfoList();
+					})
+				.catch(err => {console.log(`자재 이미지 삭제 실패! ${err}`)
+							alert("자재 이미지 삭제 중 에러가 발생했습니다.");
+				});
+			}
+	            
+		})
+		//엑셀다운 버튼
 		let adjExcelBtn = document.getElementById("adjExcelBtn");
 		adjExcelBtn.addEventListener("click",function(){
 			saveExcel(adjustmentDetailGrid);
@@ -724,7 +758,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (ev.columnName == 'itemCode'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('itemInput');
-			let inputTag2 = document.getElementById('itemInput');
+			let inputTag2 = document.getElementById('itemHiddenInput');
 			inputTag.value = '';
 			inputTag2.value = '';			
 			inputTag.value = itemGrid.getValue(rowKeyNum, 'itemName');	
@@ -765,7 +799,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     header: '입출고번호',
                     name: 'stocksAdjustNo',
                     align: "center",
-                    width: 100,
+                    width: 130,
                     whiteSpace: 'normal',
                     className:'border',
                     renderer: {

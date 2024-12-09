@@ -33,5 +33,6 @@ public interface StockMapper {
 	public List<StocksVO> selectAllAdjustList(@Param("itemCode") String itemCode, 
 			@Param("whCode") String whCode, @Param("date") String date); //창고 및 년도별 제품의 재고조정이력조회
 	public List<StocksVO> selectAdjustLogList(String stocksAdjustNo); //재고조정번호에 맞는 재고조정내역 조회		
+	public void deleteItemImage(String itemCode); //제품이미지 삭제
 
 }
