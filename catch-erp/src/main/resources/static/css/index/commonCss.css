@@ -97,6 +97,7 @@
 	   /* 사이드바 */
 		div.sidebar-wrapper.scrollbar.scrollbar-inner.scroll-content > div > ul > li > a > p{
 	   	font-size: 14px !important;
+	   
 	   }
 	  
 	  /* 구글폰트 적용 */
@@ -145,7 +146,7 @@
 
 	.fa, .fas {
 	font-family: 'Font Awesome 5 Solid' !important;
-    
+    color: #434346 !important;
 	    font-weight: 900;
 	}
 	
@@ -157,7 +158,11 @@
     font-variant: normal;
     text-rendering: auto;
     line-height: 1;
+    color: #434346 !important;
 }
+
+
+
 	
 	
 	
