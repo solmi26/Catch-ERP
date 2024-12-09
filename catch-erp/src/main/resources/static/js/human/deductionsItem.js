@@ -69,13 +69,26 @@ document.querySelector('.dedu-save-Btn').addEventListener('click',function (ev) 
 	
 })
 
+//그리드 크기 새로고침
+window.addEventListener(`resize`, function() {
+		window.setTimeout(function(){
+			deduGrid.refreshLayout();
+			incomeGrid.refreshLayout();
+			}, 200)     	  
+    });
+
+
+
 //소득세모달 저장버튼클릭시
 document.querySelector('.income-save-Btn').addEventListener('click',function (ev) {
 	let modal = document.querySelector('#incomeModifyModal')
 	let name = modal.querySelector('[name="deductionsName"]')
 	let rate = modal.querySelector('[name="deductionsDeductible"]')
-	let min = modal.querySelector('[name="maxval"]')
-	let max = modal.querySelector('[name="minval"]')
+	let minRaw = modal.querySelector('[name="minval"]')
+	let maxRaw = modal.querySelector('[name="maxval"]')
+	let min = Number(parseNumber(minRaw.value))
+	let max = Number(parseNumber(maxRaw.value))
+	console.log(min)
 	if (name.value == "") {
 		alert("이름을 다시 입력해주세요.")
 		name.focus()
@@ -87,23 +100,25 @@ document.querySelector('.income-save-Btn').addEventListener('click',function (ev
 		rate.focus();
 		return;
 	}
-	if (min < 0 || min == "") {
+	if (min < 0 || min >= max) {
 		alert("최소금액을 다시 입력해주새요.")
-		min.value = 0;
-		min.focus();
+		minRaw.value = 0;
+		minRaw.focus();
 		return;
 	}
-	if (max < 0 || max == "") {
+	if (max < 0 ) {
 		alert("최대금액을 다시 입력해주새요.")
-		max.value = 0;
-		max.focus();
+		maxRaw.value = 0;
+		maxRaw.focus();
 		return;
 	}
 	
 	let deductionVO = {}
-	for (let input of modal.querySelectorAll('input') ) {
+	for (let input of modal.querySelectorAll('.modify-input') ) {
 		deductionVO[input.name] = input.value
 	}
+	deductionVO['maxval']= max;
+	deductionVO['minval']= min;
 	
 	fetch("/employees/deduItem",{
 		method:'put',
@@ -118,20 +133,28 @@ document.querySelector('.income-save-Btn').addEventListener('click',function (ev
 	
 })
 
+document.querySelectorAll('.number-input').forEach(ele => {
+	ele.addEventListener('input',function (ev) {
+		number = parseNumber(ev.target.value)
+		ev.target.value = formatNumber(number)
+	})
+})
+
+
 //단건 데이터 받기(공제수정모달)
 async function deduModalDataLoad(deduCode,target) {
 	await fetch("/employees/deduItem/"+deduCode)
 	     .then(data => data.json())
 	     .then(data => {
-			console.log(data)
 			for (ele in data) {
 			  let input = target.querySelector(`[name="${ele}"]`)
 			  if (input != null) {
 				input.value = data[ele];
 			  }
 			}
+
 				
-			})
+	})
 	
 }
 //단건 데이터 받기(소득세수정모달)
@@ -145,6 +168,9 @@ async function incomeModalDataLoad(deduCode,target) {
 				input.value = data[ele];
 			  }
 			}
+			document.querySelectorAll('.number-input').forEach(ele => {
+				ele.value = formatNumber(ele.value)
+			})
 				
 			})
 	
@@ -193,3 +219,15 @@ function duplicationModCheck (target) {
 	return true;
 }
 
+
+  // 콤마 추가
+  function formatNumber(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // 콤마 제거 및 음수 기호 처리
+  function parseNumber(value) {
+    // 값이 "-" 또는 "-" 뒤에 숫자만 있는 경우 처리
+    if (/^-?$/.test(value)) return 0; // "-"만 입력 시 임시로 0 반환
+    return parseInt(value.replace(/,/g, ""), 10) || 0;
+  }
