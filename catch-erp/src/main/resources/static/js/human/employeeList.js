@@ -564,3 +564,13 @@ document.querySelectorAll('.number-format').forEach(ele => {
 	})
 })
 
+//주민번호 예외처리
+document.querySelector('[name="identityNo"]').addEventListener('change',function (ev) {
+	let leng = ev.target.value.length
+	if (leng != 13) {
+		ev.target.value = ""
+		alert("주민등록번호 형식에 맞춰주세요.")
+		ev.target.focus()
+	}
+})
+
