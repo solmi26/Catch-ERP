@@ -54,12 +54,17 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return employeemapper.insertEmployee(employee);
 	}
 	@Override
-	public List<CommonCodeVO> commonCodeList(String[] commonCode) {
-		return employeemapper.selectCommonCodeList(commonCode);
+	public int employeeUpdate(EmployeeVO employee) {
+		String identity = employee.getEmployeeDetailVO().getIdentityNo();
+		byte[] encrypt = aesEncoder.encrypt(identity.getBytes(StandardCharsets.UTF_8));
+		employee.getEmployeeDetailVO().setIdentityNo(byteToString(encrypt));
+		
+		
+		return employeemapper.updateEmployee(employee);
 	}
 	@Override
-	public int employeeUpdate(EmployeeVO employee) {
-		return employeemapper.updateEmployee(employee);
+	public List<CommonCodeVO> commonCodeList(String[] commonCode) {
+		return employeemapper.selectCommonCodeList(commonCode);
 	}
 	@Override
 	public int statusTypeUpdate(List<EmployeeVO> employee) {
