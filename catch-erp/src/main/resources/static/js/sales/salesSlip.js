@@ -59,20 +59,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-    // 출고상태에 따른 그리드 색상 변화
-    function sortColor(){
-        saleslipHistory.getData().forEach((row) => {
-            let check = row.deliveryStatus;
-            if (check === '미완료') {
-                saleslipHistory.addRowClassName(row.rowKey, 'increase');
-            } else if(check === '완료') {
-                saleslipHistory.addRowClassName(row.rowKey, 'decrease');
-            } else if(check === '진행중') {
-                saleslipHistory.addRowClassName(row.rowKey, 'ongoing');
-            }
-        });
-    }
-
     /*============================
              판매 내역 그리드
     ==============================*/
@@ -93,8 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             rowHeaders: [{
                 type: 'rowNum',
                 header: "No.",
-                width: 50,
-                className:'border'
+                width: 50, className: 'border'
             }],
             columns: [{
                 header: '판매전표번호',
@@ -103,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 width: 210,
                 whiteSpace: 'normal',
                 className: 'border'
-            }, { 
+            }, {
                 header: '발주일자',
                 name: 'insertDate',
                 align: "center",
@@ -127,8 +112,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 className: 'border'
             }, {
                 header: '금액합계',
-                name: 'deliveryPrice',
-                align: "center",
+                name: 'deliveryPrice', align: "right",
                 width: 210,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -139,8 +123,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }, {
                 header: '공급가액',
-                name: 'supplyPrice',
-                align: "center",
+                name: 'supplyPrice', align: "right",
                 width: 210,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -152,8 +135,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             }, {
                 header: '부가세',
-                name: 'vat',
-                align: "center",
+                name: 'vat', align: "right",
                 width: 210,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -163,6 +145,32 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
             },],
+            summary: {
+                height: 40,
+                position: 'bottom', // or 'top'
+                columnContent: {
+                    saleslipNo: {
+                        template: function (valueMap) {
+                            return `MIN: ${Math.floor(valueMap.min).toLocaleString()}<br>MAX: ${Math.floor(valueMap.max).toLocaleString()}`;
+                        }
+                    },
+                    deliveryPrice: {
+                        template: function (valueMap) {
+                            return `평균 금액: ${Math.floor(valueMap.avg).toLocaleString()}<br>총 금액: ${Math.floor(valueMap.sum).toLocaleString()}`;
+                        }
+                    },
+                    supplyPrice: {
+                        template: function (valueMap) {
+                            return `평균 공급가액: ${Math.floor(valueMap.avg).toLocaleString()}<br>총 공급가액: ${Math.floor(valueMap.sum).toLocaleString()}`;
+                        }
+                    },
+                    vat: {
+                        template: function (valueMap) {
+                            return `평균 부가세: ${Math.floor(valueMap.avg).toLocaleString()}<br>총 부가세: ${Math.floor(valueMap.sum).toLocaleString()}`;
+                        }
+                    }
+                }
+            }
         });
 
         // 모든 판매전표 조회
@@ -246,30 +254,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
-                header: '수량',
-                name: 'quantity',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortingType: 'desc',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // 숫자에 콤마 추가
-                }
-
-            }, {
-                header: '출고단가',
-                name: 'deliveryPrice',
-                align: "center",
-                width: 150,
-                whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
-                className: 'border',
-                formatter: ({value}) => {
-                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
-                }
-            }, {
                 header: '출고상태',
                 name: 'deliveryStatus',
                 align: "center",
@@ -286,9 +270,33 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortable: true,
                 className: 'border'
             }, {
+                header: '수량',
+                name: 'quantity',
+                align: "right",
+                width: 150,
+                whiteSpace: 'normal',
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // 숫자에 콤마 추가
+                }
+
+            }, {
+                header: '출고단가',
+                name: 'deliveryPrice',
+                align: "right",
+                width: 150,
+                whiteSpace: 'normal',
+                sortable: true,
+                sortingType: 'desc',
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
+                }
+            }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                align: "center",
+                align: "right",
                 width: 150,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -300,7 +308,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                align: "center",
+                align: "right",
                 width: 150,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -315,6 +323,23 @@ document.addEventListener("DOMContentLoaded", async function () {
         return saleslipHistory;
     }
     initSaleslipHistory();
+
+    // 출고상태에 따른 그리드 색상 변화
+    function sortColor() {
+        saleslipHistory.getData().forEach((row) => {
+            let check = row.deliveryStatus;
+            if (check === '미완료') {
+                saleslipHistory.addRowClassName(row.rowKey, 'increase');
+                console.log(check)
+            } else if (check === '완료') {
+                saleslipHistory.addRowClassName(row.rowKey, 'decrease');
+                console.log(check)
+            } else if (check === '진행중') {
+                saleslipHistory.addRowClassName(row.rowKey, 'ongoing');
+                console.log(check)
+            }
+        });
+    }
 
     document.getElementById('searchButton').addEventListener('click', () => {
         const formData = new FormData(document.getElementById('searchForm'));
@@ -505,5 +530,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         return itemGrid;
     }
     initItemGrid()
+
 });
 

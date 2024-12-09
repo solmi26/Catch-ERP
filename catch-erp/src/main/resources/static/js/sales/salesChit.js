@@ -115,7 +115,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // 그리드 객체
         clientGrid = new Grid({
-            el: document.getElementById("clientGrid"), scrollX: true, scrollY: true, data: clientData, pageOptions: {
+            el: document.getElementById("clientGrid"), scrollX: true, scrollY: true, data: clientData,
+            pageOptions: {
                 useClient: true, perPage: 12,
             }, header: {height: 40}, bodyHeight: 500, width: 'auto', contextMenu: null, rowHeaders: [{
                 type: 'rowNum', header: "No.", width: 50, className: 'border'
@@ -383,12 +384,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '요구수량',
                 name: 'quantity',
-                align: "center",
+                align: "right",
                 width: 100,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 숫자에 콤마 추가
+                }
             }, {
                 header: '창고',
                 name: 'whCode',
@@ -406,10 +410,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '재고수량',
                 name: 'stocksQuantity',
-                align: "center",
+                align: "right",
                 width: 100,
                 whiteSpace: 'normal',
-                className: 'border'
+                className: 'border',
+                formatter: ({value}) => {
+                    const displayValue = value != null ? value : 0;
+                    return displayValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 숫자에 콤마 추가
+                },
             }, {
                 header: '부족수량',
                 name: 'deficiencyQuantity',
@@ -418,11 +426,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 whiteSpace: 'normal',
                 sortingType: 'desc',
                 className: 'border',
-                validation: {dataType: 'string'}
+                validation: {dataType: 'string'},
+                data:1,
+                formatter: ({value}) => {
+                    const displayValue = value != null ? value : 0;
+                    return displayValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 숫자에 콤마 추가
+                }
             }, {
                 header: '단가',
                 name: 'price',
-                align: "center",
+                align: "right",
                 whiteSpace: 'normal',
                 width: 150,
                 sortable: true,
@@ -439,7 +452,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         inputType: 'number', placeholder: '금액 입력',
                     }
                 },
-                align: "center",
+                align: "right",
                 width: 150,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -454,7 +467,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                align: "center",
+                align: "right",
                 width: 150,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -469,7 +482,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                align: "center",
+                align: "right",
                 width: 150,
                 whiteSpace: 'normal',
                 sortable: true,
@@ -498,6 +511,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sortingType: 'desc',
                 className: 'border',
             }],
+
         });
 
         // 창고 수량 검색
@@ -706,7 +720,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '수량',
                 name: 'quantity',
-                align: "center",
+                align: "right",
                 width: 100,
                 whiteSpace: 'normal',
                 className: 'border',
@@ -716,7 +730,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '단가',
                 name: 'price',
-                align: "center",
+                align: "right",
                 width: 200,
                 whiteSpace: 'normal',
                 editor: 'text',
@@ -727,7 +741,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                align: "center",
+                align: "right",
                 width: 200,
                 whiteSpace: 'normal',
                 editor: 'text',
@@ -738,7 +752,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                align: "center",
+                align: "right",
                 width: 200,
                 whiteSpace: 'normal',
                 editor: 'text',

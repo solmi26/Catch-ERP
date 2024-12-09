@@ -449,10 +449,60 @@ document.addEventListener("DOMContentLoaded", function () {
 		updateBtn.addEventListener('click',function(){
 			const newImgTag2 = document.getElementById('newImage');
 			if(newImgTag2.value === ''){
-				alert("변경하실 이미지 파일를 선택해주세요.");
-				return;
+				alert("변경하실 이미지 파일을 선택해주세요.")
+	            return;
 			}
 			
+			/*Swal.fire({
+	            title: "결제하시겠습니까?",
+	            text: `계좌번호 : ${row.getData().bacctNo} 은행명: ${row.getData().bankName}`,
+	            icon: "warning",
+	            showCancelButton: true,
+	            confirmButtonColor: "#3085d6",
+	            cancelButtonColor: "#d33",
+	            confirmButtonText: "결제",
+	            cancelButtonText: "취소"
+	          }).then((result) => {
+	            if (result.isConfirmed) {
+	              Swal.fire({
+	                title: "결제되었습니다",
+	                text: `계좌번호 : ${row.getData().bacctNo} 결제완료`,
+	                icon: "warning",
+	                confirmButtonText: "완료"
+	              }).then((result => {
+	                if(result.isConfirmed) {
+	                  // 여기서 DB업데이트가 실행되어야함
+	                  // 채무거래 테이블
+	                  
+	                  let bacctInfo = row.getData();
+	                  let arr = {
+	                    receivableList, bacctInfo
+	                  }
+	                  let receivables = {
+	                    method: 'POST',
+	                    body: JSON.stringify(arr),
+	                    headers: {
+	                        'Content-Type' : 'application/json'
+	                    }
+	                  };
+	                  fetch('/account/insertReceivableBalance', receivables)
+	                  // .then(result => result.json())
+	                  .then(result => {
+	                    console.log(result);
+	                    if(result==='success') {
+	                      location.reload(true);
+	                    } else {
+	                      alert("결제가 취소되었습니다.")
+	                    }
+	                  })
+	                }
+	              }))
+	            }
+	          });*/
+			 
+            
+	         
+				
 			let response = confirm("제품의 사진을 변경하시겠습니까?")
 			if(response){
 				let newImgTag = document.getElementById('newImage');				

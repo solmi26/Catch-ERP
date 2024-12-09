@@ -95,7 +95,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -110,7 +110,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -125,7 +125,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -146,7 +146,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -160,7 +160,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -175,7 +175,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -190,7 +190,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -204,7 +204,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {
@@ -219,7 +219,7 @@ function remodelSalModifyGrid(data) {
                 editor: 'text',
 		        validation: {
                     dataType: 'number',
-                    min: 1,
+                    min: 0,
                     max: 99999999
                 },
                 formatter: function (e) {

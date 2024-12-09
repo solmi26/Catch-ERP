@@ -24,9 +24,7 @@
 		.content-box, .content-box .card-body{
 			height:100%;		
 		}
-		.shadow-box{
-		box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-		}
+
 		
 			  /* 그리드 전 form 관련 높이, 글자크기 */
       .search-form .form-control,
@@ -45,11 +43,11 @@
       }
     </style>
     <div class="bg-white shadow-sm rounded" style="padding: 20px;">
-    <div class="container-fluid p-4">
+    <div class="" style="border:none;">
         <!--  세부 검색 구역 -->
+        <h1>사원정보</h1>
       <div class="card mb-4 bg-white search-form">
         <div class="card-body bg-light">
-        <h1>사원정보</h1>
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
@@ -193,7 +191,7 @@
 	    <div class="col-auto">
 	        <div class="row">
 	        	<div class="col-auto">
-		            <button class="btn btn-danger btn-sm delete-Btn" data-mode="update">퇴직</button>
+		            <button class="btn btn-danger btn-sm delete-Btn" data-mode="update">퇴사</button>
 	        	</div>
 	        </div>	   	
 	   	</div>
@@ -421,8 +419,8 @@
                                         	
                                         <div class="col-12">
                                             <label class="form-label">주소<span style="color:red">* </span></label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required readonly>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required readonly>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소를 입력해주세요" name="detailAddress"  required>
                                         </div>
                                     </div>
