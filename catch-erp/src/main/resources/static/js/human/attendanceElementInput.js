@@ -207,6 +207,7 @@ function duplicationModCheck (target) {
 	}
 	return true;
 }
+
 //총횟수검사
 function countCheck(row) {
 	for (let ele of row) {

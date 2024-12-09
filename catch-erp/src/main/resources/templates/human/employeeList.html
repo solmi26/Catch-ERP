@@ -224,7 +224,7 @@
                                         <div class="col-md-4 text-center">
                                         	<div class="row">
                                         		<div class="col-12">
-		                                            <img src="/placeholder.svg?height=100&width=100" onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2024/10/11/00/13/hummingbird-9111853_1280.jpg'" style="height:200px;width:260px;"alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">                                        		
+		                                            <img src="/placeholder.svg?height=100&width=100" onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2024/10/11/00/13/hummingbird-9111853_1280.jpg'" style="height:100%;width:100%;"alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">                                        		
                                         		</div>
                                         		<div class="col-12">
                                         			<div class="input-group input-group-sm mb-3">
@@ -442,11 +442,11 @@
                                         </div>
                                         <div class="col-auto">
                                         	<div class="row justify-content-end">
-	                                        	<div class="col-auto">
+	                                        	<div class="col-auto pe-0">
 	                                        		<button type="button" class="btn btn-success btn-sm appendRowBtn">추가</button>
 	                                        	</div>
-	                                        	<div class="col-auto">
-	                                        		<button type="button" class="btn btn-danger btn-sm deleteRowBtn">삭제</button>
+	                                        	<div class="col-auto ">
+	                                        		<button type="button" class="btn btn-danger btn-sm deleteRowBtn ms-2 me-3">삭제</button>
 	                                        	</div>
 	                                        	
                                         	</div>
@@ -614,14 +614,21 @@
 
     
     <script th:inline="javascript">
+    window.addEventListener(`resize`, function() {
+		window.setTimeout(function(){
+			grid.refreshLayout();
+			allowanceGrid.refreshLayout();
+			}, 200)     	  
+    });    
     const Grid = tui.Grid;
+    
+    
 
     const grid = new Grid({
   	  el: document.getElementById('grid'), // Container element
   	  rowHeight:10,
   	  minRowHeight:25,
-  	  bodyHeight:'fitToParent',
-  	  minBodyHeight:'fitToParent',
+  	  bodyHeight:700,
       pageOptions: {
           useClient: true,
           perPage: 25
@@ -668,6 +675,8 @@
     	     name:'employeePositionName'
     	    }
     	  ],
+      showDummyRows: true,
+
   	  
   	  data:[[${empList}]]
   	});
@@ -725,7 +734,9 @@
     	    
     	  ],
     	  data: [
-    	  ]
+    	  ],
+          showDummyRows: true
+
     	});
 
     //카카오 다음 map api

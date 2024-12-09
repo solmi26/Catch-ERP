@@ -33,7 +33,7 @@ incomeGrid.on('click',function (ev) {
 
 
 //공제모달 저장버튼클릭시
-document.querySelector('.dedu-save-Btn').addEventListener('click',function () {
+document.querySelector('.dedu-save-Btn').addEventListener('click',function (ev) {
 	let modal = document.querySelector('#deduModifyModal')
 	let name = modal.querySelector('[name="deductionsName"]')
 	let rate = modal.querySelector('[name="deductionsDeductible"]')
@@ -48,7 +48,9 @@ document.querySelector('.dedu-save-Btn').addEventListener('click',function () {
 		rate.focus();
 		return;
 	}
-	
+	if(!duplicationModCheck(ev.target)) {
+		return;
+	}
 	let deductionVO = {}
 	for (let input of modal.querySelectorAll('input') ) {
 		deductionVO[input.name] = input.value
@@ -68,13 +70,12 @@ document.querySelector('.dedu-save-Btn').addEventListener('click',function () {
 })
 
 //소득세모달 저장버튼클릭시
-document.querySelector('.income-save-Btn').addEventListener('click',function () {
+document.querySelector('.income-save-Btn').addEventListener('click',function (ev) {
 	let modal = document.querySelector('#incomeModifyModal')
 	let name = modal.querySelector('[name="deductionsName"]')
 	let rate = modal.querySelector('[name="deductionsDeductible"]')
 	let min = modal.querySelector('[name="maxval"]')
 	let max = modal.querySelector('[name="minval"]')
-
 	if (name.value == "") {
 		alert("이름을 다시 입력해주세요.")
 		name.focus()
@@ -98,7 +99,6 @@ document.querySelector('.income-save-Btn').addEventListener('click',function () 
 		max.focus();
 		return;
 	}
-
 	
 	let deductionVO = {}
 	for (let input of modal.querySelectorAll('input') ) {
@@ -171,3 +171,25 @@ await   fetch('/employees/income')
 
 	
 }
+
+
+//수정모달 중복검사
+function duplicationModCheck (target) {
+	let flag = true;
+	let codeName = target.closest('.modal').querySelector('[name="deductionsName"]')
+	let nameList = deduGrid.getColumnValues('deductionsName')
+	for (let name of nameList) {
+		if (name == currentName) {
+			continue;
+		} else if (codeName.value == name) {
+			flag = false;
+			break;
+		}
+	} 
+	if (!flag) {
+		alert("해당되는 공제명이 이미 존재합니다.")
+		return false;
+	}
+	return true;
+}
+
