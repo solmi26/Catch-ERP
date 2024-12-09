@@ -69,9 +69,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public int employeeDelete(String[] employeeCode) {
 		int salary = employeemapper.deleteEmployeeSalary(employeeCode);
 		int detail = employeemapper.deleteEmployeeDetail(employeeCode);
-		int emp = employeemapper.deleteEmployee(employeeCode);
 		int fixed = employeemapper.deleteFixed(employeeCode);
-		return (salary + detail + emp + fixed)/4;
+		int attHi = employeemapper.deleteAttHistory(employeeCode);
+		int allHi = employeemapper.deleteAllowanceHistory(employeeCode);
+		int pay = employeemapper.deleteSalaryPayroll(employeeCode);
+		int emp = employeemapper.deleteEmployee(employeeCode);
+
+		return (salary + detail + emp + fixed+attHi+pay+allHi)/7;
 	}
 	
 	public String byteToString (byte[] bytes) {
