@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +26,6 @@ import com.cherp.app.empl.service.EmployeeService;
 import com.cherp.app.empl.vo.EmployeeVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -110,14 +111,23 @@ public class RestEmployeeController {
 	}
 	
 	
+	@DeleteMapping("/employees/emps")
+	public int employeeDelete (@RequestParam(value="employeeCode") String[] employeeCode) {
+		return employeeService.employeeDelete(employeeCode);
+	}
 	
 	//공통코드 검색 다건데이터
 	@GetMapping("employees/empCommon")
 	public List<CommonCodeVO> CommonCodeSelect (String[] commonCode) {
 		return employeeService.commonCodeList(commonCode);
 	}
-
-
+	//사원다건 퇴직처리
+	@PutMapping("employees/statusType")
+	public int statusUpdate (@RequestBody List<EmployeeVO> employee) {
+		return employeeService.statusTypeUpdate(employee);
+	}
+	
+	
 	/* 파일저장를 위한 private 메서드 */
 	private String makeFolder() {
 		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));

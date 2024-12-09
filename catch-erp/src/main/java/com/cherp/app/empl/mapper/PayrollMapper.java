@@ -9,5 +9,6 @@ public interface PayrollMapper {
 	public List<PayrollVO> selectAllPayrollList (EmployeeSearchDto search); //다건 조회
 	public List<PayrollVO> selectPayroll (String[] salaryNumber); //선택된 건 조회
 	public int updatePayroll (PayrollVO payroll); //수정
-	public int deletePayroll (String[] salartNumber); //삭제
+	public int deletePayroll (String[] salaryNumber); //삭제
+	public int deleteAllowanceHistory (String[] salaryNumber);//고정수당기록삭제
 }

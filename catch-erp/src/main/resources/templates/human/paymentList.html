@@ -309,7 +309,7 @@
                             </div>
                         </div> <!--검색창끝-->
                         <!--사원테이블-->
-                        <div class="row" style="overflow:auto;">
+                        <div class="row" style="overflow:hidden;">
                             <div id="salModifyGrid"></div>
                         </div>
                     </div>
@@ -353,7 +353,7 @@
 		const Grid = tui.Grid;
 	    const grid = new tui.Grid({
 	        el: document.getElementById('grid'),
-	        width:1500,
+	        width:'auto',
 	        rowHeaders: [
 	            {
 	              type: 'checkbox',
@@ -490,6 +490,11 @@
 		        
 	          }
 	        ],
+	        columnOptions: {
+	            frozenCount: 3,
+	            frozenBorderWidth: 2,
+	            minWidth: 100
+	          },
 	    	data:[[${list}]]
 	      });
 	    

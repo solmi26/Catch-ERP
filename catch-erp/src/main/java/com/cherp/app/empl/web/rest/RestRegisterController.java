@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cherp.app.empl.service.RegisterService;
+import com.cherp.app.empl.vo.AllowanceVO;
 import com.cherp.app.empl.vo.AttItemVO;
+import com.cherp.app.empl.vo.DeductionsVO;
 import com.cherp.app.empl.vo.DepartmentVO;
-import com.cherp.app.empl.vo.FixedVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -97,7 +98,56 @@ public class RestRegisterController {
 	
 	//수당항목 조회
 	@GetMapping("/employees/allItem")
-	public List<FixedVO> allowanceItemList () {
+	public List<AllowanceVO> allowanceItemList () {
 		return service.allowanceItemList();
 	}
+	//수당항목 단건조회
+	@GetMapping("/employees/allItem/{allowanceCode}")
+	public AllowanceVO allowanceItemInfo(@PathVariable(name="allowanceCode") String allitem) {
+		return service.allowanceItemInfo(allitem);
+	}
+	
+	//수당항목 등록
+	@PostMapping("/employees/allItem")
+	public int allowanceItemInsert(@RequestBody AllowanceVO allitem) {
+		return service.allowanceItemInsert(allitem);
+	}
+	
+	//수당항목 수정
+	@PutMapping("/employees/allItem")
+	public int allowanceUpdate(@RequestBody AllowanceVO allitem) {
+		return service.allowanceItemUpdate(allitem);
+	}
+	
+	//수당항목 다건삭제
+	@DeleteMapping("/employees/allItem")
+	public int allowanceItemDelete(@RequestParam(value="allowanceCode") String[] allItem) {
+		return service.allowanceItemDelete(allItem);
+	}
+	
+	
+	//공제항목
+	//수당항목 조회
+	@GetMapping("/employees/deduItem")
+	public List<DeductionsVO> deductionsItemList () {
+		return service.deductionsItemList();
+	}
+	//소득세항목 조회
+	@GetMapping("/employees/income")
+	public List<DeductionsVO> incomeTaxList () {
+		return service.incomeTaxList();
+	}
+	//수당항목 단건조회
+	@GetMapping("/employees/deduItem/{deductionsCode}")
+	public DeductionsVO deductionsItemInfo(@PathVariable(name="deductionsCode") String deductionsCode) {
+		return service.deductionsItemInfo(deductionsCode);
+	}
+	//수당항목 수정
+	@PutMapping("/employees/deduItem")
+	public int deductionsItemUpdate(@RequestBody DeductionsVO deductionsItem) {
+		return service.deductionsItemUpdate(deductionsItem);
+	}
+	
+	
+	
 }
