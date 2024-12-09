@@ -7,7 +7,7 @@
 	<head>
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <title>재고조회 및 관리</title>	    	    
+	    <title>자재 조회/관리</title>	    	    
 	    <link rel="stylesheet" th:href="@{/css/stock/stockInquery.css}" />
 	    <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
 	</head>
@@ -19,7 +19,7 @@
 	    			
 	        <!-- Header -->
 	        <div class="border-bottom pb-3 mb-4">
-	        		<h1>자재조회/상품관리</h1>
+	        		<h1>자재 조회/관리</h1>
 	        </div>
 	        <!-- <ul class="nav nav-tabs" id="mainTab" role="tablist">
 	        	
@@ -39,13 +39,10 @@
 			    <div class="tab-pane fade show active" id="itemList" role="tabpanel"
 			        aria-labelledby="itemList-tab"> <!-- 첫번째 탭 시작 -->
 			        <!-- Form -->
-			        <div class="card col-md-12">
+			        <div class="card col-md-12 ">
 			          <form class="bg-light p-4 rounded card-body kwBorder" id="searchForm" >
-			              <div class="row g-3">
-			                  <div class="col-md-6">
-			                      <div class="row g-3">
-			                          
-			                          <div class="col-md-6">
+			                   <div class="row g-3">       
+			                          	<div class="col-md-3 g-3">
 			                              <label class="form-label">거래처</label>
 			                              <div class="input-group">
 			                                  <input type="text" class="form-control" id="clientInput" name="clientInput">
@@ -55,9 +52,9 @@
 			                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 			                                  </svg></button>
 			                              </div>
-			                          </div>
+			                          	</div>
 			                                       
-			                          <div class="col-md-6">
+			                          <div class="col-md-3">
 			                            <label class="form-label">품목명</label>
 			                            <div class="input-group">
 			                                <input type="text" class="form-control" id="itemInput" name="itemInput">
@@ -66,27 +63,29 @@
 			                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 			                                  </svg></button>
 			                            </div>
-			                        </div>
-			                      </div>
-			                  </div>
+			                          </div>
 			                  
-			                  <div class="col-md-6">
-			                  	  <div class="col-md-6">
-				                      <label class="form-label">입력단가</label>
+			                  
+			                  	  <div class="col-md-3">
+				                      <label class="form-label">입력단가(이상)</label>
 				                      <div class="input-group">
 				                          <div class="price-input">
 				                              <input type="number" class="form-control" placeholder="0" name="minPrice">
 				                          </div>
 				                      </div>
 			                      </div>
-			                      <div class="col-md-6">
-			                          <span class="input-group-text" style="border:none;">-</span>
-			                          <div class="price-input">
-			                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
+			                      <div class="col-md-3" >
+			                      	<div >
+			                          <label class="form-label" >입력단가(이하)</label>
+			                          <div class="input-group">
+				                          <div class="price-input">
+				                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
+				                          </div>
 			                          </div>
+			                         </div>
 			                      </div>
-			                  </div>
-			              </div>
+			                      
+			              	</div>
 			              <div style="margin-top: 10px;">
 			                <button type="button" class="btn btn-primary" id="inqueryBtn">조회하기</button>
 			              </div>
