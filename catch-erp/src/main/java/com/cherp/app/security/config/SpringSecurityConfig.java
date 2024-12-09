@@ -47,14 +47,14 @@ public class SpringSecurityConfig {
 		    		-> authrize
 		    		//MANAGER/EMPLOYEE/SALES/BUSINESS/STOCK 권한을 가진 사용자만 각 허용한 url 접근 허용
 		    		.requestMatchers("/all", "/login/**").permitAll() // 전체 접근 허용 보통 접근권한은 여기서 부여함.
-		    		.requestMatchers("/employees/**").hasAnyRole("MANAGER","EMPLOYEE")
-		    		.requestMatchers("/sales/**","/bacct/**","/account/**","/receivable/**","/payable/**")
+		    		.requestMatchers("/employees/**","/api/**").hasAnyRole("MANAGER","EMPLOYEE")
+		    		.requestMatchers("/sales/**","/bacct/**","/account/**","/receivable/**","/payable/**","/api/**")
 		    		.hasAnyRole("MANAGER","SALES")
-		    		.requestMatchers("/sales/**","/business/**").hasAnyRole("MANAGER","BUSINESS")
-		    		.requestMatchers("/stocks/**").hasAnyRole("MANAGER","STOCK")
-		    		.requestMatchers("/employees/**").hasAnyRole("ADMIN")
+		    		.requestMatchers("/sales/**","/business/**","/api/**").hasAnyRole("MANAGER","BUSINESS")
+		    		.requestMatchers("/stocks/**","/api/**").hasAnyRole("MANAGER","STOCK")
+		    		.requestMatchers("/employees/**","/api/**").hasAnyRole("ADMIN")
 		    		//ROLE_ADMIN 권한을 가진 사용자만 접근 허용
-		    		.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+		    		.requestMatchers("/admin/**","/api/**").hasAuthority("ROLE_ADMIN")
 		    		.anyRequest().authenticated() // 권한 상관 없이 인증받은 사용자만
 		    		); 
 		// <form/>를 기반으로 인증 처리시 설정

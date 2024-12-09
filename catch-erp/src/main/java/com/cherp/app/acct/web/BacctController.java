@@ -23,7 +23,7 @@ public class BacctController {
 
 	
 	// JSON 계좌 데이터
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("bacct/accList")
 	public String bacctList(Model model) {
 		List<BacctVO> list = bacctService.bacctList();
@@ -32,7 +32,7 @@ public class BacctController {
 	}
 	
 	// 신규 계좌 저장
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PostMapping("bacct/insertBacct")
 	public String insertBacct(BacctVO bacctVO) {
 		bacctService.bacctInsert(bacctVO);
@@ -40,7 +40,7 @@ public class BacctController {
 	}
 	
 	// 계좌 수정
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@PostMapping("bacct/updateBacct")
 	public String updateBacct(BacctVO bacctVO) {
 		bacctService.bacctUpdate(bacctVO);
