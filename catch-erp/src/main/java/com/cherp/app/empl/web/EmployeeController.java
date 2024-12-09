@@ -1,5 +1,7 @@
 package com.cherp.app.empl.web;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,13 @@ public class EmployeeController {
 	@GetMapping("employees/payment")
 	public String paymentList (Model model) {
 		EmployeeSearchDto search = new EmployeeSearchDto();
+		LocalDate today = LocalDate.now();
+		LocalDate result = today.plusMonths(-1);
+		LocalDate payrollY = result.withDayOfMonth(1);
+		Date date = java.sql.Date.valueOf(payrollY);
+		search.setPayrollYStart(date);
+		search.setPayrollYEnd(date);
+
 		List<PayrollVO> list = payrollService.payrollList(search);
 		model.addAttribute("list",list);
 		return "human/paymentList";

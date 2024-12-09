@@ -253,7 +253,7 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 
 //인쇄버튼클릭시
 //#region
-/*
+
 document.querySelector('.print-Btn').addEventListener('click',function () {
     const element = document.getElementById('print-content');
 	   html2canvas(element,{width:1500,height:1500}).then(function(canvas) { //저장 영역 div id
@@ -287,7 +287,7 @@ document.querySelector('.print-Btn').addEventListener('click',function () {
 		  
 	});
 })
-*/
+
 /*
   document.querySelector(".print-Btn").addEventListener("click", () => {
     const element = document.getElementById("print-content");
@@ -301,15 +301,15 @@ document.querySelector('.print-Btn').addEventListener('click',function () {
       })
       .save();
   });
-  */
- 
+*/  
+ /*
        document.querySelector('.print-Btn').onclick = function(){
         var element = document.querySelector('#print-content');
 				html2pdf().from(element).toPdf().get('pdf').set({
   scale: 0.8  // 출력 크기를 80%로 축소
 }).save();
       }
-      
+   */ 
  //#endregion
 
 
