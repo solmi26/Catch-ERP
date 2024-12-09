@@ -13,7 +13,7 @@ public interface PurchaseChitService {
     public List<PurchaseChitVO> selectPurchaseChitState(String slipState);
 
     // 구매전표 작성을 위해 품목리스트 조회
-    public List<ContractItemVO> selectContractItem();
+    public List<ContractItemVO> selectContractItem(String clientName);
 
     // 수량에 맞게 가격 변화
     public ContractItemVO purchaseQuantity(int quantity);
