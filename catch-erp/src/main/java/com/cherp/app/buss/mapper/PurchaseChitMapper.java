@@ -15,7 +15,7 @@ public interface PurchaseChitMapper {
 	public List<PurchaseChitVO> selectPurchaseChitState(String slipState);
 
 	// 구매전표 작성을 위한 품목리스트 조회
-	public List<ContractItemVO> selectContractItem();
+	public List<ContractItemVO> selectContractItem(@Param("clientName") String clientName);
 
 	// 수량에 맞게 가격 변화
 	public ContractItemVO selectContractQuantity(@Param("quantity")

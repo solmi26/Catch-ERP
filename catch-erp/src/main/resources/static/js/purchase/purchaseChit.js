@@ -201,6 +201,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // const columnValue = clientGrid.getValue(ev.rowKey, 'clientName');
                 document.getElementById('inputClientName').value = clientRowData.clientName;
                 document.getElementById('inputClientCode').value = clientRowData.clientCode;
+
+                const ChangeEvent = new Event("change");
+                document.getElementById('inputClientName').dispatchEvent(ChangeEvent);
             }
         });
 
@@ -496,13 +499,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             itemListGrid.refreshLayout();
         }, 200)
     })
-
-    window.setTimeout(function () {
-        fetch('/purchase/contractItem')
-            .then(result => result.json())
-            .then(data => itemListGrid.resetData(data))
-            .catch(error => console.log(error))
-    }, 200)
 
     let itemListGrid;
     const initItemListGrid = () => {
@@ -810,6 +806,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                 console.log("판매전표 에러 : ", error)
             })
 
+    })
+
+    let inputClientName = document.getElementById('inputClientName');
+
+    inputClientName.addEventListener('change', () => {
+        let inputClientNameValue = document.getElementById('inputClientName').value;
+        if(inputClientNameValue !== '') {
+            window.setTimeout(function () {
+                fetch('/purchase/contractItem/' + inputClientNameValue)
+                    .then(result => result.json())
+                    .then(data => itemListGrid.resetData(data))
+                    .catch(error => console.log(error))
+            }, 200)
+        }
     })
 
     const myModal = new bootstrap.Modal('#accountSearchModal')
