@@ -465,10 +465,8 @@ function dateFormatter (date) {
 	let result = `${year}-${month}-${day}`
 	return result;
 }
-/*		window.setTimeout(function(){
-		allowanceGrid.refreshLayout();
-		}, 200)
-		*/
+
+		
 //폼 유효성 검사
 function formValidity() {
 	let flag =true;

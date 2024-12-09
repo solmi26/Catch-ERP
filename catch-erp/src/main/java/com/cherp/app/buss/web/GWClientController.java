@@ -30,6 +30,15 @@ public class GWClientController {
 		return "sales/clientList";
 	}
 	
+	// 회계파트 거래처 등록
+	@Secured("ROLE_MANAGER,ROLE_SALES")
+	@GetMapping("sales/clientList")
+	public String clientListAcct(Model model) {
+		List<ClientPsVO> clientList = clientService.gwClientList();
+		model.addAttribute("clientList",clientList);
+		return "account/clientList_acct";
+	}
+	
 	@Secured("ROLE_USER")
 	@PostMapping("business/insertClient")
 	public String insertClient(ClientPsVO client) {

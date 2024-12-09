@@ -22,14 +22,14 @@ public class RestBacctController {
 	}
 	
 	// JSON 계좌 데이터
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("api/account/bacct")
 	public List<BacctVO> bacctList() {
 		return bacctService.bacctList();
 	}
 	
 	// JSON 은행목록 데이터
-	@Secured("ROLE_USER")
+	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@GetMapping("api/account/bank")
 	public List<CommonCodeVO> bankList() {
 		return bacctService.commonBankList();

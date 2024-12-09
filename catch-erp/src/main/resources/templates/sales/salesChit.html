@@ -10,12 +10,25 @@
     <title>판매</title>
     <link rel="stylesheet" th:href="@{/css/sales/salesChit.css}"/>
 
+    <style>
+        .decrease {
+            background-color: #e0f7fa !important; /* 밝은 파랑색 */
+        }
+
+        .increase {
+            background-color: #ffebee !important; /* 밝은 빨강색 */
+        }
+
+        .ongoing {
+            background-color: #8fdf82 !important; /* 밝은 초록 */
+        }
+    </style>
 </head>
 
 <body>
 <!-- Header -->
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>판매</h4>
+    <h4>판매하기</h4>
 </div>
 
 <!-- Form -->
@@ -122,7 +135,7 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
-                <p><small>※거래처명을 클릭하여 입력하세요.</small></p>
+                <p class="msg"><small>※거래처명을 클릭하여 입력하세요.</small></p>
                 <button type="button" class="btn btn-secondary btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
@@ -155,7 +168,7 @@
                 <div id="humanGrid"></div>
             </div>
             <div class="modal-footer justify-content-between">
-                <p><small>※사원코드를 클릭하여 입력하세요.</small></p>
+                <p class="msg"><small>※사원코드를 클릭하여 입력하세요.</small></p>
                 <div>
                     <button type="button" class="btn btn-secondary btn-secondary" data-bs-dismiss="modal" aria-label="Close">
                         닫기
@@ -167,26 +180,26 @@
 </div>
 
 
-<!-- 매출계정 모달 -->
-<div class="modal fade" id="ledgerModal" tabindex="-1">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">계정 검색</h5>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div id="accCodeGrid"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-secondary" data-bs-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--&lt;!&ndash; 매출계정 모달 &ndash;&gt;-->
+<!--<div class="modal fade" id="ledgerModal" tabindex="-1">-->
+<!--    <div class="modal-dialog modal-md">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">계정 검색</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <div class="container-fluid">-->
+<!--                    <div class="row">-->
+<!--                        <div id="accCodeGrid"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary btn-secondary" data-bs-dismiss="modal">닫기</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <script th:inline="javascript">
     /*<![CDATA[*/
