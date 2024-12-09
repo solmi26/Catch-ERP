@@ -57,8 +57,11 @@
 	 }	
 	 .modalTrigger {
 	 	cursor : pointer;
-	 
 	 }
+	
+	.mr-s{
+		margin-right:10px !important;
+	}
 	/*============================
     	StackInquery 거래처 모달 CSS
     ==============================*/
