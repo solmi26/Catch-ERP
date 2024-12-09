@@ -480,8 +480,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 purchaseChit.setValue(ev.rowKey, 'vat', sumVat)
             }
 
-
-
         })
 
         return purchaseChit;
@@ -498,6 +496,37 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.setTimeout(function () {
             itemListGrid.refreshLayout();
         }, 200)
+    })
+
+    //품목 클릭시 선택건 제외하고 띄워주기
+    let itemModalTriggerBtn = document.getElementById('contractItemModal');
+    itemModalTriggerBtn.addEventListener('click', function () {
+        if(document.getElementById("inputClientName").value == ''){
+            alert("품목을 조회할 거래처를 선택해주세요.");
+            return ;
+        }
+        let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
+        let clientName = document.getElementById("inputClientName").value;
+        purchaseChit.getData().forEach(ele => {
+            existentNo.push(ele.itemCode);
+        })
+        let filteredData = itemListGrid.getData().filter(ele => {
+            return !existentNo.includes(ele.itemCode) && clientName === ele.clientName;
+        })
+        itemListGrid.resetData(filteredData) // 페이지 그리드와 중복되는 건수를 제외한 발주건을 출력시킨다.
+        console.log(itemListGrid.getData());
+        console.log(filteredData);
+    })
+
+    //발주서버튼 mouse over 이벤트
+    let itemBtn = document.getElementById('contractItemModal');
+    itemBtn.addEventListener('mouseover',function(){
+        if(document.getElementById("inputClientName").value == ''){
+            itemBtn.removeAttribute('data-bs-toggle');
+        }
+        if(document.getElementById("inputClientName").value != ''){
+            itemBtn.setAttribute("data-bs-toggle","modal")
+        }
     })
 
     let itemListGrid;
@@ -523,7 +552,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             }],
             data: [],
             columns: [{
-                header: '품목코드', name: 'itemCode', align: "center", width: 150, whiteSpace: 'normal', className: 'border'
+                header: '품목코드',
+                name: 'itemCode',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                className: 'border'
             }, {
                 header: '품목명',
                 name: 'itemName',
@@ -682,6 +716,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     //         .catch(error => alert("창고 조회 실패입니다."))
     // }, 200)
 
+    let inputClientName = document.getElementById('inputClientName');
+
+    inputClientName.addEventListener('change', () => {
+        let inputClientNameValue = document.getElementById('inputClientName').value;
+        if(inputClientNameValue !== '') {
+            window.setTimeout(function () {
+                fetch('/purchase/contractItem/' + inputClientNameValue)
+                    .then(result => result.json())
+                    .then(data => itemListGrid.resetData(data))
+                    .catch(error => console.log(error))
+            }, 200)
+        }
+    })
+
     //발주서 모달에서 선택버튼 클릭시 페이지그리드로 데이터이동
     let itemInputBtn = document.getElementById('itemInputBtn');
     itemInputBtn.addEventListener("click", function () {
@@ -776,6 +824,32 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 그리드 정보
         insertPurchase.purchaseHistories = purchaseChit.getData();
 
+        // 빈 값 확인하기 - 마스터 정보
+        if(insertPurchase.clientName === ''){
+            alert('거래처명을 입력하세요');
+            return;
+        }
+
+        if(insertPurchase.employeeName === ''){
+            alert('담당자명을 입력하세요.');
+            return;
+        }
+
+        if(insertPurchase.witBacct === ''){
+            alert('입금계좌를 입력하세요.')
+            return;
+        }
+
+        if(insertPurchase.purchaseHistories.length === 0){
+            alert('품목을 불러와 작성해주세요.')
+            return;
+        }
+
+        // 빈 값 확인 - 그리드 정보
+        let hasEmptyGridValues = insertPurchase.saleslipHistories.some(row => {
+            return Object.values(row).some(value => value === '' || value === null || value === undefined);
+        });
+
         // 부가세, 공급가액 합계 계산
         let vat = 0;
         let supplyPrice = 0;
@@ -806,20 +880,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 console.log("판매전표 에러 : ", error)
             })
 
-    })
-
-    let inputClientName = document.getElementById('inputClientName');
-
-    inputClientName.addEventListener('change', () => {
-        let inputClientNameValue = document.getElementById('inputClientName').value;
-        if(inputClientNameValue !== '') {
-            window.setTimeout(function () {
-                fetch('/purchase/contractItem/' + inputClientNameValue)
-                    .then(result => result.json())
-                    .then(data => itemListGrid.resetData(data))
-                    .catch(error => console.log(error))
-            }, 200)
-        }
     })
 
     const myModal = new bootstrap.Modal('#accountSearchModal')
