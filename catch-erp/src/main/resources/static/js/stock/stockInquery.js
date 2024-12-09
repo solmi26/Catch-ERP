@@ -333,13 +333,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		  
 		}
 		
-	stockInqueryGrid.on('onGridMounted', function() {
+/*	stockInqueryGrid.on('onGridMounted', function() {
     	// 대상 헤더 셀 선택
 	    let redStar = document.querySelector("#inqueryGrid > div > div.tui-grid-content-area.tui-grid-no-scroll-y > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)");
 		let originalText = redStar.textContent.trim();
 		let updatedText = originalText.substring(4);
 		redStar.innerHTML = `<span style="color:red"> * </span><span>${updatedText}</span>`;
-	});
+		window.setTimeout(function(){
+			stockInqueryGrid.refreshLayout();
+		},200)
+	});*/
 		
 		
 		
@@ -759,7 +762,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			},
             columns: [
                 {
-                    header: '조정번호',
+                    header: '입출고번호',
                     name: 'stocksAdjustNo',
                     align: "center",
                     width: 100,
