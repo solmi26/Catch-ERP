@@ -218,7 +218,51 @@
 	
 	</update>
 	
+	<!-- 인사정보 재직상태 변경(퇴직) -->
+	<update id="updateStatusType" parameterType="java.util.List">
+		UPDATE employees
+		SET status_type = 'm3'
+		WHERE employee_code IN
+        <foreach collection="list" item="employee" open="(" separator="," close=")">
+			#{employee.employeeCode}
+		</foreach>		
+	</update>
 	
+	<!-- 인사기본정보 삭제 -->	
+	<delete id="deleteEmployee" parameterType="java.util.ArrayList">
+		DELETE FROM employees
+		WHERE employee_code IN
+        <foreach collection="array" item="employeeCode" open="(" separator="," close=")">
+			#{employeeCode}
+		</foreach>		
+	</delete>
+	
+	<!-- 인사세부정보 삭제 -->	
+	<delete id="deleteEmployeeDetail" parameterType="java.util.ArrayList">
+		DELETE FROM employees_detail
+		WHERE employee_code IN
+        <foreach collection="array" item="employeeCode" open="(" separator="," close=")">
+			#{employeeCode}
+		</foreach>		
+	</delete>
+	
+	<!-- 인사급여정보 삭제 -->	
+	<delete id="deleteEmployeeSalary" parameterType="java.util.ArrayList">
+		DELETE FROM employees_salary
+		WHERE employee_code IN
+        <foreach collection="array" item="employeeCode" open="(" separator="," close=")">
+			#{employeeCode}
+		</foreach>		
+	</delete>
+
+	<!-- 인사급여정보 삭제 -->	
+	<delete id="deleteFixed" parameterType="java.util.ArrayList">
+		DELETE FROM fixed
+		WHERE employee_code IN
+        <foreach collection="array" item="employeeCode" open="(" separator="," close=")">
+			#{employeeCode}
+		</foreach>		
+	</delete>	
 	<!-- 셀렉트박스 정보 불러오기 -->
 	
 	<!-- 공통코드 불러오기 -->

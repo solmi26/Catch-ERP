@@ -13,7 +13,10 @@ import com.cherp.app.common.vo.CommonCodeVO;
 import com.cherp.app.empl.service.EmployeeService;
 import com.cherp.app.empl.service.PayrollService;
 import com.cherp.app.empl.service.RegisterService;
+import com.cherp.app.empl.vo.AllowanceVO;
+import com.cherp.app.empl.vo.DeductionsVO;
 import com.cherp.app.empl.vo.DepartmentVO;
+import com.cherp.app.empl.vo.EmployeeVO;
 import com.cherp.app.empl.vo.PayrollVO;
 
 @Controller
@@ -32,10 +35,12 @@ public class EmployeeController {
 	@GetMapping("employees/employee")
 	public String employeeList(Model model) {
 		EmployeeSearchDto search = new EmployeeSearchDto();
+		search.setStatusType("m1");
+		List<EmployeeVO> empList = employeeService.employeeList(search);
 		String[] commonCode = {"0H","0I","0J","0K","0L","0M"};
 		List<CommonCodeVO> comList = employeeService.commonCodeList(commonCode);
 		List<DepartmentVO> deptList =  regService.deapartmentList();
-		model.addAttribute("search", search);
+		model.addAttribute("empList", empList);
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("comList", comList);
 		return "human/employeeList";
@@ -93,4 +98,21 @@ public class EmployeeController {
 		return "human/attendanceElementInput";
 	}
 	
+	//수당항목페이지
+	@GetMapping("employees/allowanceElement")
+	public String allowanceElemnet(Model model) {
+		List<AllowanceVO> list = regService.allowanceItemList();
+		model.addAttribute("list", list);
+		return "human/allowanceElement";
+	}	
+	//공제항목페이지
+	@GetMapping("employees/deductionsItem")
+	public String deductionsItem (Model model) {
+		List<DeductionsVO> deduList = regService.deductionsItemList();
+		List<DeductionsVO> incomeList = regService.incomeTaxList();
+		model.addAttribute("deduList", deduList);
+		model.addAttribute("incomeList", incomeList);
+		return "human/deductionItem";
+	}	
+
 }

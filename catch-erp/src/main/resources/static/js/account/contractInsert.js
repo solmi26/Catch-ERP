@@ -117,6 +117,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadGrid();
   
+
+ 	//블러걸기
+ 	document.getElementById("save-btn").addEventListener("mouseover", function () {
+		grid.blur();
+	});
+	  
+  // 그리드 필수 값 표시
   grid.on('onGridMounted',function(){
         let redStar = document.querySelector("#grid > div > div.tui-grid-content-area > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)")
         redStar.innerHTML = `<span>품목 </span><span style="color:red">*</span>`

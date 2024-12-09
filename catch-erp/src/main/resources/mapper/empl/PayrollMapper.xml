@@ -163,4 +163,14 @@
 	
 	</delete>
 	
+	<!-- 고정수당기록 삭제 -->
+	<delete id="deleteAllowanceHistory" parameterType="java.util.ArrayList">
+		DELETE FROM allowance_history
+		WHERE  salary_number IN
+		<foreach collection="array" item="salaryNumber" open="(" separator="," close=")">
+			#{salaryNumber}
+		</foreach>
+	
+	</delete>
+	
 </mapper>

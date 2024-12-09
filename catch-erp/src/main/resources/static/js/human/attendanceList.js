@@ -95,14 +95,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 			str += ele.value 
 		}
 	})
-	str += '&' 
-	str += 'statusType';
-	str += '='
-	if (radio != null) {
-		str += radio.value;
-	} else {
-		str += ""
-	}
 	parameter = '?'+str.substr(1)
 	fetch("/employees/att"+parameter)
 	.then(data => data.json())

@@ -93,6 +93,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   loadGridData();
+  
+   	//블러걸기
+ 	document.getElementById("updateBtn").addEventListener("mouseover", function () {
+		grid.blur();
+	});
 
   let currentTarget = null; // 현재 클릭된 대상
 
