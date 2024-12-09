@@ -37,6 +37,8 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 	@Override
 	public int payrollDelete(String[] salaryNumber) {
-		return mapper.deletePayroll(salaryNumber);
+		int history = mapper.deleteAllowanceHistory(salaryNumber);
+		int payroll = mapper.deletePayroll(salaryNumber);
+		return (payroll + history)/2;
 	}
 }

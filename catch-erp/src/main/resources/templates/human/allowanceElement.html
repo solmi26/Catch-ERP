@@ -19,7 +19,7 @@
 			<div class="col-12 limit-box">
 					<div class="row justify-content-between mb-2">
 						<div class="col">
-							<h1>근태항목목록</h1>
+							<h1>수당항목목록</h1>
 						</div>
 					</div>
 					<div class="row justify-content-start mt-4">
@@ -39,12 +39,12 @@
 			</div>
 		</div>
 		
-<!-- 근태등록 모달시작!!! -->
-   <div class="modal fade" id="attReqModal" tabindex="-1">
+<!-- 수당등록 모달시작!!! -->
+   <div class="modal fade" id="allReqModal" tabindex="-1">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">근태항목등록</h5>
+                    <h5 class="modal-title">수당항목등록</h5>
                     <div class="action-buttons">
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                         <!-- 검색창-->
                         <div class="row justify-content-between mb-3">
                             <div class="col-auto">
-                                <h4>근태항목등록</h4>
+                                <h4>수당항목등록</h4>
                             </div>
 
                         </div> <!--검색창끝-->
@@ -63,18 +63,18 @@
                                 <div class="card-body">
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-3">
-                                          <label for="inputPassword6" class="col-form-label">근태코드</label>
+                                          <label for="inputPassword6" class="col-form-label">수당코드</label>
                                         </div>
                                         <div class="col">
-                                          <input type="text" id="inputPassword6" name="attCode" class="form-control form-control-sm insert-input" aria-describedby="passwordHelpInline">
+                                          <input type="text" id="inputPassword6" name="allowanceCode" class="form-control form-control-sm insert-input" aria-describedby="passwordHelpInline">
                                         </div>
                                     </div>                                    
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-3">
-                                          <label for="inputPassword6" class="col-form-label ">근태명</label>
+                                          <label for="inputPassword6" class="col-form-label ">수당명</label>
                                         </div>
                                         <div class="col">
-                                          <input type="text" id="inputPassword6" name="attName" class="form-control form-control-sm insert-input" aria-describedby="passwordHelpInline">
+                                          <input type="text" id="inputPassword6" name="allowanceName" class="form-control form-control-sm insert-input" aria-describedby="passwordHelpInline">
                                         </div>
                                     </div>                                    
                                     <div class="row">
@@ -82,10 +82,9 @@
                                           <label for="inputPassword6" class="col-form-label ">근태구분</label>
                                         </div>
                                         <div class="col">
-                                      		<select class="form-select form-select-sm EmployeeDetailVO insert-input" name="attStatus">
-					                    		<th:block th:each="com : ${ccList}">
-					                    			<option   th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-					                    		</th:block>
+                                      		<select class="form-select form-select-sm EmployeeDetailVO insert-input" name="allowanceCheck">
+					                    			<option value="과세" >과세</option>
+					                    			<option value="비과세" >비과세</option>
                                        		</select>		                                        
                                         </div>
                                    		</div>
@@ -106,11 +105,11 @@
 <!-- 근태등록 모달끝!!! -->
 
 <!-- 근태수정 모달시작!! -->
-   <div class="modal fade" id="attModifyModal" tabindex="-1">
+   <div class="modal fade" id="allModifyModal" tabindex="-1">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">근태항목수정</h5>
+                    <h5 class="modal-title">수당항목수정</h5>
                     <div class="action-buttons">
                     </div>
                 </div>
@@ -119,7 +118,7 @@
                         <!-- 검색창-->
                         <div class="row justify-content-between mb-3">
                             <div class="col-auto">
-                                <h4>근태항목수정</h4>
+                                <h4>수당항목수정</h4>
                             </div>
 
                         </div> <!--검색창끝-->
@@ -129,29 +128,28 @@
                                 <div class="card-body">
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-3">
-                                          <label for="inputPassword6" class="col-form-label">근태코드</label>
+                                          <label for="inputPassword6" class="col-form-label">수당코드</label>
                                         </div>
                                         <div class="col">
-                                          <input type="text" id="inputPassword6" name="attCode" class="form-control form-control-sm modify-input" readonly aria-describedby="passwordHelpInline">
+                                          <input type="text" id="inputPassword6" name="allowanceCode" class="form-control form-control-sm modify-input" readonly aria-describedby="passwordHelpInline">
                                         </div>
                                     </div>                                    
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-3">
-                                          <label for="inputPassword6" class="col-form-label ">근태명</label>
+                                          <label for="inputPassword6" class="col-form-label ">수당명</label>
                                         </div>
                                         <div class="col">
-                                          <input type="text" id="inputPassword6" name="attName" class="form-control form-control-sm modify-input" aria-describedby="passwordHelpInline">
+                                          <input type="text" id="inputPassword6" name="allowanceName"  class="form-control form-control-sm modify-input" aria-describedby="passwordHelpInline">
                                         </div>
                                     </div>                                    
                                     <div class="row">
                                         <div class="col-3">
-                                          <label for="inputPassword6" class="col-form-label ">근태구분</label>
+                                          <label for="inputPassword6" class="col-form-label ">과세여부</label>
                                         </div>
                                         <div class="col">
-                                      		<select class="form-select form-select-sm EmployeeDetailVO modify-input" name="attStatus">
-					                    		<th:block th:each="com : ${ccList}">
-					                    			<option   th:value="${com.codeRule}" th:text="${com.commonName}"></option>
-					                    		</th:block>
+                                      		<select class="form-select form-select-sm EmployeeDetailVO modify-input" name="allowanceCheck">
+					                    		<option value="과세" >과세</option>
+					                    		<option value="비과세" >비과세</option>
                                        		</select>		                                        
                                         </div>
                                    		</div>
@@ -171,7 +169,7 @@
 
 <!-- 근태수정 모달끝!! -->
 
-	<script>
+	<script th:inline="javascript">
 		const Grid = tui.Grid;
 		const grid = new Grid({
 			  el: document.getElementById('grid'), // Container element
@@ -195,21 +193,16 @@
 		      scrollY: false,
 			  columns: [
 			    {
-			      header: '근태코드',
-			      name: 'attCode'
+			      header: '수당코드',
+			      name: 'allowanceCode'
 			    },
 			    {
-			      header: '근태명칭',
-			      name: 'attName'
+			      header: '수당명칭',
+			      name: 'allowanceName'
 			    },
 			    {
-			      header: '근태유형코드',
-			      name: 'attStatus',
-			      hidden:true
-			    },
-			    {
-			      header:'근태유형',
-			      name:'commonName'
+			      header: '과세여부',
+			      name: 'allowanceCheck'
 			    },
 			    {
 			      header:'근태사용횟수',
@@ -217,18 +210,11 @@
 				  hidden:true
 			    }
 			  ],
-			  data: [
-
-			  ],
+			  data: [[${list}]],
 			showDummyRows: true
 			});
 
-			instance.resetData(newData); // Call API of instance's public method
-		      
-			Grid.applyTheme('striped'); // Call API of static method
-			
-
 		</script>
-	<script th:src="@{/js/human/attendanceElementInput.js}"></script>
+	<script th:src="@{/js/human/allowanceElement.js}"></script>
 </body>
 </html>

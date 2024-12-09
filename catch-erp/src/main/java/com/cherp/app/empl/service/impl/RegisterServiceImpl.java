@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.cherp.app.empl.mapper.RegisterMapper;
 import com.cherp.app.empl.service.RegisterService;
+import com.cherp.app.empl.vo.AllowanceVO;
 import com.cherp.app.empl.vo.AttItemVO;
+import com.cherp.app.empl.vo.DeductionsVO;
 import com.cherp.app.empl.vo.DepartmentVO;
 import com.cherp.app.empl.vo.FixedVO;
 @Service
@@ -76,9 +78,52 @@ public class RegisterServiceImpl implements RegisterService {
 		return mapper.deleteAttItem(attItem);
 	}
 
-	
+	//고정수당 조회
 	@Override
-	public List<FixedVO> allowanceItemList() {
+	public List<AllowanceVO> allowanceItemList() {
 		return mapper.selectAllowanceItemList();
 	}
+
+	@Override
+	public AllowanceVO allowanceItemInfo(String allowanceCode) {
+		return mapper.selectAllowanceItem(allowanceCode);
+	}
+
+	@Override
+	public int allowanceItemInsert(AllowanceVO allowanceItem) {
+		return mapper.insertAllowanceItem(allowanceItem);
+	}
+
+	@Override
+	public int allowanceItemUpdate(AllowanceVO allowanceItem) {
+		return mapper.updateAllowanceItem(allowanceItem);
+	}
+
+	@Override
+	public int allowanceItemDelete(String[] allowanceItem) {
+		return mapper.deleteAllowanceItem(allowanceItem);
+	}
+
+	//공제항목
+	@Override
+	public List<DeductionsVO> deductionsItemList() {
+		return mapper.selectDeductionsItemList();
+	}
+
+	@Override
+	public DeductionsVO deductionsItemInfo(String deductionsCode) {
+		// TODO Auto-generated method stub
+		return mapper.selectDeductionsItem(deductionsCode);
+	}
+
+	@Override
+	public int deductionsItemUpdate(DeductionsVO deductionsItem) {
+		return mapper.updateDeductionsItem(deductionsItem);
+	}
+
+	@Override
+	public List<DeductionsVO> incomeTaxList() {
+		return mapper.selectIncomeTaxList();
+	}
+	
 }

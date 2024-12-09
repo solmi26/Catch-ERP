@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	            {
 	                header: '입고단가', //공급가액
 	                name: 'price',
-	                align: "center",
+	                align: "right",
 	                width: 200,
 	                whiteSpace: 'normal',
 	                sortable: true,

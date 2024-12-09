@@ -15,11 +15,11 @@
 		<input id="employeeName" th:value="${#authentication.principal.employeeLoginVO.name}" style="display:none;"></input> <!-- 시큐리티에 담긴 이름 hidden에다 넣어놈 -->
         <input id="employeeImage" th:value="${#authentication.principal.employeeLoginVO.employeeImage}" style="display:none;"></input> <!-- 시큐리티에 담긴 사진 hidden에다 넣어놈 -->
 	
-	    <div class="bg-white shadow-sm rounded" style="padding: 20px; border:1px solid #D8D8D8;" >
+	    <div class="bg-white rounded" style="padding: 20px; border:1px solid #D8D8D8;" >
 	    			
 	        <!-- Header -->
-	        <div class="row">
-	        		<h4 style="font-weight:900">재고조회/상품관리</h4>
+	        <div class="border-bottom pb-3 mb-4">
+	        		<h1 style="font-size:20px;">재고조회/상품관리</h1>
 	        </div>
 	        <!-- <ul class="nav nav-tabs" id="mainTab" role="tablist">
 	        	
@@ -272,41 +272,43 @@
 				                            <!-- <input type="hidden" id="clientCode" name="clientCode"> -->
 				                            <div class="mb-3 row">
 				                            	<div class=" col-sm-6 col-md-6 input-group input-group-sm" >
-				                                	<label for="customerName"  class=" input-group-text col-sm-3 col-md-4 col-form-label">거래처명[거래처코드]</label>				                               
-				                                    <input type="text" class="form-control" id="clientNameAndCode" name="clientNameAndCode" readonly>			                     
+				                                	<label for="customerName"  class="text-center input-group-text col-sm-3 col-md-4 col-form-label">거래처명[거래처코드]</label>				                               
+				                                    <input type="text" class="text-end form-control" id="clientNameAndCode" name="clientNameAndCode" readonly>			                     
 				                                </div>
 				                            </div>
 				                            <div class="mb-3 row">
 				                            	<div class=" col-sm-6 col-md-6 input-group input-group-sm">
-				                                	<label for="customerName" class="input-group-text col-sm-3 col-md-4 col-form-label">계약번호</label>
-				                                    <input type="text" class="form-control" id="conNo" name="conNo" readonly>
+				                                	<label for="customerName" class="text-center input-group-text col-sm-3 col-md-4 col-form-label">계약번호</label>
+				                                    <input type="text" class="text-end form-control" id="conNo" name="conNo" readonly>
 				                                </div>
 				                            </div>
 				                            <div class="mb-3 row">
 				                            	<div class=" col-sm-6 col-md-6 input-group input-group-sm">
-				                                	<label for="representativeName" class="input-group-text col-sm-3 col-md-4 col-form-label">품목명</label>				                                
-				                                    <input type="text" class="form-control" id="itemName" name="itemName"  readonly>
+				                                	<label for="representativeName" class="text-center input-group-text col-sm-3 col-md-4 col-form-label">품목명</label>				                                
+				                                    <input type="text" class="text-end form-control" id="itemName" name="itemName"  readonly>
 				                                </div>
 				                            </div>
 				                            <div class="mb-3 row">
 				                            	<div class=" col-sm-6 col-md-6 input-group input-group-sm">
 				                                	<label for="representativeName" class="input-group-text col-sm-2 col-md-4 col-form-label">품목코드</label>
-				                                    <input type="text" class="form-control" id="itemCode" name="itemCode" readonly>
+				                                    <input type="text" class="text-end form-control" id="itemCode" name="itemCode" readonly>
 				                                </div>
 				                            </div>
 				                            <div class="mb-3 row">
 				                            	<div class=" col-sm-6 col-md-6 input-group input-group-sm">
 				                                	<label for="industry" class="input-group-text col-sm-2 col-md-4 col-form-label">단가</label>
-				                                    <input type="text" class="form-control" id="price" name="price" readonly>
+				                                    <input type="text" class="text-end form-control" id="price" name="price" readonly>
 				                                </div>
 				                            </div>
 				                           
 				                            <div class="mb-3 row">
 				                            	<div class=" col-sm-6 col-md-6 input-group input-group-sm">
 				                                	<label for="category" class="input-group-text col-sm-3 col-md-4 col-form-label">계약 기간</label>
-				                                    <input type="text" class="form-control" id="contractPeriod" name="contractPeriod" readonly>
+				                                    <input type="text" class="text-end form-control" id="contractPeriod" name="contractPeriod" readonly>
 				                                </div>
 				                            </div>
+				                            
+				                            
 											<div>
 												<small style="color: green">※창고별 현재 수량</small>
 											</div>

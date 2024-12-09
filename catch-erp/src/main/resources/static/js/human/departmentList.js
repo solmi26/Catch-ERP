@@ -7,6 +7,7 @@
 
 //기본변수선언
 let currentTarget = null;
+let currentName = "";
 //모달선언
 
 const departmentReqModal = new bootstrap.Modal('#departmentReqModal')
@@ -26,13 +27,18 @@ mainGridDataLoad()
 //신규입력 모달창에서 저장클릭시 이벤트 
 document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 	let departmentVO = null;
+	let flag;
 	let inputs = document.querySelectorAll('.insert-input')
 	departmentVO = nullCheck(inputs)
 	if (departmentVO === false) {
 		alert("값을입력하세요")
 		return;
 	}
-	console.log(departmentVO)
+	//중복값체크
+	flag =duplicationReqCheck(ev.target)
+	if (!flag) {
+		return;
+	}
 	fetch("/employees/dept",{
 		method:'post',
 		headers: {
@@ -86,8 +92,12 @@ empGrid.on('click',function (ev) {
 //삭제버튼 클릭 이벤트
 document.querySelector('.del-Btn').addEventListener('click',function () {
 	let rows = grid.getCheckedRows();
+	
 	if (rows.length == 0) {
-		console.log("열을체크")
+		return;
+	}
+	let flag = countCheck(rows);
+	if (!flag) {
 		return;
 	}
 	let list = ""
@@ -115,6 +125,7 @@ document.querySelector('.del-Btn').addEventListener('click',function () {
 grid.on('click',function (ev) {
 	if (ev.targetType == "cell") {
 		currentTarget = ev;
+		currentName = grid.getFormattedValue(ev.rowKey,'departmentName')
 		let departmentCode = grid.getFormattedValue(ev.rowKey,'departmentCode');
 		console.log(departmentCode);
 		selectDataLoad(departmentCode)
@@ -124,12 +135,18 @@ grid.on('click',function (ev) {
 })
 
 //수정모달창에 저장버튼 클릭 이벤트
-document.querySelector('.modify-save-Btn').addEventListener('click',function () {
+document.querySelector('.modify-save-Btn').addEventListener('click',function (ev) {
 	let departmentVO = null;
 	let inputs = document.querySelectorAll('.modify-input')
 	departmentVO = nullCheck(inputs)
 	if (departmentVO === false) {
 		alert("값을입력하세요")
+		return;
+	}
+	//중복값체크
+	//중복값체크
+	flag =duplicationModCheck(ev.target)
+	if (!flag) {
 		return;
 	}
 	fetch("/employees/dept",{
@@ -141,11 +158,8 @@ document.querySelector('.modify-save-Btn').addEventListener('click',function () 
 		})
 	.then(data => data.json())
 	.then(data => {
-		if (data.result != '1') {
-			alert("오류가 발생!")
-		}else {
-			alert("성공!")
-		}
+		alert("수정이 완료되었습니다.")
+		deptModifyModal.hide()
 		mainGridDataLoad()
 		departmentReqModal.hide()
 		inputs.forEach(ele => {
@@ -201,3 +215,64 @@ await   fetch('/employees/dept')
 
 	
 }
+
+//부서코드 중복값 검사
+function duplicationReqCheck (target) {
+	let flag = true;
+	let codeInput = target.closest('.modal').querySelector('[name="departmentCode"]')
+	let codeName = target.closest('.modal').querySelector('[name="departmentName"]')
+	let codeList = grid.getColumnValues('departmentCode')
+	let nameList = grid.getColumnValues('departmentName')
+	for (let code of codeList) {
+		if (codeInput.value == code) {
+			flag = false;
+			break;
+		}
+	} 
+	if (!flag) {
+		alert("해당되는 부서코드가 이미 존재합니다.")
+		return false;
+	}
+	for (let name of nameList) {
+		if (codeName.value == name) {
+			flag = false;
+			break;
+		}
+	} 
+	if (!flag) {
+		alert("해당되는 부서명이 이미 존재합니다.")
+		return false;
+	}
+	return true;
+}
+//수정모달 중복검사
+function duplicationModCheck (target) {
+	let flag = true;
+	let codeName = target.closest('.modal').querySelector('[name="departmentName"]')
+	let nameList = grid.getColumnValues('departmentName')
+	for (let name of nameList) {
+		if (name == currentName) {
+			continue;
+		} else if (codeName.value == name) {
+			flag = false;
+			break;
+		}
+	} 
+	if (!flag) {
+		alert("해당되는 부서명이 이미 존재합니다.")
+		return false;
+	}
+	return true;
+}
+//총원검사
+function countCheck(row) {
+	for (let ele of row) {
+		if (ele.count != 0) {
+			alert("부서원이 있는 부서는 삭제할수 없습니다.")
+			grid.focus(ele.rowKey,'count')
+			return false;
+		}
+	}
+	return true;
+}
+
