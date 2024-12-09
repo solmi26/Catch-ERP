@@ -515,8 +515,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             rowHeaders: [{
                 type: 'checkbox', header: `
                       <span class="custom-input">
-                          <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-                          <label for="all-checkbox" class="checkbox selectCheck">✔</label>
+                          <input type="checkbox" id="all-checkbox3" class="hidden-input" name="_checked" />
+                          <label for="all-checkbox3" class="checkbox selectCheck">✔</label>
                       </span>`, renderer: {
                     type: gridCheckbox
                 }
