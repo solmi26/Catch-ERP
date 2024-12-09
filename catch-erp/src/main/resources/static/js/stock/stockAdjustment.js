@@ -95,12 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
             focused: {
                 background: '#f8f9fa',
                 border: '#f64a4a'
-            },
-            evenRow: {
-                background: 'white'
-            },
-            oddRow: {
-                background: 'white'
             }
         }
     });
@@ -657,7 +651,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "right",
 		            width: 100,
 		            whiteSpace: 'normal',
-		            editor: 'text',
 		            className:'border',
 			        formatter: function (e) {
 			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
@@ -670,7 +663,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "right",
 		            width: 70,
 		            whiteSpace: 'normal',
-		            editor: 'text',
 		            className:'border',		            
 		        },
 		        {
@@ -679,7 +671,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 70,
 		            whiteSpace: 'normal',
-		            editor: 'text',
 		            className:'border',		            
 		        },	         
 		    ]
@@ -938,7 +929,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "right",
 		            width: 100,
 		            whiteSpace: 'normal',
-		            editor: 'text',
 		            className:'border',
 		            formatter: function (e) {
 			          const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
@@ -951,7 +941,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "right",
 		            width: 70,
 		            whiteSpace: 'normal',
-		            editor: 'text',
 		            className:'border',
 		        },
 		        {
@@ -960,7 +949,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		            align: "center",
 		            width: 70,
 		            whiteSpace: 'normal',
-		            editor: 'text',
 		            className:'border',
 		        }
 		    ]
