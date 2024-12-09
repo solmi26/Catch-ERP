@@ -341,9 +341,9 @@
                     }
                   };
                   fetch('/account/insertReceivableBalance', receivables)
-                  // .then(result => result.json())
+                  .then(result => result.text())
                   .then(result => {
-                    console.log(result);
+                    console.log("채권결제중: " , result);
                     if(result==='success') {
                       location.reload(true);
                     } else {
