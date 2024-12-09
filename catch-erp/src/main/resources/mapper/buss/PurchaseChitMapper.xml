@@ -125,6 +125,7 @@
                 supply_price,
                 vat
         FROM purchase_chit a JOIN b ON a.purcslip_no = b.purcslip_no
+        ORDER BY a.purcslip_no
     </select>
 
     <!-- 구매전표 검색 -->
