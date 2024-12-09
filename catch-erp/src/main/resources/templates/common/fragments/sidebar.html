@@ -10,10 +10,10 @@
           <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
             <a href="stocks/stockInquery" class="logo">
               <img
-                th:src="@{/img/index/logov2.png}"
+                th:src="@{/img/index/logo_hat.png}"
                 alt="navbar brand"
                 class="navbar-brand"
-                height="100%" width="100%" style="width:190px; height:90px; margin-right:10px;"
+                height="100%" width="100%"
               />
             </a>
             <div class="nav-toggle">
@@ -75,7 +75,7 @@
           <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
             <a href="index.html" class="logo">
               <img
-                th:src="@{/img/index/logo.png}"
+                th:src="@{/img/index/logo_hat.png}"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="100%" width="100%"
@@ -175,151 +175,7 @@
 
 
 
-<th:block th:fragment="sidebarHuman">
-      <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
-        <div class="sidebar-logo">
-          <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
-            <a href="index.html" class="logo">
-              <img
-                th:src="@{/img/index/logo_cat.png}"
-                alt="navbar brand"
-                class="navbar-brand"
-                height="100%" width="100%"
-              />
-            </a>
-            <div class="nav-toggle">
-              <button class="btn btn-toggle toggle-sidebar">
-                <i class="gg-menu-right"></i>
-              </button>
-              <button class="btn btn-toggle sidenav-toggler">
-                <i class="gg-menu-left"></i>
-              </button>
-            </div>
-            <button class="topbar-toggler more">
-              <i class="gg-more-vertical-alt"></i>
-            </button>
-          </div>
-          <!-- End Logo Header -->
-        </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
-          <div class="sidebar-content">
-            <ul class="nav nav-secondary">
-              <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
-                <a href="/myPageHuman">
-                  <i class="fas fa-home"></i>
-                  <p>마이페이지</p>
-                </a>
-	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
-	              <button type="submit" class="btn btn-success logoutBtn">로그아웃</button>
-	            </form>
-              </li>
-              <li class="nav-section">
-                <span class="sidebar-mini-icon">
-                  <i class="fa fa-ellipsis-h"></i>
-                </span>
-                <h4 class="text-section">인사파트</h4>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#base">
-                  <i class="icon-people"></i>
-                  <p>인사관리</p>
-                  <span class="caret"></span>         
-                </a>
-                <div class="collapse" id="base">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a th:href="@{/employees/employee}">
-                        <span class="sub-item">인사카드</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span class="sub-item">인사발령입력</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span class="sub-item">인사발령현황</span>
-                      </a>
-                    </li>
-                    
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                  <i class="icon-login"></i>
-                  <p>근태관리</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="sidebarLayouts">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a th:href="@{/employees/attendanceinput}">
-                        <span class="sub-item">근태입력</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a th:href="@{/employees/attendance}">
-                        <span class="sub-item">근태조회</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#forms" >
-                  <i class="icon-calendar"></i>
-                  <p>급여</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="forms">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a th:href="@{/employees/payment}">
-                        <span class="sub-item">급여조회</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
-                  <i class="icon-note"></i>
-                  <p>기초등록</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="tables">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a th:href="@{/employees/department}">
-                        <span class="sub-item">부서등록</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a th:href="@{/employees/deductionsItem}">
-                        <span class="sub-item">공제항목등록</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a th:href="@{/employees/allowanceElement}">
-                        <span class="sub-item">수당항목등록</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a th:href="@{/employees/attendanceElementInput}">
-                        <span class="sub-item">근태항목등록</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-</th:block>
+
 
 
 <!-- 회계 -->
@@ -458,6 +314,153 @@
                     <li>
                       <a href="/payable/payablesList">
                         <span class="sub-item">채무 관리</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+</th:block>
+
+<!-- 인사 -->
+<th:block th:fragment="sidebarHuman">
+      <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
+            <a href="index.html" class="logo">
+              <img
+                th:src="@{/img/index/logo_hat.png}"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="100%" width="100%"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
+                <a href="/myPageHuman">
+                  <i class="fas fa-home"></i>
+                  <p>마이페이지</p>
+                </a>
+	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
+	              <button type="submit" class="btn btn-success logoutBtn">로그아웃</button>
+	            </form>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">인사파트</h4>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#base">
+                  <i class="icon-people"></i>
+                  <p>인사관리</p>
+                  <span class="caret"></span>         
+                </a>
+                <div class="collapse" id="base">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a th:href="@{/employees/employee}">
+                        <span class="sub-item">인사카드</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">인사발령입력</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <span class="sub-item">인사발령현황</span>
+                      </a>
+                    </li>
+                    
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarLayouts">
+                  <i class="icon-login"></i>
+                  <p>근태관리</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="sidebarLayouts">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a th:href="@{/employees/attendanceinput}">
+                        <span class="sub-item">근태입력</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a th:href="@{/employees/attendance}">
+                        <span class="sub-item">근태조회</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#forms" >
+                  <i class="icon-calendar"></i>
+                  <p>급여</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="forms">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a th:href="@{/employees/payment}">
+                        <span class="sub-item">급여조회</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#tables">
+                  <i class="icon-note"></i>
+                  <p>기초등록</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="tables">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a th:href="@{/employees/department}">
+                        <span class="sub-item">부서등록</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a th:href="@{/employees/deductionsItem}">
+                        <span class="sub-item">공제항목등록</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a th:href="@{/employees/allowanceElement}">
+                        <span class="sub-item">수당항목등록</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a th:href="@{/employees/attendanceElementInput}">
+                        <span class="sub-item">근태항목등록</span>
                       </a>
                     </li>
                   </ul>
