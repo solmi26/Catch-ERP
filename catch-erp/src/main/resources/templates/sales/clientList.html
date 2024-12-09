@@ -8,7 +8,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>거래처 조회</title>    
+    <title>거래처 조회</title>
+    <style>
+        .clientStyle {
+          cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -302,6 +307,8 @@
         let contractItemGrid;
         // 거래처 상세 모달
         let clientDetailModal = new bootstrap.Modal(document.querySelector('#updateClientModal'));
+        
+        // detail모달이 화면에 나타날 때 첫번째 탭을 클릭하게 만들어 주는 기능
         document.querySelector('#updateClientModal').addEventListener('hidden.bs.modal', function (event) {
             const detailTabEvent = new Event("click");
             document.querySelector('#detail-tab').dispatchEvent(detailTabEvent);
@@ -332,6 +339,8 @@
                             filter: 'select',
                             align: 'center',
                             sortable: true,
+                            formatter: ({ value }) =>
+      					`<span class="text-primary clientStyle">${value}</span>`
                         },
                         {
                             header: '대표자명',
@@ -400,17 +409,23 @@
                 }
             },
             columns:[
-                {title:"거래처명", field:"clientName", width:120},
-                {title:"계약 명", field:"conName", width:210, sorter:"string"},
-                {title:"계약 일자", field:"conDate", width:160, sorter:"date"},
-                {title:"계약 시작일", field:"conSdate", width:160, sorter:"date"},
-                {title:"계약 종료일", field:"conEdate", width:160, sorter:"date"},
-                {title:"총 계약금액", field:"totalAmount", width:170, sorter:"number", bottomCalc:"sum", sorterParams:{
+                {title:"거래처명", field:"clientName", hozAlign:"center", width:120},
+                {title:"계약 명", field:"conName", hozAlign:"center", width:210, sorter:"string"},
+                {title:"계약 일자", field:"conDate", hozAlign:"center", width:160, sorter:"date"},
+                {title:"계약 시작일", field:"conSdate", hozAlign:"center", width:160, sorter:"date"},
+                {title:"계약 종료일", field:"conEdate", hozAlign:"center", width:160, sorter:"date"},
+                {title:"총 계약금액", field:"totalAmount", hozAlign:"right", width:170, sorter:"number", bottomCalc:totalSumCalc,
+                formatter: "money", // 숫자 형식 지정
+                formatterParams: {
+                    decimal: ".", // 소수점 구분자
+                    thousand: ",", // 천 단위 구분자
+                    precision: 0, // 소수점 이하 자릿수
+                }, sorterParams:{
                     thousandSeparator:",",
                     decimalSeparator:",",
                     alignEmptyValues:"top",
                 }},
-                {title:"계약상태", field:"statusDetail", width:140, sorter:"string"}
+                {title:"계약상태", field:"statusDetail", hozAlign:"center", width:140, sorter:"string"}
             ],
             });
             return grid;
@@ -442,6 +457,22 @@
                 this.el.src = '/images/'+String(props.value);
             }
         }
+
+        // Tabulator 총합계산 계산기
+        var totalSumCalc = function(values, data, calcParams){
+            //values - array of column values
+            //data - all table data
+            //calcParams - params passed from the column definition object
+
+            var calc = 0;
+
+            values.forEach(function(value){
+                calc += value;
+            });
+
+            return '총 : ' +calc.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +' 원';
+        }
+
         function makeClientItemToastGrid(clientContractItemList) {
             divContractItemGrid.innerHTML = '';
             let grid = new tui.Grid( { // 브라우저 환경에서 네임 스페이스 이용(new tui.Grid)

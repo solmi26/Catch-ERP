@@ -113,11 +113,11 @@
                                     <!-- 거래처별 채무거래내역 -->
                                 </tbody>
                                 <tfoot class="ledge-footer">
-                                  <tr>
+                                  <tr id="totResult">
                                     <td colspan="3" style="text-align: center; font-weight: bold; color: red; font-size: 15px;" >누계</td>
-                                    <td id="totIncrease"></td>
-                                    <td id="totDecrease"></td>
-                                    <td id="totBalance"></td>
+                                    <td id="totIncrease" style="text-align: right;"></td>
+                                    <td id="totDecrease" style="text-align: right;"></td>
+                                    <td id="totBalance" style="text-align: right;"></td>
                                   </tr>
                                 </tfoot>
                             </table>
@@ -279,15 +279,22 @@
                             <td>${ele.recDate}</td> 
                             <td>${ele.acctName}</td>
                             <td>${ele.summary}</td>
-                            <td>${ele.increasePrice}</td>
-                            <td>${ele.decreasePrice}</td>
-                            <td>${tot}</td>
+                            <td style="text-align: right;">${ele.increasePrice.toString()
+                          	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} 원</td>
+                            <td style="text-align: right;">${ele.decreasePrice.toString()
+                          	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} 원</td>
+                            <td style="text-align: right;">${tot.toString()
+                          	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} 원</td>
                         </tr>`;
           }
           ledgebody.insertAdjacentHTML('beforeend', layout);
-          document.querySelector('#totIncrease').innerHTML = increaseTot;
-          document.querySelector('#totDecrease').innerHTML = decreaseTot;
-          document.querySelector('#totBalance').innerHTML = increaseTot - decreaseTot;
+
+          document.querySelector('#totIncrease').innerHTML = increaseTot.toString()
+      	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원';
+            document.querySelector('#totDecrease').innerHTML = decreaseTot.toString()
+      	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원';
+            document.querySelector('#totBalance').innerHTML = (increaseTot - decreaseTot).toString()
+      	  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원';
         })
       }
       
