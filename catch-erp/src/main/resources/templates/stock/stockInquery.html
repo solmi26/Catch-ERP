@@ -15,13 +15,13 @@
 		<input id="employeeName" th:value="${#authentication.principal.employeeLoginVO.name}" style="display:none;"></input> <!-- 시큐리티에 담긴 이름 hidden에다 넣어놈 -->
         <input id="employeeImage" th:value="${#authentication.principal.employeeLoginVO.employeeImage}" style="display:none;"></input> <!-- 시큐리티에 담긴 사진 hidden에다 넣어놈 -->
 	
-	    <div class="bg-white shadow-sm rounded" style="padding: 20px;" >
+	    <div class="bg-white shadow-sm rounded" style="padding: 20px; border:1px solid #D8D8D8;" >
 	    			
 	        <!-- Header -->
 	        <div class="row">
 	        		<h4 style="font-weight:900">재고조회/상품관리</h4>
 	        </div>
-	        <ul class="nav nav-tabs" id="mainTab" role="tablist">
+	        <!-- <ul class="nav nav-tabs" id="mainTab" role="tablist">
 	        	
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="itemList-tab" data-bs-toggle="tab"
@@ -33,14 +33,14 @@
                         data-bs-target="#itemAnalysis" type="button" role="tab" aria-controls="itemAnalysis"
                         aria-selected="false">재고분석</button>
                 </li> 
-            </ul>
+            </ul> -->
             
             <div class="tab-content" id="mainTabContent"> <!-- 메인탭시작 -->
 			    <div class="tab-pane fade show active" id="itemList" role="tabpanel"
 			        aria-labelledby="itemList-tab"> <!-- 첫번째 탭 시작 -->
 			        <!-- Form -->
 			        <div class="card col-md-12">
-			          <form class="bg-light p-4 rounded card-body" id="searchForm">
+			          <form class="bg-light p-4 rounded card-body" id="searchForm" style="border:1px solid #D8D8D8; box-shadow:0px;">
 			              <div class="row g-3">
 			                  <div class="col-md-12">
 			                      <div class="row g-3">
@@ -103,10 +103,10 @@
 		    <div class="tab-pane fade" id="itemAnalysis" role="tabpanel"
         									aria-labelledby="itemAnalysis-tab"> <!-- 두번째 탭 시작 -->
         		<div class="row d-flex flex-row-reverse" style="margin-right: 20px;">
-        			<!-- 토스트 차트 -->
-	        		<div class=" col-md-8 col-lg-8 col-sm-8" style="border-left: 1px solid #dee2e6; border-left: 1px solid #dee2e6; padding:0px; margin-left:13px;">
+        			<!-- 토스트 차트 => 보류,시간부족 --> 
+	        		<!-- <div class=" col-md-8 col-lg-8 col-sm-8" style="border-left: 1px solid #dee2e6; border-left: 1px solid #dee2e6; padding:0px; margin-left:13px;">
 					     	<div id="statisticsChart" style="width: 100%; height: 400px; "></div>
-			     	</div>
+			     	</div> -->
 			     		
 			     	<div class="row d-flex flex-column col-md-4 col-lg-4 col-sm-4" style="height: 400px; padding:0;">			     		
 			     			
@@ -205,7 +205,7 @@
 	    </div>
 	    
 	    <!-- 거래처 검색 모달 HTML -->   
-	    <div class="modal fade" id="clientModal2" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	    <!-- <div class="modal fade" id="clientModal2" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	        <div class="modal-dialog modal-lg">
 	            <div class="modal-content">
 	                <div class="modal-header">
@@ -222,7 +222,7 @@
 	                </div>
 	            </div>
 	        </div>
-	    </div>
+	    </div> -->
 	    
 	   	<!-- 상품 검색 모달 HTML -->
 	    <div class="modal fade" id="searchItemModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -328,33 +328,6 @@
 				                            </div>
 				                        </div> <!-- 첫번쨰 탭 End Point -->
 										
-				                        <!-- 두번째 탭 -->
-				                        <div class="mb-3 row tab-pane fade" id="progress" role="tabpanel" aria-labelledby="contract-tab">
-				                            <!-- 계약품목 탭 내용 -->
-				                            <div class="col-sm-9">
-				                                <div class="input-group">
-				                                	<div>
-					                                    <select class="form-select form-control " id="sort-field">
-					                                        <option value="conName" selected>계약 명</option>
-					                                        <option value="conDate">계약 일자</option>
-					                                        <option value="conSdate">계약 시작일</option>
-					                                        <option value="conEdate">계약 종료일</option>
-					                                        <option value="totalAmount">총 계약금액</option>
-					                                        <option value="status">계약상태</option>
-					                                    </select>
-					                            
-					                                    <select class="form-select form-control " id="sort-direction">
-					                                        <option value="asc" selected>오름차순</option>
-					                                        <option value="desc">내림차순</option>
-					                                    </select>
-				                           			</div>
-				                                    <button class="btn btn-outline-secondary col-sm-6 col-md-6" id="sort-trigger">정렬</button>
-				                                </div>
-				                            </div>
-				                        </div> <!-- 두번쨰 탭 End Point -->
-				                        
-				                        
-				
 				                    </div>
 				                </div>
 								
@@ -367,19 +340,15 @@
 		                                </div>
 		                                <div class="col-sm-3 col-md-3" style="padding-right: 0">
 		                                    <select class="form-select form-control" id="inqueryYear" name="inqueryYear" >
-		                                        <option value="2024" selected>2024</option>
-		                                        <option value="2023">2023</option>
-		                                        <option value="2022">2022</option>
-		                                        <option value="2021">2021</option>
-		                                        <option value="2020">2020</option>
-		                                        <option value="2019">2019</option>
-		                                        <option value="2018">2018</option>
-		                                        <option value="2017">2017</option>
-		                                        <option value="2016">2016</option>
-		                                        <option value="2015">2015</option>
-		                                        <option value="2014">2014</option>
+		                                        <option th:each="year : ${#numbers.sequence(2024, 2014)}" 
+											           th:value="${year}" 
+											           th:text="${year}">
+											    </option>
 		                                    </select>
 		                                </div>
+		                                <div class="col-sm-5 col-md-5" style="padding-right: 0">
+				                            <button type="button" class="btn btn-success" id="adjExcelBtn" style="font-size:14px;">엑셀다운</button>
+				                        </div>
 	                                </div>
 									<div id="adjustmentDetail"></div>
 								</div>

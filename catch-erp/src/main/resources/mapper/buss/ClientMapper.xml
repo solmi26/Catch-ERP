@@ -13,6 +13,30 @@
 			,client_code
 		FROM client
 	</select>
+
+	<select id="salesClientList" resultType="com.cherp.app.buss.vo.ClientVO">
+		SELECT client_name
+		,ceo_name
+		,company_tel
+		,employee_name
+		,employee_tel
+		,event
+		,client_code
+		FROM client
+		WHERE trade_type = '채권'
+	</select>
+
+	<select id="purchaseClientList" resultType="com.cherp.app.buss.vo.ClientVO">
+		SELECT client_name
+		,ceo_name
+		,company_tel
+		,employee_name
+		,employee_tel
+		,event
+		,client_code
+		FROM client
+		WHERE trade_type = '채무'
+	</select>
 	
 	<select id="gwSelectAllClientList" resultType="com.cherp.app.acct.vo.ClientPsVO">
 		SELECT 	CLIENT_CODE

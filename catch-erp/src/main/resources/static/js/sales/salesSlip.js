@@ -109,7 +109,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 210,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 filter: {
                     type: 'date',
@@ -122,24 +121,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '거래처명',
                 name: 'clientName',
-                editor: 'text',
                 align: "center",
                 width: 210,
                 whiteSpace: 'normal',
-                className: 'border'
-            }, {
-                header: '매출계정명',
-                name: 'accCode',
-                editor: 'text',
-                align: "center",
-                width: 210,
-                whiteSpace: 'normal',
-                sortingType: 'desc',
                 className: 'border'
             }, {
                 header: '금액합계',
                 name: 'deliveryPrice',
-                editor: 'text',
                 align: "center",
                 width: 210,
                 whiteSpace: 'normal',
@@ -152,7 +140,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                editor: 'text',
                 align: "center",
                 width: 210,
                 whiteSpace: 'normal',
@@ -166,7 +153,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                editor: 'text',
                 align: "center",
                 width: 210,
                 whiteSpace: 'normal',
@@ -251,12 +237,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 200,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border'
             }, {
                 header: '품목명',
                 name: 'itemName',
-                editor: 'text',
                 align: "center",
                 width: 100,
                 whiteSpace: 'normal',
@@ -264,7 +248,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '수량',
                 name: 'quantity',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -277,7 +260,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '출고단가',
                 name: 'deliveryPrice',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -290,7 +272,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '출고상태',
                 name: 'deliveryStatus',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -299,7 +280,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '출하예정일',
                 name: 'deliveryDate',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -308,7 +288,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -321,7 +300,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat',
-                editor: 'text',
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
@@ -371,6 +349,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         clientGrid = new Grid({
             el: document.getElementById("clientGrid"),
+            pageOptions: {
+                useClient: true, perPage: 12,
+            },
             scrollX: true,
             scrollY: true,
             data: clientData,
@@ -412,7 +393,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '회사 연락처',
                 name: 'companyTel',
-                align: "center",
+                align: 'center',
                 width: 120,
                 whiteSpace: 'normal',
                 className: 'border'
@@ -477,6 +458,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         itemGrid = new Grid({
             el: document.getElementById("itemGrid"),
+            pageOptions: {
+                useClient: true, perPage: 12,
+            },
             scrollX: true,
             scrollY: true,
             data: [],
@@ -491,7 +475,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '품목코드',
                 name: 'itemCode',
                 align: "center",
-                width: 225,
+                width: 215,
                 whiteSpace: 'normal',
                 className: 'border',
                 renderer: {
@@ -502,7 +486,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '품목명',
                 name: 'itemName',
                 align: "center",
-                width: 225,
+                width: 215,
                 whiteSpace: 'normal',
                 className: 'border',
             },]

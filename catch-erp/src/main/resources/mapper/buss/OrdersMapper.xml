@@ -23,4 +23,27 @@
 			JOIN employees        d ON a.employee_code = d.employee_code
 			JOIN contract_item    e ON b.item_code = e.item_code
 	</select>
+
+	<select id="selectClientOrder" resultType="com.cherp.app.buss.vo.OrdersVO">
+		SELECT
+		a.order_no,
+		a.client_code,
+		c.client_name,
+		a.order_date,
+		a.employee_code,
+		d.name,
+		b.item_code,
+		b.item_name,
+		b.quantity,
+		e.price,
+		( b.quantity * e.supply_price ) supply_price,
+		( b.quantity * e.vat) 			vat
+		FROM
+		orders a
+		INNER JOIN order_item b ON a.order_no = b.order_no
+		JOIN client           c ON a.client_code = c.client_code
+		JOIN employees        d ON a.employee_code = d.employee_code
+		JOIN contract_item    e ON b.item_code = e.item_code
+		WHERE client_name = #{clientName}
+	</select>
 </mapper>

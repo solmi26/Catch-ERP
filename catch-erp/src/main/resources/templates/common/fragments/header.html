@@ -6,12 +6,12 @@
 
 <th:block th:fragment="headerStack">
         
-        
+        <input id="loginUserName" th:value="${#authentication.principal.employeeLoginVO.name}" style="display:none;">
         
         <div class="main-header">
           <div class="main-header-logo">
             <!-- Logo Header -->
-            <div class="logo-header" data-background-color="dark">
+            <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; ">
               <a href="index.html" class="logo">
                 <img
                   src="assets/img/kaiadmin/logo_light.svg"
@@ -36,17 +36,18 @@
           </div>
           <!-- Navbar Header -->
           <nav
-            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-          >
-            <div class="container-fluid">
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom" 
+            style="padding-left:2px; padding-right:0px; "
+            >
+            <div class="container-fluid" style="border-bottom:1px solid gray; ">
               
 
-              <ul class="navbar-nav topbar-nav align-items-center w-100 ms-auto " style="justify-content: flex-start;">
-                <li class="nav-item topbar-icon dropdown hidden-caret kwn" id="headerLi">
+              <ul class="navbar-nav topbar-nav align-items-center w-100 ms-auto " style="justify-content: flex-start; box-shadow:0;">
+                <li class="nav-item topbar-icon dropdown hidden-caret kwn" id="headerLi" style="margin-left:15px;">
                   <span class=""><a
-                    class="nav-link dropdown-toggle"
+                    class="nav-link dropdown-toggle do-hyeon-regular"
                     href="/stocks/stockInquery"
-                    style="font-size:16px; color:black; 
+                    style="font-size:18px; color:black; 
                     padding:40px;"
                   >
                     재고
@@ -54,37 +55,36 @@
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn">
                   <a
-                    class="nav-link dropdown-toggle " 
+                    class="nav-link dropdown-toggle do-hyeon-regular" 
                     href="/employees/employee"
-                    style="font-size:16px; color:black; padding:40px;"
+                    style="font-size:18px; color:black; padding:40px;"
                   >
                    인사
                   </a>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn">
                   <a
-                    class="nav-link dropdown-toggle "                  
+                    class="nav-link dropdown-toggle do-hyeon-regular"                  
                     href="/sales/invoiceListView"
-                    style="font-size:16px; color:black; padding:40px;"
+                    style="font-size:18px; color:black; padding:40px; "
                   >
                   회계</a>
                 </li>
 
                 <li class="nav-item topbar-icon dropdown hidden-caret kwn">
                   <a 
-                  class="nav-link dropdown-toggle "                  
-                  href="indexSales.html"
-                  style="font-size:16px; color:black; padding:40px;"
+                  class="nav-link dropdown-toggle do-hyeon-regular"                  
+                  href="/business/clientList"
+                  style="font-size:18px; color:black; padding:40px;"
                   >
                   영업</a>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret ms-auto " style="margin-top:4px; margin-right:15px;">
-                	<span class="col" id="user" th:text="${#authentication.principal.employeeLoginVO.name} + '님 환영합니다.'" style="font-size:14px; color:black; font-weight:700; margin-right:10px;"></span>
+                	<span class="col do-hyeon-regular" id="user" th:text="${#authentication.principal.employeeLoginVO.name} + '님 환영합니다.'" style="font-size:16px; color:black; margin-right:10px;"></span>
                 </li>
-                <li class="nav-item topbar-icon dropdown hidden-caret ">
-                	<div style="background-color:white; width:55px; height:55px; border-radius:100%;">
-                		<!-- <span sec:authentication="principal.employeeLoginVO.employeeImage"></span> -->
-	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage}" class="mt-1 avatar-img rounded-circle " name="profileImg" style="background-color:white;" alt="이미지없다"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
+                <li class="nav-item topbar-icon dropdown hidden-caret " style="margin-right:25px;">
+                	<div style=" width:55px; height:55px; border-radius:100%;">
+	              		<img th:src="${#authentication.principal.employeeLoginVO.employeeImage} ? ${#authentication.principal.employeeLoginVO.employeeImage} : '/img/imageNo.jpg'" class="mt-1 avatar-img rounded-circle " name="profileImg" style="background-color:white; padding: 0.3em; border:1px solid black;" alt="이미지없다"> <!-- th:src="@{${model.getEmployeeImage()}}" -->
               		</div>
                 </li>
               </ul>

@@ -3,6 +3,7 @@
  */
 
 let grid;
+
 document.addEventListener("DOMContentLoaded", function () {
   const Grid = tui.Grid;
 
@@ -38,13 +39,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       scrollX: true, // 가로 스크롤 사용
       scrollY: true, // 세로 스크롤 사용
+	 
       columns: [
-        {
-          header: "품목",
-          name: "itemName",
-          editor: "text",
-          align: "left",
-        },
+		{
+		  header: " ", // 기본 헤더 텍스트
+		  name: 'itemName',
+		  editor: 'text',
+		  align: 'left',
+		},
         {
           header: "단가",
           name: "price",
@@ -95,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         },
       ],
+	  
       data: [{}],
 
       rowHeaders: [
@@ -113,11 +116,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   loadGrid();
+  
+  grid.on('onGridMounted',function(){
+        let redStar = document.querySelector("#grid > div > div.tui-grid-content-area > div.tui-grid-rside-area > div.tui-grid-header-area > table > tbody > tr > th:nth-child(1)")
+        redStar.innerHTML = `<span>품목 </span><span style="color:red">*</span>`
+     })
 
   // 그리드 다시 작성 버튼
   document.getElementById("resetBtn").addEventListener("click", function () {
     console.log("그리드 리셋 버튼");
-    const initialData = [{}, {}, {}];
+    const initialData = [{}];
     grid.resetData(initialData);
   });
 
@@ -273,11 +281,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 200);
   });
 
+  // 필터 설정을 위한 옵션
+  const columnFilters = ["c7", "c1", "c2", "c3", "c4", "c5", "c6"]; // 필터가 필요한 컬럼의 name 값
+  
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let c_grid3 = new Grid({
     el: document.getElementById("c_clientGrid"),
     scrollX: true,
     scrollY: true,
+	pageOptions: {
+	  useClient: true, // 페이징 사용
+	  perPage: 12, // 페이지당 표시 데이터 개수
+	},
     header: { height: 40 },
     bodyHeight: 500,
     width: "auto",
@@ -327,6 +342,7 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "c3",
         align: "center",
         width: 120,
+		filter: "select",
         whiteSpace: "normal",
         className: "border",
       },
@@ -360,18 +376,23 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
   });
 
+  // 클릭 이벤트 처리
   c_grid3.on("click", function (ev) {
-    let rowKeyNum;
-    if (ev.columnName == "c7") {
-      rowKeyNum = ev.rowKey;
+    // 헤더 영역 클릭 시 필터 동작만 허용
+    if (columnFilters.includes(ev.columnName) && ev.targetType === "columnHeader") {
+      return; // 필터 UI가 동작하도록 클릭 이벤트 중단
+    }
+
+    // 데이터 셀 클릭 시 동작
+    if (ev.columnName === "c7" && ev.targetType === "cell") {
+      const rowKeyNum = ev.rowKey;
       let inputTag = document.getElementById("c_clientInput");
       let inputTag2 = document.getElementById("c_clientInput2");
       inputTag.value = "";
       inputTag.value = c_grid3.getValue(rowKeyNum, "c1");
-      inputTag2.value = c_grid3.getValue(rowKeyNum, "c7"); //거래처코드가 들어갈 hidden input
+      inputTag2.value = c_grid3.getValue(rowKeyNum, "c7"); // 거래처코드가 들어갈 hidden input
 
       console.log(inputTag.value);
-
       clientModal.hide();
     }
   });
@@ -417,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
     scrollY: true,
     pageOptions: {
       useClient: true,
-      perPage: 15,
+      perPage: 12,
     },
     header: { height: 40 },
     bodyHeight: 500,

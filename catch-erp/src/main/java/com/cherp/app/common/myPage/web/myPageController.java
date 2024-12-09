@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,16 +16,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cherp.app.common.myPage.service.MyPageService;
+import com.cherp.app.common.myPage.vo.AttendanceSearchVO;
 import com.cherp.app.common.myPage.vo.ModifiedInfoVO;
 import com.cherp.app.empl.service.EmployeeService;
+import com.cherp.app.empl.vo.AttendanceVO;
 import com.cherp.app.empl.vo.EmployeeVO;
 import com.cherp.app.security.service.LoginVO;
 
@@ -42,24 +42,95 @@ public class myPageController {
 	private final EmployeeService employeeService;
 	private final MyPageService myPageService;
 	
-	//마이페이지 초기정보 로딩 (3개탭 모두)
-	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK") 
-	@GetMapping("/myPage")
-	public String myPage(Model model) { 
-		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		EmployeeVO employeeCodeVO = new EmployeeVO();  
-		employeeCodeVO.setEmployeeCode("63"); //loginVO.getEmployeeLoginVO().getEmployeeCode()
+	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
+	@GetMapping("/myPageStocks")
+	public String myPageStocks(Model model) {
+		//나의정보 최초로드
+		EmployeeVO employeeCodeVO = new EmployeeVO();
+		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
+		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
-		model.addAttribute("employeeVO", employeeVO);
-		return "index/main/myPage";
+		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
+		AttendanceSearchVO searchVO = new AttendanceSearchVO();
+		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
+		
+		model.addAttribute("employeeVO", employeeVO); //사원 정보
+		model.addAttribute("attendanceList", attendanceList); //최신 근태정보
+		return "index/main/myPageStocks";
+		
+	}
+	
+	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
+	@GetMapping("/myPageHuman")
+	public String myPageHuman(Model model) {
+		//나의정보 최초로드
+		EmployeeVO employeeCodeVO = new EmployeeVO();
+		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
+		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
+		
+		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
+		AttendanceSearchVO searchVO = new AttendanceSearchVO();
+		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
+		
+		model.addAttribute("employeeVO", employeeVO); //사원 정보
+		model.addAttribute("attendanceList", attendanceList); //최신 근태정보
+		return "index/main/myPageHuman";
+		
+	}
+	
+	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
+	@GetMapping("/myPageSales")
+	public String myPageSales(Model model) {
+		//나의정보 최초로드
+		EmployeeVO employeeCodeVO = new EmployeeVO();
+		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
+		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
+		
+		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
+		AttendanceSearchVO searchVO = new AttendanceSearchVO();
+		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
+		
+		model.addAttribute("employeeVO", employeeVO); //사원 정보
+		model.addAttribute("attendanceList", attendanceList); //최신 근태정보
+		return "index/main/myPageSales";
+		
+	}
+	
+	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
+	@GetMapping("/myPageAccount")
+	public String myPageAccount(Model model) {
+		//나의정보 최초로드
+		EmployeeVO employeeCodeVO = new EmployeeVO();
+		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
+		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
+		
+		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
+		AttendanceSearchVO searchVO = new AttendanceSearchVO();
+		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
+		
+		model.addAttribute("employeeVO", employeeVO); //사원 정보
+		model.addAttribute("attendanceList", attendanceList); //최신 근태정보
+		return "index/main/myPageAccount";
+		
 	}
 	
 	@PostMapping("/modifyEmployeeInfo")
 	@ResponseBody
-	public void modifyEmployeeInfo(@RequestPart("imageFile") MultipartFile imageFile, ModifiedInfoVO modifiedInfoVO){
-		System.out.println("이미지내놔" + imageFile);
-		System.out.println(modifiedInfoVO);
+	public void modifyEmployeeInfo(@RequestPart(value= "imageFile", required = false) MultipartFile imageFile, ModifiedInfoVO modifiedInfoVO){
+		
+		
 		//저장경로 설정
 		String fileName = imageFile.getOriginalFilename();
 		//날짜 폴더생성
@@ -107,5 +178,12 @@ public class myPageController {
 	@ResponseBody
 	public EmployeeVO getEmployeeImage (@PathVariable("employeeCode") String employeeCode) {
 		return myPageService.getEmployeeImage(employeeCode);
+	}
+	
+	//근태정보 조회
+	@GetMapping("/attendance")
+	@ResponseBody
+	public List<AttendanceVO> getAttendanceInfo (AttendanceSearchVO searchVO){
+		return myPageService.getAttendance(searchVO);
 	}
 }

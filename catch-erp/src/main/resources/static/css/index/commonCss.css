@@ -81,18 +81,45 @@
 	  
 	  /* 헤더 CSS작업 (건우) */
 	  .kwn {
-	  	border-radius: 3px;
-	    transition: background-color 0.5s ease;
+	  	border-radius: 5px;
+	    transition: background-color 0.3s ease;
+	   
 	    
 	  }
 		
-	  .kwnFont{
-	  	transition: background-color 0.3s ease;
-	  	
-	  }	
-	  .kwnFont:hover{
-	  	color:white;
-	  }
 	  .kwn:hover {
 		background-color: #E3F6CE;
 	   }
+	  
+	  /* 구글폰트 적용 */
+	  .do-hyeon-regular {
+		  font-family: "Do Hyeon", sans-serif;
+		  font-weight: 400;
+		  font-style: normal;
+		}
+		
+	/* *{
+	font-family: "Do Hyeon", sans-serif !important;
+	font-weight: 400 !important;
+	font-style: normal !important;
+	} */
+	
+	.logoutBtn{
+		width:75px;
+		font-size: 13px;
+		border-radius: 1em;
+	}
+	
+/* 	.tui-grid-cell, .tui-grid-content-area, .tui-grid-lside-area {
+		border: 1px solid black !important;
+	} */
+	
+	.btnBorder{
+		font-size: 15px;
+		border: 1px solid black !important;
+		background-color: #0040FF !important;
+	}
+	
+	
+	
+	

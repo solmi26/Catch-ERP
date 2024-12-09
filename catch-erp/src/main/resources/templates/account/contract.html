@@ -8,36 +8,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>매입 단가 계약 관리</title>
-
-    <style>
-      /* 버튼들이 고정된 위치에 나타나도록 합니다. */
-      .button-group {
-        display: flex;
-        gap: 5px; /* 버튼들 사이 간격 */
-        margin-top: 10px; /* 버튼과 테이블 사이 간격 */
-        margin-bottom: 20px;
-        justify-content: flex-start; /* 버튼 정렬 */
-      }
-     
-     .g1{
-      	color:#28a745;
-      	font-weight: bold;
-      }
-      
-     .g2{
-      	font-weight: bold;
-      }
-      
-     .g3{
-      	color:#fd7e14;
-      	font-weight: bold;
-      }
-      
-     .g4{
-      	color:#dc3545;
-      	font-weight: bold;
-      }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/acct/contract.css}" />
   </head>
 
   <body>
@@ -56,14 +27,195 @@
         </div>
 
         <!-- 그리드 -->
-        <div id="grid"></div>
+        <div id="c_grid"></div>
 
         <!-- 페이지네이션 -->
         <div id="pagination" class="tui-pagination"></div>
       </div>
       <!-- 전체 컨테이너 끝. -->
     </div>
+    
+   <!-- 계약서 수정 모달 -->
+    <div class="modal fade" id="conModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">매입 단가 계약 수정</h5>
+          </div>
+          <div class="modal-body p-0 stm">
+      <!-- 페이지 컨테이너 -->
+      <div class="container-fluid p-4">
+        <form id="contractForm">
+          <!-- 계약일자, 거래처 -->
+          <div class="row mb-3">
+            <!-- 계약일자 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약일자&nbsp;<span class="msg">*</span></span>
+                <input type="date" class="form-control" id="contract-date" />
+              </div>
+            </div>
+            <!-- 계약번호 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약번호</span>
+                <input type="text" class="form-control" id="contract-code" value="-" readonly />
+              </div>
+            </div>
+          </div>
 
+          <!-- 계약코드, 계약명 -->
+          <div class="row mb-3">
+            <!-- 계약명 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약명&nbsp;<span class="msg">*</span></span>
+                <input type="text" class="form-control" id="contract-name" placeholder="계약명" />
+              </div>
+            </div>
+            <!-- 거래처 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">거래처&nbsp;<span class="msg">*</span></span>
+                <input type="text" class="form-control" placeholder="거래처 선택" name="c_clientName" id="c_clientInput" readonly="readonly" />
+                <input type="text" style="display: none" id="c_clientInput2" name="c_clientCode" />
+                <button class="btn btn-outline-secondary" type="button" id="c_openClientModal">
+                  <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 계약시작일, 계약종료일 -->
+          <div class="row mb-3">
+            <!-- 계약시작일 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약시작일&nbsp;<span class="msg">*</span></span>
+                <input type="date" class="form-control" id="billing-start-date" />
+              </div>
+            </div>
+            <!-- 계약종료일 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약종료일&nbsp;<span class="msg">*</span></span>
+                <input type="date" class="form-control" id="billing-end-date" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 계약상태, 계약담당자 -->
+          <div class="row mb-3">
+            <!-- 계약 상태 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약상태</span>
+                <select class="form-control form-select" id="status">
+                  <option value="g1" selected="selected">진행</option>
+                  <option value="g2">종료</option>
+                  <option value="g3">보류</option>
+                  <option value="g4">해지</option>
+                </select>
+              </div>
+            </div>
+            <!-- 담당자 -->
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">계약 담당자&nbsp;<span class="msg">*</span></span>
+                <input type="text" class="form-control" placeholder="계약 담당자 선택" name="c_empName" id="c_empName" readonly="readonly" />
+                <input type="text" style="display: none" id="c_empCode" name="c_empCode" />
+                <button class="btn btn-outline-secondary" type="button" id="c_openEmpModal">
+                  <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 적요 -->
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">적요</span>
+                <input type="text" class="form-control" id="description" placeholder="적요" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 첨부 -->
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">첨부</span>
+                <input type="file" id="attachment-file" class="form-control file-input-large" />
+                <input type="text" id="attachment-url" class="form-control" placeholder="URL을 표시합니다." readonly />
+                 <button id="delete-attachment" class="btn btn-outline-danger" type="button">삭제</button>
+              </div>
+            </div>
+          </div>
+          	  <br>
+              <button type="button" class="btn btn-secondary" id="resetBtn" hidden>다시 작성</button>
+          <!-- 그리드 -->
+          <div id="grid"></div>
+        </form>
+      </div>
+      <!-- 페이지 컨테이너 끝 -->
+	</div>
+          <!-- 모달 본문 끝. -->
+          
+          <!-- 모달 푸터 -->
+          <div class="modal-footer justify-content-between">
+          	<p class="msg"><small>※ 항목의 추가나 삭제가 필요한 경우, 계약 상태를 변경한 후 새 계약으로 등록해주세요.</small></p>
+            <div>
+            <button type="button" class="btn btn-success" id="updateBtn">수정</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 매입 단가 계약 수정 모달 끝. -->
+    
+    
+    <!-- 거래처 검색 모달 HTML -->
+    <div class="modal fade bg-dark bg-opacity-50" id="c_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">거래처검색</h5>
+          </div>
+          <div class="modal-body p-0">
+            <div id="c_clientGrid"></div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <p class="msg"><small>※ 거래처코드를 클릭하여 입력해주세요.</small></p>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 담당자 검색 모달 HTML -->
+    <div class="modal fade bg-dark bg-opacity-50" id="c_empModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">담당자 조회</h5>
+          </div>
+          <div class="modal-body">
+            <div id="empGrid"></div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <p class="msg"><small>※ 사원코드를 클릭하여 입력하세요.</small></p>
+            <div>
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     <button hidden id="save-btn"></button>
+
+    <script th:src="@{/js/account/contractInsert.js}"></script>
     <script th:src="@{/js/account/contract.js}"></script>
   </body>
 </html>

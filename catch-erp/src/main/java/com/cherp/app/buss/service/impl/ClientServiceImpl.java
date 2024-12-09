@@ -25,9 +25,20 @@ public class ClientServiceImpl implements ClientService {
     // 거래처 전체 조회
     @Override
     public List<ClientVO> clientList() {
-
         return clientMapper.selectClientList();
     }
+
+	// 채권(판매) 거래처 조회
+	@Override
+	public List<ClientVO> salesClientList() {
+		return clientMapper.salesClientList();
+	}
+
+	// 채무(거래) 거래처 조회
+	@Override
+	public List<ClientVO> purchaseClientList() {
+		return clientMapper.purchaseClientList();
+	}
 
 	@Override
 	public List<ClientPsVO> gwClientList() {

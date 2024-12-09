@@ -27,7 +27,7 @@ public class BussController {
     @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("purchase/purchaseChit")
     public String purchaseChit(Model model) {
-        List<ClientVO> list = clientService.clientList();
+        List<ClientVO> list = clientService.purchaseClientList();
         model.addAttribute("client", list);
         return "purchase/purchaseChit";
     }
@@ -36,7 +36,7 @@ public class BussController {
     @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("purchase/purchaseHistory")
     public String purchaseHistory(Model model){
-        List<ClientVO> list = clientService.clientList();
+        List<ClientVO> list = clientService.purchaseClientList();
         model.addAttribute("client", list);
         return "purchase/purchaseHistory";
     }
@@ -45,7 +45,7 @@ public class BussController {
     @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("/sales/salesChit")
     public String salesChit(Model model) {
-        List<ClientVO> list = clientService.clientList();
+        List<ClientVO> list = clientService.salesClientList();
         model.addAttribute("client", list);
         return "sales/salesChit";
     }
@@ -54,7 +54,7 @@ public class BussController {
     @Secured("ROLE_MANAGER,ROLE_BUSINESS, ROLE_SALES")
     @GetMapping("/sales/saleSlip")
     public String saleSlip(Model model){
-        List<ClientVO> list = clientService.clientList();
+        List<ClientVO> list = clientService.salesClientList();
         model.addAttribute("client", list);
         return "sales/saleSlip";
     }

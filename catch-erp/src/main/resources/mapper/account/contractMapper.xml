@@ -64,6 +64,34 @@
 	    )
 	</insert>
 	
+	<!-- 매입 단가 계약 수정(HEADER) -->
+	<update id="updateContractHeader" parameterType="com.cherp.app.stck.vo.ContractItemVO">
+		UPDATE  contract
+		SET     con_date = #{conDate}
+                ,con_name = #{conName}
+                ,client_code = #{clientCode}
+                ,con_sdate =  #{conSdate}
+                ,con_edate = #{conEdate}
+                ,status = #{status}
+                ,emoployee_code = #{emoployeeCode}
+                ,emoloyee_name = #{emoloyeeName}
+                ,summary  =  #{summary}
+                ,url = #{url}
+                ,writer = #{writer}
+		WHERE con_no = #{conNo}
+	</update>
+	
+	<!-- 매입 단가 계약 수정(BODY) -->
+	<update id="updateContractBody" parameterType="com.cherp.app.stck.vo.ContractItemVO">
+		UPDATE contract_item
+		SET    	item_name = #{itemName}
+	        	,price = #{price}
+	        	,supply_price = #{supplyPrice}
+	        	,vat = #{vat}
+	        	,total_price = #{totalPrice}
+	  WHERE item_code = #{itemCode}
+	</update>
+	
 	<!-- 매입 단가 계약 수정 -> 계약 번호 업데이트(BODY) -->
 	<update id="updateContractB">
 	    UPDATE contract_item
@@ -89,6 +117,7 @@
                ,url
                ,writer
          FROM contract c
+         ORDER BY con_date desc
 	</select>
 	
 	
@@ -102,6 +131,40 @@
                 ,con_no
                 ,total_price
         FROM contract_item
+	</select>
+	
+	<!-- 계약 상세 조회(Header) -->
+	<select id="infoContractH" resultType="com.cherp.app.stck.vo.ContractItemVO">
+		SELECT con_no
+               ,con_date
+               ,con_name
+               ,client_code
+			   ,(SELECT client_name
+                 FROM client d
+                 WHERE d.client_code = c.client_code) client_name
+               ,con_sdate
+               ,con_edate
+               ,FIND_CODE(status) status
+               ,emoployee_code
+               ,emoloyee_name
+               ,summary
+               ,url
+               ,writer
+         FROM contract c
+         WHERE con_no = #{no}
+	</select>
+	
+	<!-- 계약 상세 조회(Body) -->
+	<select id="infoContractB" resultType="com.cherp.app.stck.vo.ContractItemVO">
+		         SELECT item_code
+                ,item_name
+                ,price
+                ,supply_price
+                ,vat
+                ,con_no
+                ,total_price
+        FROM contract_item
+        WHERE con_no = #{no}
 	</select>
 	
 </mapper>

@@ -2,7 +2,7 @@
 <!-- saved from url=(0098)file:///C:/Users/admin/Downloads/%EC%9E%AC%EA%B3%A0%EB%93%B1%EB%A1%9D%EC%A1%B0%ED%9A%8C%20(1).html -->
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/stack_layout}"
+      layout:decorate="~{common/layouts/sales_layout}"
       layout:fragment="Content">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -25,41 +25,33 @@
             <div class="col-md-12">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">작성일자</label>
+                        <label class="form-label" >발주일자<span style="color: red;">*</span></label>
                         <input type="date" class="form-control" id="currentDate" disabled >
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">거래처</label>
+                        <label class="form-label">거래처<span style="color: red;">*</span></label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="inputClientName" name="clientName">
+                            <input type="text" class="form-control" id="inputClientName" name="clientName" readonly>
                             <input type="hidden" class="form-control" id="inputClientCode" name="clientCode">
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
                                     data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"></button>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">담당자</label>
+                        <label class="form-label">담당자<span style="color: red;">*</span></label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="empNameInput" name="employeeName">
+                            <input type="text" class="form-control" id="empNameInput" name="employeeName" readonly>
                             <input type="hidden" class="form-control" id="empCodeInput" name="employeeCode">
                             <button type="button" class="bi bi-search border px-4 btn btn-success empBtn"
                                     data-bs-toggle="modal" data-bs-target="#humanModal" id="humanInqueryModal"></button>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">입금계좌</label>
+                        <label class="form-label">입금계좌<span style="color: red;">*</span></label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="accountInput" name="depBacct">
+                            <input type="text" class="form-control" id="accountInput" name="depBacct" readonly>
                             <button type="button" class="bi bi-search border px-4 btn btn-success"
                                     data-bs-toggle="modal" data-bs-target="#accountSearchModal"></button>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">매출계정</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="accCodeInput" name="accCode">
-                            <button type="button" class="bi bi-search border px-4 btn btn-success modalBtn"
-                                    data-bs-toggle="modal" data-bs-target="#ledgerModal" id="openAccCodeModal"></button>
                         </div>
                     </div>
                 </div>
@@ -88,7 +80,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalLabel">발주서</h5>
-
             </div>
             <div class="modal-body">
 

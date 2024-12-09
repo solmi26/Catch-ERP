@@ -261,6 +261,10 @@ document.addEventListener("DOMContentLoaded", function () {
     el: document.getElementById("p_acctGrid"),
     scrollX: true,
     scrollY: true,
+	pageOptions: {
+	  useClient: true,
+	  perPage: 12,
+	},
     header: { height: 40 },
     bodyHeight: 500,
     width: "auto",
@@ -343,11 +347,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 200);
   });
 
+  // 필터 설정을 위한 옵션
+    const columnFilters = ["c7", "c1", "c2", "c3", "c4", "c5", "c6"]; // 필터가 필요한 컬럼의 name 값
+  
   //모달에 적용될 그리드라서 refreshLayout() 사용을 위해 전역스코프로 변수를 선언하였음.
   let p_grid3 = new Grid({
     el: document.getElementById("p_clientGrid"),
     scrollX: true,
     scrollY: true,
+	pageOptions: {
+	  useClient: true,
+	  perPage: 12,
+	},
     header: { height: 40 },
     bodyHeight: 500,
     width: "auto",
@@ -397,6 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "c3",
         align: "center",
         width: 120,
+		filter: "select",
         whiteSpace: "normal",
         className: "border",
       },
@@ -430,18 +442,23 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
   });
 
+  // 클릭 이벤트 처리 - 필터와 별개로 동작하도록 설정
   p_grid3.on("click", function (ev) {
-    let rowKeyNum;
-    if (ev.columnName == "c7") {
-      rowKeyNum = ev.rowKey;
+    // 헤더 영역 클릭 시 필터 동작만 허용
+    if (columnFilters.includes(ev.columnName) && ev.targetType === "columnHeader") {
+      return; // 필터 UI가 동작하도록 클릭 이벤트 중단
+    }
+
+    // 데이터 셀 클릭 시 동작
+    if (ev.columnName === "c7" && ev.targetType === "cell") {
+      const rowKeyNum = ev.rowKey;
       let inputTag = document.getElementById("p_clientInput");
       let inputTag2 = document.getElementById("p_clientInput2");
       inputTag.value = "";
       inputTag.value = p_grid3.getValue(rowKeyNum, "c1");
-      inputTag2.value = p_grid3.getValue(rowKeyNum, "c7"); //거래처코드가 들어갈 hidden input
+      inputTag2.value = p_grid3.getValue(rowKeyNum, "c7"); // 거래처코드가 들어갈 hidden input
 
       console.log(inputTag.value);
-
       clientModal.hide();
     }
   });
@@ -481,7 +498,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   /*============================
-		  판매전표 모달 JS
+		  구매전표 모달 JS
 	  ==============================*/
   const purchaseModal = new bootstrap.Modal(document.getElementById("purchaseModal"));
 
@@ -497,6 +514,10 @@ document.addEventListener("DOMContentLoaded", function () {
     el: document.getElementById("purchaseGrid"),
     scrollX: true,
     scrollY: true,
+	pageOptions: {
+	  useClient: true,
+	  perPage: 12,
+	},
     header: { height: 40 },
     bodyHeight: 500,
     width: "auto",
@@ -552,6 +573,7 @@ document.addEventListener("DOMContentLoaded", function () {
         width: 100,
         whiteSpace: "normal",
         className: "border",
+		filter: "select",
       },
       {
         header: "거래처명",
@@ -560,6 +582,7 @@ document.addEventListener("DOMContentLoaded", function () {
         width: 200,
         whiteSpace: "normal",
         className: "border",
+		filter: "select",
       },
       {
         header: "공급가액",
@@ -569,6 +592,7 @@ document.addEventListener("DOMContentLoaded", function () {
         whiteSpace: "normal",
         editor: "text",
         className: "border",
+		filter: "select",
         formatter: function (e) {
           const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
           return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
@@ -582,6 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
         whiteSpace: "normal",
         editor: "text",
         className: "border",
+		filter: "select",
         formatter: function (e) {
           const value = e.value !== undefined && e.value !== null ? e.value : 0; // 기본값 0
           return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
@@ -592,6 +617,7 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "c7",
         align: "center",
         width: 200,
+		filter: "select",
         whiteSpace: "normal",
         className: "border",
       },
@@ -600,6 +626,7 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "c8",
         align: "center",
         width: 100,
+		filter: "select",
         whiteSpace: "normal",
         className: "border",
       },
@@ -608,6 +635,7 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "c9",
         align: "center",
         width: 200,
+		filter: "select",
         whiteSpace: "normal",
         className: "border",
       },

@@ -487,13 +487,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		})
 		
 		//엑셀버튼 테스트중
-/*		let btnTest = document.getElementById("testBtn");
-		btnTest.addEventListener("click",function(){
-			adjustmentDetailGrid.export(".xls", { 
-				includeHeader: true, 
-				fileName : 'test'
-				});
-		})*/
+		let adjExcelBtn = document.getElementById("adjExcelBtn");
+		adjExcelBtn.addEventListener("click",function(){
+			saveExcel(adjustmentDetailGrid);
+		})
 		
 		//작업해야함 아직 안했음. 모달내 탭이동 시 refresh하는거 
 	   	let modalTrigger = document.querySelectorAll(".modalTrigger")
@@ -1014,7 +1011,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 	//#region 두번째 탭 작업
 		//차트
-	  const el = document.getElementById('statisticsChart');
+/* 	  const el = document.getElementById('statisticsChart');
       const data = {
         categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월' ,'10월' ,'11월' ,'12월'],
         series: [
@@ -1070,7 +1067,7 @@ document.addEventListener("DOMContentLoaded", function () {
       /*============================
     	StackInquery 제품 분석 모달 JS
     ==============================*/    
-    let statisticsGrid = new Grid({
+/*   let statisticsGrid = new Grid({
             el: document.getElementById("statisticsGrid"),
             scrollX: true,
             scrollY: true,
@@ -1128,9 +1125,9 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         });
  		     
-      /*============================
-    	StackInquery 분석을 위한 거래처 모달 JS
-    ==============================*/    
+      ============================
+    	StackInquery 분석을 위한 거래처 모달 JS -> 보류
+    ==============================    
     let clientGrid2 = new Grid({
             el: document.getElementById("clientGrid2"),
             scrollX: true,
@@ -1271,7 +1268,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	
 	    // Append the container to the body or a specific element
 	    document.body.appendChild(container); // 필요에 따라 변경 가능
-	}
+	} */
 	
  
 	//#endregion 두번째 탭 작업

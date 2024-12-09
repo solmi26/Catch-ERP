@@ -59,7 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "date",
         sortable: true,
         align: "center",
-        formatter: ({ value }) => `<a href="#" class="btn-link text-primary">${value}</a>`,
+        formatter: ({ value }) =>
+          `<a href="#" class="btn-link text-primary">${value}</a>`,
       },
       {
         header: "국세청 전송 일자",
@@ -108,7 +109,8 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "전표번호",
         name: "voucherNumber",
         align: "center",
-        formatter: ({ value }) => `<a href="#" class="btn-link text-primary">${value}</a>`,
+        formatter: ({ value }) =>
+          `<a href="#" class="btn-link text-primary">${value}</a>`,
       },
     ],
     rowHeaders: [
@@ -130,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
   grid.on("click", (ev) => {
     console.log("check!", ev);
     const row = grid.getRow(ev.rowKey);
+    console.log(row);
 
     selectData = {
       salesChitNo: row.voucherNumber, // 전표번호
@@ -137,7 +140,9 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // 선택된 전표 정보 서버에서 가져오기
-    fetch(`/sales/selectSlipInfo?salesChitNo=${selectData.salesChitNo}&type=${selectData.type}`)
+    fetch(
+      `/sales/selectSlipInfo?salesChitNo=${selectData.salesChitNo}&type=${selectData.type}`
+    )
       .then((response) => response.json())
       .then((result) => {
         let data = result;
@@ -145,47 +150,97 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("데이터 : ", result);
 
         // 매출전표 관련 데이터 매핑
-        document.getElementById("s_date").value = result.chitDate || "2024/11/01"; // 전표일자
-        document.getElementById("s_no").value = result.salesChitNo || result.purchaseChitNo; // 전표번호
-        document.getElementById("s_joinInput").value = result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
-        document.getElementById("s_clientInput").value = result.clientCode || "";
+        document.getElementById("s_date").value =
+          result.chitDate || "2024/11/01"; // 전표일자
+        document.getElementById("s_no").value =
+          result.salesChitNo || result.purchaseChitNo; // 전표번호
+        document.getElementById("s_joinInput").value =
+          result.saleslipNo || result.purcslipNo || ""; // 구매, 판매전표
+        document.getElementById("s_clientInput").value =
+          result.clientCode || "";
         clientCode = result.clientNo;
         console.log("code" + clientCode);
         document.getElementById("s_acctInput").value = result.acctName || "";
-        document.getElementById("s_price").value = result.supplyPrice ? Number(result.supplyPrice).toLocaleString() : "0";
-        document.getElementById("s_vat").value = result.vat ? Number(result.vat).toLocaleString() : "0";
-        document.getElementById("s_amount").value = result.totalPrice ? Number(result.totalPrice).toLocaleString() : "0";
+        document.getElementById("s_price").value = result.supplyPrice
+          ? Number(result.supplyPrice).toLocaleString()
+          : "0";
+        document.getElementById("s_vat").value = result.vat
+          ? Number(result.vat).toLocaleString()
+          : "0";
+        document.getElementById("s_amount").value = result.totalPrice
+          ? Number(result.totalPrice).toLocaleString()
+          : "0";
         document.getElementById("s_summary").value = result.summary || "";
 
         // 세금계산서 모달 데이터 매핑
         document.getElementById("title1").innerHTML =
-          row.taxProgress === "국세청 전송 완료" ? "전자세금계산서 (공급자용)" : "미전송전자세금계산서 (공급자용)";
+          row.taxProgress === "국세청 전송 완료"
+            ? "전자세금계산서 (공급자용)"
+            : "미전송전자세금계산서 (공급자용)";
         document.getElementById("title2").innerHTML =
-          row.taxProgress === "국세청 전송 완료" ? "전자세금계산서 (공급받는자용)" : "미전송전자세금계산서 (공급받는자용)";
-        document.getElementById("allow1").innerHTML = row.taxProgress === "국세청 전송 완료" ? `승인번호 ${result.invoiceNo}` : "승인번호";
-        document.getElementById("allow2").innerHTML = row.taxProgress === "국세청 전송 완료" ? `승인번호 ${result.invoiceNo}` : "승인번호";
+          row.taxProgress === "국세청 전송 완료"
+            ? "전자세금계산서 (공급받는자용)"
+            : "미전송전자세금계산서 (공급받는자용)";
+        document.getElementById("allow1").innerHTML =
+          row.taxProgress === "국세청 전송 완료"
+            ? `승인번호 ${result.invoiceNo}`
+            : "승인번호";
+        document.getElementById("allow2").innerHTML =
+          row.taxProgress === "국세청 전송 완료"
+            ? `승인번호 ${result.invoiceNo}`
+            : "승인번호";
         document.getElementById("k_date").innerHTML = result.chitDate;
         document.getElementById("j_date").innerHTML = result.chitDate;
-        document.getElementById("k_price").innerHTML = result.supplyPrice ? Number(result.supplyPrice).toLocaleString() + "원" : "0";
-        document.getElementById("j_price").innerHTML = result.supplyPrice ? Number(result.supplyPrice).toLocaleString() + "원" : "0";
-        document.getElementById("k_vat").innerHTML = result.vat ? Number(result.vat).toLocaleString() + "원" : "0";
-        document.getElementById("j_vat").innerHTML = result.vat ? Number(result.vat).toLocaleString() + "원" : "0";
+        document.getElementById("k_price").innerHTML = result.supplyPrice
+          ? Number(result.supplyPrice).toLocaleString() + "원"
+          : "0";
+        document.getElementById("j_price").innerHTML = result.supplyPrice
+          ? Number(result.supplyPrice).toLocaleString() + "원"
+          : "0";
+        document.getElementById("k_vat").innerHTML = result.vat
+          ? Number(result.vat).toLocaleString() + "원"
+          : "0";
+        document.getElementById("j_vat").innerHTML = result.vat
+          ? Number(result.vat).toLocaleString() + "원"
+          : "0";
         document.getElementById("k_summary").innerHTML = result.summary;
         document.getElementById("j_summary").innerHTML = result.summary;
-        document.getElementById("k_sum").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString() + "원" : "0";
-        document.getElementById("j_sum").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString() + "원" : "0";
-        document.getElementById("k_acc").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString() + "원" : "0";
-        document.getElementById("j_acc").innerHTML = result.totalPrice ? Number(result.totalPrice).toLocaleString() + "원" : "0";
-        document.getElementById("k_com").innerHTML = result.clientCode || "무한상사";
-        document.getElementById("j_com").innerHTML = result.clientCode || "무한상사";
-        document.getElementById("k_name").innerHTML = result.cecName || "유재석";
-        document.getElementById("j_name").innerHTML = result.cecName || "유재석";
-        document.getElementById("k_add").innerHTML = (result.address1 || "대구광역시 북구 중앙대로 123") + " " + (result.address2 || "100호");
-        document.getElementById("j_add").innerHTML = (result.address1 || "대구광역시 북구 중앙대로 123") + " " + (result.address2 || "100호");
-        document.getElementById("k_job").innerHTML = result.event || "도소매, 판매업";
-        document.getElementById("j_job").innerHTML = result.event || "도소매, 판매업";
-        document.getElementById("k_email").innerHTML = result.email || "def@gmail.com";
-        document.getElementById("j_email").innerHTML = result.email || "def@gmail.com";
+        document.getElementById("k_sum").innerHTML = result.totalPrice
+          ? Number(result.totalPrice).toLocaleString() + "원"
+          : "0";
+        document.getElementById("j_sum").innerHTML = result.totalPrice
+          ? Number(result.totalPrice).toLocaleString() + "원"
+          : "0";
+        document.getElementById("k_acc").innerHTML = result.totalPrice
+          ? Number(result.totalPrice).toLocaleString() + "원"
+          : "0";
+        document.getElementById("j_acc").innerHTML = result.totalPrice
+          ? Number(result.totalPrice).toLocaleString() + "원"
+          : "0";
+        document.getElementById("k_com").innerHTML =
+          result.clientCode || "무한상사";
+        document.getElementById("j_com").innerHTML =
+          result.clientCode || "무한상사";
+        document.getElementById("k_name").innerHTML =
+          result.cecName || "유재석";
+        document.getElementById("j_name").innerHTML =
+          result.cecName || "유재석";
+        document.getElementById("k_add").innerHTML =
+          (result.address1 || "대구광역시 북구 중앙대로 123") +
+          " " +
+          (result.address2 || "100호");
+        document.getElementById("j_add").innerHTML =
+          (result.address1 || "대구광역시 북구 중앙대로 123") +
+          " " +
+          (result.address2 || "100호");
+        document.getElementById("k_job").innerHTML =
+          result.event || "도소매, 판매업";
+        document.getElementById("j_job").innerHTML =
+          result.event || "도소매, 판매업";
+        document.getElementById("k_email").innerHTML =
+          result.email || "def@gmail.com";
+        document.getElementById("j_email").innerHTML =
+          result.email || "def@gmail.com";
       })
       .catch((err) => {
         console.log("에러 : " + err);
@@ -292,9 +347,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
-    const noSendRows = selectedRows.filter((row) => row.taxProgress === "미전송" || row.taxProgress === "전송중");
+    const noSendRows = selectedRows.filter(
+      (row) => row.taxProgress === "미전송" || row.taxProgress === "전송중"
+    );
 
-    const sendRows = selectedRows.filter((row) => row.taxProgress === "국세청 전송 완료");
+    const sendRows = selectedRows.filter(
+      (row) => row.taxProgress === "국세청 전송 완료"
+    );
 
     if (sendRows.length > 0) {
       alert("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
@@ -359,9 +418,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
-    const noSendRows = selectedRows.filter((row) => row.taxProgress === "미전송");
+    const noSendRows = selectedRows.filter(
+      (row) => row.taxProgress === "미전송"
+    );
 
-    const sendRows = selectedRows.filter((row) => row.taxProgress === "국세청 전송 완료" || row.taxProgress === "전송중");
+    const sendRows = selectedRows.filter(
+      (row) =>
+        row.taxProgress === "국세청 전송 완료" || row.taxProgress === "전송중"
+    );
 
     if (sendRows.length > 0) {
       alert("이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다.");
@@ -415,7 +479,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 국세청 전송 완료인 건은 이미 국세청 전송 완료된 건이 포함되어있습니다. 표시
-    const noSendRows = selectedRows.filter((row) => row.taxProgress === "미전송" || row.taxProgress === "국세청 전송 완료");
+    const noSendRows = selectedRows.filter(
+      (row) =>
+        row.taxProgress === "미전송" || row.taxProgress === "국세청 전송 완료"
+    );
 
     const sendRows = selectedRows.filter((row) => row.taxProgress === "전송중");
 

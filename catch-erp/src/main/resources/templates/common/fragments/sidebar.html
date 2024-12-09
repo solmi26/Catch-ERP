@@ -4,16 +4,16 @@
 
 <th:block th:fragment="sidebarStack">
       <!-- Sidebar -->
-      <div class="sidebar" data-background-color="dark">
+      <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
         <div class="sidebar-logo">
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
             <a href="stocks/stockInquery" class="logo">
               <img
-                th:src="@{/img/index/logo.png}"
+                th:src="@{/img/index/logov2.png}"
                 alt="navbar brand"
                 class="navbar-brand"
-                height="100%" width="100%"
+                height="100%" width="100%" style="width:190px; height:90px; margin-right:10px;"
               />
             </a>
             <div class="nav-toggle">
@@ -30,21 +30,16 @@
           </div>
           <!-- End Logo Header -->
         </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-wrapper scrollbar scrollbar-inner" >
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
               <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
-                <a
-                  data-bs-toggle="collapse"
-                  href="#"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-home"></i>
+                <a href="/myPageStocks">
+                  <i class="icon-star"></i>
                   <p>마이페이지</p>
                 </a>
 	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
-	              <button type="submit" class="btn btn-success">Logout</button>
+	              <button type="submit" class="btn btn-success logoutBtn">로그아웃</button>
 	            </form>
               </li>
               <li class="nav-section">
@@ -55,11 +50,9 @@
               </li>
               <li class="nav-item">
                 <a  href="/stocks/stockAdjustment">
-                  <i class="fas fa-layer-group"></i>
+                  <i class="icon-refresh"></i>
                   <p>재고조정</p>
-                  
                 </a>
-                
               </li>
               <li class="nav-item" >
                 <a  href="/stocks/stockInquery" style="margin-bottom:0">
@@ -67,28 +60,7 @@
                   <p>재고조회/상품관리</p>
                 </a>
               </li>             
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
-                  <i class="
-                  icon-note"></i>
-                  <p>구매/판매</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="tables">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="/purchase/purchaseChit">
-                        <span class="sub-item">구매/판매 입력</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/purchase/purchaseHistory">
-                        <span class="sub-item">구매/판매 조회</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
+              
             </ul>
           </div>
         </div>
@@ -97,10 +69,10 @@
 </th:block>
 
 <th:block th:fragment="sidebarSales">
-      <div class="sidebar" data-background-color="dark">
-        <div class="sidebar-logo">
+      <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
+        <div class="sidebar-logo" >
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
             <a href="index.html" class="logo">
               <img
                 th:src="@{/img/index/logo.png}"
@@ -127,17 +99,12 @@
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
               <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
-                <a
-                  data-bs-toggle="collapse"
-                  href="#"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
+                <a href="/myPageSales">
                   <i class="fas fa-home"></i>
                   <p>마이페이지</p>
                 </a>
 	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
-	              <button type="submit" class="btn btn-success">Logout</button>
+	              <button type="submit" class="btn btn-success logoutBtn">로그아웃</button>
 	            </form>
               </li>
               <li class="nav-section">
@@ -146,32 +113,60 @@
                 </span>
                 <h4 class="text-section">영업파트</h4>
               </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#base">
-                  <i class="icon-note"></i>
-                  <p>출하지시서</p>
-                  
-                </a>
-                
-              </li>
+              
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="/business/clientList">
                   <i class="icon-briefcase"></i>
                   <p>거래처 관리</p>
                 </a>
-              </li>             
+              </li>   
+              
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#tables">
-                  <i class="icon-loop"></i>
-                  <p>견적서</p>
+                  <i class="
+                  icon-note"></i>
+                  <p>구매</p>
+                  <span class="caret"></span>
                 </a>
+                <div class="collapse" id="tables">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/purchase/purchaseChit">
+                        <span class="sub-item">구매입력</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/purchase/purchaseHistory">
+                        <span class="sub-item">구매조회</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
+              
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
-                  <i class="icon-doc"></i>
-                  <p>주문서</p>
+                <a data-bs-toggle="collapse" href="#tables2">
+                  <i class="
+                  icon-share"></i>
+                  <p>판매</p>
+                  <span class="caret"></span>
                 </a>
+                <div class="collapse" id="tables2">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/sales/salesChit">
+                        <span class="sub-item">판매입력</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/sales/saleSlip">
+                        <span class="sub-item">판매조회</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
+              
             </ul>
           </div>
         </div>
@@ -181,10 +176,10 @@
 
 
 <th:block th:fragment="sidebarHuman">
-      <div class="sidebar" data-background-color="dark">
+      <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
         <div class="sidebar-logo">
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
             <a href="index.html" class="logo">
               <img
                 th:src="@{/img/index/logo.png}"
@@ -211,17 +206,12 @@
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
               <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
-                <a
-                  data-bs-toggle="collapse"
-                  href="#"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
+                <a href="/myPageHuman">
                   <i class="fas fa-home"></i>
                   <p>마이페이지</p>
                 </a>
 	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
-	              <button type="submit" class="btn btn-success">Logout</button>
+	              <button type="submit" class="btn btn-success logoutBtn">로그아웃</button>
 	            </form>
               </li>
               <li class="nav-section">
@@ -334,10 +324,10 @@
 
 
 <th:block th:fragment="sidebarAccount">
-      <div class="sidebar" data-background-color="dark">
-        <div class="sidebar-logo">
+      <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
+        <div class="sidebar-logo" >
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
             <a href="index.html" class="logo">
               <img
                 th:src="@{/img/index/logo.png}"
@@ -364,17 +354,12 @@
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
               <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
-                <a
-                  data-bs-toggle="collapse"
-                  href="#"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
+                <a href="/myPageAccount" >
                   <i class="fas fa-home"></i>
                   <p>마이페이지</p>
                 </a>
 	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
-	              <button type="submit" class="btn btn-success">Logout</button>
+	              <button type="submit" class="btn btn-success logoutBtn">로그아웃</button>
 	            </form>
               </li>
               <li class="nav-section">

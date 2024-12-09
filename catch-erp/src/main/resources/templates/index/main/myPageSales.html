@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/stack_layout}"
+      layout:decorate="~{common/layouts/sales_layout}"
       layout:fragment="Content">
   <head>
     <meta charset="UTF-8" />
@@ -13,6 +13,12 @@
 	    font-weight: 500; 
 	    border: 1px solid #ced4da; 
   }
+  .tab-pane {
+    display: none; /* 기본적으로 숨김 */
+	}
+	.tab-pane.active {
+	    display: block; /* 활성화된 탭만 보이도록 설정 */
+	}
   </style>
   </head>
   		<div class="bg-white shadow-sm rounded" style="padding: 20px;" >
@@ -29,15 +35,15 @@
                         aria-selected="true">나의 정보</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="#myAttendance-tab" data-bs-toggle="tab" 
+                    <button class="nav-link" id="myAttendance-tab" data-bs-toggle="tab" 
                         data-bs-target="#myAttendance" type="button" role="tab" aria-controls="myAttendance"
                         aria-selected="false">근태 조회</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <!-- <li class="nav-item" role="presentation">
                     <button class="nav-link" id="#mySalary-tab" data-bs-toggle="tab" 
                         data-bs-target="#mySalary" type="button" role="tab" aria-controls="mySalary"
                         aria-selected="false">급여 조회</button>
-                </li> 
+                </li>  -->
             </ul>
 	        
 	        <div class="tab-content" id="mainTabContent"> <!-- 메인탭시작 -->
@@ -78,14 +84,14 @@
                                                     <input type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.engName}" name="engName" readonly>
                                                 </div>
                                             </div>
-                                            <div class="row mb-1">
+                                           <!--  <div class="row mb-1">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">생년월일</label>
+                                                    <label class="form-label">주민번호</label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
                                                 	<input type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.modifiedIdentityNo}" name="modifiedIdentityNo" readonly>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="row mb-1">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
                                                     <label class="form-label">부서명</label>
@@ -135,7 +141,7 @@
                                             		<label class="col-form-label-sm"><span style="color:red;">*</span>모바일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.phone}" placeholder="Ex) 010-0000-0000" name="phone" id="phone" >
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.phone}" placeholder="Ex) 01012341234" name="phone" id="phone" >
                                             	</div>
                                         	</div>
                                         </div>
@@ -201,20 +207,86 @@
 	        	
 	        	<div class="tab-pane fade" id="myAttendance" role="tabpanel"
         									aria-labelledby="myAttendance-tab"> <!-- 두번째 탭 시작 -->
-        		
-        								
-        									
-        									
+        			<div class="container-fluid bg-white p-4 ">
+						<div class="row">
+					        <!--  근태조회 -->
+					       <div class="card mb-4 bg-white">
+					           <div class="card-body">
+						           <select  id="yearCondition" style="margin-top: 4px; margin-left:5px;">
+	                                    <option value="year" selected>년도</option>
+	                                    <option th:each="year : ${#numbers.sequence(2024, 2014)}" 
+									           th:value="${year}" 
+									           th:text="${year}">
+									    </option>
+	                                </select>
+	                                <select id="monthCondition" style="margin-top: 4px; margin-left:5px;">
+	                                    <option value="month" selected>월</option>
+	                                    <option th:each="year : ${#numbers.sequence(1, 12)}" 
+									           th:value="${year}" 
+									           th:text="${year}">
+									    </option>
+	                                </select>
+	                                <button id="attendanceInqueryBtn" class="btn btn-primary" style="margin-top: 4px; margin-bottom:5px; padding:0px; margin-left:10px;">조회</button>
+	                                <span style="color:red; margin-left:5px;"><small> ※ 월 단위로 조회가 가능합니다.</small></span>
+	                                <div class="row mb-4 "> <!-- 근태 정보 그리드 -->
+										<div class="col">
+											<div id="attendanceGrid"></div>
+										</div>
+									</div> <!-- 근태 정보 그리드 끝 -->
+					           </div>
+					       </div> <!--  세부 검색 구역 끝!!!! -->
+							
+						</div> <!-- 근태탭 페이지 End Point (모달 미포함) -->
+						
+						<!-- <!-- 근태 세부정보 모달 -->
+					 <!--    <div class="modal fade" id="atModifyModal" tabindex="-1">
+					        <div class="modal-dialog modal-xl">
+					            <div class="modal-content">
+					                <div class="modal-header">
+					                    <h5 class="modal-title">근태 세부정보</h5>
+					
+					                </div>
+					                <div class="modal-body">
+					                    <div class="container-fluid">
+					                        
+					                        <div class="row justify-content-between mb-3">
+					                            <div class="col-auto">
+					                                <h4>근태 세부정보</h4>
+					                            </div>
+					
+					                        </div> 검색창끝
+					                        근태세부테이블
+					                        <div class="row modify-gird-content">
+					                            <div id="attendanceDetailGrid"></div>
+					                        </div>
+					                    </div>
+					                </div>
+					                <div class="modal-footer">
+					                	<div class="row justify-content-end ">
+											<div class="col-auto">
+					    	    	            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>						
+											</div>                	
+					                	</div>
+					                </div>
+					            </div>
+					        </div>
+					    </div> 근태 세부정보 모달 EndPoint --> 
+
+									
         		</div> <!-- 두번째 탭 End Point -->
         		
         		<div class="tab-pane fade" id="mySalary" role="tabpanel"
         									aria-labelledby="mySalary-tab"> <!-- 세번째 탭 시작 -->
-        							
-        									
-        									
+</div>        									
         		</div> <!-- 세번째 탭 End Point -->
 			
 	   		</div> <!-- mainTab End Point -->
+	   		
+	   		 <script th:inline="javascript">
+		        // 컨트롤러에서 전달된 attendanceList 데이터를 JSON 형태로 선언하는 방식임.
+		        var attendanceList = /*[[${attendanceList}]]*/ [];
+		        
+		    </script>
 	   		<script th:src="@{/js/common/myPage.js}"></script>
   </body>
 </html>

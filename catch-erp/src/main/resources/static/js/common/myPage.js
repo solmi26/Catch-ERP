@@ -1,7 +1,13 @@
 /**
+ * 다음 API관련
+ * 나의 정보 탭 정보수정
+ * 근태 조회
  * 
  */
-
+  
+  /*============================================
+  ====================다음 API===================
+  ==============================================*/
   function daumMapApi(state) {
       new daum.Postcode({
           oncomplete: function(data) {
@@ -66,6 +72,11 @@
 
   })
   
+  
+  /*============================================
+  ====================첫번째 탭 수정버튼 이벤트 ========
+  ==============================================*/
+  
   let modifiedBtn = document.getElementById('saveBtn');
   modifiedBtn.addEventListener('click',function(){
 	
@@ -89,7 +100,9 @@
 	  }
 	  
 	  let formData = new FormData();
-	  formData.append('imageFile', employeeImage.files[0]);
+	  if(document.querySelector("#employeeImage").value != ''){
+	  	formData.append('imageFile', employeeImage.files[0]);
+	  }
 	  formData.append('tel', tel.value); 
 	  formData.append('phone', phone.value);
 	  formData.append('email', email.value);
@@ -121,11 +134,139 @@
 			alert("사원정보 변경 중 에러가 발생했습니다.")
 		})
   })
-  
+  	//휴대폰번호 유효성 체크
   	function isHpFormat(hp){
 		if(hp == ""){
 			return true;	
 		}	
-		var phoneRule = /^(01[0]{1})[0-9]{4}[0-9]{4}$/;	
+		var phoneRule = /^010\d{8}$/;
 		return phoneRule.test(hp);
 	}
+	
+  /*============================================
+  ====================두 번째 탭 근태정보 관련=========
+  ==============================================*/
+  /*-- 근태정보 페이지 그리드 --*/
+   const Grid = tui.Grid;
+   Grid.applyTheme('default',  {
+            outline:{
+            border : '#dee2e6'
+        },
+        cell: {
+            normal: {
+                border: '#dee2e6'
+            },
+            header: {
+                background: '#f8f9fa',
+                text: 'black'
+            },
+            focused: {
+                background: '#f8f9fa',
+                border: '#f64a4a'
+            },
+            evenRow: {
+                background: 'white'
+            },
+            oddRow: {
+                background: 'white'
+            }
+        }
+    });
+    const attendanceGrid = new Grid({
+      el: document.getElementById('attendanceGrid'),
+      scrollX: true,
+      scrollY: true,
+      bodyHeight: 700,
+      rowHeaders: [{
+                    type: 'rowNum',
+                    header: "No.",
+                    width: 50,
+                    className:'border'
+            }],
+      columns: [
+    	{
+    	 header:'근태기록번호',
+    	 name:'attHistoryCode',
+    	 width: 140,
+    	 hidden:true
+    	},
+        {
+          header: '날짜',
+          width: 140,
+          name: 'attendanceDate',
+        },
+        {
+          header: '근태유형',
+          width: 140,
+          name: 'attName'
+          
+        },
+        {
+          header: '출근시간',
+          width: 140,
+          name: 'attendanceTime',
+        },
+        {
+          header: '퇴근시간',
+          width: 140,
+          name: 'leaveTime',
+        },
+        {
+          header: '연장 근로시간',
+          width: 140,
+          name: 'overtimeWorktime',
+        },
+        {
+          header: '야간 근로시간',
+          width: 140,
+          name: 'nightWorktime',
+        },
+        {
+          header: '주말 근로시간',
+          width: 140,
+          name: 'weekendWorktime',
+        },
+        {
+          header: '총 근로시간',
+          width: 140,
+          name: 'totalWorktime',
+        }
+        
+      ],
+      
+    });
+    	
+    	attendanceGrid.resetData(attendanceList); //근태정보 초기로드. 현재기준 년도,월로 근태정보 조회
+	 
+	 
+	 let attendanceInqueryBtn = document.getElementById('attendanceInqueryBtn');
+	 attendanceInqueryBtn.addEventListener('click', function(){
+		 let yearConditionBox = document.getElementById('yearCondition'); document.getElementById('yearCondition')
+		 let monthConditionBox = document.getElementById('monthCondition');
+		 let yearCondition = yearConditionBox.options[yearConditionBox.selectedIndex].value;
+		 let monthCondition = monthConditionBox.options[monthConditionBox.selectedIndex].value;
+		 let employeeCode = document.getElementById('employeeCode').value;
+		 if(yearCondition == 'year' || monthCondition == 'month'){
+			alert('조회하실 기간을 설정해주세요.')
+			return;
+		 } else {
+			fetch(`/attendance?employeeCode=${employeeCode}&yearCondition=${yearCondition}&monthCondition=${monthCondition}`)
+			.then(result => result.json())
+			.then(result => {
+				attendanceGrid.resetData(result)
+				window.setTimeout(function(){attendanceGrid.refreshLayout();},200);
+			})
+			.catch(err=>{`근태정보 조회 실패! ${err}`})
+		 }
+	 })
+	
+	
+	//토스트 그리드 refreshLayout().... 
+	document.querySelector("#myAttendance-tab").addEventListener("click",function(){
+		console.log('체킹')
+		window.setTimeout(function(){attendanceGrid.refreshLayout();},200);
+	})
+	
+	window.addEventListener("resize", function() {
+  		attendanceGrid.refreshLayout();
+	});

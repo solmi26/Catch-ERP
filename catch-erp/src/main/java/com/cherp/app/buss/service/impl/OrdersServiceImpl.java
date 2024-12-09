@@ -22,4 +22,10 @@ public class OrdersServiceImpl implements OrdersService {
     public List<OrdersVO> ordersList() {
         return ordersMapper.selectOrders();
     }
+
+    @Override
+    public List<OrdersVO> selectClientOrder(String clientName) {
+        return ordersMapper.selectClientOrder(clientName);
+    }
+
 }

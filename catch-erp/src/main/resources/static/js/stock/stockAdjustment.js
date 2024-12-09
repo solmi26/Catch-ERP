@@ -303,9 +303,21 @@ document.addEventListener("DOMContentLoaded", function () {
             }],
 		    columnOptions: {
 			    frozenCount: 2, 
-			    frozenBorderWidth: 0 
+			    frozenBorderWidth: 1
 			},
             columns: [
+				{
+                    header: '거래처명',
+                    name: 'c1',
+                    align: "center",
+                    width: 183,
+                    whiteSpace: 'normal',
+                    className:'border',
+                    filter: 'select',
+                    renderer: {
+                        type: ButtonRenderer
+                    }
+                },
 				{
                     header: '거래처코드',
                     name: 'c7',
@@ -314,20 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     whiteSpace: 'normal',
                     className:'border',
                     filter: 'select',
-                    renderer: {
-                        type: ButtonRenderer
-                    },
                 },
-                {
-                    header: '거래처명',
-                    name: 'c1',
-                    align: "center",
-                    width: 183,
-                    whiteSpace: 'normal',
-                    className:'border',
-                    filter: 'select'
-                },
-                
                 {
                     header: '대표자명',
                     name: 'c2',
@@ -377,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
        
     grid3.on('click',function(ev){
 		let rowKeyNum;
-		if (ev.columnName == 'c7'){
+		if (ev.columnName == 'c1'){
 			rowKeyNum = ev.rowKey;		
 			let inputTag = document.getElementById('clientInput');
 			let inputTag2 = document.getElementById('clientInput2')
@@ -783,12 +782,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
 	
 	//엑셀다운버튼 이벤트추가
-	/*let purcExcelBtn = document.getElementById("purcExcelBtn");
+	let purcExcelBtn = document.getElementById("purcExcelBtn");
 	purcExcelBtn.addEventListener("click",function(){
-		 grid7.export('xlsx', {
-    		fileName: `엑셀다운테스트.xlsx`
-  		 });
-	})*/
+		saveExcel(grid6);
+	})
+	
+	
 	
 	//#endregion 구매내역모달
 	
@@ -1001,6 +1000,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	})
     //#endregion 출하지시모달
     
+    //엑셀다운버튼 이벤트추가
+	let salesExcelBtn = document.getElementById("salesExcelBtn");
+	salesExcelBtn.addEventListener("click",function(){
+		saveExcel(grid7);
+	})
+    
     //#region 재고조정보고서
     /*================================
     	StackAdjust 재고조정보고서 모달 JS
@@ -1169,7 +1174,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		let user = document.getElementById("user");
 		
 		user.innerHTML = userName.value + "님 환영합니다.";
-		console.log(reporter);
 		reporter.innerText = userName.value;
 		reporter2.innerText = "성명: " + userName.value;	
 		
@@ -1310,12 +1314,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	})   
 	
-	// 그리드에 데이터 넣기(출력) 
+	// 그리드에 데이터 넣기(출력) 담당자
 	fetch('/employees/emps')
 	.then(result => result.json())
 	.then(result => {
+		let filteredResult = result.filter(ele=>{
+			return ele.departmentName == "영업팀" || ele.departmentName == "믈류팀"; 
+		})
 		let dataArr = [];
-		result.forEach(ele=>{
+		filteredResult.forEach(ele=>{
 			let data = {};
 			data.c1 = ele.employeeCode;
 			data.c2 = ele.name;
