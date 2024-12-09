@@ -29,15 +29,15 @@
 		}
 		
 			  /* 그리드 전 form 관련 높이, 글자크기 */
-      .form-control,
-      .form-select,
-      .input-group-text {
+      .search-form .form-control,
+      .search-form .form-select,
+      .search-form .input-group-text {
         height: 48px;
         font-size: 1rem !important;
       }
       
 	/* 그리드 전 form 제목 길이 지정 */
-      .input-group-text:first-child {
+      .search-form .input-group-text:first-child {
         width: 90px;
       }
       .hide-opt {
@@ -47,7 +47,7 @@
     <div class="bg-white shadow-sm rounded" style="padding: 20px;">
     <div class="container-fluid p-4">
         <!--  세부 검색 구역 -->
-      <div class="card mb-4 bg-white">
+      <div class="card mb-4 bg-white search-form">
         <div class="card-body bg-light">
         <h1>사원정보</h1>
           <form>
@@ -170,22 +170,50 @@
         </div>
       </div>
 			<!--  세부 검색 구역 끝!!!! -->
- <form id="generalForm" onsubmit="return false">
- <button type="submit" class="check-null" style="display:none;"></button>
-        <div class="shadow-box row g-4 gap-0">
+
+
+        <div class="shadow-box row  gap-0">
+
+<div class="col-12">		
+	<div class="row justify-content-between">
+       <div class="col">
+            <div class="row justify-content-start">
+            	<div class="col-auto">
+                   <button type="button" class="btn btn-secondary btn-sm" id="resetBtn">다시쓰기</button>
+            			</div>
+            			<div class="col-auto px-0">
+                   <button type="button" class="btn btn-success btn-sm " id="newBtn">신규</button>
+               </div>    
+                   <input type="file" style="display:none;" accept=".jpg, .png" id="imgInput">
+               <div class="col-auto">    
+                   <button type="button" class="btn btn-primary btn-sm mb-3 me-3" id="saveBtn" data-mode="insert">저장</button>
+               </div>    
+          </div>
+	   	</div>
+	    <div class="col-auto">
+	        <div class="row">
+	        	<div class="col-auto">
+		            <button class="btn btn-danger btn-sm delete-Btn" data-mode="update">퇴직</button>
+	        	</div>
+	        </div>	   	
+	   	</div>
+	</div>
+</div>
 
             <!-- 직원 세부 정보-->
-            <div class="col-lg-8 pe-0">
+            <div class="col-lg-8 p-3">
+            
                 <div class="content-box employee-box">
+                    <form id="generalForm" onsubmit="return false">
                     <div class="card-body row">
                     <!--  -->
                    <!-- <div class="row"> -->
                     	<div class="col align-self-start">
-                        <ul class="nav nav-tabs" id="employeeTabs" role="tablist">
+                        <ul class="nav nav-tabs " id="employeeTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">일반</button>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item justify-items-end" role="presentation">
                                 <button class="nav-link" id="salary-tab" data-bs-toggle="tab" data-bs-target="#salary" type="button" role="tab" aria-controls="salary" aria-selected="false">급여</button>
                             </li>
                         </ul>
@@ -196,7 +224,7 @@
                                         <div class="col-md-4 text-center">
                                         	<div class="row">
                                         		<div class="col-12">
-		                                            <img src="/placeholder.svg?height=100&width=100" onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2024/10/11/00/13/hummingbird-9111853_1280.jpg'" style="height:200px;width:260px;"alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">                                        		
+		                                            <img src="/placeholder.svg?height=100&width=100" onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2024/10/11/00/13/hummingbird-9111853_1280.jpg'" style="height:100%;width:100%;"alt="Employee Photo" class="employee-photo mb-2" id="employeePhoto">                                        		
                                         		</div>
                                         		<div class="col-12">
                                         			<div class="input-group input-group-sm mb-3">
@@ -219,7 +247,7 @@
                                                 </div>
                                             <div class="row mb-1">
 	                                                <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                            	      <label class="form-label">성명</label>
+                                            	      <label class="form-label">성명<span style="color:red">* </span></label>
                                             	    </div>  
                                             	    <div class="col-md-8 col-sm-9 col-lg-7 ps-0">  
                                           	    	  <input type="text" class="form-control form-control-sm EmployeeVO" name="name" required>
@@ -227,7 +255,7 @@
     	                                    </div>
     	                                   	<div class="row mb-1">    
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">외국어성명</label>
+                                                    <label class="form-label">외국어성명<span style="color:red">* </span></label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
                                                     <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="engName" required>
@@ -235,15 +263,15 @@
                                             </div>
                                             <div class="row mb-1">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">주민등록번호</label>
+                                                    <label class="form-label">주민등록번호<span style="color:red">* </span></label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">    
-                                                    <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="identityNo" required>
+                                                    <input type="text" placeholder="- 없이 입력" class="form-control form-control-sm EmployeeDetailVO number-format" name="identityNo" required>
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">부서코드</label>
+                                                    <label class="form-label">부서코드<span style="color:red">* </span></label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
                                                 	<select class="form-select form-select-sm EmployeeVO" name="departmentCode" required>
@@ -255,7 +283,7 @@
                                             </div>
                                             <div class="row mb-1 mb-sm-0 ">
                                                 <div class="col-sm-3 col-lg-5 col-md-4 pe-0">
-                                                    <label class="form-label">세대주여부</label>
+                                                    <label class="form-label">세대주여부<span style="color:red">* </span></label>
                                                 </div>
                                                 <div class="col-md-8 col-sm-9 col-lg-7 ps-0">
                                                     <select class="form-select form-select-sm EmployeeDetailVO" name="headCheck" required>
@@ -270,7 +298,7 @@
                                         <div class="col-md-6 mt-sm-1 mt-md-2">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-5 col-xl-4 pe-0 ">
-                                           			<label class="form-label">직위/직급</label>
+                                           			<label class="form-label">직위/직급<span style="color:red">* </span></label>
                                             	</div>
                                             	<div class="col ps-0">
                                             		<select class="form-select form-select-sm EmployeeVO" name="employeePosition" required>
@@ -284,7 +312,7 @@
                                         <div class="col-md-6 mt-sm-1 mt-md-2">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-4 col-xl-4 pe-0 ps-lg-0 ">
-                                            		<label class="col-form-label-sm">직책</label>
+                                            		<label class="col-form-label-sm">직책<span style="color:red">* </span></label>
                                             	</div>
                                             	<div class="col ps-0">
                                             		<select class="form-select form-select-sm EmployeeDetailVO" name="duty" required>
@@ -302,24 +330,24 @@
                                            			<label class="form-label">전화번호</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="tel" class="form-control form-control-sm EmployeeDetailVO" name="tel" required>
+                                            		<input type="tel" class="form-control form-control-sm EmployeeDetailVO number-format" placeholder="- 없이 입력" name="tel" required>
                                             	</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-1">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-4 col-xl-4 pe-0 ps-lg-0 ">
-                                            		<label class="col-form-label-sm">모바일</label>
+                                            		<label class="col-form-label-sm">모바일<span style="color:red">* </span></label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="tel" class="form-control form-control-sm EmployeeDetailVO" name="phone" required>
+                                            		<input type="tel" class="form-control form-control-sm EmployeeDetailVO number-format" placeholder="- 없이 입력" name="phone" required>
                                             	</div>
                                         	</div>
                                         </div>
                                         <div class="col-md-6 mt-1">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-5 col-xl-4 pe-0 ">
-                                           			<label class="form-label">이메일</label>
+                                           			<label class="form-label">이메일<span style="color:red">* </span></label>
                                             	</div>
                                             	<div class="col ps-0">
                                             		<input type="email" class="form-control form-control-sm EmployeeDetailVO" name="email" required>
@@ -329,7 +357,7 @@
                                         <div class="col-md-6 mt-1">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-4 col-xl-4 pe-0 ps-lg-0 ">
-                                            		<label class="col-form-label-sm">재직구분</label>
+                                            		<label class="col-form-label-sm">재직구분<span style="color:red">* </span></label>
                                             	</div>
                                             	<div class="col ps-0">
                                             		<select class="form-select form-select-sm EmployeeVO" name="statusType" required>
@@ -343,7 +371,7 @@
                                         <div class="col-md-6 mt-1">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-5 col-xl-4 pe-0 ">
-                                           			<label class="form-label">입사구분</label>
+                                           			<label class="form-label">입사구분<span style="color:red">* </span></label>
                                             	</div>
                                             	<div class="col ps-0">
                                             		<select class="form-select form-select-sm EmployeeVO" name="hireType" required>
@@ -357,7 +385,7 @@
                                         <div class="col-md-6 mt-1">
                                         	<div class="row">
                                         		<div class="col-md-4 col-sm-3 col-lg-4 col-xl-4 pe-0 ps-lg-0 ">
-                                            		<label class="col-form-label-sm">입사일자</label>
+                                            		<label class="col-form-label-sm">입사일자<span style="color:red">* </span></label>
                                             	</div>
                                             	<div class="col ps-0">
                                             		<input type="date" class="form-control form-control-sm EmployeeVO " name="hireDate" required>
@@ -392,34 +420,33 @@
                                         </div>
                                         	
                                         <div class="col-12">
-                                            <label class="form-label">주소</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
+                                            <label class="form-label">주소<span style="color:red">* </span></label>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required readonly>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required readonly>
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소를 입력해주세요" name="detailAddress"  required>
                                         </div>
                                     </div>
                                     
-                                
-                            </div>
+	                            </div>
                             <div class="tab-pane fade" id="salary" role="tabpanel" aria-labelledby="salary-tab">
                                     <div class="row g-3 justify-content-between ">
                                         <div class="col-md-6">
                                         	<div class="row">
 												<div class="col-auto">
-		                                            <label class="form-label">기본급</label>
+		                                            <label class="form-label">기본급<span style="color:red">* </span></label>
 												</div>                                        	
 												<div class="col">
-		                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO" name="monthlySalary" max="9999999999" min="0" required>
+		                                            <input type="number" class="form-control form-control-sm EmployeeSalaryVO number-format" name="monthlySalary" max="9999999999" min="0" required>
 												</div>
                                         	</div>
                                         </div>
                                         <div class="col-auto">
                                         	<div class="row justify-content-end">
-	                                        	<div class="col-auto">
+	                                        	<div class="col-auto pe-0">
 	                                        		<button type="button" class="btn btn-success btn-sm appendRowBtn">추가</button>
 	                                        	</div>
-	                                        	<div class="col-auto">
-	                                        		<button type="button" class="btn btn-danger btn-sm deleteRowBtn">삭제</button>
+	                                        	<div class="col-auto ">
+	                                        		<button type="button" class="btn btn-danger btn-sm deleteRowBtn ms-2 me-3">삭제</button>
 	                                        	</div>
 	                                        	
                                         	</div>
@@ -428,21 +455,25 @@
                                         <div id="allowanceGrid"></div>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label">은행</label>
+                                            <label class="form-label">은행<span style="color:red">* </span></label>
                                             <input type="hidden" class="form-control form-control-sm EmployeeDetailVO " name="bank" onkeypress="return false;" style="caret-color: transparent !important;" required>
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO bank-Btn" name="bankName" onkeypress="return false;" style="caret-color: transparent !important;" required>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label">계좌번호</label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="bacct" required>
+                                            <label class="form-label">계좌번호<span style="color:red">* </span></label>
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO number-format" placeholder="- 없이 입력" name="bacct" required>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label">예금주</label>
+                                            <label class="form-label">예금주<span style="color:red">* </span></label>
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO" name="depositor" required>
                                         </div>
-                                    </div>
+                                 </div>
                             </div>
                         </div>
+                        
+                        
+                        
+                        
                         <div class="mt-3 text-end ">
                         <!-- 
                         <div class="row ">
@@ -463,38 +494,9 @@
                             
                         </div>
                         </div>
-                        <div class="col-12 align-self-end">
-                        <!--  -->
-                         <div class="row justify-conetnt-between">
-							<div class="col align-self-center">
-								<div class="row">
-									<div class="col-auto">
-										<div class="input-group input-group mb-3">
-										  <button class="btn btn-secondary btn-sm" type="button" id="imgBtn">첨부하기</button>
-										  <input type="text" class="form-control from-control-sm img-Text" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly maxlength="20">
-										</div>
-									</div>
-								</div>
-							</div>                        
-                        	<div class="col">
-                        		<div class="row justify-content-end">
-                        			<div class="col-auto">
-			                            <button type="button" class="btn btn-secondary btn-sm" id="resetBtn">다시쓰기</button>
-                        			</div>
-                        			<div class="col-auto px-0">
-			                            <button type="button" class="btn btn-success btn-sm " id="newBtn">신규</button>
-			                        </div>    
-			                            <input type="file" style="display:none;" accept=".jpg, .png" id="imgInput">
-			                        <div class="col-auto">    
-			                            <button type="button" class="btn btn-primary btn-sm mb-3 me-3" id="saveBtn" data-mode="insert">저장</button>
-			                        </div>    
-                        		</div>
-                        	<!--  </div>-->
-                        </div>
-                        <!--  -->
-                        </div>
-                        </div>
+
                     </div>
+                    </form>
                     <!-- 여기에삽입 -->
                 </div>
             </div>
@@ -506,19 +508,8 @@
                     
             </div>
         </div>
-</form>
         <!-- Action Buttons -->
-        <div class="mt-3">
-            <button class="btn btn-danger btn-sm delete-Btn">
-                <i class="bi bi-trash"></i> 삭제
-            </button>
-            <button class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-file-earmark-spreadsheet"></i> Excel 출력
-            </button>
-            <button class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-printer"></i> 인쇄
-            </button>
-        </div>
+
     </div>
 </div>
 <!-- 은행모달시작!!!! -->
@@ -623,14 +614,21 @@
 
     
     <script th:inline="javascript">
+    window.addEventListener(`resize`, function() {
+		window.setTimeout(function(){
+			grid.refreshLayout();
+			allowanceGrid.refreshLayout();
+			}, 200)     	  
+    });    
     const Grid = tui.Grid;
+    
+    
 
     const grid = new Grid({
   	  el: document.getElementById('grid'), // Container element
   	  rowHeight:10,
   	  minRowHeight:25,
-  	  bodyHeight:'fitToParent',
-  	  minBodyHeight:'fitToParent',
+  	  bodyHeight:700,
       pageOptions: {
           useClient: true,
           perPage: 25
@@ -677,14 +675,14 @@
     	     name:'employeePositionName'
     	    }
     	  ],
+      showDummyRows: true,
+
   	  
-  	  data:[]
+  	  data:[[${empList}]]
   	});
 
   document.addEventListener('DOMContentLoaded', function() {
-      fetch("/employees/emps")
-      .then(result => result.json())
-      .then(datas =>{grid.resetData(datas)})
+
 	})    
 	 
   document.getElementById('salary-tab').addEventListener('click', function() {
@@ -736,7 +734,9 @@
     	    
     	  ],
     	  data: [
-    	  ]
+    	  ],
+          showDummyRows: true
+
     	});
 
     //카카오 다음 map api

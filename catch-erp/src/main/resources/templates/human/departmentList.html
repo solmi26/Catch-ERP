@@ -8,37 +8,27 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div class="container-fluid bg-white shadow-sm rounded p-4">
+	<div class="container-fluid bg-white shadow-sm rounded p-4 ">
 		<div class="row justify-content-start">
 			<div class="col-xl-6 col-lg-8 col-md-10 col-sm-12">
 					<div class="row justify-content-between mb-2">
 						<div class="col">
 							<h3>부서목록</h3>
 						</div>
-						<div class="col">
-							<div class="row">
-								<div class="col">
-									<input class="form-control form-control-sm" type="text">					
-								</div>
-								<div class="col-auto">
-									<button type="button" class="btn btn-success btn-sm" >검색</button>
-								</div>
-							</div>
-						</div>
 					</div>
-					<div class="row">
-						<div class="col">
-						<div class="border" id="grid"></div>
-						</div>
-					</div>
-					<div class="row justify-content-start mt-4">
+					<div class="row justify-content-between mt-4">
 						<div class="col-auto">
+							
 							<button type="button" class="btn btn-success btn-sm req-Btn" >등록</button>
 						</div>
 						<div class="col-auto ps-0">
 							<button type="button" class="btn btn-danger btn-sm del-Btn" >삭제</button>
 						</div>
-						
+					</div>
+					<div class="rowm mt-2">
+						<div class="col">
+						<div class="border" id="grid"></div>
+						</div>
 					</div>
 				</div>
 				
@@ -88,7 +78,7 @@
                                          <label for="inputPassword6" class="col-form-label">부서장</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm insert-input" name="name" aria-describedby="passwordHelpInline" >
+                                         <input type="text" id="inputPassword6" readonly class="form-control form-control-sm insert-input" name="name" aria-describedby="passwordHelpInline" >
                                          <input type="hidden" id="inputPassword6" class="form-control form-control-sm insert-input" name="managerCode"  aria-describedby="passwordHelpInline" >
                                        </div>
                                    </div> 
@@ -150,7 +140,7 @@
                                          <label for="inputPassword6" class="col-form-label">부서장</label>
                                        </div>
                                        <div class="col">
-                                         <input type="text" id="inputPassword6" class="form-control form-control-sm modify-input" name="name" aria-describedby="passwordHelpInline" >
+                                         <input type="text" id="inputPassword6" readonly class="form-control form-control-sm modify-input" name="name" aria-describedby="passwordHelpInline" >
                                          <input type="hidden" id="inputPassword6" class="form-control form-control-sm modify-input" name="managerCode"  aria-describedby="passwordHelpInline" >
                                        </div>
                                    </div> 
@@ -162,7 +152,7 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary modify-save-Btn" data-bs-dismiss="modal">저장</button>
+                    <button type="button" class="btn btn-primary modify-save-Btn" >저장</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
@@ -258,6 +248,10 @@
 			    {
 			     header:'부서장',
 			     name:'name'
+			    },
+			    {
+			     header:'총원',
+			     name:'count'
 			    }
 			  ],
 			  data: [

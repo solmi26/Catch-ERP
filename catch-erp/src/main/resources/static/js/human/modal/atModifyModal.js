@@ -58,6 +58,15 @@
             {
             header: '출근시간',
             name: 'attendanceTime',
+	          validation: {
+	              validatorFn: function (value, row, columnName) {
+	            	  let att = new Date("1970-01-01 "+value+":00")
+	            	  let lev = new Date("1970-01-01 "+row['leaveTime']+":00")
+	            	  if (att > lev) {
+	            		  return false;
+	            	  }
+	            	  return true}
+	            },            
             editor: {
             type: gridTime,
             }

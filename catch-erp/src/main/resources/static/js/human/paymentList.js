@@ -18,6 +18,14 @@ grid.on('click',function (ev) {
 //급여수정내역 저장버튼 클릭시
 //#region
 document.querySelector('.update-Btn').addEventListener('click',function () {
+	//유효성 검사
+	if (validateCheck()) {
+		return;	
+	}
+	//공제금액 체크
+	if (sumCheck()) {
+		return;
+	}
 	let datas = extractSalModifyGrid()
 	fetch("/employees/payroll", {
 		method:'put',
@@ -308,6 +316,40 @@ function datoToGrid() {
 		  })
  }
  
+//수정모달 그리드 편집 이벤트
+
+function sumCheck ()  {
+	
+	let data = salModifyGrid.getData()
+    let monthly = salModifyGrid.getValue(0,'monthlySalary')
+    let overtimeAllowance = salModifyGrid.getValue(0,'overtimeAllowance')
+    let nightAllowance = salModifyGrid.getValue(0,'nightAllowance')
+    let weekendAllowance = salModifyGrid.getValue(0,'weekendAllowance')
+    
+    let incomeTax = salModifyGrid.getValue(0,'incomeTax')
+    let localTax = salModifyGrid.getValue(0,'localTax')
+    let nationalInsurance = salModifyGrid.getValue(0,'nationalInsurance')
+    let healthInsurance = salModifyGrid.getValue(0,'healthInsurance')
+    let employmentInsurance = salModifyGrid.getValue(0,'employmentInsurance')
+    let leaveRate = salModifyGrid.getValue(0,'leaveRate')
+
+
+	let index = salModifyGrid.getIndexOfColumn('end');
+	let colList = salModifyGrid.getColumns()
+	let allowance = 0;
+	console.log(data)
+	for (let i =8 ; i < index ; i++) {
+		allowance += Number(data[0][colList[i].name])
+	}
+	let sum = Number(allowance) + Number(monthly) + Number(overtimeAllowance) + Number(nightAllowance) + Number(weekendAllowance);
+	let dedu = incomeTax + localTax + nationalInsurance + healthInsurance + employmentInsurance + leaveRate
+
+	if (dedu > sum ) {
+		alert("지급총액을 초과한 공제금액을 입력할수 없습니다.")
+		return true;
+	}
+	return false;
+}
  
 //검색버튼 클릭 이벤트
 document.querySelector('.search-btn').addEventListener('click',function (ev) {
@@ -331,3 +373,21 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	
 	
 }) 
+
+let n
+//유효성검사
+function validateCheck () {
+	let nullCheck = salModifyGrid.validate();
+	n = nullCheck
+    if (nullCheck.length !== 0 ) {
+		salModifyGrid.focus(nullCheck[0].rowKey, nullCheck[0].errors[0].columnName)
+		let header =grid.getColumn(nullCheck[0].errors[0].columnName).header
+		if (nullCheck[0].errors[0].errorCode[0] == "MAX") {
+			alert(header+"의 값은 10억원 미만으로 지정해주세요.")
+		} else if (nullCheck[0].errors[0].errorCode[0] == "MIN") {
+			alert(header+"의 값은 1원 초과로 지정해주세요.")
+		};
+		return true;
+	}
+	return false;
+}
