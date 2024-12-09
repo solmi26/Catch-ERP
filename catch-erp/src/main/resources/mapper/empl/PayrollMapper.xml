@@ -54,6 +54,7 @@
              ,sp.payroll_edate
              ,sp.employee_code
              ,sp.notax_payment
+             ,sp.payroll_check
              ,em.name
              ,em.employee_id
        FROM   salary_payroll sp
@@ -117,6 +118,7 @@
              ,sp.payroll_edate
              ,sp.employee_code
              ,sp.notax_payment
+             ,sp.payroll_check
              ,em.name
              ,em.employee_id
              ,awhi.awhi_no
@@ -174,17 +176,32 @@
 	</delete>
 	
 	<!-- 급여명세서 체크 -->
-	<update id="updateSalaryCheck" parameterType="hashmap">
+	<update id="updateSalaryCheck" parameterType="java.util.HashMap">
 		UPDATE salary_payroll
-		SET salary_check = #{salaryCheck}
+		SET payroll_check = #{payrollCheck}
 		WHERE salary_number IN
-		<foreach collection="list" item="payroll" open="(" separator="," close=")">
-			#{payroll.salaryNumber}
+		<foreach collection="payroll" item="pay" open="(" separator="," close=")">
+			#{pay.salaryNumber}
 		</foreach>
 	
 	</update>
 	
+	<!-- 급여명세서 발행 -->
+	<insert id="insertPayroll" statementType="CALLABLE">
+	    CALL payroll_insert ()
+	</insert>
 	
+	<!-- 급여명세 발행여부 확인  -->
+	<select id="selectCheckPayroll" resultType="int">
+		SELECT COUNT(salary_number)
+		FROM salary_payroll
+		WHERE payroll_ydate BETWEEN TO_DATE(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')) AND LAST_DAY(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm'))
+	</select>
 	
+		<!-- 급여명세서 재발행 삭제 -->	
+	<delete id="deleteMonthPayroll" >
+		DELETE FROM salary_payroll
+		WHERE payroll_ydate between TO_DATE(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')) AND LAST_DAY(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm'))
+	</delete>	
 	
 </mapper>

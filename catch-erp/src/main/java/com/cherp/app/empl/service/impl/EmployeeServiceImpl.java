@@ -72,6 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 	@Override
 	public int employeeDelete(String[] employeeCode) {
+		int backup = employeemapper.insertBackUpPayroll(employeeCode);
 		int salary = employeemapper.deleteEmployeeSalary(employeeCode);
 		int detail = employeemapper.deleteEmployeeDetail(employeeCode);
 		int fixed = employeemapper.deleteFixed(employeeCode);

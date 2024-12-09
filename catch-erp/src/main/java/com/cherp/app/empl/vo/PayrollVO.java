@@ -35,7 +35,7 @@ public class PayrollVO {
 	private Date   payrollEdate;//근무종료일
 	private String employeeCode;//사원코드
 	private int    notaxPayment;//지급총액(비과세미포함)
-	
+	private String payrollCheck;
 	//수당기록
 	private ArrayList<AllowanceHistoryVO> allowanceHistoryVO;
 	

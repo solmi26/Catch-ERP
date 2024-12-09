@@ -44,11 +44,29 @@ public class PayrollServiceImpl implements PayrollService {
 		return (payroll + history)/2;
 	}
 	@Override
-	public int salaryCheckUpdate(String salaryCheck, List<PayrollVO> payroll) {
+	public int salaryCheckUpdate(String payrollCheck, List<PayrollVO> payroll) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("salaryCheck", salaryCheck);
+		map.put("payrollCheck", payrollCheck);
 		map.put("payroll", payroll);
+		System.out.println(map);
 		return mapper.updateSalaryCheck(map);
 	}
-
+	@Override
+	public int payrollInsert(String mode) {
+		System.out.println(mode);
+		if (mode.equals("create")) {
+			return mapper.insertPayroll();
+		}else if (mode.equals("replace")) {
+			mapper.deleteMonthPayroll();
+			return mapper.insertPayroll();			
+		}
+		return 0;
+	}
+	@Override
+	public Map<String,Object> checkSalaryInfo() {
+		int result = mapper.selectCheckPayroll();
+		Map<String,Object> map = new HashMap<>();
+		map.put("result", result);
+		return map;
+	}
 }

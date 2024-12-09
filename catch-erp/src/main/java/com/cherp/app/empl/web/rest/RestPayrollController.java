@@ -1,13 +1,12 @@
 package com.cherp.app.empl.web.rest;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +38,6 @@ public class RestPayrollController {
 	}
 	@PutMapping("/employees/payroll")
 	public int payrollUpdate(@RequestBody PayrollVO payroll) {
-		System.out.println();
 		return service.payrollUpdate(payroll);
 	}
 	@DeleteMapping("/employees/payroll")
@@ -47,11 +45,23 @@ public class RestPayrollController {
 		return service.payrollDelete(salaryNumber);
 	}
 	
-	@PutMapping("/employees/salaryCheck/{salaryCheck}")
-	public int updateSalaryCheck(@PathVariable(value="salaryCheck") String salaryCheck,
-			                                                        List<PayrollVO> payroll) {
-		return service.salaryCheckUpdate(salaryCheck, payroll);
+	@GetMapping("/employees/pay")
+	public int payrollInsert (@RequestParam(value="mode")String mode) {
+		return service.payrollInsert(mode);
+	}
+	
+	@GetMapping("/employees/payrollcheck")
+	public Map<String,Object> salaryCheckInfo() {
+		return service.checkSalaryInfo();
+	}
+	
+	
+	@PutMapping("/employees/salaryCheck/{payrollCheck}")
+	public int updateSalaryCheck(@PathVariable(name="payrollCheck") String payrollCheck,
+			                     @RequestBody List<PayrollVO> payroll) {
+		return service.salaryCheckUpdate(payrollCheck, payroll);
 		
 	}
+	
 	
 }

@@ -401,7 +401,6 @@ document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
 	}
 })
 
-gird.on('')
 
 
 

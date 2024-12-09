@@ -9,36 +9,10 @@
         body {
             font-size: 0.85rem;
         }
-        .employee-list, .employee-form {
-            height: 500px;
-            overflow-y: auto;
-        }
-        .employee-photo {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .form-control, .form-select, .btn {
-            font-size: 0.8rem;
-        }
-        .table {
-            font-size: 0.85rem;
-        }
         .card {
             border: none;
             box-shadow: none;
         }
-        .form-label {
-            margin-bottom: 0.25rem;
-        }
-		.table>tbody>tr>td, .table>tbody>tr>th, .table thead th {
-		    padding: 0px 0px 4px 24px !important;
-		   	font-size:14px;
-		}
-		.container .table-head thead tr th{
-			background-color:#aacb73 !important;
-		}
 		.scroll-bar{
 			overflow-x:auto ;
 			overflow-y:auto ;
@@ -68,10 +42,6 @@
 			width:100%;
 			border:0;
 			
-		}
-		input[type='month'] {
-			border:1px solid black;
-			border-radius:2px;
 		}
 		.scroll-x {
 			overflow:auto;
@@ -116,12 +86,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div class=" p-4 bg-white">
+	<div class=" p-4 kwBorder rounded bg-white">
 		<div class="row"> <!-- start first row -->
         <!--  세부 검색 구역 -->
-      <div class="card mb-4 bg-white">
-        <div class="card-body bg-light">
         <h1>급여정보</h1>
+      <div class="card mb-4 bg-white">
+        <div class="card-body kwBorder bg-light">
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
@@ -270,16 +240,17 @@
 							<button type="button" class="btn btn-sm btn-danger delete-Btn">삭제</button>
 						</div>
 						<div class="col-auto">
-							<button type="button" class="btn btn-sm btn-success delete-Btn">검토완료</button>
+							<button type="button" class="btn btn-sm btn-success examine-Btn" data-mode="check">검토완료</button>
 						</div>
 						<div class="col-auto">
-							<button type="button" class="btn btn-sm btn-warning delete-Btn">검토취소</button>
+							<button type="button" class="btn btn-sm btn-warning examine-Btn" data-mode="cancel">검토취소</button>
 						</div>
 					</div>
 				</div>
 				<div class="col-auto">
 					<div class="row">
 						<div class="col">
+							<button type="button" class="btn btn-sm btn-secondary publication-Btn">명세서발행</button>
 							<button type="button" class="btn btn-sm btn-secondary">Excel</button>
 							<button type="button" class="btn btn-sm btn-secondary printModal-Btn">인쇄</button>
 						</div>				
@@ -326,6 +297,40 @@
         </div>
     </div>
 <!-- 급여수정내역 모달 -->
+
+<!-- 급여상세내역 모달 -->
+    <div class="modal fade" id="salDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">급여상세내역</h5>
+                    <div class="action-buttons">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- 검색창-->
+                        <div class="row justify-content-between mb-3">
+                            <div class="col-auto">
+                                <h4>급여상세내역</h4>
+                            </div>
+                        </div> <!--검색창끝-->
+                        <!--사원테이블-->
+                        <div class="row" style="overflow:hidden;">
+                            <div id="salDetailGrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">닫기</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 급여수정내역 모달 -->
+
+
 <!-- 인쇄모달 -->
     <div class="modal fade" id="payrollPrintModal" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -496,6 +501,10 @@
 		  		return Number(value).toLocaleString() + "원"; // 숫자로 변환 후 포맷팅
 	  		    },
 		        
+	          },
+	          {
+	            header:'검토여부',
+	            name:'payrollCheck'
 	          }
 	        ],
 	        columnOptions: {
@@ -512,6 +521,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 	<script th:src='@{/js/human/modal/payrollPrintModal.js}'></script>	
 	<script th:src='@{/js/human/modal/salModifyModal.js}'></script>
+	<script th:src='@{/js/human/modal/salDetailModal.js}'></script>
 	<script th:src="@{/js/human/paymentList.js}"></script>
 </body>
 </html>

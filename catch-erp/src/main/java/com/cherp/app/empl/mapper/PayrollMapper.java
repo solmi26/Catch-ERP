@@ -13,5 +13,7 @@ public interface PayrollMapper {
 	public int deletePayroll (String[] salaryNumber); //삭제
 	public int deleteAllowanceHistory (String[] salaryNumber);//고정수당기록삭제
 	public int updateSalaryCheck (Map<String,Object> map);//급여명세 검토수정
-	
+	public int insertPayroll();//급여명세 발행
+	public int selectCheckPayroll();//급여명세 발행여부 확인
+	public int deleteMonthPayroll();//급여명세 해당달 삭제
 }
