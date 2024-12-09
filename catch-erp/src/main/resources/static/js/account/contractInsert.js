@@ -170,7 +170,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!clientCode) missingFields.push("거래처");
 
     if (missingFields.length > 0) {
-      alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
+		Swal.fire({
+		  title: '에러!',
+		  text: '작업 중 문제가 발생했습니다.',
+		  icon: 'error',
+		  confirmButtonText: '확인',
+		});
+      //alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
       return; // 서버로 전송X
     }
 

@@ -1,7 +1,9 @@
 package com.cherp.app.acct.web;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -11,8 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cherp.app.acct.service.ContractService;
 import com.cherp.app.stck.vo.ContractItemVO;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -188,5 +193,23 @@ public class ContractController {
         }
         // 4. 생성된 디렉토리 경로 반환.
         return folderPath;
+    }
+    
+    // 파일 다운로드 처리
+    @RequestMapping("/fileDownload")
+    public void fileDownload(@RequestParam String file,
+                             HttpServletResponse response) throws IOException {
+        File f = new File(uploadPath, file);
+        // file 다운로드 설정
+        response.setContentType("application/download");
+        response.setContentLength((int)f.length());
+        response.setHeader("Content-disposition", "attachment;filename=\"" + file + "\"");
+        // response 객체를 통해서 서버로부터 파일 다운로드
+        OutputStream os = response.getOutputStream();
+        // 파일 입력 객체 생성
+        FileInputStream fis = new FileInputStream(f);
+        FileCopyUtils.copy(fis, os);
+        fis.close();
+        os.close();
     }
 }
