@@ -14,17 +14,26 @@
 		<th:block th:replace="~{common/fragments/sidebar :: sidebarStack }"></th:block>
 	
 	 <!-- content -->
-			<div class="main-panel">
-				<footer th:replace="~{common/fragments/header :: headerStack}"></footer>
-			 	<div class="container">
-					<div class="page-inner">
-						<main layout:fragment="Content"></main>
-					</div>
+		<div class="main-panel">
+			<header th:replace="~{common/fragments/header :: headerStack}"></header>
+		 	<div class="container">
+				<div class="page-inner">
+					<main layout:fragment="Content"></main>
 				</div>
-			</div>	 
+			</div>
+			
+			<!-- footer -->
+			<div>
+		  		<footer th:replace="~{common/fragments/footer :: footer}"></footer>
+		  	</div>
+			
 		</div>
-	 <!-- footer -->
-  	
+			 
+	</div>
+	<div class="container">
+  		<footer th:replace="~{common/fragments/footer :: footer}"></footer>
+  	</div>
+	 
 	<th:block th:replace="~{common/configs/bootstrapConfigs :: indexJs}"></th:block>
   </body>
 </html>

@@ -7,7 +7,7 @@
       <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
         <div class="sidebar-logo">
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
             <a href="stocks/stockInquery" class="logo">
               <img
                 th:src="@{/img/index/logov2.png}"
@@ -35,7 +35,7 @@
             <ul class="nav nav-secondary">
               <li class="nav-item active d-flex align-items-center" style="background-color: rgb(213 236 195);">
                 <a href="/myPageStocks">
-                  <i class="icon-star"></i>
+                  <i class="fas fa-home"></i>
                   <p>마이페이지</p>
                 </a>
 	            <form action="/logout" method="POST" class="ms-2" style="margin-right: 4px;">
@@ -72,7 +72,7 @@
       <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
         <div class="sidebar-logo" >
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
             <a href="index.html" class="logo">
               <img
                 th:src="@{/img/index/logo.png}"
@@ -115,7 +115,7 @@
               </li>
               
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="/business/clientList">
+                <a href="/business/clientList">
                   <i class="icon-briefcase"></i>
                   <p>거래처 관리</p>
                 </a>
@@ -179,10 +179,10 @@
       <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
         <div class="sidebar-logo">
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
             <a href="index.html" class="logo">
               <img
-                th:src="@{/img/index/logo.png}"
+                th:src="@{/img/index/logo_cat.png}"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="100%" width="100%"
@@ -322,15 +322,15 @@
 </th:block>
 
 
-
+<!-- 회계 -->
 <th:block th:fragment="sidebarAccount">
       <div class="sidebar" data-background-color="dark" style="border-right:1px solid #D8D8D8;">
         <div class="sidebar-logo" >
           <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid gray; border-right:1px solid gray;">
+          <div class="logo-header" data-background-color="dark" style="border-bottom:1px solid #A4A4A4; border-right:1px solid #A4A4A4;">
             <a href="index.html" class="logo">
               <img
-                th:src="@{/img/index/logo.png}"
+                th:src="@{/img/index/logo_hat.png}"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="100%" width="100%"
@@ -369,10 +369,25 @@
                 <h4 class="text-section">회계파트</h4>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#base">
+                <a data-bs-toggle="collapse" href="#set">
                   <i class="icon-pencil"></i>
                   <p>기초등록</p>
+                  <span class="caret"></span>
                 </a>
+                <div class="collapse" id="set">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/sales/clientList">
+                        <span class="sub-item">거래처 등록</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/bacct/accList">
+                        <span class="sub-item">계좌 등록</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">

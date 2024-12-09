@@ -646,7 +646,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '미완료수량',
 		            name: 'c7',
-		            align: "center",
+		            align: "right",
 		            width: 100,
 		            whiteSpace: 'normal',
 		            className:'border'
@@ -654,7 +654,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '입고단가',
 		            name: 'c8',
-		            align: "center",
+		            align: "right",
 		            width: 100,
 		            whiteSpace: 'normal',
 		            editor: 'text',
@@ -667,7 +667,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '재고',
 		            name: 'c10',
-		            align: "center",
+		            align: "right",
 		            width: 70,
 		            whiteSpace: 'normal',
 		            editor: 'text',
@@ -927,7 +927,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '미완료수량',
 		            name: 'c7',
-		            align: "center",
+		            align: "right",
 		            width: 100,
 		            whiteSpace: 'normal',
 		            className:'border'
@@ -935,7 +935,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '출고단가',
 		            name: 'c8',
-		            align: "center",
+		            align: "right",
 		            width: 100,
 		            whiteSpace: 'normal',
 		            editor: 'text',
@@ -948,7 +948,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		        {
 		            header: '재고',
 		            name: 'c10',
-		            align: "center",
+		            align: "right",
 		            width: 70,
 		            whiteSpace: 'normal',
 		            editor: 'text',
