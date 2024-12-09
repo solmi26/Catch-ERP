@@ -24,6 +24,7 @@
 			JOIN contract_item    e ON b.item_code = e.item_code
 	</select>
 
+	<!-- 선택된 거래처별 발주서보기 -->
 	<select id="selectClientOrder" resultType="com.cherp.app.buss.vo.OrdersVO">
 		SELECT
 		a.order_no,

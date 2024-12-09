@@ -95,11 +95,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 background: '#f8f9fa', text: 'black'
             }, focused: {
                 background: '#f8f9fa', border: '#f64a4a'
-            }, evenRow: {
-                background: 'white'
-            }, oddRow: {
-                background: 'white'
-            }
+            },
         }
     });
 
@@ -495,7 +491,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return Number(value).toLocaleString() + '원'; // 값이 있는 경우 포맷팅
                 },
             }, {
-                header: '출하 예정일',
+                header: '출고예정일',
                 name: 'deliveryDate',
                 editor: {
                     type: 'datePicker',
@@ -507,8 +503,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 150,
                 whiteSpace: 'normal',
-                sortable: true,
-                sortingType: 'desc',
                 className: 'border',
             }],
 
@@ -944,6 +938,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             supplyPrice += ele.supplyPrice;
         }
 
+        console.log(vat);
+        console.log(supplyPrice);
+
         insertSales.vat = vat;
         insertSales.supplyPrice = supplyPrice;
 
@@ -957,6 +954,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         salesChit.blur();
 
+
+
         // ajax 호출
         fetch('/sales/insertSalesChit', {
             method: 'POST', headers: {
@@ -966,6 +965,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             .then(result => {
                 if (result.status === 200) {
                     alert("저장 완료");
+                    location.reload();
                 }
             })
             .then(result => {
@@ -978,6 +978,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 특정 컬럼의 헤더를 선택
         const wh = document.querySelector('#salesChit .tui-grid-header-area .tui-grid-cell[data-column-name="whCode"]');
         const deliveryPrice = document.querySelector('#salesChit .tui-grid-header-area .tui-grid-cell[data-column-name="deliveryPrice"]');
+        const deliveryDate = document.querySelector('#salesChit .tui-grid-header-area .tui-grid-cell[data-column-name="deliveryDate"]');
 
         if (wh) {
             // 빨간색 * 추가 및 헤더 텍스트 수정
@@ -985,6 +986,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         if (deliveryPrice) {
             deliveryPrice.innerHTML = '출고단가<span style="color: red;">*</span>';
+        }
+        if(deliveryDate) {
+            deliveryDate.innerHTML = '출고예정일<span style="color: red;">*</span>';
         }
     });
 
