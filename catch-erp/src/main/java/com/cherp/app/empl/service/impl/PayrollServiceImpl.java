@@ -1,6 +1,8 @@
 package com.cherp.app.empl.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -41,4 +43,12 @@ public class PayrollServiceImpl implements PayrollService {
 		int payroll = mapper.deletePayroll(salaryNumber);
 		return (payroll + history)/2;
 	}
+	@Override
+	public int salaryCheckUpdate(String salaryCheck, List<PayrollVO> payroll) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("salaryCheck", salaryCheck);
+		map.put("payroll", payroll);
+		return mapper.updateSalaryCheck(map);
+	}
+
 }

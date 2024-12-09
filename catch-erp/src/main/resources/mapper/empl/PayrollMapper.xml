@@ -173,4 +173,18 @@
 	
 	</delete>
 	
+	<!-- 급여명세서 체크 -->
+	<update id="updateSalaryCheck" parameterType="hashmap">
+		UPDATE salary_payroll
+		SET salary_check = #{salaryCheck}
+		WHERE salary_number IN
+		<foreach collection="list" item="payroll" open="(" separator="," close=")">
+			#{payroll.salaryNumber}
+		</foreach>
+	
+	</update>
+	
+	
+	
+	
 </mapper>
