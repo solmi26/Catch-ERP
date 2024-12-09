@@ -192,43 +192,35 @@
     	},
         {
           header: '날짜',
-          width: 153,
           name: 'attendanceDate',
         },
         {
           header: '근태유형',
-          width: 153,
           name: 'attName'
           
         },
         {
           header: '출근시간',
-          width: 153,
           name: 'attendanceTime',
         },
         {
           header: '퇴근시간',
-          width: 153,
           name: 'leaveTime',
         },
         {
           header: '연장 근로시간',
-          width: 153,
           name: 'overtimeWorktime',
         },
         {
           header: '야간 근로시간',
-          width: 153,
           name: 'nightWorktime',
         },
         {
           header: '주말 근로시간',
-          width: 153,
           name: 'weekendWorktime',
         },
         {
           header: '총 근로시간',
-          width: 153,
           name: 'totalWorktime',
         }
         
