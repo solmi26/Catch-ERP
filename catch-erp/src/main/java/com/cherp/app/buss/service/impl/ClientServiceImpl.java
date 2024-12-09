@@ -60,16 +60,16 @@ public class ClientServiceImpl implements ClientService {
 		
 		List<ContractVO> clientContractList = clientMapper.selectAllClientContract(clientCode); // 단일 거래처 계약정보 전체
 		
-		List<ContractVO> clientContractItemList = new ArrayList<ContractVO>(); // 단일 거래처 계약에 따른 상품품목
-		for (ContractVO contract : clientContractList) {
-			String conNo = contract.getConNo();
-			List<ContractVO> contractItems = clientMapper.selectAllClientContractItem(conNo);
-			clientContractItemList.addAll(contractItems);
-		}
+//		List<ContractVO> clientContractItemList = new ArrayList<ContractVO>(); // 단일 거래처 계약에 따른 상품품목
+		List<ContractVO> contractItems = clientMapper.selectAllClientContractItem(clientCode);
+//		for (ContractVO contract : clientContractList) {
+//			String conNo = contract.getConNo();
+//			clientContractItemList.addAll(contractItems);
+//		}
 		
 		totalClientInfo.put("clientInfo", clientInfo);
 		totalClientInfo.put("clientContractList", clientContractList);
-		totalClientInfo.put("clientContractItemList", clientContractItemList);
+		totalClientInfo.put("clientContractItemList", contractItems);
 		
 		return totalClientInfo;
 	}
