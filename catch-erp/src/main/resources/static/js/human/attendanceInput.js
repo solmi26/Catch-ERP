@@ -37,6 +37,7 @@ grid.on('click',function (ev) {
         aeSearchModal.show()
 				
 	}
+	
 })
 
 
@@ -86,7 +87,6 @@ document.querySelector('.insert-Btn').addEventListener('click',function () {
 	let flag = nullCheck(row)
 	console.log(flag)
 	if (flag == false ) {
-		alert("값을 입력하세요")
 		return;
 	}
 	
@@ -98,15 +98,37 @@ document.querySelector('.insert-Btn').addEventListener('click',function () {
 	})
 	.then(data => data.json())
 	.then(data => {
-		
+		alert("입력이 완료되었습니다")
+		grid.resetData([{}]);
 	})
+
+	
 })
+//모든 버튼에 블러걸기
+document.querySelectorAll('Button[type="button"]').forEach(ele => {
+	ele.addEventListener('mouseover',function () {
+	grid.blur();
+})
+
+})
+window.addEventListener(`resize`, function() {
+        window.setTimeout(function(){
+        aeSearchGrid.refreshLayout();
+        }, 200)
+});
+//다시쓰기 버튼
+document.querySelector('.resetBtn').addEventListener('click',function () {
+	grid.resetData([{}])
+})
+
+
 
 function validateCheck () {
 	let nullCheck = grid.validate();
     if (nullCheck.length !== 0 ) {
 		grid.focus(nullCheck[0].rowKey, nullCheck[0].errors[0].columnName)
-		alert("값을 입력해주세요")
+		let header =grid.getColumn(nullCheck[0].errors[0].columnName).header
+		alert(header + "의 내용을 입력해주세요")
 		return true;
 	}
 }
@@ -116,14 +138,14 @@ function nullCheck (data) {
 		console.log(ele)
 		console.log(ele.commonName)
 		
-		if ((ele.commonName !== '휴가') || (ele.commonName !== '공제')) {
+		if ((ele.commonName !== '휴가') && (ele.commonName !== '공제')) {
 			if (ele.attendanceTime == null) {
-				alert("출근시간 입력")
+				alert("출근시간을 입력해주세요")
 				grid.focus(ele.rowKey, 'attendanceTime')
 				return false ; 
 			} else if (ele.leaveTime == null) {
 				grid.focus(ele.rowKey, 'leaveTime')
-				alert("퇴근시간 입력")
+				alert("퇴근시간 입력을 입력해주세요")
 				return false;
 			}
 		}

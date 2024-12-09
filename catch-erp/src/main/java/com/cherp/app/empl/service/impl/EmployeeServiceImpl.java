@@ -46,6 +46,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public int employeeInsert(EmployeeVO employee) {
 		String identity = employee.getEmployeeDetailVO().getIdentityNo();
 		byte[] encrypt = aesEncoder.encrypt(identity.getBytes(StandardCharsets.UTF_8));
+		
+		String password = identity.substring(0, 6);
+		String passencode = passwordEncoder.encode(password);
+		employee.setPassword(passencode);
 		employee.getEmployeeDetailVO().setIdentityNo(byteToString(encrypt));
 		return employeemapper.insertEmployee(employee);
 	}
@@ -57,8 +61,18 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public int employeeUpdate(EmployeeVO employee) {
 		return employeemapper.updateEmployee(employee);
 	}
-	
-	
+	@Override
+	public int statusTypeUpdate(List<EmployeeVO> employee) {
+		return employeemapper.updateStatusType(employee);
+	}
+	@Override
+	public int employeeDelete(String[] employeeCode) {
+		int salary = employeemapper.deleteEmployeeSalary(employeeCode);
+		int detail = employeemapper.deleteEmployeeDetail(employeeCode);
+		int emp = employeemapper.deleteEmployee(employeeCode);
+		int fixed = employeemapper.deleteFixed(employeeCode);
+		return (salary + detail + emp + fixed)/4;
+	}
 	
 	public String byteToString (byte[] bytes) {
 		StringBuilder builder = new StringBuilder();

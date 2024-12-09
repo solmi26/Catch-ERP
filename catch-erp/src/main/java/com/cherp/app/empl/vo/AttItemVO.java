@@ -8,4 +8,5 @@ public class AttItemVO {
 	private String attStatus;
 	private String attName;
 	private String commonName;
+	private int count;
 }

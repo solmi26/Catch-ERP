@@ -233,6 +233,38 @@ if (window.innerWidth <= 992) {
     document.getElementById('headerLi').classList.add('ms-auto');
 }*/
 
+/*
+console.log("gd")
+//토스트 시간 타임피커 정의(시간)
+class gridTimePicker {
+constructor(props) {
+	const { grid, rowKey } = props;
+    const el = document.createElement('div');
+    const picker = document.createElement('div');
+    const scripts = document.createElement('script')
+    console.log("gd")
+	let pickerid = grid.el.id+'Time-'+String(rowKey)
+    picker.id = pickerid;
+    picker.value = String(props.value);
+    scripts.innerText = `const ${pickerid} = document.getElementById('${pickerid})\\n const instance = new TimePicker('#'+${pickerid},{initialHour: 22,initialMinute: 33,inputType: 'spinbox',showMeridiem: false});');`
+    console.log("gd")
+    console.log(el)
+    el.appendChild(picker)
+    el.appendChild(scripts)
+    this.el = el;
+    
+}
+
+getElement() {
+    return this.el;
+}
+
+getValue() {
+    return this.el.value;
+}
+
+}
+*/
 //토스트 그리드 엑셀다운
 function saveExcel(grid){
 		let userName = document.getElementById('loginUserName').value; //header.html에 hidden input값을 읽어온다.
