@@ -85,6 +85,28 @@
         ORDER BY a.saleslip_no DESC
     </select>
 
+    <!--  판매전표별 판매내역 보기  -->
+    <select id="selectSaleslip" resultType="com.cherp.app.buss.vo.SaleslipHistoryVO">
+        SELECT
+            b.sales_no,
+            b.saleslip_no,
+            b.wh_name,
+            b.item_name,
+            b.quantity,
+            b.delivery_price,
+            b.delivery_date,
+            find_code(b.delivery_status) delivery_status,
+            ( b.quantity * c.price )        price,
+            ( b.quantity * c.supply_price ) supply_price,
+            ( b.quantity * c.vat )          vat
+        FROM
+            sales_chit a
+            JOIN saleslip_history b ON a.saleslip_no = b.saleslip_no
+            JOIN contract_item c ON b.item_code = c.item_code
+            WHERE
+        a.saleslip_no = #{saleslipNo}
+    </select>
+
     <!-- 판매전표 검색 -->
     <select id="searchSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
         SELECT a.saleslip_no
@@ -117,37 +139,7 @@
         </if>
     </select>
 
-    <!--  판매전표별 판매내역 보기  -->
-    <select id="selectSaleslip" resultType="com.cherp.app.buss.vo.SaleslipHistoryVO">
-        WITH e AS (
-        SELECT
-            a.item_code,
-            ( a.quantity * b.price )        price,
-            ( a.quantity * b.supply_price ) supply_price,
-            ( a.quantity * b.vat )          vat
-        FROM
-            order_item a
-        INNER JOIN contract_item b ON a.item_code = b.item_code
-        )
-        SELECT
-            d.sales_no,
-            d.saleslip_no,
-            d.wh_name,
-            d.item_name,
-            d.quantity,
-            d.delivery_price,
-            d.delivery_date,
-            find_code(d.delivery_status) delivery_status,
-            e.price,
-            e.supply_price,
-            e.vat
-        FROM
-            sales_chit c
-            JOIN saleslip_history d ON c.saleslip_no = d.saleslip_no
-            JOIN e ON d.item_code = e.item_code
-        WHERE
-        d.saleslip_no = #{saleslipNo}
-    </select>
+
 
 	<!-- 판매전표 상태별 조회 by sm -->
     <select id="selectSalesChitState" resultType="com.cherp.app.buss.vo.SalesChitVO">
