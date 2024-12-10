@@ -698,7 +698,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	//구매내역조회 버튼 클릭시 검색조건에 맞는 데이터 구매내역 그리드에 출력
 	let purchaseOrderBtn = document.getElementById('purchaseOrderBtn');
 	purchaseOrderBtn.addEventListener("click", function(){
-		let clientCode = document.getElementById("clientInput2").value;
+/*		let clientCode = document.getElementById("clientInput2").value;
 		let clientName = document.getElementById("clientInput").value;
 		let employeeCode = document.getElementById("humanInput2").value;
 		let employeeName = document.getElementById("humanInput").value;	 
@@ -736,10 +736,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			type3 = 'name';
 		}
 		startDate = startDate == "" ? 'noDate' : startDate;
-		endDate = endDate == "" ? 'noDate' : endDate;
+		endDate = endDate == "" ? 'noDate' : endDate;*/
 		
+		let data = $('#searchForm').serialize();
 		//거래처, 사원, 입고예정일자, 품목을 조건으로 전표번호 리스트 불러옴
-		fetch(`/stocks/purchaseChitNo/${type1}/${type2}/${type3}/${client}/${employee}/${item}/${startDate}/${endDate}`)
+		fetch(`/stocks/purchaseChitNo?${data}`)
 		.then(result => {			
 			return result.json()		
 		})
