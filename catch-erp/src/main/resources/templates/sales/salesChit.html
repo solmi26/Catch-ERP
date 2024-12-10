@@ -22,18 +22,22 @@
         .ongoing {
             background-color: #8fdf82 !important; /* 밝은 초록 */
         }
+
+         .bi-search:hover {
+             background-color: #6c757d;
+         }
     </style>
 </head>
 
 <body>
 <!-- Header -->
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>판매</h4>
+<div class="border-bottom pb-3 mb-4">
+    <h1>판매</h1>
 </div>
 
 <!-- Form -->
 <div class="card">
-    <form class="bg-light p-4 rounded card-body" action="/sales/insertSalesChit" method="post">
+    <form class="bg-light p-4 rounded card-body kwBorder" action="/sales/insertSalesChit" method="post">
         <div class="row g-3">
             <div class="col-md-12">
                 <div class="row g-3">
@@ -46,7 +50,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="inputClientName" name="clientName" disabled>
                             <input type="hidden" class="form-control" id="inputClientCode" name="clientCode">
-                            <button type="button" class="bi bi-search border px-4 btn btn-success"
+                            <button type="button" class="bi bi-search border px-4 btn"
                                     data-bs-toggle="modal" data-bs-target="#clientModal" id="openClientModal"></button>
                         </div>
                     </div>
@@ -55,7 +59,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="empNameInput" name="employeeName" disabled>
                             <input type="hidden" class="form-control" id="empCodeInput" name="employeeCode">
-                            <button type="button" class="bi bi-search border px-4 btn btn-success empBtn"
+                            <button type="button" class="bi bi-search border px-4 btn empBtn"
                                     data-bs-toggle="modal" data-bs-target="#humanModal" id="humanInqueryModal"></button>
                         </div>
                     </div>
@@ -63,7 +67,7 @@
                         <label class="form-label">입금계좌<span style="color: red;">*</span></label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="accountInput" name="depBacct" disabled>
-                            <button type="button" class="bi bi-search border px-4 btn btn-success"
+                            <button type="button" class="bi bi-search border px-4 btn"
                                     data-bs-toggle="modal" data-bs-target="#accountSearchModal"></button>
                         </div>
                     </div>
@@ -84,7 +88,7 @@
     삭제
 </button>
 <button class="btn btn-success px-4" id="orderModal" type="button" data-bs-toggle="modal" data-bs-target="#orders" style="margin:10px 0px" >
-    발주서
+    발주서 불러오기
 </button>
 
 <!-- 발주서 모달 -->
