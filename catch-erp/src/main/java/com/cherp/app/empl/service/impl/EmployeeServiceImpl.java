@@ -46,7 +46,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public int employeeInsert(EmployeeVO employee) {
 		String identity = employee.getEmployeeDetailVO().getIdentityNo();
 		byte[] encrypt = aesEncoder.encrypt(identity.getBytes(StandardCharsets.UTF_8));
-		
 		String password = identity.substring(0, 6);
 		String passencode = passwordEncoder.encode(password);
 		employee.setPassword(passencode);

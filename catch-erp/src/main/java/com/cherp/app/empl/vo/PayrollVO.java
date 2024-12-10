@@ -36,6 +36,7 @@ public class PayrollVO {
 	private String employeeCode;//사원코드
 	private int    notaxPayment;//지급총액(비과세미포함)
 	private String payrollCheck;
+	private int    timeSalary;//시급
 	//수당기록
 	private ArrayList<AllowanceHistoryVO> allowanceHistoryVO;
 	
