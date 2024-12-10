@@ -347,8 +347,27 @@
 			#{employeeCode}
 		</foreach>		
 	</insert>
-
 	
+	<!-- 데이터삭제시 백업테이블에 수당기록정보 남기기 -->
+	<insert id="insertBackUpAwhi" parameterType="java.util.ArrayList">
+		INSERT INTO backup_awhi(AWHI_NO
+	                           ,ALLOWANCE_PRICE
+	                           ,EMPLOYEE_CODE
+	                           ,SALARY_NUMBER
+	                           ,ALLOWANCE_NAME
+	                           ,ALLOWANCE_CHECK)
+		SELECT                  awhi_no
+	                           ,allowance_price
+	                           ,employee_code
+	                           ,salary_number
+	                           ,allowance_name
+	                           ,allowance_check
+		FROM                    allowance_history
+		WHERE                   employee_code IN
+        <foreach collection="array" item="employeeCode" open="(" separator="," close=")">
+			#{employeeCode}
+		</foreach>		
+	</insert>
 	<!-- 셀렉트박스 정보 불러오기 -->
 	
 	<!-- 공통코드 불러오기 -->

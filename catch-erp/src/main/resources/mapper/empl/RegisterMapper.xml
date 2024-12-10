@@ -23,11 +23,14 @@
 	
 	<!-- 부서단건 조회 -->
 	<select id="selectDepartment" parameterType="com.cherp.app.empl.vo.DepartmentVO">
-		SELECT department_code,
-		       department_name,
-		       manager_code
-		FROM   department
-		WHERE  department_code = #{departmentCode}
+		SELECT dp.department_code,
+		       dp.department_name,
+		       dp.manager_code,
+		       em.name
+		FROM   department dp
+		JOIN   employees em
+		ON     dp.employee_code = em.employee_code
+		WHERE  dp.department_code = #{departmentCode}
 	</select>
 	
 	

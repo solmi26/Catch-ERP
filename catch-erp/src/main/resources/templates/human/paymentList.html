@@ -82,15 +82,24 @@
 		body {
   overflow: visible;
 }
+      .search-form .input-group-text:first-child {
+        width: 90px;
+      }
+      .btn img {
+        width: 20px;
+        height: 20px;
+      }      
 </style>
 <title>Insert title here</title>
 </head>
 <body>
 	<div class=" p-4 kwBorder rounded bg-white">
+	<div class="border-bottom pb-3 mb-3">
+        <h1>급여정보</h1>
+	</div>
 		<div class="row"> <!-- start first row -->
         <!--  세부 검색 구역 -->
-        <h1>급여정보</h1>
-      <div class="card mb-4 bg-white">
+      <div class="card mb-4 bg-white search-form">
         <div class="card-body kwBorder bg-light">
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
@@ -251,7 +260,7 @@
 					<div class="row">
 						<div class="col">
 							<button type="button" class="btn btn-sm btn-secondary publication-Btn">명세서발행</button>
-							<button type="button" class="btn btn-sm btn-secondary">Excel</button>
+							<button type="button" class="btn btn-sm btn-secondary excel-Btn">Excel</button>
 							<button type="button" class="btn btn-sm btn-secondary printModal-Btn">인쇄</button>
 						</div>				
 					</div>

@@ -73,6 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public int employeeDelete(String[] employeeCode) {
 		int backup = employeemapper.insertBackUpPayroll(employeeCode);
+		int awhi= employeemapper.insertBackUpAwhi(employeeCode);
 		int salary = employeemapper.deleteEmployeeSalary(employeeCode);
 		int detail = employeemapper.deleteEmployeeDetail(employeeCode);
 		int fixed = employeemapper.deleteFixed(employeeCode);
@@ -80,8 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		int allHi = employeemapper.deleteAllowanceHistory(employeeCode);
 		int pay = employeemapper.deleteSalaryPayroll(employeeCode);
 		int emp = employeemapper.deleteEmployee(employeeCode);
-
-		return (salary + detail + emp + fixed+attHi+pay+allHi)/7;
+		return (salary + detail + emp + fixed+attHi+pay+allHi+awhi+backup)/9;
 	}
 	
 	public String byteToString (byte[] bytes) {

@@ -108,7 +108,11 @@ document.querySelector('.publication-Btn').addEventListener('click',async functi
 		})
 	}
 })
-
+//엑셀버튼
+document.querySelector('.excel-Btn').addEventListener('click',function () {
+	saveExcel(grid);
+	alert("엑셀이 출력되었습니다.")
+})
 //#region
 document.querySelector('.printModal-Btn').addEventListener('click',function () {
 	let checkRow = grid.getCheckedRows()
