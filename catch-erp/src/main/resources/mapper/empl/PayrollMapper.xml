@@ -21,6 +21,7 @@
 		<result column="payroll_edate" property="payrollEdate"/>	
 		<result column="employee_code" property="employeeCode"/>	
 		<result column="notax_payment" property="notaxPayment"/>	
+		<result column="time_salary" property="timeSalary"/>
 		<result column="name" property="name"/>	
 		<result column="employee_id" property="employeeId"/>
 		<collection property="allowanceHistoryVO"
@@ -119,6 +120,7 @@
              ,sp.employee_code
              ,sp.notax_payment
              ,sp.payroll_check
+             ,sp.time_salary
              ,em.name
              ,em.employee_id
              ,awhi.awhi_no

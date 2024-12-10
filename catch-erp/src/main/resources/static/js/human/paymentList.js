@@ -81,7 +81,6 @@ document.querySelector('.delete-Btn').addEventListener('click',function () {
  * 인쇄버튼클릭시 모달띄우기
  */
 let  ary;
-let eles;
 document.querySelector('.publication-Btn').addEventListener('click',async function () {
 	let result = await checkSalry()
 	console.log(result.result)
@@ -132,9 +131,10 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 			let index = ele.allowanceHistoryVO.length > 3 ? ele.allowanceHistoryVO.length : 3 
 			let tr = "";
 			let html ="";
-			tr += `<tr><td>연장근무</td><td>${ele.overtimeAllowance}</td><td>소득세</td><td>${ele.incomeTax}</td></tr>`
-			tr += `<tr><td>야간근무</td><td>${ele.nightAllowance}</td><td>지방세</td><td>${ele.localTax}</td></tr>`
-			tr += `<tr><td>주말근무</td><td>${ele.weekendAllowance}</td><td>건강보험료</td><td>${ele.healthInsurance}</td></tr>`
+			tr += `<tr><td>기본급</td><td>${ele.monthlySalary}</td><td>소득세</td><td>${ele.incomeTax}</td></tr>`
+			tr += `<tr><td>연장근무</td><td>${ele.overtimeAllowance}</td><td>지방세</td><td>${ele.localTax}</td></tr>`
+			tr += `<tr><td>야간근무</td><td>${ele.nightAllowance}</td><td>건강보험료</td><td>${ele.healthInsurance}</td></tr>`
+			tr += `<tr><td>주말근무</td><td>${ele.weekendAllowance}</td><td>국민연금료</td><td>${ele.nationalInsurance}</td></tr>`
 			for (let i=0; i<index; i++) {
 				
 				let td ="<tr>";
@@ -144,11 +144,9 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 				td += `<td>${ele.allowanceHistoryVO[i].allowanceName}</td><td>${ele.allowanceHistoryVO[i].allowancePrice}</td>`
 				}
 				if (i == 0) {
-					td += `<td>국민연금료</td><td>${ele.nationalInsurance}</td>`
-				} else if (i == 1) {
 					td += `<td>고용보험료</td><td>${ele.employmentInsurance}</td>`
-				} else if (i == 2) {
-					td += `<td>유급휴가비</td><td>${ele.leaveRate}</td>`				
+				} else if (i == 1) {
+					td += `<td>유급휴가비</td><td>${ele.leaveRate}</td>`
 				} else {
 					td += `<td></td><td></td>`
 				}
@@ -156,8 +154,30 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 				tr += td
 			}
 			eles = tr;
+			let overtime;
+			let nightime;
+			let weektime;
+			if (ele.overtimeAllowance != 0 ) {
+			overtime = isNaN((ele.timeSalary*1.5)/ele.overtimeAllowance) ? 0 : (ele.timeSalary*1.5)/ele.overtimeAllowance
+			} else {
+			overtime = 0
+			}
 			
+			if (ele.nightAllowance != 0) {
+			nightime = isNaN((ele.timeSalary*1.5)/ele.nightAllowance) ? 0 : (ele.timeSalary*1.5)/ele.nightAllowance
+				
+			}else  {
+			nightime = 0	
+			}
+			
+			if (ele.weekendAllowance != 0 ) {
+                weektime = isNaN((ele.timeSalary*1.5)/ele.weekendAllowance) ? 0 : (ele.timeSalary*1.5)/ele.weekendAllowance
 
+			} else {
+                weektime = 0
+			}
+			
+			console.log(overtime)
 			
 			printBody = ``
 			html = 
@@ -199,7 +219,7 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 		</style>			
 					
 					<div id="a">
-					  <h1>급여명세서</h1>
+					  <h2>급여명세서</h2>
 					  <div>
 					  <span>${ele.payrollYdate}</span>
 					  <span></span>
@@ -246,13 +266,13 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					  <tfoot>
 					    <tr>
 					      <td class="background-payment">총지급액</td>
-					      <td></td>
+					      <td>${ele.paymentTotal}</td>
 					      <td class="background-payment">총공제액</td>
-					      <td></td>
+					      <td>${ele.deductionsTotal}</td>
 					    </tr>
 					    <tr>
 					      <td class="background-payment">실지급액</td>
-					      <td colspan="3"></td>
+					      <td colspan="3">${ele.realPay}</td>
 					    </tr>
 					  </tfoot>
 					</table> 
@@ -267,19 +287,19 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					      <td class="background-payment">지급액(원)</td>
 					    </tr>
 					    <tr>
-					      <td class="background-payment" style="background-color:black">연장근로수당</td>
-					      <td></td>
-					      <td></td>
+					      <td class="background-payment" >연장근로수당</td>
+					      <td>시급의 1.5배(약 ${(ele.timeSalary*1.5)}원) X 연장근무시간</td>
+					      <td>${ele.overtimeSalary}</td>
 					    </tr>
 					    <tr>
-					      <td class="background-payment">야간근로수당</td>
-					      <td></td>
-					      <td></td>
+					      <td class="background-payment">야간근로수당(할증)</td>
+					      <td>시급의 1.5배(약 ${(ele.timeSalary*0.5)}원) X 야간근무시간</td>
+					      <td>${ele.nightAllowance}</td>
 					    </tr>
 					    <tr>
 					      <td class="background-payment">주말근로수당</td>
-					      <td></td>
-					      <td></td>
+					      <td>시급의 1.5배(약 ${(ele.timeSalary*0.5)}원) X 주말근무시간</td>
+					      <td>${ele.nightAllowance}<</td>
 					    </tr>
 					  </table>
 					</div>`
