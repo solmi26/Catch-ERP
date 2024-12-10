@@ -232,7 +232,7 @@
 	</insert>
 	<!-- 최상단 재고조정번호 조회 --> 
 	<select id="selectAdjustNo" resultType="StocksVO">
-		SELECT NVL(MAX(real_no) + 1, TO_CHAR(sysdate, 'yyyyMMdd') || stocks_adjust_seq.nextval) AS real_no
+		SELECT NVL(MAX(real_no) + 1,TO_NUMBER(TO_CHAR(sysdate,'yyyyMMdd') || 000) ) AS real_no
 		FROM   stocks
 	</select>
 	
