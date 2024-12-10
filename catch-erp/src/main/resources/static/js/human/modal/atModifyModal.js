@@ -11,8 +11,6 @@
 
         const atModifyGrid = new Grid({
         el: document.getElementById('atModifyGrid'), // Container element
-        scrollX: true,
-        scrollY: false,
         width:1100,
         columns: [
             {

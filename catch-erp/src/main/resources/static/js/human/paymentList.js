@@ -5,12 +5,22 @@
 grid.on('click',function (ev) {
 	if (ev.targetType == 'cell') {
 		let salaryNumber = grid.getFormattedValue(ev.rowKey,'salaryNumber')
-		dataToSalModifyGrid(salaryNumber)
-	    window.setTimeout(function(){
-	    salModifyGrid.refreshLayout();
-	    }, 200) 		
-		
-		salModifyModal.show()
+		let salaryCheck = grid.getFormattedValue(ev.rowKey,'payrollCheck')
+		if (salaryCheck == '미검토') {
+			dataToSalModifyGrid(salaryNumber)
+		    window.setTimeout(function(){
+		    salModifyGrid.refreshLayout();
+		    }, 200) 		
+			salModifyModal.show()
+			
+		} else if (salaryCheck == '검토완료') {
+			dataToSalDetailGrid(salaryNumber)
+		    window.setTimeout(function(){
+		    salDetailGrid.refreshLayout();
+		    }, 200) 		
+			salDetailModal.show()
+			
+		}
 		
 	}
 })
@@ -65,13 +75,44 @@ document.querySelector('.delete-Btn').addEventListener('click',function () {
 	})
 })
 /**
- *
+ *.
  *  @argument ddd
  * 
  * 인쇄버튼클릭시 모달띄우기
  */
 let  ary;
 let eles;
+document.querySelector('.publication-Btn').addEventListener('click',async function () {
+	let result = await checkSalry()
+	console.log(result.result)
+	let flag = false;
+	let now = new Date();
+	let payrollY = new Date(now.getFullYear(),now.getMonth(),now.getDay());
+	let month = payrollY.getMonth();
+	
+	if (result.result > 0 ) {
+		flag = confirm(month+"월달의 급여명세서는 이미 발행되어 있습니다. 기존 명세서를 삭제하고 재발행 하시겠습니까?")
+	} else if (result.result == 0) {
+		fetch("/employees/pay?mode=create")
+		.then(data => {
+			alert("급여명세서가 발행되었습니다.")
+			datoToGrid()
+		})
+	}
+		
+	if (flag) {
+		fetch("/employees/pay?mode=replace")
+		.then(data => {
+			alert("급여명세서가 재발행되었습니다.")
+			datoToGrid()
+		})
+	}
+})
+//엑셀버튼
+document.querySelector('.excel-Btn').addEventListener('click',function () {
+	saveExcel(grid);
+	alert("엑셀이 출력되었습니다.")
+})
 //#region
 document.querySelector('.printModal-Btn').addEventListener('click',function () {
 	let checkRow = grid.getCheckedRows()
@@ -253,7 +294,7 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 
 //인쇄버튼클릭시
 //#region
-/*
+
 document.querySelector('.print-Btn').addEventListener('click',function () {
     const element = document.getElementById('print-content');
 	   html2canvas(element,{width:1500,height:1500}).then(function(canvas) { //저장 영역 div id
@@ -287,7 +328,7 @@ document.querySelector('.print-Btn').addEventListener('click',function () {
 		  
 	});
 })
-*/
+
 /*
   document.querySelector(".print-Btn").addEventListener("click", () => {
     const element = document.getElementById("print-content");
@@ -301,15 +342,15 @@ document.querySelector('.print-Btn').addEventListener('click',function () {
       })
       .save();
   });
-  */
- 
+*/  
+ /*
        document.querySelector('.print-Btn').onclick = function(){
         var element = document.querySelector('#print-content');
 				html2pdf().from(element).toPdf().get('pdf').set({
   scale: 0.8  // 출력 크기를 80%로 축소
 }).save();
       }
-      
+   */ 
  //#endregion
 
 
@@ -379,8 +420,39 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	
 	
 }) 
+//검토버튼 이벤트
+document.querySelectorAll('.examine-Btn').forEach(ele => {
+	ele.addEventListener('click',function (ev) {
+		let check = grid.getCheckedRows();
+		let mode = ev.target.dataset.mode
+		if (check.length == 0) {
+			return;
+		}
+		if (mode == 'check') {
+			fetch("/employees/salaryCheck/검토완료",{
+				method:'put',
+				headers:{'Content-Type':'application/json'},
+				body:JSON.stringify(check)
+			})
+			.then(data => {
+				alert("급여명세서의 검토여부가 변경되었습니다.")
+				datoToGrid()
+			})
+		} else if (mode == 'cancel') {
+			fetch("/employees/salaryCheck/미검토",{
+				method:'put',
+				headers:{'Content-Type':'application/json'},
+				body:JSON.stringify(check)
+			})
+			.then(data => {
+				alert("급여명세서의 검토여부가 변경되었습니다.")
+				datoToGrid()
+			})
+			
+		}
+	})
+})
 
-let n
 //유효성검사
 function validateCheck () {
 	let nullCheck = salModifyGrid.validate();
@@ -396,4 +468,10 @@ function validateCheck () {
 		return true;
 	}
 	return false;
+}
+let b
+async function checkSalry() {
+	let result = await fetch("/employees/payrollcheck")
+	resp = await result.json()
+	return resp;
 }

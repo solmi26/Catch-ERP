@@ -18,7 +18,7 @@ public class EmployeeArrayStructHandler implements TypeHandler<Object> {
 	public void setParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
 			OracleConnection conn = ps.getConnection().unwrap(OracleConnection.class);
 			List<FixedVO> list = (List<FixedVO>)parameter;
-			Object[] fixedvo = new Object[4];
+			Object[] fixedvo = new Object[5];
 			if (list == null || list.size() == 0) {
 				Array fixedarray = (Array)conn.createOracleArray("FIXEDARRAY", null);
 				ps.setArray(i, fixedarray);
@@ -33,6 +33,7 @@ public class EmployeeArrayStructHandler implements TypeHandler<Object> {
 				fixedvo[1] = vo.getFixedNo();
 				fixedvo[2] = vo.getAllowancePrice();
 				fixedvo[3] = vo.getAllowanceCode();
+				fixedvo[4] = vo.getAllowanceCheck();
 				array[arrayIndex++] = conn.createStruct("FIXEDVO",fixedvo);
 			}
 			Array fixedarray = (Array)conn.createOracleArray("FIXEDARRAY", (Struct[])array);

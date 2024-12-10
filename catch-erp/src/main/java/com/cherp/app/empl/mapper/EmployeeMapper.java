@@ -23,6 +23,8 @@ public interface EmployeeMapper {
 	public int deleteAttHistory (String[] employeeCode);//근태기록삭제
 	public int deleteSalaryPayroll (String[] employeeCode);//급여명세서삭제
 	public int deleteAllowanceHistory (String[] employeeCode);//수당기록삭제
+	public int insertBackUpPayroll (String[] employeeCode);//백업 급여테이블 입력
+	public int insertBackUpAwhi (String[] employeeCode);//백업 수당기록테이블 입력
 	
 	
 	public int updateStatusType (List<EmployeeVO> employee); //사원다건 퇴직처리

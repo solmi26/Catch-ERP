@@ -10,9 +10,6 @@
         body {
             font-size: 0.85rem;
         }
-        .container-fluid {
-            max-width: 1200px;
-        }
         .employee-list, .employee-form {
             height: 500px;
             overflow-y: auto;
@@ -21,13 +18,7 @@
             width: 100px;
             height: 100px;
             object-fit: cover;
-            border-radius: 50%;
-        }
-        .form-control, .form-select, .btn {
-            font-size: 0.8rem;
-        }
-        .table {
-            font-size: 0.85rem;
+            border-radius: 50%;       
         }
         .card {
             border: none;
@@ -79,18 +70,23 @@
 		input[type=time]::-webkit-datetime-edit-ampm-field {
 			  display: none;
 			}
-			
+      .search-form .input-group-text:first-child {
+        width: 90px;
+      }			
 
 </style>
 <title>Insert title here</title>
 </head>
 <body>
-	<div class="container-fluid bg-white p-4 ">
+	<div class=" kwBorder bg-white p-4 ">
 		<div class="row">
+		<div class="border-bottom pb-3 mb-3 col">
+        <h1>근태정보</h1>
+		
+		</div>
         <!--  세부 검색 구역 -->
-      <div class="card mb-4 bg-white">
-        <div class="card-body bg-light">
-        <h1>사원정보</h1>
+      <div class="card mb-4 bg-white search-form">
+        <div class="card-body bg-light kwBorder">
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
@@ -228,7 +224,7 @@
 				<div class="col">
 					<button type="button" class="btn btn-sm btn-success new-Btn">신규</button>
 					<button type="button" class="btn btn-sm btn-danger delete-Btn">삭제</button>
-					<button type="button" class="btn btn-sm btn-secondary">Excel</button>
+					<button type="button" class="btn btn-sm btn-secondary excel-Btn">Excel</button>
 					<button type="button" class="btn btn-sm btn-secondary">인쇄</button>
 				</div>
 			</div>
@@ -239,7 +235,7 @@
 				</div>
 			</div> <!-- table row -->
 	</div> <!-- end container -->
-	
+	</div>
 <!-- 근태수정 모달 -->
     <div class="modal fade" id="atModifyModal" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -296,22 +292,6 @@
                         <div class="row justify-content-between mb-3">
                             <div class="col-auto">
                                 <h4>근태항목검색</h4>
-                            </div>
-                            <div class="col-auto">
-                                <div class="row justify-content-end" >
-                                    <div class="col ">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-text p-0" style="width: 100px;">
-                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
-                                                        <option selected style="width:80px;">근태명</option>
-                                                        <option value="1" style="width:80px;">근태코드</option>
-                                                    </select>                                          
-                                                </span>
-                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
-                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
-                                            </div>
-                                    </div>
-                                </div>
                             </div>
                         </div> <!--검색창끝-->
                         <!--사원테이블-->

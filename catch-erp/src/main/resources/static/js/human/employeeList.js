@@ -406,7 +406,6 @@ document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
 
 
 
-
  
 //데이터 인풋에 뿌리는 함수
 function dataToInput (data) {
@@ -417,6 +416,7 @@ function dataToInput (data) {
 	document.querySelector('.img-Text').value = null;
 
 	for (let ele in data) {
+		
 		//만약 배열타입이면
 		if (Array.isArray(data[ele])) {
 			console.log(data[ele])
@@ -424,7 +424,8 @@ function dataToInput (data) {
 		//받아온 json VO객체 안의 VO객체 뿌리기
 		} else if (typeof(data[ele]) == "object") {
 			for (comp in data[ele]) {
-				let input = document.querySelector('.employee-box').querySelector(`input[name="${comp}"]`)
+				let input = document.querySelector('.employee-box').querySelector(`[name="${comp}"]`)
+				
 				if (input != null) {
 					input.value = data[ele][comp]
 				}
@@ -436,7 +437,9 @@ function dataToInput (data) {
 		
 		else {
 			//받아온 속성이 날짜타입인지 검사
-				let input = document.querySelector('.employee-box').querySelector(`input[name="${ele}"]`)
+			
+				let input = document.querySelector('.employee-box').querySelector(`[name="${ele}"]`)
+				console.log(input)
 			if (ele == "hireDate" || ele == "resignationDate") {
 				let date = dateFormatter(data[ele])
 				console.log(date)

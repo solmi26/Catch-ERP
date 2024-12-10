@@ -1,13 +1,13 @@
 package com.cherp.app;
 
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 public class SecurityTests {
@@ -31,6 +31,7 @@ public class SecurityTests {
 		boolean result = passwordEncoder.matches(pwd, encPwd);
 		System.out.println("비교 : " + result);
 		*/
+		/*
 		String identity = "9990101";
 		byte[] a = aesEncoder.encrypt(identity.getBytes());
 		StringBuilder builder = new StringBuilder();
@@ -53,9 +54,15 @@ public class SecurityTests {
 		byte[] g = aesEncoder.decrypt(bytes);
 		System.out.println("4");
 		System.out.println(new String(g, StandardCharsets.UTF_8));
+		*/
+		LocalDate today = LocalDate.now();
+		LocalDate monthmin = today.plusMonths(-1);
+		LocalDate first = monthmin.withDayOfMonth(1);
+		String sec = first.format(DateTimeFormatter.ofPattern("yyyy-MM"));
 		
-		
-		
+		System.out.println(first);
+
+
 		
 		
 		

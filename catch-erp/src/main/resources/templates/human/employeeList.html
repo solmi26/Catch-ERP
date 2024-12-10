@@ -41,13 +41,21 @@
       .hide-opt {
       	opacity:0;
       }
+      .black{
+      background-color:black;}
+      .btn img {
+        width: 20px;
+        height: 20px;
+      }         
     </style>
-    <div class="bg-white shadow-sm rounded" style="padding: 20px;">
+    <div class="bg-white kwBorder shadow-sm rounded" style="padding: 20px;">
     <div class="" style="border:none;">
         <!--  세부 검색 구역 -->
-        <h1>사원정보</h1>
+        <div class="border-bottom pb-3 mb-3">
+	        <h1>사원정보</h1>
+        </div>
       <div class="card mb-4 bg-white search-form">
-        <div class="card-body bg-light">
+        <div class="card-body bg-light kwBorder ">
           <form>
           	<!-- 1행 시작 (화면 작아질시 두줄로 변환)-->
             <div class="row mb-3 align-items-center row-gap-3">
@@ -170,7 +178,7 @@
 			<!--  세부 검색 구역 끝!!!! -->
 
 
-        <div class="shadow-box row  gap-0">
+        <div class="shadow-box row gap-0">
 
 <div class="col-12">		
 	<div class="row justify-content-between">
@@ -419,9 +427,21 @@
                                         	
                                         <div class="col-12">
                                             <label class="form-label">주소<span style="color:red">* </span></label>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO mb-2 findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
+							                <div class="input-group input-group-sm mb-2">
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO findZipCode" id="zipcode" placeholder="우편번호" name="zipcode" onkeypress="return false;" required>
+							                  <button class="btn btn-outline-secondary findZipCode" type="button" >
+							                    <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
+							                  </button>
+							                </div>
+							                <div class="input-group input-group-sm mb-2">
+                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO findZipCode" id="address" placeholder="기본주소" name="address" onkeypress="return false;" style="caret-color: transparent !important;" required>
+							                  <button class="btn btn-outline-secondary findZipCode" type="button" >
+							                    <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
+							                  </button>
+							                </div>
                                             <input type="text" class="form-control form-control-sm EmployeeDetailVO" id="detailAddress" placeholder="상세주소를 입력해주세요" name="detailAddress"  required>
+
+
                                         </div>
                                     </div>
                                     
@@ -453,9 +473,14 @@
                                         <div id="allowanceGrid"></div>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label">은행<span style="color:red">* </span></label>
-                                            <input type="hidden" class="form-control form-control-sm EmployeeDetailVO " name="bank" onkeypress="return false;" style="caret-color: transparent !important;" required>
-                                            <input type="text" class="form-control form-control-sm EmployeeDetailVO bank-Btn" name="bankName" onkeypress="return false;" style="caret-color: transparent !important;" required>
+							                  <label class="form-label">은행<span style="color:red">* </span></label>
+							                <div class="input-group input-group-sm">
+							                  <input type="hidden" class="form-control form-control-sm EmployeeDetailVO " name="bank" onkeypress="return false;" style="caret-color: transparent !important;" required>
+							                  <input type="text" class="form-control form-control-sm EmployeeDetailVO bank-Btn" name="bankName" onkeypress="return false;" style="caret-color: transparent !important;" required>
+							                  <button class="btn btn-outline-secondary bank-Btn" type="button" >
+							                    <span><img alt="돋보기" src="/img/icon/glasses.png" /></span>
+							                  </button>
+							                </div>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">계좌번호<span style="color:red">* </span></label>
@@ -525,22 +550,6 @@
                         <div class="row justify-content-between mb-3">
                             <div class="col-auto">
                                 <h4>은행검색</h4>
-                            </div>
-                            <div class="col-auto">
-                                <div class="row justify-content-end" >
-                                    <div class="col ">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-text p-0" style="width: 100px;">
-                                                    <select class="form-select input-group-text form-selelct-sm " style="text-align:start; border:0; background-color:white; font-size:14px;" id="inputGroupSelect01">
-                                                        <option selected style="width:80px;">은행명</option>
-                                                        <option value="1" style="width:80px;">은행코드</option>
-                                                    </select>                                          
-                                                </span>
-                                                <input type="text" class="form-control form-control-sm" aria-label="Text input with dropdown button">
-                                                <button class="btn btn-success" type="button" id="button-addon2">검색</button>
-                                            </div>
-                                    </div>
-                                </div>
                             </div>
                         </div> <!--검색창끝-->
                         <!--사원테이블-->
