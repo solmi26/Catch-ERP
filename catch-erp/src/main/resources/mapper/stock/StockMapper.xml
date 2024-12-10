@@ -114,7 +114,7 @@
 		FROM   purchase_history hi 
 			JOIN purchase_chit ch ON (hi.purcslip_no = ch.purcslip_no)
 			JOIN contract_item ct ON (hi.item_code = ct.item_code) 
-			JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
+			LEFT JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
 		WHERE  hi.purcslip_no IN
 			(SELECT  purcslip_no
 			 FROM   purchase_chit
@@ -151,8 +151,8 @@
 		    		AND hi.restocking_date <= TO_DATE(#{endDate})
 		     	 ]]>
 		    </if>
-		    AND delivery_status != 'b3'
-		    ORDER BY hi.delivery_date DESC
+		    AND restocking_status != 'b3'
+		    ORDER BY hi.restocking_date DESC
 	</select>
 	
 	
@@ -183,7 +183,7 @@
 		FROM   saleslip_history hi 
 			JOIN sales_chit ch ON (hi.saleslip_no = ch.saleslip_no)
 			JOIN contract_item ct ON (hi.item_code = ct.item_code) 
-			JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
+			LEFT JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
 		WHERE  hi.saleslip_no IN
 			(SELECT  saleslip_no
 			 FROM   sales_chit
@@ -232,7 +232,7 @@
 	</insert>
 	<!-- 최상단 재고조정번호 조회 --> 
 	<select id="selectAdjustNo" resultType="StocksVO">
-		SELECT MAX(real_no) + 1 AS real_no
+		SELECT NVL(MAX(real_no) + 1, TO_CHAR(sysdate, 'yyyyMMdd') || stocks_adjust_seq.nextval) AS real_no
 		FROM   stocks
 	</select>
 	
