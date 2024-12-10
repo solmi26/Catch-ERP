@@ -126,6 +126,7 @@
 
       .stm {
         padding-left: 20px !important;
+        padding-right: 20px !important;
         padding-top: 20px !important;
       }
 
@@ -136,7 +137,7 @@
   </head>
 
   <body>
-    <div class="bg-white shadow-sm rounded" style="padding: 20px">
+    <div class="bg-white shadow-sm rounded kwBorder" style="padding: 20px">
       <div class="border-bottom pb-3 mb-4">
         <h1>전표 관리</h1>
       </div>
@@ -177,19 +178,19 @@
           <div class="modal-header">
             <h5 class="modal-title" id="modalLabel">매입 전표</h5>
           </div>
-          <div class="modal-body p-0 stm">
+          <div class="modal-body container stm">
             <form name="purchaseForm">
               <!-- 전표일자 및 전표No -->
               <div class="row mb-3">
                 <!-- 전표일자 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">전표일자&nbsp;<span class="msg">*</span></span>
                     <input type="date" class="form-control" name="p_date" id="p_date" />
                   </div>
                 </div>
                 <!-- 전표No -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">전표 No.</span>
                     <input type="text" class="form-control" readonly="readonly" id="p_no" name="p_no" value="-" />
@@ -200,7 +201,7 @@
               <!-- 연결전표 및 거래처 -->
               <div class="row mb-3">
                 <!-- 연결전표 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">연결전표</span>
                     <input type="text" class="form-control" placeholder="구매전표 내역보기" name="p_joinInput" id="p_joinInput" />
@@ -210,7 +211,7 @@
                   </div>
                 </div>
                 <!-- 거래처 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">거래처&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="거래처 선택" name="p_clientName" id="p_clientInput" readonly="readonly" />
@@ -225,7 +226,7 @@
               <!-- 부가세 유형 및 세금계산서 구분 -->
               <div class="row mb-3">
                 <!-- 부가세 유형 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">부가세 유형</span>
                     <select class="form-control form-select" name="s_vat_type">
@@ -236,7 +237,7 @@
                   </div>
                 </div>
                 <!-- 계정명 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">계정명&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="회계계정 선택" name="p_acctName" id="p_acctInput" readonly="readonly" />
@@ -251,14 +252,14 @@
               <!-- 공급가액/부가세 -->
               <div class="row mb-3">
                 <!-- 공급가액 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text pcolor">공급가액(원)&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="공급가액" name="p_price" id="p_price" />
                   </div>
                 </div>
                 <!-- 부가세 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text pcolor">부가세(원)&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="부가세" name="p_vat" id="p_vat" />
@@ -268,7 +269,7 @@
 
               <!-- 총 금액 -->
               <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-12">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text pcolor">합계(원)&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" name="p_amount" id="p_amount" placeholder="합계" />
@@ -278,7 +279,7 @@
 
               <!-- 적요 -->
               <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-12">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">적요</span>
                     <input type="text" class="form-control" name="p_summary" id="p_summary" placeholder="적요" />
@@ -302,24 +303,24 @@
 
     <!-- 매출전표 신규 등록 모달, 수정, 삭제 -->
     <div class="modal fade" id="sModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
+      <div class="modal-dialog modal-xl " >
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalLabel">매출 전표</h5>
           </div>
-          <div class="modal-body p-0 stm">
+          <div class="modal-body container stm">
             <form name="purchaseForm">
               <!-- 전표일자 및 전표No -->
               <div class="row mb-3">
                 <!-- 전표일자 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">전표일자&nbsp;<span class="msg">*</span></span>
                     <input type="date" class="form-control" name="s_date" id="s_date" />
                   </div>
                 </div>
                 <!-- 전표No -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">전표 No.</span>
                     <input type="text" class="form-control" readonly="readonly" id="s_no" name="s_no" value="-" />
@@ -330,7 +331,7 @@
               <!-- 연결전표 및 거래처 -->
               <div class="row mb-3">
                 <!-- 연결전표 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">연결전표</span>
                     <input type="text" class="form-control" placeholder="구매전표 내역보기" name="s_joinInput" id="s_joinInput" />
@@ -340,7 +341,7 @@
                   </div>
                 </div>
                 <!-- 거래처 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">거래처&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="거래처 선택" name="s_clientName" id="s_clientInput" readonly="readonly" />
@@ -355,7 +356,7 @@
               <!-- 부가세 유형 및 세금계산서 구분 -->
               <div class="row mb-3">
                 <!-- 부가세 유형 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">부가세 유형</span>
                     <select class="form-control form-select" name="p_vat_type">
@@ -366,7 +367,7 @@
                   </div>
                 </div>
                 <!-- 계정명 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">계정명&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="회계계정 선택" name="s_acctName" id="s_acctInput" readonly="readonly" />
@@ -381,14 +382,14 @@
               <!-- 공급가액/부가세 -->
               <div class="row mb-3">
                 <!-- 공급가액 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text bcolor">공급가액(원)&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="공급가액" name="s_price" id="s_price" />
                   </div>
                 </div>
                 <!-- 부가세 -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text bcolor">부가세(원)&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" placeholder="부가세" name="s_vat" id="s_vat" />
@@ -398,7 +399,7 @@
 
               <!-- 총 금액 -->
               <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-12">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text bcolor">합계(원)&nbsp;<span class="msg">*</span></span>
                     <input type="text" class="form-control" name="s_amount" id="s_amount" placeholder="합계" />
@@ -408,7 +409,7 @@
 
               <!-- 적요 -->
               <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-12">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">적요</span>
                     <input type="text" class="form-control" name="s_summary" id="s_summary" placeholder="적요" />
@@ -432,7 +433,7 @@
 
     <!-- 거래처 검색 모달 HTML -->
     <div class="modal fade bg-dark bg-opacity-50" id="p_clientModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-lg ">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalLabel">거래처검색</h5>
