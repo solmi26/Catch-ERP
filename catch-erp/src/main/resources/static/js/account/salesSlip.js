@@ -126,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // 비활성화
       // target = true;
       //alert(`${noValueFields.join(", ")}를 입력해주세요.`);
-      //Swal.fire("SweetAlert2 is working!");
-       toastr.warning('This is a success message!');
+	  toastr.clear();
+	  toastr.warning(`${noValueFields.join(", ")}를 입력해주세요.`);
       return;
     }
 
@@ -170,13 +170,16 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.text())
       .then((data) => {
         console.log(data);
-        alert("저장이 완료되었습니다.");
-        
+        //alert("저장이 완료되었습니다.");
+		toastr.clear();
+		toastr.success("저장이 완료되었습니다.");
         document.salesForm.reset();
       })
       .catch((error) => {
         console.error("Error: ", error);
-        alert("서버와 연결에 실패했습니다.");
+		//alert("서버와 연결에 실패했습니다.");
+		toastr.clear();
+		toastr.error(`저장 중 문제가 발생했습니다.`);
       });
   });
 
