@@ -166,5 +166,11 @@
 	}
 
 	
+	.sidebar .nav.nav-secondary > .nav-item.active a:before, .sidebar[data-background-color="white"] .nav.nav-secondary > .nav-item.active a:before {
+    	background: white !important;
+	}
 	
+	.sideHome{
+		background-color: white !important;
+	}
 	
