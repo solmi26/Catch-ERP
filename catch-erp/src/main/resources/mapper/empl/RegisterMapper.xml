@@ -29,7 +29,7 @@
 		       em.name
 		FROM   department dp
 		JOIN   employees em
-		ON     dp.employee_code = em.employee_code
+		ON     dp.manager_code = em.employee_code
 		WHERE  dp.department_code = #{departmentCode}
 	</select>
 	
