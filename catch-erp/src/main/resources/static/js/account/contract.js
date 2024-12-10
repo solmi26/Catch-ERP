@@ -179,7 +179,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!clientCode) missingFields.push("거래처");
 
       if (missingFields.length > 0) {
-        alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
+        //alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
+		toastr.clear();
+		toastr.warning(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
         return; // 서버로 전송X
       }
 
@@ -200,7 +202,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // 누락된 데이터 확인
       if (invalidRows.length > 0) {
         //alert(`※ 품목 데이터를 확인해주세요.\n\n${invalidRows.join('\n')}`);
-        alert(`${invalidRows.join("\n")}`);
+        //alert(`${invalidRows.join("\n")}`);
+		toastr.clear();
+		toastr.warning(`${invalidRows.join("<br>")}`);
         return; // 서버로 전송하지 않음
       }
 
@@ -249,7 +253,9 @@ document.addEventListener("DOMContentLoaded", function () {
           return response.text();
         })
         .then((result) => {
-			alert("수정이 완료되었습니다.");
+			//alert("수정이 완료되었습니다.");
+			toastr.clear();
+			toastr.success(`수정이 완료되었습니다.`);
 			conModal.hide();
 			document.getElementById("attachment-file").value = ""; // 파일 필드 초기화
 			document.getElementById("attachment-url").dataset.deleted = "false"; // 삭제 플래그 초기화
@@ -260,7 +266,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => {
           console.error("Error:", error);
-          alert("수정 실패: " + error.message);
+          //alert("수정 실패: " + error.message);
+		  toastr.clear();
+		  toastr.error(`수정 중 문제가 발생했습니다.`);
         });
     });
 	
