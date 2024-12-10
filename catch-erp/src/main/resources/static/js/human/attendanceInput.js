@@ -28,7 +28,7 @@ window.addEventListener(`resize`, function() {
 grid.on('click',function (ev) {
 	console.log(ev)
 	
-	if (ev.columnName == 'employeeId' || ev.columnName == 'name') {
+	if (ev.columnName == '사원아이디' || ev.columnName == '성명') {
 			currentTarget = ev;
             window.setTimeout(function(){
             empGrid.refreshLayout();
@@ -36,7 +36,7 @@ grid.on('click',function (ev) {
             dataToEmpModal()
             empModal.show()
 	}
-	if (ev.columnName == 'attName') {
+	if (ev.columnName == '근태명' || ev.columnName == '근태유형코드') {
 		currentTarget = ev
         window.setTimeout(function(){
         aeSearchGrid.refreshLayout();
@@ -56,9 +56,9 @@ empGrid.on('click', function(ev) {
 		let empId = empGrid.getFormattedValue(ev.rowKey,'employeeId')
 		let empName = empGrid.getFormattedValue(ev.rowKey,'name')
 		let empCode = empGrid.getFormattedValue(ev.rowKey,'employeeCode')
-		grid.setValue(currentTarget.rowKey,'employeeCode',empCode)
-		grid.setValue(currentTarget.rowKey,'employeeId',empId)
-		grid.setValue(currentTarget.rowKey,'name',empName)
+		grid.setValue(currentTarget.rowKey,'사원코드',empCode)
+		grid.setValue(currentTarget.rowKey,'사원아이디',empId)
+		grid.setValue(currentTarget.rowKey,'성명',empName)
 		empModal.hide()
 	}
 })
@@ -75,9 +75,9 @@ aeSearchGrid.on('click', function (ev) {
 		grid.setValue(currentTarget.rowKey,'attendanceTime',null);
 		grid.setValue(currentTarget.rowKey,'leaveTime',null);
 	}
-		grid.setValue(currentTarget.rowKey,'attCode',attCode);	
-		grid.setValue(currentTarget.rowKey,'attName',attName);
-		grid.setValue(currentTarget.rowKey,'commonName',commonName);
+		grid.setValue(currentTarget.rowKey,'근태유형코드',attCode);	
+		grid.setValue(currentTarget.rowKey,'근태명',attName);
+		grid.setValue(currentTarget.rowKey,'근태유형',commonName);
 		
 		aeSearchModal.hide();
 	}	
@@ -97,19 +97,31 @@ document.querySelector('.insert-Btn').addEventListener('click',function () {
 	if (flag == false ) {
 		return;
 	}
-	
-		
+	let arr =[]
+	row.forEach(ele => {
+		let obj ={}
+		obj['employeeCode'] = ele.사원코드
+		obj['employeeId'] = ele.사원아이디
+		obj['name'] = ele.성명
+		obj['attendanceDate'] = ele.날짜
+		obj['attName'] = ele.근태명
+		obj['attCode'] =ele.근태유형코드
+		obj['commonName'] =ele.근태유형
+		obj['attendanceTime'] =ele.출근시간
+		obj['leaveTime']= ele.퇴근시간
+		arr.push(obj)
+	})
+	console.log(arr)
 	fetch("/employees/att",{
 		method:"post",
 		headers:{"Content-Type":"application/json"},
-		body:JSON.stringify(row)
+		body:JSON.stringify(arr)
 	})
 	.then(data => data.json())
 	.then(data => {
 		alert("입력이 완료되었습니다")
 		grid.resetData([{}]);
 	})
-
 	
 })
 //모든 버튼에 블러걸기
@@ -146,17 +158,44 @@ function nullCheck (data) {
 		console.log(ele)
 		console.log(ele.commonName)
 		
-		if ((ele.commonName !== '휴가') && (ele.commonName !== '공제')) {
-			if (ele.attendanceTime == null) {
+		if ((ele.근태유형 !== '휴가') && (ele.근태유형 !== '공제')) {
+			if (ele.출근시간 == null) {
 				alert("출근시간을 입력해주세요")
-				grid.focus(ele.rowKey, 'attendanceTime')
+				grid.focus(ele.rowKey, '출근시간')
 				return false ; 
-			} else if (ele.leaveTime == null) {
-				grid.focus(ele.rowKey, 'leaveTime')
+			} else if (ele.퇴근시간 == null) {
+				grid.focus(ele.rowKey, '퇴근시간')
 				alert("퇴근시간 입력을 입력해주세요")
 				return false;
 			}
 		}
 	}
 	return true;
+}
+
+
+
+//엑셀클릭이벤트
+document.querySelector('.excel-Btn').addEventListener('click',function () {
+	document.querySelector('.excel-Input').click()
+})
+document.querySelector('.excel-Input').addEventListener('change',function (ev) {
+	readExcel(ev)
+})
+let row
+function readExcel(event) {
+    let input = event.target;
+    let reader = new FileReader();
+    let rows
+    reader.onload = function () {
+        let data = reader.result;
+        let workBook = XLSX.read(data, { type: 'binary' });
+        
+        workBook.SheetNames.forEach(function (sheetName) {
+            
+            rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
+            grid.resetData(rows)
+        })
+    };
+    reader.readAsBinaryString(input.files[0]);
 }
