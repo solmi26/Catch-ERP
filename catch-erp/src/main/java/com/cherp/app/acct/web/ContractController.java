@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -88,7 +91,7 @@ public class ContractController {
         if (Boolean.TRUE.equals(contractVO.getDeleted())) {
             ContractItemVO existingContract = conService.contractInfo(contractVO.getConNo());
             if (existingContract != null && existingContract.getUrl() != null) {
-                String existingFilePath = uploadPath + File.separator + existingContract.getUrl().replace("/", File.separator);
+                String existingFilePath = uploadPath + "/" + existingContract.getUrl().replace("/", "/");
                 File existingFile = new File(existingFilePath);
 
                 if (existingFile.exists()) {
@@ -96,6 +99,7 @@ public class ContractController {
                 }
                 
                 contractVO.setUrl(null); // URL 제거
+                contractVO.setUpdateUrl(null); 
             }
         }
 
@@ -108,7 +112,8 @@ public class ContractController {
 			
 			 // 파일 저장 경로 설정
 			String uniqueFilename = UUID.randomUUID().toString() + "_" + originalFilename;
-		    String filePath = uploadPath + File.separator + folderPath + File.separator + uniqueFilename;
+		    String filePath = uploadPath + "/" + folderPath + "/" + uniqueFilename;
+		    String updateUrl = folderPath + "/" + uniqueFilename;
 			
 			// 파일 객체 생성 및 저장
 			File dest = new File(filePath);
@@ -122,8 +127,9 @@ public class ContractController {
 			
 			
 			// VO에 DB에 저장할 파일 경로 설정
-	        String dbFilePath = folderPath.replace(File.separator, "/") + "/" + originalFilename;
+	        String dbFilePath = originalFilename;
 	        contractVO.setUrl(dbFilePath);
+	        contractVO.setUpdateUrl(updateUrl);
 		}
 		
 	    // 상태 초기화
@@ -154,8 +160,9 @@ public class ContractController {
 			
 			 // 파일 저장 경로 설정
 			String uniqueFilename = UUID.randomUUID().toString() + "_" + originalFilename;
-		    String filePath = uploadPath + File.separator + folderPath + File.separator + uniqueFilename;
-			
+		    String filePath = uploadPath + "/" + folderPath + "/" + uniqueFilename;
+		    String updateUrl = folderPath + "/" + uniqueFilename;
+		    
 			// 파일 객체 생성 및 저장
 			File dest = new File(filePath);
 			try {
@@ -166,8 +173,9 @@ public class ContractController {
 			}
 			
 			// VO에 DB에 저장할 파일 경로 설정
-	        String dbFilePath = folderPath.replace(File.separator, "/") + "/" + originalFilename;
-	        contractVO.setUrl(dbFilePath);
+	       String dbFilePath = originalFilename;
+	       contractVO.setUrl(dbFilePath);
+	       contractVO.setUpdateUrl(updateUrl);
 		}
 		
 		// DB에 저장
@@ -185,7 +193,7 @@ public class ContractController {
     	// 1. 오늘 날짜를 yyyy/MM/dd 포맷으로 문자열 생성.
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         // 2. 경로 구분자로 변경.
-        String folderPath = str.replace("/", File.separator);
+        String folderPath = str.replace("/", "/");
         // 3. 업로드 경로에 해당 디렉토리 생성.
         File uploadPathFolder = new File(uploadPath, folderPath);
         if (!uploadPathFolder.exists()) { // 해당 경로가 존재하지 않는 경우에만 디렉토리 생성.
@@ -197,13 +205,21 @@ public class ContractController {
     
     // 파일 다운로드 처리
     @RequestMapping("/fileDownload")
-    public void fileDownload(@RequestParam String file,
+    public void fileDownload(@RequestParam(name = "file") String file,
+    						@RequestParam(name = "fileName") String fileName,
+    						@RequestHeader("User-Agent") String agent,
                              HttpServletResponse response) throws IOException {
         File f = new File(uploadPath, file);
         // file 다운로드 설정
         response.setContentType("application/download");
         response.setContentLength((int)f.length());
-        response.setHeader("Content-disposition", "attachment;filename=\"" + file + "\"");
+        
+        
+        
+        //파일이름 인코딩
+        String onlyFileName = fileEncode( agent,  fileName); 
+        
+        response.setHeader("Content-disposition", "attachment;filename=\"" + onlyFileName + "\"");
         // response 객체를 통해서 서버로부터 파일 다운로드
         OutputStream os = response.getOutputStream();
         // 파일 입력 객체 생성
@@ -211,5 +227,25 @@ public class ContractController {
         FileCopyUtils.copy(fis, os);
         fis.close();
         os.close();
+    }
+    
+    public String fileEncode(String agent, String fileName) {
+    	
+    	String onlyFileName="";
+    	
+    	try {
+	        if(agent.contains("Trident"))
+					onlyFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", " ");
+			else if(agent.contains("Edge")) //Micro Edge
+	            onlyFileName = URLEncoder.encode(fileName, "UTF-8");
+	            
+	        else //Chrome
+	            onlyFileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+        
+    	} catch (UnsupportedEncodingException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+    	return onlyFileName;
     }
 }

@@ -240,7 +240,8 @@
 	<select id="selectAllSearchItemList" parameterType="ItemSearchVO" resultType="ContractItemVO">
 		WITH result as (SELECT 
 		    ci.item_code, 
-		    ci.stocks_quantity - NVL(SUM(sh.incomplete_quantity), 0) AS result
+		    ci.stocks_quantity - NVL(SUM(sh.incomplete_quantity), 0) AS result,
+		    NVL(SUM(sh.incomplete_quantity), 0) AS out_quantity
 		FROM 
 		    contract_item ci
 		    LEFT JOIN saleslip_history sh ON sh.item_code = ci.item_code 
@@ -259,6 +260,7 @@
 			  ,c.client_code
 			  ,cl.client_name
 			  ,r.result
+			  ,r.out_quantity
 		FROM  contract_item ci 
 		    JOIN contract c ON (ci.con_no = c.con_no)
 		   	JOIN client cl ON (c.client_code = cl.client_code)
@@ -389,4 +391,11 @@
 		WHERE stocks_adjust_no = TO_NUMBER(#{stocksAdjustNo})
 		ORDER BY real_no DESC
 	</select>
+	
+	<!-- 제품이미지 삭제 -->
+	<update id="deleteItemImage">
+		UPDATE contract_item
+		SET image = ''
+		WHERE item_code = #{itemCode}
+	</update>
 </mapper>

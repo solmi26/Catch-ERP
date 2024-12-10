@@ -42,19 +42,19 @@ public class myPageController {
 	private final EmployeeService employeeService;
 	private final MyPageService myPageService;
 	
-	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	//재고-마이페이지 초기정보 로딩 (2개탭 모두)
 	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
 	@GetMapping("/myPageStocks")
 	public String myPageStocks(Model model) {
 		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		employeeCodeVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
 		AttendanceSearchVO searchVO = new AttendanceSearchVO();
-		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		searchVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
 		model.addAttribute("employeeVO", employeeVO); //사원 정보
@@ -63,19 +63,19 @@ public class myPageController {
 		
 	}
 	
-	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	//인사-마이페이지 초기정보 로딩 (2개탭 모두)
 	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
 	@GetMapping("/myPageHuman")
 	public String myPageHuman(Model model) {
 		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		employeeCodeVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); 
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
 		AttendanceSearchVO searchVO = new AttendanceSearchVO();
-		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		searchVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); 
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
 		model.addAttribute("employeeVO", employeeVO); //사원 정보
@@ -84,19 +84,19 @@ public class myPageController {
 		
 	}
 	
-	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	//영업-마이페이지 초기정보 로딩 (2개탭 모두)
 	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
 	@GetMapping("/myPageSales")
 	public String myPageSales(Model model) {
 		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		employeeCodeVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); 
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
 		AttendanceSearchVO searchVO = new AttendanceSearchVO();
-		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		searchVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); 
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
 		model.addAttribute("employeeVO", employeeVO); //사원 정보
@@ -105,19 +105,19 @@ public class myPageController {
 		
 	}
 	
-	//마이페이지 초기정보 로딩 (2(3)개탭 모두)
+	//회계-마이페이지 초기정보 로딩 (2개탭 모두)
 	@Secured("ROLE_MANAGER,ROLE_NAME,ROLE_EMPLOYEE,ROLE_BUSINESS,ROLE_SALES,ROLE_STOCK, ROLE_SALES") 
 	@GetMapping("/myPageAccount")
 	public String myPageAccount(Model model) {
 		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		employeeCodeVO.setEmployeeCode("137"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
 		AttendanceSearchVO searchVO = new AttendanceSearchVO();
-		searchVO.setEmployeeCode("133"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		searchVO.setEmployeeCode("137"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
 		model.addAttribute("employeeVO", employeeVO); //사원 정보

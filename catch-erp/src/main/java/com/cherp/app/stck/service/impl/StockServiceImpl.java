@@ -140,6 +140,12 @@ public class StockServiceImpl implements StockService{
 	public List<StocksVO> getAdjustLogList(String stocksAdjustNo) {
 		return stockMapper.selectAdjustLogList(stocksAdjustNo);
 	}
+	
+	//제품이미지 삭제
+	@Override
+	public void removeItemImage(String itemCode) {
+		stockMapper.deleteItemImage(itemCode);
+	}
 
 
 }

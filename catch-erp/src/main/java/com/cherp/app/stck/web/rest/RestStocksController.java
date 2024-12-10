@@ -166,4 +166,11 @@ public class RestStocksController {
 		return stockAdjustService.getAdjustLogList(stocksAdjustNo);
 	}
 
+	
+	//자재이미지 삭제
+	@GetMapping("/deleteImage/{itemCode}")
+	public void deleteItemImage(@PathVariable("itemCode") String itemCode) {
+		stockAdjustService.removeItemImage(itemCode);
+	}
+	
 }

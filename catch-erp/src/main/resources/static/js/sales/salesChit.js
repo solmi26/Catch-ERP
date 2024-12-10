@@ -909,8 +909,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             return Object.values(row).some(value => value === '' || value === null || value === undefined);
         });
 
-        console.log(hasEmptyGridValues)
-
         if (hasEmptyGridValues) {
             alert('테이블에 빈 값이 포함되어 있습니다. 모든 필드를 입력해주세요.');
             return; // 전송 중단
