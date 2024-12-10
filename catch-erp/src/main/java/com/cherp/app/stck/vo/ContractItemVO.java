@@ -60,6 +60,7 @@ public class ContractItemVO {
 	private int currentQuantity; //현수량(창고와 제품에 따른 조건적인 수량)
 	
 	/* 안전 재고 부족 알림을 위한 추가필드 */
-	private int result; // result = (총재고 - 7일이후 까지의 지시수량)
+	private int result; // result = (총재고 - 7일이후 까지의 미완료지시수량)
+	private int outQuantity; // D+7 까지의 미완료 지시수량
 	
 }

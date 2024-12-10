@@ -60,16 +60,9 @@ public class RestStocksController {
 	}
 
 	//구매내역조회
-	@GetMapping("/purchaseChitNo/{type1}/{type2}/{type3}/{client}/{employee}/{item}/{startDate}/{endDate}")
-	public List<PurchaseHistoryVO> getPurcChitNo(@PathVariable("type1") String type1,
-			                                     @PathVariable("type2") String type2,
-			                                     @PathVariable("type3") String type3,
-			                                     @PathVariable("client") String client,
-			                                     @PathVariable("employee") String employee,
-			                                     @PathVariable("item") String item,
-			                                     @PathVariable("startDate") String startDate,
-			                                     @PathVariable("endDate") String endDate){
-		return stockAdjustService.getPurchaseHistoryList(type1, type2, type3, client, employee, item, startDate, endDate);
+	@GetMapping("/purchaseChitNo")
+	public List<PurchaseHistoryVO> getPurcChitNo(HistorySearchVO searchVO){
+		return stockAdjustService.getPurchaseHistoryList(searchVO);
 	}
 
 	//판매내역조회
@@ -173,4 +166,11 @@ public class RestStocksController {
 		return stockAdjustService.getAdjustLogList(stocksAdjustNo);
 	}
 
+	
+	//자재이미지 삭제
+	@GetMapping("/deleteImage/{itemCode}")
+	public void deleteItemImage(@PathVariable("itemCode") String itemCode) {
+		stockAdjustService.removeItemImage(itemCode);
+	}
+	
 }

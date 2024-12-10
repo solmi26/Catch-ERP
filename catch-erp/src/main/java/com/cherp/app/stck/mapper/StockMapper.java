@@ -16,9 +16,11 @@ import com.cherp.app.stck.vo.StocksVO;
 public interface StockMapper {
 	
 	public List<ContractItemVO> selectAllItemList();  //품목조회
-	public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String type1, @Param("type2") String type2 
-			, @Param("client") String client, @Param("employee") String employee); //구매내역 조건조회를 위한 구매전표 조건조회
-	
+	/*
+	 * public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String
+	 * type1, @Param("type2") String type2 , @Param("client") String
+	 * client, @Param("employee") String employee); //구매내역 조건조회를 위한 구매전표 조건조회
+	 */	
 	public List<PurchaseHistoryVO> selectPurcHistoryList(Map<String, Object> map); //구매내역 조건조회
 	public ContractItemVO selectStocks(String itemCode); // 단건 품목의 재고 조회
 	public List<SalesHistoryVO> selectSalesHistoryList(Map<String, Object> map); //판매내역조회
@@ -33,5 +35,6 @@ public interface StockMapper {
 	public List<StocksVO> selectAllAdjustList(@Param("itemCode") String itemCode, 
 			@Param("whCode") String whCode, @Param("date") String date); //창고 및 년도별 제품의 재고조정이력조회
 	public List<StocksVO> selectAdjustLogList(String stocksAdjustNo); //재고조정번호에 맞는 재고조정내역 조회		
+	public void deleteItemImage(String itemCode); //제품이미지 삭제
 
 }
