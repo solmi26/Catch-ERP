@@ -12,7 +12,7 @@
 		  JOIN client cl ON(c.client_code = cl.client_code)
 	</select>
 	
-	<!-- 구매내역 조회시 필요한 조회 조건에 맞는 구매전표번호 조회 -->
+	<!--  구매내역 조회시 필요한 조회 조건에 맞는 구매전표번호 조회
 	<select id="selectPurcSlipNoList" resultType="PurchaseChitVO">
 		SELECT purcslip_no
 		FROM   purchase_chit
@@ -35,7 +35,7 @@
 			</choose>
 	</select>
 	
-	<!-- 조건검색된 구매전표번호로 구매내역을 조회 -->
+	조건검색된 구매전표번호로 구매내역을 조회
 	<select id ="selectPurcHistoryList" parameterType ="map" resultType="PurchaseHistoryVO">
 		WITH st as (SELECT wh_code,item_code, 
 			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
@@ -76,16 +76,85 @@
 	    	</otherwise>
 	    </choose>
 	    <if test="startDate != 'noDate'">
-	    		AND hi.restocking_date > TO_DATE(#{startDate})
+	    		AND hi.restocking_date >= TO_DATE(#{startDate})
 	    </if>
 	    <if test="endDate != 'noDate'">
 	    	 <![CDATA[ 
-	    		AND hi.restocking_date < TO_DATE(#{endDate})
+	    		AND hi.restocking_date <= TO_DATE(#{endDate})
 	     	 ]]>
 	    </if>
 	    AND hi.restocking_status != 'b3'
 	    ORDER BY hi.restocking_date DESC
+	</select> -->
+	
+	<!-- 구매내역조회 -->
+	<select id="selectPurcHistoryList" parameterType="map" resultType="PurchaseHistoryVO">
+		WITH st as (SELECT wh_code,item_code, 
+			SUM(CASE stocks_stocks_check WHEN 'd1' THEN stocks_stocks ELSE 0 END ) -  
+			SUM(CASE stocks_stocks_check WHEN 'd2' THEN stocks_stocks ELSE 0 END ) AS current_quantity
+		FROM stocks
+		GROUP BY wh_code, item_code)
+		SELECT  hi.pur_no
+			   ,hi.wh_code
+			   ,hi.wh_name
+			   ,hi.item_code
+			   ,hi.item_name
+			   ,hi.quantity
+			   ,hi.restocking_price
+			   ,hi.restocking_status
+			   ,hi.restocking_date
+			   ,hi.purcslip_no
+			   ,hi.incomplete_quantity
+			   ,ch.client_code
+			   ,ch.client_name
+			   ,ch.employee_code
+			   ,ch.employee_name
+			   ,ct.stocks_quantity
+			   ,st.current_quantity
+		FROM   purchase_history hi 
+			JOIN purchase_chit ch ON (hi.purcslip_no = ch.purcslip_no)
+			JOIN contract_item ct ON (hi.item_code = ct.item_code) 
+			JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
+		WHERE  hi.purcslip_no IN
+			(SELECT  purcslip_no
+			 FROM   purchase_chit
+			 WHERE  1 != 2
+			 <choose>
+			 	<when test="clientCode != 'no'">
+			 		AND client_code = #{clientCode}
+			 	</when>  
+			 	<otherwise>
+			 		AND client_name LIKE CONCAT(#{clientName}, '%')
+			 	</otherwise>
+			 </choose>
+			 <choose>
+			 	<when test="employeeCode != 'no'">
+			 		AND employee_code = #{employeeCode}
+			 	</when>  
+			 	<otherwise>
+			 		AND employee_name LIKE CONCAT(#{employeeName}, '%')
+			 	</otherwise>
+			 </choose>) <!-- 서브쿼리 End Point -->
+			<choose>
+		    	<when test="itemCode != 'no'">
+		    		AND hi.item_code = #{itemCode}
+		    	</when>
+		    	<otherwise>
+		    		AND hi.item_name LIKE CONCAT(#{itemName}, '%')
+		    	</otherwise>
+		    </choose>
+		    <if test="startDate != 'no'">
+		    		AND hi.restocking_date >= TO_DATE(#{startDate})
+		    </if>
+		    <if test="endDate != 'no'">
+		    	 <![CDATA[ 
+		    		AND hi.restocking_date <= TO_DATE(#{endDate})
+		     	 ]]>
+		    </if>
+		    AND delivery_status != 'b3'
+		    ORDER BY hi.delivery_date DESC
 	</select>
+	
 	
 	<!-- 판매내역조회 -->
 	<select id="selectSalesHistoryList" parameterType="map" resultType="SalesHistoryVO">
@@ -144,11 +213,11 @@
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND hi.delivery_date > TO_DATE(#{startDate})
+		    		AND hi.delivery_date >= TO_DATE(#{startDate})
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.delivery_date < TO_DATE(#{endDate})
+		    		AND hi.delivery_date <= TO_DATE(#{endDate})
 		     	 ]]>
 		    </if>
 		    AND delivery_status != 'b3'

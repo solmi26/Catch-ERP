@@ -12,10 +12,16 @@ import com.cherp.app.stck.vo.StocksVO;
 
 public interface StockService {
 	
+<<<<<<< HEAD
+	public List<ContractItemVO> getItemList(); //제품 전체조회
+	public List<PurchaseHistoryVO> getPurchaseHistoryList(HistorySearchVO searchVO); //구매내역 조건조회 
+	public ContractItemVO getItemStocks(String itemCode);  // 단건 제품의 재고 조회
+=======
 	public List<ContractItemVO> getItemList(); //자재 전체조회
 	public List<PurchaseHistoryVO> getPurchaseHistoryList(String type1, String type2, String type3, String client, String employee
 														, String item, String startDate, String endDate); //구매내역 조건조회 
 	public ContractItemVO getItemStocks(String itemCode);  // 단건 의 재고 조회
+>>>>>>> 97db947778f7dae0af0dd6366ccc29f4f1e73d95
 	public List<SalesHistoryVO> getSalesHistoryList(HistorySearchVO searchVO); //판매내역조회
 	public int insertStocksAdjustment(List<StocksAdjustVO> stocksAdjustVO); // 재고조정 프로시저 호출
 	public Long getAdjustNo(); //최신 재고조정번호 조회

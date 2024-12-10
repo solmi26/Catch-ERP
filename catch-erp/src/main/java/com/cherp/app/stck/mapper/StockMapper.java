@@ -16,9 +16,11 @@ import com.cherp.app.stck.vo.StocksVO;
 public interface StockMapper {
 	
 	public List<ContractItemVO> selectAllItemList();  //품목조회
-	public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String type1, @Param("type2") String type2 
-			, @Param("client") String client, @Param("employee") String employee); //구매내역 조건조회를 위한 구매전표 조건조회
-	
+	/*
+	 * public List<PurchaseChitVO> selectPurcSlipNoList(@Param("type1") String
+	 * type1, @Param("type2") String type2 , @Param("client") String
+	 * client, @Param("employee") String employee); //구매내역 조건조회를 위한 구매전표 조건조회
+	 */	
 	public List<PurchaseHistoryVO> selectPurcHistoryList(Map<String, Object> map); //구매내역 조건조회
 	public ContractItemVO selectStocks(String itemCode); // 단건 품목의 재고 조회
 	public List<SalesHistoryVO> selectSalesHistoryList(Map<String, Object> map); //판매내역조회
