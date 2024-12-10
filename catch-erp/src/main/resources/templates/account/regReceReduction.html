@@ -274,6 +274,7 @@
           increaseTot += rec.increasePrice;
           decreaseTot += rec.decreasePrice;
           balanceTot += rec.increasePrice - rec.decreasePrice;
+          if(rec.summary == null) rec.summary = '';
           layout += `<tr>
                         <td>${rec.recDate}</td>
                         <td>${rec.acctName}</td>

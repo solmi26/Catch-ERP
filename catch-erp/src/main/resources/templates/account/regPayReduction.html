@@ -275,6 +275,7 @@
             increaseTot += ele.increasePrice;
             decreaseTot += ele.decreasePrice;
             tot += ele.increasePrice - ele.decreasePrice;
+            if(ele.summary == null) ele.summary = '';
             layout +=  `<tr>
                             <td>${ele.recDate}</td> 
                             <td>${ele.acctName}</td>
