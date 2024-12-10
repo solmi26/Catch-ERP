@@ -5,7 +5,7 @@
 		SELECT bacct_code
               ,bacct_no
               ,bacct_name
-              ,bank_name
+              ,find_code(bank_name) as bank_name
               ,summary
 		FROM   bacct
 	</select>

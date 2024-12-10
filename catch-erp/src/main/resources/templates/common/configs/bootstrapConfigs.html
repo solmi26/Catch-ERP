@@ -44,6 +44,10 @@
 	<!-- sweetalert2 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	
+	<!-- Toastr -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+	
     <!-- 토스트 ui -->
     <!--  tabulator grid cdn -->
 	<!-- <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet"> -->
@@ -65,7 +69,7 @@
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 	<!-- 토스트 타임피커 -->
 	<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+	<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
 	<!-- xml, pdf다운르도 -->
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -76,7 +80,9 @@
 
 	<!-- 템플릿 js(제이쿼리)-->
     <script th:src="@{/js/index/core/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/js/common/toastsetting.js}"></script>
+    <script th:src="@{/js/common/toastsetting.js}"></script>    
+	
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     
     <!-- 다음 주소 API -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -86,8 +92,8 @@
 
     <script th:src="@{/js/index/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
     <script th:src="@{/js/index/kaiadmin.js}"></script>
-</th:block>
-
+    <script th:src="@{/js/common/toastr.js}"></script>
+	</th:block>
 </th:block>
 
 

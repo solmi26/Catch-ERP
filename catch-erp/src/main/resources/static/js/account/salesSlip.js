@@ -125,7 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       // 비활성화
       // target = true;
-      alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+      //alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+      //Swal.fire("SweetAlert2 is working!");
+       toastr.warning('This is a success message!');
       return;
     }
 
@@ -169,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         console.log(data);
         alert("저장이 완료되었습니다.");
+        
         document.salesForm.reset();
       })
       .catch((error) => {

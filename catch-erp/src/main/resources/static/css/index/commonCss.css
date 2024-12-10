@@ -170,6 +170,8 @@
 	.kwBorder {
 		padding: 20px; border:1px solid #D8D8D8;
 	}
+	
+	
 
 	
 	.sidebar .nav.nav-secondary > .nav-item.active a:before, .sidebar[data-background-color="white"] .nav.nav-secondary > .nav-item.active a:before {
