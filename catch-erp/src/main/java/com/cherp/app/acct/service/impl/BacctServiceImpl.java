@@ -32,6 +32,7 @@ public class BacctServiceImpl implements BacctService{
 
 	@Override
 	public int bacctInsert(BacctVO bacctVO) {
+		if(bacctVO.getSummary()==null) bacctVO.setSummary("");
 		return bacctMapper.insertBacct(bacctVO);
 	}
 

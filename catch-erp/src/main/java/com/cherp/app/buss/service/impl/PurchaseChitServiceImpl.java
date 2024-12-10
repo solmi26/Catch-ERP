@@ -28,8 +28,8 @@ public class PurchaseChitServiceImpl implements PurchaseChitService {
 
     // 구매전표 등록을 위한 품목리스트 조회
     @Override
-    public List<ContractItemVO> selectContractItem() {
-        return purchaseChitMapper.selectContractItem();
+    public List<ContractItemVO> selectContractItem(String clientName) {
+        return purchaseChitMapper.selectContractItem(clientName);
     }
 
     // 수량에 맞게 가격 변화

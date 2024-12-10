@@ -7,7 +7,7 @@
 	<head>
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <title>재고조회 및 관리</title>	    	    
+	    <title>자재 조회/관리</title>	    	    
 	    <link rel="stylesheet" th:href="@{/css/stock/stockInquery.css}" />
 	    <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
 	</head>
@@ -15,11 +15,11 @@
 		<input id="employeeName" th:value="${#authentication.principal.employeeLoginVO.name}" style="display:none;"></input> <!-- 시큐리티에 담긴 이름 hidden에다 넣어놈 -->
         <input id="employeeImage" th:value="${#authentication.principal.employeeLoginVO.employeeImage}" style="display:none;"></input> <!-- 시큐리티에 담긴 사진 hidden에다 넣어놈 -->
 	
-	    <div class="bg-white rounded" style="padding: 20px; border:1px solid #D8D8D8;" >
+	    <div class="bg-white rounded kwBorder">
 	    			
 	        <!-- Header -->
 	        <div class="border-bottom pb-3 mb-4">
-	        		<h1 style="font-size:20px;">재고조회/상품관리</h1>
+	        		<h1>자재 조회/관리</h1>
 	        </div>
 	        <!-- <ul class="nav nav-tabs" id="mainTab" role="tablist">
 	        	
@@ -39,13 +39,10 @@
 			    <div class="tab-pane fade show active" id="itemList" role="tabpanel"
 			        aria-labelledby="itemList-tab"> <!-- 첫번째 탭 시작 -->
 			        <!-- Form -->
-			        <div class="card col-md-12">
-			          <form class="bg-light p-4 rounded card-body" id="searchForm" style="border:1px solid #D8D8D8; box-shadow:0px;">
-			              <div class="row g-3">
-			                  <div class="col-md-12">
-			                      <div class="row g-3">
-			                          
-			                          <div class="col-md-3">
+			        <div class="card col-md-12 ">
+			          <form class="bg-light p-4 rounded card-body kwBorder" id="searchForm" >
+			                   <div class="row g-3">       
+			                          	<div class="col-md-3 g-3">
 			                              <label class="form-label">거래처</label>
 			                              <div class="input-group">
 			                                  <input type="text" class="form-control" id="clientInput" name="clientInput">
@@ -55,7 +52,7 @@
 			                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 			                                  </svg></button>
 			                              </div>
-			                          </div>
+			                          	</div>
 			                                       
 			                          <div class="col-md-3">
 			                            <label class="form-label">품목명</label>
@@ -66,23 +63,32 @@
 			                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
 			                                  </svg></button>
 			                            </div>
-			                        </div>
-			                      </div>
-			                  </div>
+			                          </div>
 			                  
-			                  <div class="col-md-6">
-			                      <label class="form-label">입력단가</label>
-			                      <div class="input-group">
-			                          <div class="price-input">
-			                              <input type="number" class="form-control" placeholder="0" name="minPrice">
-			                          </div>
-			                          <span class="input-group-text" style="border:none;">-</span>
-			                          <div class="price-input">
-			                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
-			                          </div>
+			                  
+			                  	  <div class="col-md-2">
+				                      <label class="form-label">입력단가</label>
+				                      <div class="input-group">
+				                          <div class="price-input">
+				                              <input type="number" class="form-control" placeholder="0" name="minPrice"> 
+				                          </div>
+				                      </div>
 			                      </div>
-			                  </div>
-			              </div>
+			                      <div class="col-md-2" >
+			                      	<div >
+			                          <label class="form-label" ><p></p></label>
+			                          <div class="input-group">
+				                          <div class="price-input">
+				                              <input type="number" class="form-control" placeholder="0" name="maxPrice">
+				                          </div>
+			                          </div>
+			                         </div>
+			                      </div>
+			                      <div class="col-md-2">
+			                      	<p></p>
+			                      </div>
+			                      
+			              	</div>
 			              <div style="margin-top: 10px;">
 			                <button type="button" class="btn btn-primary" id="inqueryBtn">조회하기</button>
 			              </div>
@@ -252,7 +258,7 @@
 			        <form method="post" name="updateItemForm">
 			            <div class="modal-content" >
 			                <div class="modal-header">
-			                    <h5 class="modal-title" id="itemInfoModal" style="font-size:18.2px;">제품 상세</h5>
+			                    <h5 class="modal-title" id="itemInfoModal" style="font-size:18.2px;">자재 상세</h5>
 			                </div>
 			                <div class="d-flex flex-wrap">
 				                <div class="modal-body col-lg-6 col-sm-12 col-md-12 ">
@@ -325,8 +331,8 @@
 				                                </div>
 				                            </div>
 				                            <div class="row">
-				                            	<img src = "#" height="300" width="auto" name="itemImage" class="mb-3">			            			
-												<input type="file" id="newImage" class="form-control" style="width:400px; margin-left:13px;">																						
+				                            	<img src = "#" height="300" id="itemImage" width="auto" name="itemImage" class="mb-3">			            			
+												<input type="file" accept="image/*" id="newImage" class="form-control" style="width:400px; margin-left:13px;">																						
 				                            </div>
 				                        </div> <!-- 첫번쨰 탭 End Point -->
 										
@@ -357,9 +363,9 @@
 								
 				            </div>
 				            <div class="modal-footer">
-				            
-				                    <button type="button" id="updateBtn" class="btn btn-success">수정</button>
-				                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+			            		<button type="button" id="deleteBtn" class="btn btn-danger">사진 삭제</button>
+			                    <button type="button" id="updateBtn" class="btn btn-success">사진 수정</button>
+			                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				            </div>
 			            </div>		            
 			        </form>
@@ -371,20 +377,17 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header justify-content-between">
-                    <h5 class="modal-title" style="font-size:18.2px;">재고조정보고서</h5>
-                    <div class="action-buttons">
-                        <button class="btn btn-light btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
-                    </div>
+                    <h5 class="modal-title" style="font-size:18.2px;">입출고보고서</h5>
                 </div>
                 <div class="modal-body">
                     <div id="reportContent" class="report-form">
-                        <div class="report-title">재고조정보고서</div>
+                        <div class="report-title">입출고보고서</div>
                         <div class="container-fluid p-4">
                             <div class="table-container">
                                 <table class="report-table">
                                     <thead> 
                                         <tr>
-                                            <th colspan="3">재고조정번호</th>
+                                            <th colspan="3">입출고번호</th>
                                             <th colspan="3">담당자</th>
                                             <th>작성일자</th>
                                         </tr>
@@ -400,7 +403,7 @@
                                             <th>현재수량</th>
                                             <th>증감수량</th>
                                             <th>창고명</th>
-                                            <th>재고조정사유</th>
+                                            <th>입출고사유</th>
                                         </tr>
                                     </thead>
                                     <tbody id="adjustTbody">                                      

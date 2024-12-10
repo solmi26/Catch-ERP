@@ -76,11 +76,11 @@
 	    	</otherwise>
 	    </choose>
 	    <if test="startDate != 'noDate'">
-	    		AND hi.restocking_date > #{startDate}
+	    		AND hi.restocking_date > TO_DATE(#{startDate})
 	    </if>
 	    <if test="endDate != 'noDate'">
 	    	 <![CDATA[ 
-	    		AND hi.restocking_date < #{endDate}
+	    		AND hi.restocking_date < TO_DATE(#{endDate})
 	     	 ]]>
 	    </if>
 	    AND hi.restocking_status != 'b3'
@@ -144,11 +144,11 @@
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND hi.delivery_date > #{startDate}
+		    		AND hi.delivery_date > TO_DATE(#{startDate})
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.delivery_date < #{endDate}
+		    		AND hi.delivery_date < TO_DATE(#{endDate})
 		     	 ]]>
 		    </if>
 		    AND delivery_status != 'b3'
@@ -171,7 +171,8 @@
 	<select id="selectAllSearchItemList" parameterType="ItemSearchVO" resultType="ContractItemVO">
 		WITH result as (SELECT 
 		    ci.item_code, 
-		    ci.stocks_quantity - NVL(SUM(sh.incomplete_quantity), 0) AS result
+		    ci.stocks_quantity - NVL(SUM(sh.incomplete_quantity), 0) AS result,
+		    NVL(SUM(sh.incomplete_quantity), 0) AS out_quantity
 		FROM 
 		    contract_item ci
 		    LEFT JOIN saleslip_history sh ON sh.item_code = ci.item_code 
@@ -190,6 +191,7 @@
 			  ,c.client_code
 			  ,cl.client_name
 			  ,r.result
+			  ,r.out_quantity
 		FROM  contract_item ci 
 		    JOIN contract c ON (ci.con_no = c.con_no)
 		   	JOIN client cl ON (c.client_code = cl.client_code)
@@ -317,7 +319,14 @@
 		  JOIN contract_item ci ON (s.item_code = ci.item_code)
 		  JOIN employees e ON (s.employee_code = e.employee_code)
 		  JOIN warehouse w ON (s.wh_code = w.wh_code) 
-		WHERE stocks_adjust_no = #{stocksAdjustNo}
+		WHERE stocks_adjust_no = TO_NUMBER(#{stocksAdjustNo})
 		ORDER BY real_no DESC
 	</select>
+	
+	<!-- 제품이미지 삭제 -->
+	<update id="deleteItemImage">
+		UPDATE contract_item
+		SET image = ''
+		WHERE item_code = #{itemCode}
+	</update>
 </mapper>

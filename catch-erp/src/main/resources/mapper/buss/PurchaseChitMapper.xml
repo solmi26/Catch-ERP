@@ -20,22 +20,27 @@
 		ORDER BY insert_date desc
 	</select>
 
-    <!-- 계약품목리스트 조회-->
+    <!-- 선택된 거래처 계약품목리스트 조회 -->
     <select id="selectContractItem" resultType="com.cherp.app.stck.vo.ContractItemVO">
-        SELECT item_code,
-               item_name,
-               price,
-               stocks_quantity,
-               supply_price,
-               vat,
-               con_no,
-               item_code,
-               total_price,
-               image,
-               total_price as total_price_hidden,
-               supply_price as supply_price_hidden,
-               vat as vat_hidden
-        FROM contract_item
+        SELECT
+                b.item_code,
+                b.item_name,
+                b.price,
+                b.stocks_quantity,
+                b.supply_price,
+                b.vat,
+                b.con_no,
+                b.item_code,
+                b.total_price,
+                b.image,
+                b.total_price as total_price_hidden,
+                b.supply_price as supply_price_hidden,
+                b.vat as vat_hidden,
+                c.client_name
+        FROM contract a
+        JOIN contract_item b ON a.con_no = b.con_no
+        JOIN client c ON a.client_code = c.client_code
+        WHERE client_name = #{clientName}
     </select>
 
     <!-- 수량에 맞게 가격 변화 -->
@@ -121,11 +126,11 @@
                 insert_date,
                 client_code,
                 client_name,
-                total_price,
                 supply_price,
-                vat
+                vat,
+                (supply_price + vat) totalPrice
         FROM purchase_chit a JOIN b ON a.purcslip_no = b.purcslip_no
-        ORDER BY a.purcslip_no
+        ORDER BY a.purcslip_no DESC
     </select>
 
     <!-- 구매전표 검색 -->
@@ -161,8 +166,9 @@
         SELECT
             b.pur_no,
             a.purcslip_no,
-            a.supply_price,
-            a.vat,
+            ( b.quantity * d.price ) supply_price,
+            ( b.quantity * d.price) * 0.1 vat,
+            d.price restocking_price,
             b.item_name,
             b.quantity,
             b.restocking_price,
@@ -173,7 +179,9 @@
         ON a.purcslip_no = b.purcslip_no
         JOIN warehouse c
         ON c.wh_code = b.wh_code
+        JOIN contract_item d
+        ON b.item_name = d.item_name
         WHERE a.purcslip_no = #{purcslipNo}
     </select>
-	
+
 </mapper>

@@ -62,6 +62,11 @@
 	.mr-s{
 		margin-right:10px !important;
 	}
+	
+	.bi-search{
+    	color: black;
+    }
+	
 	/*============================
     	StackInquery 거래처 모달 CSS
     ==============================*/
@@ -124,12 +129,12 @@
     /*============================
     	StackInquery 제품상세 모달 CSS
     ==============================*/
-    input[readonly] {
+    /* input[readonly] {
 	    background-color: white !important; 
 	    color: black;
 	    font-weight: 500; 
 	    border: 1px solid #ced4da; 
-	}	
+	} */	
 	.form-select {
 		padding: 3px 7px;
 	}	
