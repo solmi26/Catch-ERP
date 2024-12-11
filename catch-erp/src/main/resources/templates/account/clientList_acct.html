@@ -437,7 +437,7 @@
         
         
 
-        //ClientItemToastGrid img custom renderer
+      //ClientItemToastGrid img custom renderer
         class CustomImgRenderer {
             constructor(props) {
                 const el = document.createElement('img');
@@ -445,7 +445,7 @@
                 el.src = String(src);
 
                 this.el = el;
-                el.style = 'height:50px;'
+                el.style = 'height:50px; width:50px; padding: 2px 2px;';
                 this.render(props);
             }
 
@@ -455,7 +455,11 @@
 
             render(props) {
                 // you can change the image link as changes the `value`
-                this.el.src = '/images/'+String(props.value);
+                if(props.values == null) {
+                    this.el.src = '/img/noImage.jpg';
+                } else {
+                    this.el.src = '/images/'+String(props.value);
+                }
             }
         }
 
