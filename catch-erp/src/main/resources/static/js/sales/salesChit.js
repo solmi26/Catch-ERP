@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부족수량',
                 name: 'deficiencyQuantity',
-                align: "center",
+                align: "right",
                 width: 100,
                 whiteSpace: 'normal',
                 sortingType: 'desc',
@@ -660,7 +660,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             header: {height: 40},
             bodyHeight: 500,
             columnOptions: {
-                frozenCount: 4, frozenBorderWidth: 1
+                frozenCount: 3, frozenBorderWidth: 1
             },
             width: 'auto',
             contextMenu: null,
@@ -676,10 +676,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }],
             columns: [{
-                header: '발주번호', name: 'orderNo', align: "center", width: 120, whiteSpace: 'normal', className: 'border',
-            }, {
-                header: '거래처코드', name: 'clientCode', align: "center", width: 120, whiteSpace: 'normal',
-            }, {
+                header: '발주번호', name: 'orderNo', align: "center", width: 100, whiteSpace: 'normal', className: 'border',
+            },  {
                 header: '거래처명',
                 name: 'clientName',
                 align: "center",
@@ -699,18 +697,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                     }
                 }
             }, {
-                header: '사원코드',
-                name: 'employeeCode',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border'
-            }, {
                 header: '사원명', name: 'name', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
             }, {
-                header: '품목코드', name: 'itemCode', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
+                header: '품목코드', name: 'itemCode', align: "center", width: 200, whiteSpace: 'normal', className: 'border'
             }, {
-                header: '품목명', name: 'itemName', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
+                header: '품목명', name: 'itemName', align: "center", width: 250, whiteSpace: 'normal', className: 'border'
             }, {
                 header: '수량',
                 name: 'quantity',
@@ -725,9 +716,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '단가',
                 name: 'price',
                 align: "right",
-                width: 200,
+                width: 160,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 formatter: ({value}) => {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
@@ -736,9 +726,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '공급가액',
                 name: 'supplyPrice',
                 align: "right",
-                width: 200,
+                width: 160,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 formatter: ({value}) => {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
@@ -747,9 +736,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '부가세',
                 name: 'vat',
                 align: "right",
-                width: 200,
+                width: 160,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 formatter: ({value}) => {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가

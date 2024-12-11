@@ -110,7 +110,7 @@
             #{itemCode},
             #{itemName},
             #{quantity},
-            #{restockingPrice},
+            #{price},
             sysdate + 5,
             #{quantity}
         )
