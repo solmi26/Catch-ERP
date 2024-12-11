@@ -626,7 +626,7 @@ document.addEventListener("DOMContentLoaded", async function () {
      let orderModalTriggerBtn = document.getElementById('orderModal');
      orderModalTriggerBtn.addEventListener('click', function () {
 	 			if(document.getElementById("inputClientName").value == ''){
-	 				alert("발주서를 조회할 거래처를 선택해주세요.");
+                    toastr.warning("발주서를 조회할 거래처를 선택해주세요.");
 	 				return ;
 	 			}
                  let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
@@ -873,22 +873,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // 빈 값 확인 - 마스터 정보
         if(insertSales.clientName === '') {
-            alert('거래처명을 입력하세요.')
+            toastr.warning('거래처명을 입력하세요.')
             return;
         }
 
         if(insertSales.employeeName === '') {
-            alert('담당자명을 입력하세요.')
+            toastr.warning('담당자명을 입력하세요.')
             return;
         }
 
         if(insertSales.depBacct === '') {
-            alert('입금계좌를 입력하세요.')
+            toastr.warning('입금계좌를 입력하세요.')
             return;
         }
 
         if(insertSales.saleslipHistories.length === 0) {
-            alert('발주서를 불러와 작성해주세요.')
+            toastr.warning('발주서를 불러와 작성해주세요.')
             return;
         }
 
@@ -898,7 +898,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         if (hasEmptyGridValues) {
-            alert('테이블에 빈 값이 포함되어 있습니다. 모든 필드를 입력해주세요.');
+            toastr.warning('테이블에 빈 값이 포함되어 있습니다. 모든 필드를 입력해주세요.');
             return; // 전송 중단
         }
 
@@ -906,7 +906,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let hasInvalidGridData = insertSales.saleslipHistories.some(row => {
             // '재고수량'이 음수인지 체크
             if (row['deficiencyQuantity'] < 0) {
-                alert('창고 수량이 부족합니다. 담당자에게 확인 부탁드립니다.');
+                toastr.warning('창고 수량이 부족합니다. 담당자에게 확인 부탁드립니다.');
                 return true; // 음수일 경우 오류 표시 후 중단
             }
             return false;
@@ -950,7 +950,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
             .then(result => {
                 if (result.status === 200) {
-                    alert("저장 완료");
+                    toastr.success("판매완료 되었습니다.");
                     location.reload();
                 }
             })

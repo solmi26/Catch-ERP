@@ -17,7 +17,8 @@
             employee_name,
             employee_code,
             supply_price,
-            vat
+            vat,
+            slip_state
         )
         VALUES (
             #{saleslipNo},
@@ -28,7 +29,8 @@
             #{employeeName},
             #{employeeCode},
             #{supplyPrice},
-            #{vat}
+            #{vat},
+            'r1'
         )
     </insert>
 
