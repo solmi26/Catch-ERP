@@ -91,6 +91,8 @@
 	  let employeeCode = document.getElementById('employeeCode');
 	  
 	  if(phone.value == '' || email.value == '' || address.value == '' || detailAddress.value == ''){
+		
+		
 		alert("필수 입력란을 확인하세요.");
 		return;
 	  }
