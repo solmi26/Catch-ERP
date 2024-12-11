@@ -83,7 +83,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 250,
                 whiteSpace: 'normal',
-                className: 'border'
+                className: 'border',
+                formatter: ({ value }) => `<span class="btn-link text-primary" style="cursor: pointer">${value}</span>`,
             }, {
                 header: '발주일자',
                 name: 'insertDate',
