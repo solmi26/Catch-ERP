@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sortable: true,
         align: "center",
         formatter: ({ value }) =>
-          `<a href="#" class="btn-link text-primary">${value}</a>`,
+          `<a href="#" class="btn-link text-primary underline-link">${value}</a>`,
       },
       {
         header: "국세청 전송 일자",
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "voucherNumber",
         align: "center",
         formatter: ({ value }) =>
-          `<a href="#" class="btn-link text-primary">${value}</a>`,
+          `<a href="#" class="btn-link text-primary underline-link">${value}</a>`,
       },
     ],
     rowHeaders: [
@@ -560,6 +560,26 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(event.rowKey);
     }
   });
+  
+  // 엑셀 내보내기
+  document.querySelector(".btn-excel").addEventListener("click", function () {
+  // 선택된 데이터 가져오기
+  const selectedData = grid.getCheckedRows();
+
+  if (selectedData.length > 0) {
+    // 선택된 데이터가 있는 경우, 임시 Toast Grid를 생성하여 내보냄
+    const tempGrid = new tui.Grid({
+      el: document.createElement("div"), // DOM에 추가하지 않을 임시 요소
+      data: selectedData, // 선택된 데이터
+      columns: grid.getColumns(), // 기존 Grid의 컬럼 복사
+    });
+    tempGrid.export("xlsx", { fileName: "선택된_전자세금계산서.xlsx" });
+  } else {
+    // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
+    toastr.success(`선택된 데이터가 없어 전체 데이터를 다운로드합니다.`);
+    grid.export("xlsx", { fileName: "전체_전자세금계산서.xlsx" });
+  }
+});
 
   // 전체, 미전송, 전송완료 클릭하면 해당 정보 표시 기능 (추후 수정해서 사용)
   const statusBoxes = document.querySelectorAll(".status-box");
