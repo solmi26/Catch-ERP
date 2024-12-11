@@ -842,6 +842,17 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
+        // 빈 값 확인 - 그리드 정보
+        let hasEmptyGridValues = insertPurchase.purchaseHistories.some(row => {
+            return Object.values(row).some(value => value === '' || value === null || value === undefined);
+        });
+
+        if (hasEmptyGridValues) {
+            toastr.warning('테이블에 빈 값이 포함되어 있습니다. ' +
+                '모든 필드를 입력해주세요.');
+            return; // 전송 중단
+        }
+
         // 부가세, 공급가액 합계 계산
         let vat = 0;
         let supplyPrice = 0;
@@ -866,13 +877,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             .then(result => {
                 if (result.status === 200) {
                     toastr.success("구매완료 되었습니다.");
-                    location.reload();
                 }
             })
             .then(error => {
                 console.log("판매전표 에러 : ", error)
             })
-
+        setTimeout( () => {
+            location.reload();
+        }, 3000)
     })
 
     // onGridMounted 이벤트 사용
