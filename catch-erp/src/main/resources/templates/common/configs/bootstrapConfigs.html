@@ -90,7 +90,9 @@
 </th:block>
 
 <th:block th:fragment="indexJs">
-
+	<!-- 엑셀 읽어오는 api sheet.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+	
     <script th:src="@{/js/index/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
     <script th:src="@{/js/index/kaiadmin.js}"></script>
     <script th:src="@{/js/common/toastr.js}"></script>

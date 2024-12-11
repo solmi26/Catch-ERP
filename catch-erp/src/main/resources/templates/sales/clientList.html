@@ -82,7 +82,8 @@
                                         <label for="phone" class="col-sm-3 col-form-label">거래 유형<span class="redStar">*</span></label>
                                         <div class="col-sm-9">
                                             <select class="form-select form-control" id="tradeType" name="tradeType" >
-                                                <option value="채무" selected>채무</option>
+                                                <option value="선택" selected>거래유형을 선택하세요.</option>
+                                                <option value="채무">채무</option>
                                                 <option value="채권">채권</option>
                                             </select>
                                         </div>
@@ -138,7 +139,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">저장</button>
+                            <button type="button" class="btn btn-success" id="clientSaveBtn">저장</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>
                     </div>
@@ -443,7 +444,7 @@
                 el.src = String(src);
 
                 this.el = el;
-                el.style = 'height:50px;'
+                el.style = 'height:50px; width:50px; padding: 2px 2px;';
                 this.render(props);
             }
 
@@ -453,7 +454,11 @@
 
             render(props) {
                 // you can change the image link as changes the `value`
-                this.el.src = '/images/'+String(props.value);
+                if(props.values == null) {
+                    this.el.src = '/img/noImage.jpg';
+                } else {
+                    this.el.src = '/images/'+String(props.value);
+                }
             }
         }
 
@@ -550,7 +555,7 @@
                         {
                             header: '이미지',
                             name: 'image',
-                            align: 'left',
+                            align: 'center',
                             renderer: {
                                 type: CustomImgRenderer,
                             }
@@ -692,7 +697,68 @@
         }
         
         document.addEventListener('DOMContentLoaded', function () {
-            
+            //#region 거래처 등록 유효성 검사
+            document.querySelector('#clientSaveBtn').addEventListener('click', function() {
+                let clientName = document.insertClientForm.querySelector('#clientName');
+                let ceoName = document.insertClientForm.querySelector('#ceoName');
+                let state = document.insertClientForm.querySelector('#state');
+                let event = document.insertClientForm.querySelector('#event');
+                let companyTel = document.insertClientForm.querySelector('#companyTel');
+                let tradeType = document.insertClientForm.querySelector('#tradeType');
+                let fax = document.insertClientForm.querySelector('#fax');
+                let clientBacct = document.insertClientForm.querySelector('#clientBacct');
+                let zipcode = document.insertClientForm.querySelector('#zipcode');
+
+                if(clientName.value == '') {
+                    alert('상호(명)을 입력하세요.');
+                    clientName.focus();
+                    return;
+                }
+                if(ceoName.value == '') {
+                    alert('대표자 명을 입력하세요.');
+                    ceoName.focus();
+                    return;
+                }
+                if(state.value == '') {
+                    alert('업태를 입력하세요.');
+                    state.focus();
+                    return;
+                }
+                if(event.value == '') {
+                    alert('종목을 입력하세요.');
+                    event.focus();
+                    return;
+                }
+                if(companyTel.value == '') {
+                    alert('회사 전화번호를 입력하세요.');
+                    companyTel.focus();
+                    return;
+                }
+                if(fax.value == '') {
+                    alert('팩스번호를 입력하세요.');
+                    fax.focus();
+                    return;
+                }
+                if(tradeType.value == '선택') {
+                    alert('거래 유형을 선택해주세요.');
+                    tradeType.focus();
+                    return;
+                }
+                if(clientBacct.value == '') {
+                    alert('거래처 계좌를 입력하세요.')
+                    clientBacct.focus();
+                    return;
+                }
+                if(zipcode.value == '') {
+                    alert('주소를 입력하세요.')
+                    zipcode.focus();
+                    return;
+                }
+
+                document.insertClientForm.submit();
+            });
+            //#endregion 거래처 등록 유효성 검사
+
             // 우편번호 검색 이벤트(Daum Api)
             document.querySelector('#insertClientModal').querySelector('#findZipCode').addEventListener('click', function () {
                 daumMapApi(0);

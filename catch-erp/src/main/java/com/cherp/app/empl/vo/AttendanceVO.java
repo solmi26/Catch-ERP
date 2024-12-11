@@ -1,8 +1,8 @@
 package com.cherp.app.empl.vo;
 
-import java.sql.Time;
 import java.util.Date;
 
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

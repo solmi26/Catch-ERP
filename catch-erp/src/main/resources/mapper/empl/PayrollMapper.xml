@@ -130,7 +130,7 @@
        JOIN   employees em
        ON     sp.employee_code = em.employee_code
 	   LEFT JOIN   allowance_history awhi
-	   ON     sp.employee_code = awhi.employee_code
+	   ON     sp.salary_number = awhi.salary_number
 	   WHERE  sp.salary_number IN
 	   <foreach collection="array" item="salaryNumber" open="(" separator="," close=")">
 	    #{salaryNumber}
@@ -174,7 +174,6 @@
 		<foreach collection="array" item="salaryNumber" open="(" separator="," close=")">
 			#{salaryNumber}
 		</foreach>
-	
 	</delete>
 	
 	<!-- 급여명세서 체크 -->
@@ -197,13 +196,26 @@
 	<select id="selectCheckPayroll" resultType="int">
 		SELECT COUNT(salary_number)
 		FROM salary_payroll
-		WHERE payroll_ydate BETWEEN TO_DATE(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')) AND LAST_DAY(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm'))
+		WHERE payroll_ydate 
+		BETWEEN TO_DATE(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')) 
+		AND LAST_DAY(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm'))
 	</select>
 	
 		<!-- 급여명세서 재발행 삭제 -->	
 	<delete id="deleteMonthPayroll" >
 		DELETE FROM salary_payroll
-		WHERE payroll_ydate between TO_DATE(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')) AND LAST_DAY(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm'))
+		WHERE payroll_ydate 
+		between TO_DATE(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')) 
+		AND LAST_DAY(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm'))
 	</delete>	
+		<!-- 급여명세서 재발행 수당기록 삭제 -->
+	<delete id="deleteMonthAwhi">
+	DELETE FROM allowance_history
+	WHERE salary_number IN (SELECT salary_number
+                        	FROM   salary_payroll
+                        	WHERE payroll_ydate 
+                        	BETWEEN TO_DATE(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')) 
+                        	AND LAST_DAY(TRUNC(ADD_MONTHS(SYSDATE,'-1'),'mm')))
+	</delete>
 	
 </mapper>

@@ -19,12 +19,14 @@ public class PurchaseHistoryVO {
 	private String itemName; 	  // 품목 명
 	private int quantity; 		  // 수량
 	private int restockingPrice;  // 입고 단가
+	private int price; // 입고 단가
 	private String restockingStatus; // 입고 상태
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date restockingDate;  // 입고 예정일
 	private String purcslipNo;    // 구매전표 번호
 	private int incompleteQuantity; // 미완료 수량
+
 
 	// 두개 수량 나누기 하면 될듯?
 	private int supplyPrice; // 공급가액

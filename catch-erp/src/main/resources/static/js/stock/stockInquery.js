@@ -542,7 +542,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			const isNoImage = "/img/noImage.jpg";
 
 			if (srcVal.endsWith(isNoImage)) {
-			    alert("삭제할 자재 이미지가 없습니다.")
+				toastr.clear();
+				toastr.warning('삭제할 자재 이미지가 없습니다.');
 			    return;
 			} 
 			
@@ -552,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			} else {
 				let itemCode = document.getElementById('itemCode').value;
 				fetch(`/stocks/deleteImage/${itemCode}`)
-				.then(result)
+				.then()
 				.then(result=>{
 					alert('자재 이미지가 정상적으로 삭제되었습니다.');
 					itemInfoList();
