@@ -542,7 +542,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			const isNoImage = "/img/noImage.jpg";
 
 			if (srcVal.endsWith(isNoImage)) {
-			    alert("삭제할 자재 이미지가 없습니다.")
+				toastr.clear();
+				toastr.warning('삭제할 자재 이미지가 없습니다.');
 			    return;
 			} 
 			
