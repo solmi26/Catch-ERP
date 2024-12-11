@@ -456,8 +456,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		        return;
 		    }
 			
-			showConfirm2(function (isConfirmed) {
-			  if (isConfirmed) {
+			showConfirm2(function (isConfirmed2) {
+			  if (isConfirmed2) {
 			    let newImgTag = document.getElementById('newImage');				
 				let itemCode = document.getElementById('itemCode'); //name으로 변수에 담으니까 .value 값이 안나온다..
 				let formData = new FormData();
@@ -482,11 +482,11 @@ document.addEventListener("DOMContentLoaded", function () {
 					})
 					itemInfoList() //페이지그리드의 이미지도 바꿔주기
 					toastr.clear();
-					toastr.success("자재 이미지가 정상적으로 변경되었습니다.");	
+					toastr.success("제품 이미지가 정상적으로 변경되었습니다.");	
 				})
 				.catch(err=>{console.log(`제품사진변경 실패! ${err}`)
 						toastr.clear();
-						toastr.error("자재 이미지 변경 중 에러가 발생했습니다.");
+						toastr.error("제품 이미지 변경 중 에러가 발생했습니다.");
 				})
 			  } else {
 			    return;
@@ -504,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			if (srcVal.endsWith(isNoImage)) {
 				toastr.clear();
-				toastr.warning('삭제할 자재 이미지가 없습니다.');
+				toastr.warning('삭제할 제품 이미지가 없습니다.');
 			    return;
 			} 
 			
@@ -520,13 +520,13 @@ document.addEventListener("DOMContentLoaded", function () {
 				 })
 				.then(()=>{
 					toastr.clear();
-					toastr.success("자재 이미지가 정상적으로 삭제되었습니다.");
+					toastr.success("제품 이미지가 정상적으로 삭제되었습니다.");
 					document.querySelector('img[name="itemImage"]').src = '/img/' + "noImage.jpg";
 					itemInfoList();
 					})
-				.catch(err => {console.log(`자재 이미지 삭제 실패! ${err}`)
+				.catch(err => {console.log(`제품 이미지 삭제 실패! ${err}`)
 							toastr.clear();
-							toastr.error("자재 이미지 삭제 중 에러가 발생했습니다.");
+							toastr.error("제품 이미지 삭제 중 에러가 발생했습니다.");
 				});
 			  } else {
 			    return;
