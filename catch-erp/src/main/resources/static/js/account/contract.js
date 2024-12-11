@@ -287,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	    document.getElementById("attachment-url").dataset.deleted = "false"; // 삭제 플래그 초기화
 	});
 	
+	// 엑셀 내보내기
 	document.querySelector(".btn-excel").addEventListener("click", function () {
 	  // 선택된 데이터 가져오기
 	  const selectedData = c_grid.getCheckedRows();

@@ -581,6 +581,50 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// PDF 단건 저장
+document.querySelector(".btn-pdf").addEventListener("click", async () => {
+  console.log("PDF 저장 버튼 클릭");
+  
+  // 캡처 대상 설정 (모달이 열려 있거나 특정 요소를 선택 가능)
+  const element = document.getElementById('invoice-form');
+  if (!element) {
+    toastr.error("캡처할 데이터가 없습니다.");
+    return;
+  }
+
+  // 캡처 및 PDF 생성
+  try {
+    const canvas = await html2canvas(element, { scale: 2 }); // 캡처 및 해상도 설정
+    const imgData = canvas.toDataURL('image/png'); // 캔버스를 이미지로 변환
+    const imgWidth = 190; // 이미지 가로 길이 (A4 기준 210mm - 여백)
+    const pageHeight = imgWidth * 1.414; // A4 비율
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 이미지 높이 비율 계산
+    let heightLeft = imgHeight;
+
+    const pdf = new jspdf.jsPDF('p', 'mm', 'a4'); // PDF 생성
+    let position = 0;
+
+    // 첫 페이지
+    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    // 추가 페이지
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    // PDF 다운로드
+    pdf.save('invoice.pdf');
+    toastr.success("PDF 저장이 완료되었습니다.");
+  } catch (error) {
+    console.error("PDF 생성 오류:", error);
+    toastr.error("PDF 생성 중 오류가 발생했습니다.");
+  }
+});
+
   // 전체, 미전송, 전송완료 클릭하면 해당 정보 표시 기능 (추후 수정해서 사용)
   const statusBoxes = document.querySelectorAll(".status-box");
   statusBoxes.forEach((box) => {
@@ -588,5 +632,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const status = box.querySelector(".status-label").textContent;
       filterByStatus(status);
     });
+    
   });
 });
