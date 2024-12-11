@@ -1200,10 +1200,11 @@ document.addEventListener("DOMContentLoaded", function () {
        
        let reportSubmit = document.getElementById('reportSubmit');
        reportSubmit.addEventListener("click", function(){	
-		
-			showConfirm3(function (isConfirmed) {
-			  if (isConfirmed) {
-			    fetch("/stocks/stocksAdjustment"
+			let flag = confirm("입출고 처리를 완료하시겠습니까?");
+			if(flag == false){
+				return;
+			} else {			
+				fetch("/stocks/stocksAdjustment"
 				,{
 					method:'post',
 					headers:{"Content-Type":"application/json"},
@@ -1218,13 +1219,11 @@ document.addEventListener("DOMContentLoaded", function () {
 					console.log("실패함" + err)
 				})			
 				toastr.clear();
-				toastr.success("입출고 처리되었습니다.");
+				toastr.success("정상적으로 입출고 처리되었습니다.");
 				let data = [];
 				grid.resetData(data);
-			  } else {
-			    return;
-			  }
-			});
+			}
+			
        })
     //#endregion
     
