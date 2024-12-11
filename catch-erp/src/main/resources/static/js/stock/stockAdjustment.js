@@ -1397,7 +1397,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				grid.appendRows(dataArr);
 				disabledCell();
 			} else {
-				alert('한 번에 15건만을 처리할 수 있습니다.')
+				toastr.clear();
+				toastr.warning('한 번에 15건만을 처리할 수 있습니다.');
 				return;
 			}
 			},200)	
@@ -1431,7 +1432,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					grid.appendRows(dataArr);
 					disabledCell();
 		} else {
-			alert('한 번에 15건을 처리할 수 있습니다.')
+			toastr.clear();
+			toastr.warning('한 번에 15건만을 처리할 수 있습니다.');
 		}
 	})		
 			

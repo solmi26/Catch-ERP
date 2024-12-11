@@ -444,66 +444,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		updateBtn.addEventListener('click',function(){
 			const newImgTag2 = document.getElementById('newImage');
 			if(newImgTag2.value === ''){
-				alert("변경하실 이미지 파일을 선택해주세요.")
+				toastr.clear();
+				toastr.warning('변경하실 이미지 파일을 선택해주세요.');
 	            return;
 			}
-			
-			/*Swal.fire({
-	            title: "결제하시겠습니까?",
-	            text: `계좌번호 : ${row.getData().bacctNo} 은행명: ${row.getData().bankName}`,
-	            icon: "warning",
-	            showCancelButton: true,
-	            confirmButtonColor: "#3085d6",
-	            cancelButtonColor: "#d33",
-	            confirmButtonText: "결제",
-	            cancelButtonText: "취소"
-	          }).then((result) => {
-	            if (result.isConfirmed) {
-	              Swal.fire({
-	                title: "결제되었습니다",
-	                text: `계좌번호 : ${row.getData().bacctNo} 결제완료`,
-	                icon: "warning",
-	                confirmButtonText: "완료"
-	              }).then((result => {
-	                if(result.isConfirmed) {
-	                  // 여기서 DB업데이트가 실행되어야함
-	                  // 채무거래 테이블
-	                  
-	                  let bacctInfo = row.getData();
-	                  let arr = {
-	                    receivableList, bacctInfo
-	                  }
-	                  let receivables = {
-	                    method: 'POST',
-	                    body: JSON.stringify(arr),
-	                    headers: {
-	                        'Content-Type' : 'application/json'
-	                    }
-	                  };
-	                  fetch('/account/insertReceivableBalance', receivables)
-	                  // .then(result => result.json())
-	                  .then(result => {
-	                    console.log(result);
-	                    if(result==='success') {
-	                      location.reload(true);
-	                    } else {
-	                      alert("결제가 취소되었습니다.")
-	                    }
-	                  })
-	                }
-	              }))
-	            }
-	          });*/
 			 
             const file = newImgTag2.files[0];
 	        if (!file.type.startsWith("image/")) {
-		        alert("이미지 파일만 업로드 가능합니다.");
+				toastr.clear();
+				toastr.warning('이미지 파일만 업로드 가능합니다.');
 		        return;
 		    }
-				
-			let response = confirm("제품의 사진을 변경하시겠습니까?")
-			if(response){
-				let newImgTag = document.getElementById('newImage');				
+			
+			showConfirm2(function (isConfirmed) {
+			  if (isConfirmed) {
+			    let newImgTag = document.getElementById('newImage');				
 				let itemCode = document.getElementById('itemCode'); //name으로 변수에 담으니까 .value 값이 안나온다..
 				let formData = new FormData();
 				formData.append('imageFile', newImgTag.files[0]);
@@ -526,12 +481,18 @@ document.addEventListener("DOMContentLoaded", function () {
 						document.querySelector('img[name="itemImage"]').src = '/images/' + result.image;
 					})
 					itemInfoList() //페이지그리드의 이미지도 바꿔주기
-					alert('자재 이미지가 정상적으로 변경되었습니다.')
+					toastr.clear();
+					toastr.success("자재 이미지가 정상적으로 변경되었습니다.");	
 				})
 				.catch(err=>{console.log(`제품사진변경 실패! ${err}`)
-						alert("자재 이미지 변경 중 에러가 발생했습니다.");
+						toastr.clear();
+						toastr.error("자재 이미지 변경 중 에러가 발생했습니다.");
 				})
-			}
+			  } else {
+			    return;
+			  }
+			});
+			
 		})
 		
 		//사진 삭제버튼 클릭 시 사진 삭제 
@@ -547,21 +508,30 @@ document.addEventListener("DOMContentLoaded", function () {
 			    return;
 			} 
 			
-			let checkOpinion = confirm("정말로 자재의 이미지를 삭제하시겠습니까?");
-	        if(!checkOpinion){
-				return;
-			} else {
-				let itemCode = document.getElementById('itemCode').value;
+			showConfirm(function (isConfirmed) {
+			  if (isConfirmed) {
+			    let itemCode = document.getElementById('itemCode').value;
 				fetch(`/stocks/deleteImage/${itemCode}`)
-				.then()
-				.then(result=>{
-					alert('자재 이미지가 정상적으로 삭제되었습니다.');
+				.then(response => {
+				    if (!response.ok) { 
+				      throw new Error(`HTTP error! status: ${response.status}`);
+				    }
+				    return response; 
+				 })
+				.then(()=>{
+					toastr.clear();
+					toastr.success("자재 이미지가 정상적으로 삭제되었습니다.");
+					document.querySelector('img[name="itemImage"]').src = '/img/' + "noImage.jpg";
 					itemInfoList();
 					})
 				.catch(err => {console.log(`자재 이미지 삭제 실패! ${err}`)
-							alert("자재 이미지 삭제 중 에러가 발생했습니다.");
+							toastr.clear();
+							toastr.error("자재 이미지 삭제 중 에러가 발생했습니다.");
 				});
-			}
+			  } else {
+			    return;
+			  }
+			});
 	            
 		})
 		//엑셀다운 버튼
@@ -1086,6 +1056,68 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 	//#endregion
+	
+	//toastr confirm 사용하기위한 함수
+	function showConfirm(callback) {
+	  // 커스텀 toastr 알림 생성
+	  toastr.info(
+	    `
+	   정말로 제품의 이미지를 삭제하시겠습니까? <br>
+	    <button id="btn-yes" style="margin:5px; padding:5px 10px; border-radius:3px;">예</button>
+	    <button id="btn-no" style="margin:5px; padding:5px 10px; border-radius:3px;">아니오</button>
+	    `,
+	    '',
+	    {
+	      timeOut: 0, 
+	      extendedTimeOut: 0,
+	      closeButton: false,
+	      tapToDismiss: false,
+	      allowHtml: true,
+	    }
+	  );
+	
+	  
+	  $(document).on('click', '#btn-yes', function () {
+	    toastr.clear(); 
+	    callback(true); 
+	  });
+	
+	  $(document).on('click', '#btn-no', function () {
+	    toastr.clear(); 
+	    callback(false); 
+	  });
+	}
+	
+	function showConfirm2(callback) {
+	  // 커스텀 toastr 알림 생성
+	  toastr.info(
+	    `
+	   제품의 사진을 변경하시겠습니까? <br>
+	    <button id="btn-yes" style="margin:5px; padding:5px 10px; border-radius:3px;">예</button>
+	    <button id="btn-no" style="margin:5px; padding:5px 10px; border-radius:3px;">아니오</button>
+	    `,
+	    '',
+	    {
+	      timeOut: 0, 
+	      extendedTimeOut: 0,
+	      closeButton: false,
+	      tapToDismiss: false,
+	      allowHtml: true,
+	    }
+	  );
+	
+	  
+	  $(document).on('click', '#btn-yes', function () {
+	    toastr.clear(); 
+	    callback(true); 
+	  });
+	
+	  $(document).on('click', '#btn-no', function () {
+	    toastr.clear(); 
+	    callback(false); 
+	  });
+	}
+	
 	
 	//#region 두번째 탭 작업
 		//차트
