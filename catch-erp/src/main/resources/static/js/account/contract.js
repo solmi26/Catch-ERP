@@ -25,12 +25,12 @@ document.addEventListener("DOMContentLoaded", function () {
       perPage: 15,
     },
     columns: [
-      { header: "계약번호", name: "contractNumber", align: "center", sortable: true,
+      { header: "계약번호", name: "contractNumber", align: "center", sortable: true, 
 	  formatter: ({ value }) =>
-	           `<a href="#" class="btn-link text-primary">${value}</a>`,
+	           `<a href="#" class="btn-link text-primary underline-link">${value}</a>`,
 	   }, // 계약번호
-      { header: "계약명", name: "contractName", align: "center", sortable: true }, // 계약명
-      { header: "거래처", name: "client", align: "center", sortable: true }, // 거래처
+      { header: "계약명", name: "contractName", align: "center", sortable: true, width: 300,}, // 계약명
+      { header: "거래처", name: "client", align: "center", sortable: true,width: 200, }, // 거래처
       { header: "계약일자", name: "contractDate", align: "center", sortable: true }, // 계약일
       { header: "계약시작일", name: "startDate", align: "center", sortable: true }, // 계약시작일
       { header: "계약종료일", name: "endDate", align: "center", sortable: true }, // 계약종료일
@@ -286,4 +286,24 @@ document.addEventListener("DOMContentLoaded", function () {
 	    document.getElementById("attachment-url").value = "";
 	    document.getElementById("attachment-url").dataset.deleted = "false"; // 삭제 플래그 초기화
 	});
+	
+	document.querySelector(".btn-excel").addEventListener("click", function () {
+	  // 선택된 데이터 가져오기
+	  const selectedData = c_grid.getCheckedRows();
+	
+	  if (selectedData.length > 0) {
+	    // 선택된 데이터가 있는 경우, 임시 Toast Grid를 생성하여 내보냄
+	    const tempGrid = new tui.Grid({
+	      el: document.createElement("div"), // DOM에 추가하지 않을 임시 요소
+	      data: selectedData, // 선택된 데이터
+	      columns: c_grid.getColumns(), // 기존 Grid의 컬럼 복사
+	    });
+	    tempGrid.export("xlsx", { fileName: "선택된_계약_데이터.xlsx" });
+	  } else {
+	    // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
+	    toastr.success(`선택된 데이터가 없어 전체 계약 계약을 다운로드합니다.`);
+	    c_grid.export("xlsx", { fileName: "전체_계약_데이터.xlsx" });
+	  }
+	});
+
 });
