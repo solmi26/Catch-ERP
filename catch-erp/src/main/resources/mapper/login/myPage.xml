@@ -27,7 +27,7 @@
 			<if test="address != null">
 			,address = #{address}
 			</if>
-		WHERE employee_Code = #{employeeCode}
+		WHERE employee_code = #{employeeCode}
 	</update>
 	
 	<!-- 사원이미지조회 -->

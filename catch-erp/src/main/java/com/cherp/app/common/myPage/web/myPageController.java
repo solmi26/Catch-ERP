@@ -132,24 +132,27 @@ public class myPageController {
 		
 		
 		//저장경로 설정
-		String fileName = imageFile.getOriginalFilename();
-		//날짜 폴더생성
-		String folderPath = makeFolder();
-		//UUID 고유값 보장
-		String uuid = UUID.randomUUID().toString();
-		//저장되는 파일 이름 중간에 _를 이용하여 구분
-		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
-		String saveName = uploadPath + File.separator + uploadFileName;
-		Path savePath = Paths.get(saveName); //Paths.get() => 특정경로의 파일반환 (경로정의)
-
-		try {
-			imageFile.transferTo(savePath);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		if(imageFile != null) {
+			String fileName = imageFile.getOriginalFilename();
 		
-		//DB 저장 처리
-		modifiedInfoVO.setEmployeeImage(setImagePath(uploadFileName)); 
+			//날짜 폴더생성
+			String folderPath = makeFolder();
+			//UUID 고유값 보장
+			String uuid = UUID.randomUUID().toString();
+			//저장되는 파일 이름 중간에 _를 이용하여 구분
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			String saveName = uploadPath + File.separator + uploadFileName;
+			Path savePath = Paths.get(saveName); //Paths.get() => 특정경로의 파일반환 (경로정의)
+	
+			try {
+				imageFile.transferTo(savePath);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+			
+			//DB 저장 처리
+			modifiedInfoVO.setEmployeeImage(setImagePath(uploadFileName)); 
+		}
 		myPageService.modifyEmployeeInfo(modifiedInfoVO);
 	}
 	
