@@ -72,6 +72,10 @@ grid.on('click', function (ev) {
 		document.querySelector('.employee-box').querySelectorAll('.hide-opt').forEach(ele => {
 		ele.style = 'opacity:100;'
 		})
+		
+		document.querySelector('.employee-box').querySelector('[name="empStatus"]').disabled = false;
+		document.querySelector('.employee-box').querySelector('[name="resignationDate"]').disabled = false;
+		
 		console.log(ev);
 		window.setTimeout(function(){
 		allowanceGrid.refreshLayout();
@@ -191,6 +195,9 @@ bankGrid.on('click',function (ev) {
 //신규버튼 클릭 이벤트
 document.querySelector('#newBtn').addEventListener('click',function () {
 	let input = document.querySelector('#employeeTabContent').querySelectorAll('input')
+	document.querySelector('.employee-box').querySelector('[name="empStatus"]').disabled = true;
+	document.querySelector('.employee-box').querySelector('[name="resignationDate"]').disabled = true;
+
 	document.querySelector('#saveBtn').dataset.mode = 'insert';
 	input.forEach(ele => {
 		ele.value = null;
@@ -210,6 +217,23 @@ saveBtn.addEventListener('click',function(){
 	if (!formValidity()){
 		return;
 	}
+	//퇴직검사	
+	let hireDate = document.querySelector('.employee-box').querySelector('[name="hireDate"]')
+	let resignationDate = document.querySelector('.employee-box').querySelector('[name="resignationDate"]')
+	let statusType = document.querySelector('.employee-box').querySelector('[name="statusType"]')
+	let empStatus = document.querySelector('.employee-box').querySelector('[name="empStatus"]')
+	let now = new Date();
+	hire = new Date(hireDate.value)
+	resign = new Date(resignationDate.value)
+
+	if (resignationDate != "") {
+		if (resign > hhire && statusType != "m3") {
+			alert("재직구분을 다시 선택해주세요")
+			return;
+		}
+	}
+
+	
 	let EmployeeVO = {};
 	// EmployeeVO 필드값 넣기
 	let empInfo = document.querySelectorAll('.EmployeeVO')
@@ -519,26 +543,28 @@ let resign;
 document.querySelector('.employee-box').querySelectorAll('[type="date"]').forEach(ele => {
 	ele.addEventListener('change',function (ev) {
 	let hireDate = document.querySelector('.employee-box').querySelector('[name="hireDate"]')
-	resignationDate = document.querySelector('.employee-box').querySelector('[name="resignationDate"]')
+	let resignationDate = document.querySelector('.employee-box').querySelector('[name="resignationDate"]')
+	let statusType = document.querySelector('.employee-box').querySelector('[name="statusType"]')
+	let empStatus = document.querySelector('.employee-box').querySelector('[name="empStatus"]')
+	let now = new Date();
 	hire = new Date(hireDate.value)
 	resign = new Date(resignationDate.value)
 	if (hire > resign) {
 		alert("날짜를 다시 입력해주세요");
 		ev.target.value = "";
 		ev.target.focus()
+	} else if (resign > now) {
+	    statusType.value = 'm1'
+	    empStatus.value = ""
+	} else if (resign < now ) {
+		statusType.value = 'm3'			
 	}
 })
 //퇴직일자 예외처리
 })
-document.querySelector('.employee-box').querySelector('[name="resignationDate"]').addEventListener('change',function (e) {
-	let statusType = document.querySelector('.employee-box').querySelector('[name="statusType"]')
-	if (statusType.value != 'm3') {
-		e.target.value=""
-		statusType.focus()
-		alert("재직구분을 퇴직으로 지정해주세요")
-		
-	}
-})
+
+
+
 //재직상태 예외처리
 document.querySelector('.employee-box').querySelector('[name="empStatus"]').addEventListener('change',function (e) {
 	let statusType = document.querySelector('.employee-box').querySelector('[name="statusType"]')
@@ -566,7 +592,9 @@ document.querySelectorAll('.number-format').forEach(ele => {
 		}
 	})
 })
-
+document.querySelector('.test-Btn').addEventListener('click', function () {
+	saveDateCheck ()
+})
 //주민번호 예외처리
 document.querySelector('[name="identityNo"]').addEventListener('change',function (ev) {
 	let leng = ev.target.value.length
@@ -577,3 +605,13 @@ document.querySelector('[name="identityNo"]').addEventListener('change',function
 	}
 })
 
+//재직구분 예외처리
+document.querySelector('.employee-box').querySelector('[name="statusType"]').addEventListener('change',function (ev){
+	let resignationDate = document.querySelector('.employee-box').querySelector('[name="resignationDate"]')
+	let empStatus = document.querySelector('.employee-box').querySelector('[name="empStatus"]')
+	let now = new Date()
+	if (ev.target.value == 'm1' || ev.target.value == 'm2') {
+		resignationDate.value = null;
+		empStatus == null;
+	} 
+})
