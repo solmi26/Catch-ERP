@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 모달 그리드에 데이터 넣기(출력)
-  fetch("/sales/selectAcct")
+  fetch("/sales/selectAcct?debitSide=o1")
     .then((result) => result.json())
     .then((result) => {
       let dataArr = [];
@@ -508,13 +508,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	},
     header: { height: 40 },
     bodyHeight: 500,
-    width: "auto",
+    
     contextMenu: null,
     rowHeaders: [
       {
         type: "rowNum",
         header: "No.",
-        width: 50,
         className: "border",
       },
     ],
@@ -522,8 +521,8 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         header: "발행상태",
         name: "c10",
+		width:100,
         align: "center",
-        width: 100,
         whiteSpace: "normal",
         className: "border",
       },
@@ -531,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "판매전표 No.",
         name: "c1",
         align: "center",
-        width: 120,
+		width:120,
         whiteSpace: "normal",
         className: "border",
         filter: "select",
@@ -543,7 +542,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "판매일자",
         name: "c2",
         align: "center",
-        width: 120,
+		width:100,
         whiteSpace: "normal",
         className: "border",
         filter: {
@@ -558,7 +557,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "거래처 코드",
         name: "c3",
         align: "center",
-        width: 100,
+		width:100,
         whiteSpace: "normal",
         className: "border",
 		filter: "select",
@@ -567,7 +566,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "거래처명",
         name: "c4",
         align: "center",
-        width: 200,
+		width:200,
         whiteSpace: "normal",
         className: "border",
 		filter: "select",
@@ -575,8 +574,8 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         header: "공급가액",
         name: "c5",
-        align: "center",
-        width: 100,
+        align: "right",
+		width:160,
         whiteSpace: "normal",
         editor: "text",
         className: "border",
@@ -589,8 +588,8 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         header: "부가세",
         name: "c6",
-        align: "center",
-        width: 100,
+        align: "right",
+		width:160,
         whiteSpace: "normal",
         editor: "text",
         className: "border",
@@ -603,9 +602,9 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         header: "적요",
         name: "c7",
-        align: "center",
-        width: 200,
+        align: "left",
         whiteSpace: "normal",
+		width:300,
 		filter: "select",
         className: "border",
       },
@@ -613,7 +612,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "담당자 코드",
         name: "c8",
         align: "center",
-        width: 100,
+		width:100,
         whiteSpace: "normal",
         className: "border",
 		filter: "select",
@@ -622,7 +621,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "담당자명",
         name: "c9",
         align: "center",
-        width: 200,
+		width:100,
         whiteSpace: "normal",
         className: "border",
 		filter: "select",

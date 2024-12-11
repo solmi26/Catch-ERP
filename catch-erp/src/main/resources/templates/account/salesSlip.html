@@ -63,6 +63,13 @@
       input:read-only {
         background-color: #eee !important;
       }
+      
+      /* 모달 콘텐츠 영역에서 스크롤 활성화 */
+	.modal-body {
+	  max-height: 80vh; /* 브라우저 높이의 80%로 제한 */
+	  overflow-y: auto; /* 세로 스크롤 활성화 */
+	  overflow-x: hidden; /* 가로 스크롤 비활성화 */
+	}
     </style>
   </head>
 
