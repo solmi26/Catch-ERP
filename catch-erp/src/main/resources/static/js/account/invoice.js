@@ -331,7 +331,9 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("선택된 데이터 : ", selectedRows);
 
     if (selectedRows.length === 0) {
-      alert("전송할 데이터를 선택하세요.");
+      //alert("전송할 데이터를 선택하세요.");
+	  toastr.clear();
+      toastr.warning("전송할 데이터를 선택하세요.");
       return;
     }
 
@@ -342,7 +344,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     if (invalidRows.length > 0) {
-      alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+      //alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+	  toastr.clear();
+	  toastr.warning("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
       return;
     }
 
@@ -356,7 +360,9 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (sendRows.length > 0) {
-      alert("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
+      //alert("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
+	  toastr.clear();
+	  toastr.warning("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
       return;
     }
 
@@ -383,14 +389,18 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((result) => {
         console.log("업데이트 결과 : ", result);
-        alert("국세청 전송이 완료되었습니다.");
+        //alert("국세청 전송이 완료되었습니다.");
+		toastr.clear();
+		toastr.success(`국세청 전송이 완료되었습니다.`);
 
         // 전송시 그리드 재로드
         loadGridData();
       })
       .catch((error) => {
         console.log("업데이트 요청 중 오류 발생 : ", error);
-        alert("국세청 전송 중 오류가 발생했습니다.");
+        //alert("국세청 전송 중 오류가 발생했습니다.");
+		toastr.clear();
+		toastr.error("국세청 전송 중 오류가 발생했습니다.");
       });
   });
 
@@ -402,7 +412,9 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("선택된 데이터 : ", selectedRows);
 
     if (selectedRows.length === 0) {
-      alert("전송할 데이터를 선택하세요.");
+      //alert("전송할 데이터를 선택하세요.");
+	  toastr.clear();
+	  toastr.warning("전송할 데이터를 선택하세요.");
       return;
     }
 
@@ -413,7 +425,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     if (invalidRows.length > 0) {
-      alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+      //alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+	  toastr.clear();
+	  toastr.warning("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
       return;
     }
 
@@ -428,7 +442,9 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (sendRows.length > 0) {
-      alert("이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다.");
+      //alert("이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다.");
+	  toastr.clear();
+	  toastr.warning("이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다.");
       return;
     }
 
@@ -455,14 +471,18 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((result) => {
         console.log("업데이트 결과 : ", result);
-        alert("전송이 완료되었습니다. 익일 0시에 국세청으로 자동 전송됩니다.");
-
+        //alert("전송이 완료되었습니다. 익일 0시에 국세청으로 자동 전송됩니다.");
+		toastr.clear();
+		toastr.success(`전송이 완료되었습니다. 익일 0시에 국세청으로 자동 전송됩니다.`);
+		
         // 전송시 그리드 재로드
         loadGridData();
       })
       .catch((error) => {
         console.log("업데이트 요청 중 오류 발생 : ", error);
-        alert("전송 중 오류가 발생했습니다.");
+        //alert("전송 중 오류가 발생했습니다.");
+		toastr.clear();
+		toastr.error(`전송 중 오류가 발생했습니다.`);
       });
   });
 
@@ -474,7 +494,9 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("선택된 데이터 : ", selectedRows);
 
     if (selectedRows.length === 0) {
-      alert("전송할 데이터를 선택하세요.");
+      //alert("전송할 데이터를 선택하세요.");
+	  toastr.clear();
+	  toastr.warning("전송할 데이터를 선택하세요.");
       return;
     }
 
@@ -487,7 +509,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const sendRows = selectedRows.filter((row) => row.taxProgress === "전송중");
 
     if (noSendRows.length > 0) {
-      alert("이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다.");
+      //alert("이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다.");
+	  toastr.clear();
+	  toastr.warning("이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다.");
       return;
     }
 
@@ -514,14 +538,18 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((result) => {
         console.log("발송 취소 결과 : ", result);
-        alert("발송취소가 완료되었습니다.");
+        //alert("발송취소가 완료되었습니다.");
+		toastr.clear();
+		toastr.success("발송취소가 완료되었습니다.");
 
         // 전송시 그리드 재로드
         loadGridData();
       })
       .catch((error) => {
         console.log("발송 취소 요청 중 오류 발생 : ", error);
-        alert("발송 취소 중 오류가 발생했습니다.");
+        //alert("발송 취소 중 오류가 발생했습니다.");
+		toastr.clear();
+		toastr.error("발송 취소 중 오류가 발생했습니다.");
       });
   });
 

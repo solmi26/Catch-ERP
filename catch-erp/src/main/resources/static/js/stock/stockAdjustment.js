@@ -1138,6 +1138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			adjustTarget.employeeCode = ele.c10;
 			adjustTarget.itemCode = ele.c2;
 			adjustTarget.updateReason = ele.c4;
+			adjustTarget.currentQuantity = ele.c8;
 			adjustTargetList.push(adjustTarget);
 		})
 		
