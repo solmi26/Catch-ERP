@@ -145,11 +145,11 @@
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND hi.restocking_date >= TO_DATE(#{startDate})
+		    		AND hi.restocking_date >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.restocking_date <= TO_DATE(#{endDate})
+		    		AND hi.restocking_date <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
 		     	 ]]>
 		    </if>
 		    AND restocking_status != 'b3'
@@ -215,11 +215,11 @@
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND hi.delivery_date >= TO_DATE(#{startDate})
+		    		AND hi.delivery_date >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.delivery_date <= TO_DATE(#{endDate})
+		    		AND hi.delivery_date <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
 		     	 ]]>
 		    </if>
 		    AND delivery_status != 'b3'

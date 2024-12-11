@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 거래처모달 그리드에 데이터 넣기(출력)
-  fetch("/sales/selectAcct")
+  fetch("/sales/selectAcct?debitSide=o2")
     .then((result) => result.json())
     .then((result) => {
       let dataArr = [];
@@ -528,7 +528,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	},
     header: { height: 40 },
     bodyHeight: 500,
-    width: "auto",
     contextMenu: null,
     rowHeaders: [
       {
@@ -543,6 +542,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "발행상태",
         name: "c10",
         align: "center",
+		width:100,
         width: 100,
         whiteSpace: "normal",
         className: "border",
@@ -563,7 +563,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "구매일자",
         name: "c2",
         align: "center",
-        width: 120,
+        width: 100,
         whiteSpace: "normal",
         className: "border",
         filter: {
@@ -595,8 +595,8 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         header: "공급가액",
         name: "c5",
-        align: "center",
-        width: 100,
+        align: "rigth",
+        width: 160,
         whiteSpace: "normal",
         editor: "text",
         className: "border",
@@ -609,8 +609,8 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         header: "부가세",
         name: "c6",
-        align: "center",
-        width: 100,
+        align: "right",
+        width: 160,
         whiteSpace: "normal",
         editor: "text",
         className: "border",
@@ -624,7 +624,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "적요",
         name: "c7",
         align: "center",
-        width: 200,
+        width: 300,
 		filter: "select",
         whiteSpace: "normal",
         className: "border",
@@ -642,7 +642,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "담당자명",
         name: "c9",
         align: "center",
-        width: 200,
+        width: 100,
 		filter: "select",
         whiteSpace: "normal",
         className: "border",

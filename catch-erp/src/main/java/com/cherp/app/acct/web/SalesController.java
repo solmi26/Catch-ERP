@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cherp.app.acct.service.SalesService;
-import com.cherp.app.acct.vo.ClientPsVO;
 import com.cherp.app.acct.vo.InsertPayableVO;
 import com.cherp.app.acct.vo.InsertReceivableVO;
 import com.cherp.app.acct.vo.PayablesVO;
@@ -131,8 +131,8 @@ public class SalesController {
 	@Secured("ROLE_MANAGER,ROLE_SALES")
 	@ResponseBody
 	@GetMapping("sales/selectAcct")
-	public List<SalesVO> selectAcct(Model model){
-		return salesService.acctList("o1");
+	public List<SalesVO> selectAcct(@RequestParam("debitSide") String debitSide){
+		return salesService.acctList(debitSide);
 	}
 	
 	// 매입 전표 등록(화면) by sm
