@@ -96,7 +96,6 @@
 		GROUP BY wh_code, item_code)
 		SELECT  hi.pur_no
 			   ,hi.wh_code
-			   ,hi.wh_name
 			   ,hi.item_code
 			   ,hi.item_name
 			   ,hi.quantity
@@ -111,10 +110,12 @@
 			   ,ch.employee_name
 			   ,ct.stocks_quantity
 			   ,st.current_quantity
+			   ,wh.wh_name
 		FROM   purchase_history hi 
 			JOIN purchase_chit ch ON (hi.purcslip_no = ch.purcslip_no)
 			JOIN contract_item ct ON (hi.item_code = ct.item_code) 
 			LEFT JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
+			JOIN warehouse wh ON (hi.wh_code = wh.wh_code)
 		WHERE  hi.purcslip_no IN
 			(SELECT  purcslip_no
 			 FROM   purchase_chit
@@ -144,11 +145,11 @@
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND hi.restocking_date >= TO_DATE(#{startDate})
+		    		AND hi.restocking_date >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.restocking_date <= TO_DATE(#{endDate})
+		    		AND hi.restocking_date <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
 		     	 ]]>
 		    </if>
 		    AND restocking_status != 'b3'
@@ -165,7 +166,6 @@
 		GROUP BY wh_code, item_code)
 		SELECT hi.sales_no
 			  ,hi.wh_code
-			  ,hi.wh_name
 			  ,hi.item_code
 			  ,hi.item_name
 			  ,hi.quantity
@@ -180,10 +180,12 @@
 			  ,ch.employee_name
 			  ,ct.stocks_quantity
 			  ,st.current_quantity
+			  ,wh.wh_name
 		FROM   saleslip_history hi 
 			JOIN sales_chit ch ON (hi.saleslip_no = ch.saleslip_no)
 			JOIN contract_item ct ON (hi.item_code = ct.item_code) 
 			LEFT JOIN st ON (hi.item_code = st.item_code AND hi.wh_code = st.wh_code)
+			JOIN warehouse wh ON (hi.wh_code = wh.wh_code)
 		WHERE  hi.saleslip_no IN
 			(SELECT  saleslip_no
 			 FROM   sales_chit
@@ -213,11 +215,11 @@
 		    	</otherwise>
 		    </choose>
 		    <if test="startDate != 'no'">
-		    		AND hi.delivery_date >= TO_DATE(#{startDate})
+		    		AND hi.delivery_date >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
 		    </if>
 		    <if test="endDate != 'no'">
 		    	 <![CDATA[ 
-		    		AND hi.delivery_date <= TO_DATE(#{endDate})
+		    		AND hi.delivery_date <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
 		     	 ]]>
 		    </if>
 		    AND delivery_status != 'b3'
@@ -232,7 +234,7 @@
 	</insert>
 	<!-- 최상단 재고조정번호 조회 --> 
 	<select id="selectAdjustNo" resultType="StocksVO">
-		SELECT NVL(MAX(real_no) + 1, TO_CHAR(sysdate, 'yyyyMMdd') || stocks_adjust_seq.nextval) AS real_no
+		SELECT NVL(MAX(real_no) + 1,TO_NUMBER(TO_CHAR(sysdate,'yyyyMMdd') || 000) ) AS real_no
 		FROM   stocks
 	</select>
 	

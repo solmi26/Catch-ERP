@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         header: "전표번호", // 전표번호
         name: "voucherNumber",
         align: "center",
-        formatter: ({ value }) => `<a href="#" class="btn-link text-primary">${value}</a>`,
+        formatter: ({ value }) => `<a href="#" class="btn-link text-primary underline-link">${value}</a>`,
       },
       {
         header: "거래유형", // 거래유형
@@ -238,7 +238,10 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("선택된 데이터:", selectedRows);
 
     if (selectedRows.length === 0) {
-      alert("삭제할 전표를 선택하세요.");
+      //alert("삭제할 전표를 선택하세요.");
+      toastr.clear();
+      toastr.warning("삭제할 전표를 선택하세요.");
+
       return;
     }
 
@@ -248,7 +251,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 삭제 불가능한 전표가 있을 경우 alert 창
     if (undeletableRows.length > 0) {
-      alert("미전송 상태의 전표만 삭제할 수 있습니다.");
+      //alert("미전송 상태의 전표만 삭제할 수 있습니다.");
+      toastr.clear();
+      toastr.warning("미전송 상태의 전표만 삭제할 수 있습니다.");
       return;
     }
 
@@ -274,14 +279,18 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((result) => {
         console.log("삭제 결과:", result);
-        alert("선택한 전표가 삭제되었습니다.");
+        // alert("선택한 전표가 삭제되었습니다.");
+        toastr.clear();
+        toastr.success("선택한 전표가 삭제되었습니다.");
 
         // 삭제 시 그리드 다시 로드
         loadGridData();
       })
       .catch((error) => {
         console.error("삭제 요청 중 오류 발생:", error);
-        alert("전표 삭제 중 오류가 발생했습니다.");
+        //alert("전표 삭제 중 오류가 발생했습니다.");
+        toastr.clear();
+        toastr.error("전표 삭제 중 오류가 발생했습니다.");
       });
   });
 
@@ -315,7 +324,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then((result) => {
           console.log("삭제 결과:", result);
-          alert("선택한 전표가 삭제되었습니다.");
+          //alert("선택한 전표가 삭제되었습니다.");
+          toastr.clear();
+          toastr.success("선택한 전표가 삭제되었습니다.");
           salesModal.hide();
 
           // 삭제 시 그리드 다시 로드
@@ -323,7 +334,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => {
           console.error("삭제 요청 중 오류 발생:", error);
-          alert("전표 삭제 중 오류가 발생했습니다.");
+          //alert("전표 삭제 중 오류가 발생했습니다.");
+          toastr.clear();
+          toastr.error("전표 삭제 중 오류가 발생했습니다.");
         });
     });
   }
@@ -361,7 +374,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // 버튼 기본 동작 중단
         event.preventDefault();
         // 비활성화
-        alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+        //alert(`${noValueFields.join(", ")}를 입력해주세요.`);
+        toastr.clear();
+        toastr.warning(`${noValueFields.join(", ")}를 입력해주세요.`);
+
         return;
       }
 
@@ -406,7 +422,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.text())
         .then((data) => {
           console.log(data);
-          alert("수정이 완료되었습니다.");
+          //alert("수정이 완료되었습니다.");
+          toastr.clear();
+          toastr.success("수정이 완료되었습니다.");
+
           salesModal.hide();
 
           // 수정 시 그리드 다시 로드
@@ -414,7 +433,10 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => {
           console.error("Error: ", error);
-          alert("서버와 연결에 실패했습니다.");
+          //alert("서버와 연결에 실패했습니다.");
+
+          toastr.clear();
+          toastr.error(`수정 중 문제가 발생했습니다.`);
         });
     });
   }
@@ -677,4 +699,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 부가세 유형 변경 시 부가세 및 합계 자동 계산
   vatTypeSelect.addEventListener("change", calculateVat);
+
+  // 엑셀 내보내기
+  document.querySelector(".btn-excel").addEventListener("click", function () {
+    // 선택된 데이터 가져오기
+    const selectedData = grid.getCheckedRows();
+
+    if (selectedData.length > 0) {
+      // 선택된 데이터가 있는 경우, 임시 Toast Grid를 생성하여 내보냄
+      const tempGrid = new tui.Grid({
+        el: document.createElement("div"), // DOM에 추가하지 않을 임시 요소
+        data: selectedData, // 선택된 데이터
+        columns: grid.getColumns(), // 기존 Grid의 컬럼 복사
+      });
+      tempGrid.export("xlsx", { fileName: "선택된_전표_데이터.xlsx" });
+    } else {
+      // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
+      toastr.success(`선택된 데이터가 없어 전체 데이터를 다운로드합니다.`);
+      grid.export("xlsx", { fileName: "전체_전표_데이터.xlsx" });
+    }
+  });
 });

@@ -49,12 +49,12 @@ public class myPageController {
 		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		employeeCodeVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
 		AttendanceSearchVO searchVO = new AttendanceSearchVO();
-		searchVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		searchVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
 		model.addAttribute("employeeVO", employeeVO); //사원 정보
@@ -70,12 +70,12 @@ public class myPageController {
 		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); 
+		employeeCodeVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); 
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
 		AttendanceSearchVO searchVO = new AttendanceSearchVO();
-		searchVO.setEmployeeCode("loginVO.getEmployeeLoginVO().getEmployeeCode()"); 
+		searchVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); 
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
 		model.addAttribute("employeeVO", employeeVO); //사원 정보
@@ -112,12 +112,12 @@ public class myPageController {
 		//나의정보 최초로드
 		EmployeeVO employeeCodeVO = new EmployeeVO();
 		LoginVO loginVO = (LoginVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
-		employeeCodeVO.setEmployeeCode("137"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		employeeCodeVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		EmployeeVO employeeVO = employeeService.employeeInfo(employeeCodeVO); //나의 사원정보
 		
 		//근태정보 최초로드 현재년 현재월 기준(year,month 필드 set작업은 서비스에서 함)
 		AttendanceSearchVO searchVO = new AttendanceSearchVO();
-		searchVO.setEmployeeCode("137"); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
+		searchVO.setEmployeeCode(loginVO.getEmployeeLoginVO().getEmployeeCode()); //loginVO.getEmployeeLoginVO().getEmployeeCode() -> 나중에 이걸로 교체해야함.
 		List<AttendanceVO> attendanceList = myPageService.getAttendance(searchVO);
 		
 		model.addAttribute("employeeVO", employeeVO); //사원 정보
@@ -132,24 +132,27 @@ public class myPageController {
 		
 		
 		//저장경로 설정
-		String fileName = imageFile.getOriginalFilename();
-		//날짜 폴더생성
-		String folderPath = makeFolder();
-		//UUID 고유값 보장
-		String uuid = UUID.randomUUID().toString();
-		//저장되는 파일 이름 중간에 _를 이용하여 구분
-		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
-		String saveName = uploadPath + File.separator + uploadFileName;
-		Path savePath = Paths.get(saveName); //Paths.get() => 특정경로의 파일반환 (경로정의)
-
-		try {
-			imageFile.transferTo(savePath);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		if(imageFile != null) {
+			String fileName = imageFile.getOriginalFilename();
 		
-		//DB 저장 처리
-		modifiedInfoVO.setEmployeeImage(setImagePath(uploadFileName)); 
+			//날짜 폴더생성
+			String folderPath = makeFolder();
+			//UUID 고유값 보장
+			String uuid = UUID.randomUUID().toString();
+			//저장되는 파일 이름 중간에 _를 이용하여 구분
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			String saveName = uploadPath + File.separator + uploadFileName;
+			Path savePath = Paths.get(saveName); //Paths.get() => 특정경로의 파일반환 (경로정의)
+	
+			try {
+				imageFile.transferTo(savePath);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+			
+			//DB 저장 처리
+			modifiedInfoVO.setEmployeeImage(setImagePath(uploadFileName)); 
+		}
 		myPageService.modifyEmployeeInfo(modifiedInfoVO);
 	}
 	

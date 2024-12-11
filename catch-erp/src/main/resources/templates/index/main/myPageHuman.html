@@ -15,11 +15,11 @@
 	}
   </style>
   </head>
-  		<div class="bg-white shadow-sm rounded" style="padding: 20px;" >
+  		<div class="bg-white shadow-sm rounded kwBorder" style="padding: 20px;" >
 	        
 	        <!-- Header -->
 	        <div class="border-bottom pb-1 mb-4">
-	        		<h1 style="font-size:20px;">마이페이지</h1>
+	        		<h1 style="font-size:24px;">마이페이지</h1>
 	        </div>
 	        <ul class="nav nav-tabs" id="mainTab" role="tablist">
 	        	
@@ -104,7 +104,13 @@
                                            			<label class="form-label">직위/직급</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeePosition}" name="employeePosition" readonly >
+                                            		<th:block th:switch="${employeeVO.employeePosition}">
+														<input th:case="h1" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="사원" name="employeePosition" readonly >
+	                                            		<input th:case="h2" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="대리" name="employeePosition" readonly >
+	                                            		<input th:case="h3" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="과장" name="employeePosition" readonly >
+	                                            		<input th:case="h4" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="차장" name="employeePosition" readonly >
+	                                            		<input th:case="h5" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="부장" name="employeePosition" readonly >
+													</th:block>
                                             	</div>
                                             </div>
                                         </div>
@@ -114,7 +120,11 @@
                                             		<label class="col-form-label-sm">직책</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.duty}" name="duty" readonly>
+                                            		<th:block th:switch="${employeeVO.employeeDetailVO.duty}">
+                                            			<input th:case="k1" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="평사원" name="duty" readonly>
+                                            			<input th:case="k2" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="팀장" name="duty" readonly>
+                                            			<input th:case="k3" type="text" class="myPageInput form-control form-control-sm EmployeeDetailVO" th:value="총책임자" name="duty" readonly>
+                                            		</th:block>
                                             	</div>
                                         	</div>
                                         </div>
@@ -145,7 +155,7 @@
                                            			<label class="form-label"><span style="color:red;">*</span>이메일</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.duty}" name="email" id="email">
+                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.employeeDetailVO.email}" name="email" id="email">
                                             	</div>
                                             </div>
                                         </div>
@@ -155,7 +165,11 @@
                                             		<label class="myPageInput col-form-label-sm">재직구분</label>
                                             	</div>
                                             	<div class="col ps-0">
-                                            		<input type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="${employeeVO.statusType}" name="statusType" readonly>
+                                            		<th:block th:switch="${employeeVO.statusType}">
+                                            			<input th:case="m1" type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="재직" name="statusType" readonly>
+                                            			<input th:case="m2" type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="휴직" name="statusType" readonly>
+                                            			<input th:case="m3" type="text" class="form-control form-control-sm EmployeeDetailVO" th:value="퇴직" name="statusType" readonly>
+                                            		</th:block>
                                             	</div>
                                         	</div>
                                         </div>

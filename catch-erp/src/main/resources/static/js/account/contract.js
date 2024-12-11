@@ -25,12 +25,12 @@ document.addEventListener("DOMContentLoaded", function () {
       perPage: 15,
     },
     columns: [
-      { header: "계약번호", name: "contractNumber", align: "center", sortable: true,
+      { header: "계약번호", name: "contractNumber", align: "center", sortable: true, 
 	  formatter: ({ value }) =>
-	           `<a href="#" class="btn-link text-primary">${value}</a>`,
+	           `<a href="#" class="btn-link text-primary underline-link">${value}</a>`,
 	   }, // 계약번호
-      { header: "계약명", name: "contractName", align: "center", sortable: true }, // 계약명
-      { header: "거래처", name: "client", align: "center", sortable: true }, // 거래처
+      { header: "계약명", name: "contractName", align: "center", sortable: true, width: 300,}, // 계약명
+      { header: "거래처", name: "client", align: "center", sortable: true,width: 200, }, // 거래처
       { header: "계약일자", name: "contractDate", align: "center", sortable: true }, // 계약일
       { header: "계약시작일", name: "startDate", align: "center", sortable: true }, // 계약시작일
       { header: "계약종료일", name: "endDate", align: "center", sortable: true }, // 계약종료일
@@ -179,7 +179,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!clientCode) missingFields.push("거래처");
 
       if (missingFields.length > 0) {
-        alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
+        //alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
+		toastr.clear();
+		toastr.warning(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
         return; // 서버로 전송X
       }
 
@@ -200,7 +202,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // 누락된 데이터 확인
       if (invalidRows.length > 0) {
         //alert(`※ 품목 데이터를 확인해주세요.\n\n${invalidRows.join('\n')}`);
-        alert(`${invalidRows.join("\n")}`);
+        //alert(`${invalidRows.join("\n")}`);
+		toastr.clear();
+		toastr.warning(`${invalidRows.join("<br>")}`);
         return; // 서버로 전송하지 않음
       }
 
@@ -249,7 +253,9 @@ document.addEventListener("DOMContentLoaded", function () {
           return response.text();
         })
         .then((result) => {
-			alert("수정이 완료되었습니다.");
+			//alert("수정이 완료되었습니다.");
+			toastr.clear();
+			toastr.success(`수정이 완료되었습니다.`);
 			conModal.hide();
 			document.getElementById("attachment-file").value = ""; // 파일 필드 초기화
 			document.getElementById("attachment-url").dataset.deleted = "false"; // 삭제 플래그 초기화
@@ -260,7 +266,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => {
           console.error("Error:", error);
-          alert("수정 실패: " + error.message);
+          //alert("수정 실패: " + error.message);
+		  toastr.clear();
+		  toastr.error(`수정 중 문제가 발생했습니다.`);
         });
     });
 	
@@ -278,4 +286,24 @@ document.addEventListener("DOMContentLoaded", function () {
 	    document.getElementById("attachment-url").value = "";
 	    document.getElementById("attachment-url").dataset.deleted = "false"; // 삭제 플래그 초기화
 	});
+	
+	document.querySelector(".btn-excel").addEventListener("click", function () {
+	  // 선택된 데이터 가져오기
+	  const selectedData = c_grid.getCheckedRows();
+	
+	  if (selectedData.length > 0) {
+	    // 선택된 데이터가 있는 경우, 임시 Toast Grid를 생성하여 내보냄
+	    const tempGrid = new tui.Grid({
+	      el: document.createElement("div"), // DOM에 추가하지 않을 임시 요소
+	      data: selectedData, // 선택된 데이터
+	      columns: c_grid.getColumns(), // 기존 Grid의 컬럼 복사
+	    });
+	    tempGrid.export("xlsx", { fileName: "선택된_계약_데이터.xlsx" });
+	  } else {
+	    // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
+	    toastr.success(`선택된 데이터가 없어 전체 계약 계약을 다운로드합니다.`);
+	    c_grid.export("xlsx", { fileName: "전체_계약_데이터.xlsx" });
+	  }
+	});
+
 });

@@ -170,13 +170,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!clientCode) missingFields.push("거래처");
 
     if (missingFields.length > 0) {
-		Swal.fire({
-		  title: '에러!',
-		  text: '작업 중 문제가 발생했습니다.',
-		  icon: 'error',
-		  confirmButtonText: '확인',
-		});
       //alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
+	  toastr.clear();
+	  toastr.warning(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
       return; // 서버로 전송X
     }
 
@@ -197,7 +193,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // 누락된 데이터 확인
     if (invalidRows.length > 0) {
       //alert(`※ 품목 데이터를 확인해주세요.\n\n${invalidRows.join('\n')}`);
-      alert(`${invalidRows.join("\n")}`);
+      //alert(`${invalidRows.join("\n")}`);
+	  toastr.clear();
+	  toastr.warning(`${invalidRows.join("<br>")}`);
       return; // 서버로 전송하지 않음
     }
 
@@ -243,8 +241,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.text();
       })
       .then((result) => {
-        alert("등록 성공: " + result);
+        //alert("등록 성공: " + result);
+		
 
+		toastr.clear();
+		toastr.success(`등록이 완료되었습니다.`);
+		
 		// 그리드 데이터 초기화
         grid.resetData([{}]);
         
@@ -256,7 +258,9 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("등록 실패: " + error.message);
+        //alert("등록 실패: " + error.message);
+		toastr.clear();
+		toastr.error(`등록 중 문제가 발생했습니다.`);
       });
   });
 
@@ -388,6 +392,13 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ],
   });
+  
+  // 삭제 버튼 클릭 이벤트
+  document.getElementById("delete-attachment").addEventListener("click", function () {
+      // 첨부파일 관련 필드 초기화
+      document.getElementById("attachment-file").value = "";
+      document.getElementById("attachment-url").value = ""; // URL도 초기화
+	  });
 
   // 클릭 이벤트 처리
   c_grid3.on("click", function (ev) {

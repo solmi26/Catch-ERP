@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '품목명',
                 name: 'c3',
                 align: "center",
-                //width: 170,
+                width: '270',
                 whiteSpace: 'normal'
             },
             {
@@ -615,7 +615,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '품목명',
 		            name: 'c5',
 		            align: "center",
-		            width: 150,
+		            width: 270,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -624,7 +624,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '거래처명',
 		            name: 'c6',
 		            align: "center",
-		            width: 140,
+		            width: 230,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -884,7 +884,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '품목코드',
 		            name: 'c4',
 		            align: "center",
-		            width: 100,
+		            width: 150,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -894,7 +894,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '품목명',
 		            name: 'c5',
 		            align: "center",
-		            width: 100,
+		            width: 270,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -903,7 +903,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '거래처명',
 		            name: 'c6',
 		            align: "center",
-		            width: 140,
+		            width: 230,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -1138,6 +1138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			adjustTarget.employeeCode = ele.c10;
 			adjustTarget.itemCode = ele.c2;
 			adjustTarget.updateReason = ele.c4;
+			adjustTarget.currentQuantity = ele.c8;
 			adjustTargetList.push(adjustTarget);
 		})
 		
