@@ -498,7 +498,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let itemModalTriggerBtn = document.getElementById('contractItemModal');
     itemModalTriggerBtn.addEventListener('click', function () {
         if (document.getElementById("inputClientName").value == '') {
-            alert("품목을 조회할 거래처를 선택해주세요.");
+            toastr.warning("품목을 조회할 거래처를 선택해주세요.");
             return;
         }
         let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
@@ -823,22 +823,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // 빈 값 확인하기 - 마스터 정보
         if (insertPurchase.clientName === '') {
-            alert('거래처명을 입력하세요');
+            toastr.warning('거래처명을 입력하세요');
             return;
         }
 
         if (insertPurchase.employeeName === '') {
-            alert('담당자명을 입력하세요.');
+            toastr.warning('담당자명을 입력하세요.');
             return;
         }
 
         if (insertPurchase.witBacct === '') {
-            alert('입금계좌를 입력하세요.')
+            toastr.warning('입금계좌를 입력하세요.')
             return;
         }
 
         if (insertPurchase.purchaseHistories.length === 0) {
-            alert('품목을 불러와 작성해주세요.')
+            toastr.warning('품목을 불러와 작성해주세요.')
             return;
         }
 
@@ -865,7 +865,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
             .then(result => {
                 if (result.status === 200) {
-                    alert("저장 완료");
+                    toastr.success("구매완료 되었습니다.");
                     location.reload();
                 }
             })

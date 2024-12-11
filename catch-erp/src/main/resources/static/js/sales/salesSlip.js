@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     saleslipHistory.resetData(data);
                     sortColor();
                 })
-                .catch(error => alert('판매전표별 내역을 불러오지 못했습니다.'))
+                .catch(error => toastr.error('판매전표별 내역을 불러오지 못했습니다.'))
 
             window.setTimeout(function () {
                 saleslipHistory.refreshLayout();
