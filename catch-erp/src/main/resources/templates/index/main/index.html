@@ -59,11 +59,12 @@
     <div class="col-md-12 p-3">
         <div class="row g-4">
             <!-- Left Calendar Section -->
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card shadow-sm rounded-4 bg-primary text-white p-3 mb-4">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group">
                             <button class="btn btn-primary active">매입</button>
+                            <button class="btn btn-primary">매출</button>
                             <button class="btn btn-primary">결제처리</button>
                             <button class="btn btn-light">결제현황</button>
                         </div>
@@ -219,9 +220,8 @@
     <script>
     let weatherBtn = document.querySelector('#refreshWeatherBtn');
     window.onload = function() {
-            weatherBtn.click();
-
-        }
+        weatherBtn.click();
+    }
     document.addEventListener('DOMContentLoaded', function() {
         let monthCount = 0;
         let now = new Date();
