@@ -216,7 +216,7 @@
                         		)
 	
 	</update>
-	
+	<!-- zz -->
 	<!-- 인사정보 재직상태 변경(퇴직) -->
 	<update id="updateStatusType" parameterType="java.util.List">
 		UPDATE employees

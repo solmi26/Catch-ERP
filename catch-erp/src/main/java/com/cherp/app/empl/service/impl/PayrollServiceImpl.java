@@ -57,6 +57,8 @@ public class PayrollServiceImpl implements PayrollService {
 		if (mode.equals("create")) {
 			return mapper.insertPayroll();
 		}else if (mode.equals("replace")) {
+			
+			mapper.deleteMonthAwhi();
 			mapper.deleteMonthPayroll();
 			return mapper.insertPayroll();			
 		}

@@ -1,6 +1,7 @@
 /**
  * 
  */
+let currentPayroll
 
 grid.on('click',function (ev) {
 	if (ev.targetType == 'cell') {
@@ -15,6 +16,7 @@ grid.on('click',function (ev) {
 			
 		} else if (salaryCheck == '검토완료') {
 			dataToSalDetailGrid(salaryNumber)
+			currentPayroll = salaryNumber;
 		    window.setTimeout(function(){
 		    salDetailGrid.refreshLayout();
 		    }, 200) 		
@@ -114,39 +116,30 @@ document.querySelector('.excel-Btn').addEventListener('click',function () {
 })
 //#region
 document.querySelector('.printModal-Btn').addEventListener('click',function () {
-	let checkRow = grid.getCheckedRows()
-	if  (checkRow.length == 0 ) {
-		return;
-	}
-	let str = ''
-	checkRow.forEach(ele => {
-		str += ','
-		str += ele.salaryNumber
-	})
-	fetch('/employees/payroll/sel?salaryNumber='+str.substring(1))
+	fetch('/employees/payroll/sel?salaryNumber='+currentPayroll)
 	.then(data => data.json())
 	.then(data => {
 		document.querySelector('#print-content').innerHTML = ""
 		for (let ele of data) {		
-			let index = ele.allowanceHistoryVO.length > 3 ? ele.allowanceHistoryVO.length : 3 
+			let index = ele.allowanceHistoryVO.length > 3 ? ele.allowanceHistoryVO.length : 2 
 			let tr = "";
 			let html ="";
-			tr += `<tr><td>기본급</td><td>${ele.monthlySalary}</td><td>소득세</td><td>${ele.incomeTax}</td></tr>`
-			tr += `<tr><td>연장근무</td><td>${ele.overtimeAllowance}</td><td>지방세</td><td>${ele.localTax}</td></tr>`
-			tr += `<tr><td>야간근무</td><td>${ele.nightAllowance}</td><td>건강보험료</td><td>${ele.healthInsurance}</td></tr>`
-			tr += `<tr><td>주말근무</td><td>${ele.weekendAllowance}</td><td>국민연금료</td><td>${ele.nationalInsurance}</td></tr>`
+			tr += `<tr><td>기본급</td><td>${(Math.round(ele.monthlySalary/10)*10).toLocaleString()}원</td><td>소득세</td><td>${(Math.round(ele.incomeTax/10)*10).toLocaleString()}원</td></tr>`
+			tr += `<tr><td>연장근무</td><td>${(Math.round(ele.overtimeAllowance/10)*10).toLocaleString()}원</td><td>지방세</td><td>${(Math.round(ele.localTax/10)*10).toLocaleString()}원</td></tr>`
+			tr += `<tr><td>야간근무</td><td>${(Math.round(ele.nightAllowance/10)*10).toLocaleString()}원</td><td>건강보험료</td><td>${(Math.round(ele.healthInsurance/10)*10).toLocaleString()}원</td></tr>`
+			tr += `<tr><td>주말근무</td><td>${(Math.round(ele.weekendAllowance/10)*10).toLocaleString()}원</td><td>국민연금료</td><td>${(Math.round(ele.nationalInsurance/10)*10).toLocaleString()}원</td></tr>`
 			for (let i=0; i<index; i++) {
 				
 				let td ="<tr>";
-				if (ele.allowanceHistoryVO[i] == undefined) {
+				if (ele.allowanceHistoryVO[i] == undefined || ele.allowanceHistoryVO[0].awhiNo == null) {
 				td += `<td></td><td></td>`					
 				}else {
-				td += `<td>${ele.allowanceHistoryVO[i].allowanceName}</td><td>${ele.allowanceHistoryVO[i].allowancePrice}</td>`
+				td += `<td>${ele.allowanceHistoryVO[i].allowanceName}</td><td>${(Math.round(ele.allowanceHistoryVO[i].allowancePrice/10)*10).toLocaleString()}원</td>`
 				}
 				if (i == 0) {
-					td += `<td>고용보험료</td><td>${ele.employmentInsurance}</td>`
+					td += `<td>고용보험료</td><td>${(Math.round(ele.employmentInsurance/10)*10).toLocaleString()}원</td>`
 				} else if (i == 1) {
-					td += `<td>유급휴가비</td><td>${ele.leaveRate}</td>`
+					td += `<td>유급휴가비</td><td>${(Math.round(ele.leaveRate/10)*10).toLocaleString()}원</td>`
 				} else {
 					td += `<td></td><td></td>`
 				}
@@ -210,12 +203,7 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 		border-top: 3px solid black;
 		
 		}
-		#payrollPrintModal .modal-body  {
-		margin:0 auto;}
-		#print-content{ 
-			overflow:auto;
-			max-height:700px;
-		}
+
 		</style>			
 					
 					<div id="a">
@@ -229,20 +217,10 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					      <tr>
 					        <td class="background-payment">성명</td>
 					        <td colspan="3">${ele.name}</td>
+					      </tr>
+					      <tr>
 					        <td class="background-payment">사번</td>
 					        <td>${ele.employeeId}</td>
-					      </tr>
-					      <tr>
-					        <td class="background-payment">직급/직급</td>
-					        <td colspan="3"></td>
-					        <td class="background-payment">부서</td>
-					        <td></td>
-					      </tr>
-					      <tr>
-					        <td class="background-payment">생년월일</td>
-					        <td colspan="3"></td>
-					        <td class="background-payment">지급일</td>
-					        <td>${ele.payrollYdate}</td>
 					      </tr>
 					  </table>
 					<br>
@@ -266,13 +244,13 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					  <tfoot>
 					    <tr>
 					      <td class="background-payment">총지급액</td>
-					      <td>${ele.paymentTotal}</td>
+					      <td>${(Math.round(ele.paymentTotal/10)*10).toLocaleString()}원</td>
 					      <td class="background-payment">총공제액</td>
-					      <td>${ele.deductionsTotal}</td>
+					      <td>${(Math.round(ele.deductionsTotal/10)*10).toLocaleString()}원</td>
 					    </tr>
 					    <tr>
 					      <td class="background-payment">실지급액</td>
-					      <td colspan="3">${ele.realPay}</td>
+					      <td colspan="3">${(Math.round(ele.realPay/10)*10).toLocaleString()}원</td>
 					    </tr>
 					  </tfoot>
 					</table> 
@@ -288,18 +266,18 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					    </tr>
 					    <tr>
 					      <td class="background-payment" >연장근로수당</td>
-					      <td>시급의 1.5배(약 ${(ele.timeSalary*1.5)}원) X 연장근무시간</td>
-					      <td>${ele.overtimeSalary}</td>
+					      <td>시급의 1.5배(약 ${(Math.round(ele.timeSalary*1.5/10)*10).toLocaleString()}원) X 연장근무시간</td>
+					      <td>${(Math.round(ele.overtimeAllowance/10)*10).toLocaleString()}원</td>
 					    </tr>
 					    <tr>
 					      <td class="background-payment">야간근로수당(할증)</td>
-					      <td>시급의 1.5배(약 ${(ele.timeSalary*0.5)}원) X 야간근무시간</td>
-					      <td>${ele.nightAllowance}</td>
+					      <td>시급의 1.5배(약 ${(Math.round(ele.timeSalary*0.5/10)*10).toLocaleString()}원) X 야간근무시간</td>
+					      <td>${(Math.round(ele.nightAllowance/10)*10).toLocaleString()}원</td>
 					    </tr>
 					    <tr>
 					      <td class="background-payment">주말근로수당</td>
-					      <td>시급의 1.5배(약 ${(ele.timeSalary*0.5)}원) X 주말근무시간</td>
-					      <td>${ele.nightAllowance}<</td>
+					      <td>시급의 1.5배(약 ${(Math.round(ele.timeSalary*1.5/10)*10).toLocaleString()}원) X 주말근무시간</td>
+					      <td>${(Math.round(ele.nightAllowance/10)*10).toLocaleString()}원</td>
 					    </tr>
 					  </table>
 					</div>`
@@ -317,11 +295,10 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 
 document.querySelector('.print-Btn').addEventListener('click',function () {
     const element = document.getElementById('print-content');
-	   html2canvas(element,{width:1500,height:1500}).then(function(canvas) { //저장 영역 div id
+	   html2canvas(element).then(function(canvas) { //저장 영역 div id
 		
 	    // 캔버스를 이미지로 변환
 	    var imgData = canvas.toDataURL('image/png');
-		window.open(imgData);
 	    var imgWidth = 190; // 이미지 가로 길이(mm) / A4 기준 210mm
 	    var pageHeight = imgWidth * 1.414;  // 출력 페이지 세로 길이 계산 A4 기준
 	    var imgHeight = canvas.height * imgWidth/ canvas.width;
@@ -372,6 +349,13 @@ document.querySelector('.print-Btn').addEventListener('click',function () {
       }
    */ 
  //#endregion
+
+
+
+
+
+
+
 
 
 //메인그리드 데이터 불러오기
@@ -495,3 +479,5 @@ async function checkSalry() {
 	resp = await result.json()
 	return resp;
 }
+
+            
