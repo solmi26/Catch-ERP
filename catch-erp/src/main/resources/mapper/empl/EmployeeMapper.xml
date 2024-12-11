@@ -191,6 +191,7 @@
 		                      #{employeeCode}
 							, #{name} 
 							, #{hireDate}
+							, #{password} 
 							, #{employeePosition} 
 							, #{statusType} 
 							, #{resignationDate} 
