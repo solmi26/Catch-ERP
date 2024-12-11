@@ -552,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			} else {
 				let itemCode = document.getElementById('itemCode').value;
 				fetch(`/stocks/deleteImage/${itemCode}`)
-				.then(result)
+				.then()
 				.then(result=>{
 					alert('자재 이미지가 정상적으로 삭제되었습니다.');
 					itemInfoList();
