@@ -16,4 +16,5 @@ public interface PayrollMapper {
 	public int insertPayroll();//급여명세 발행
 	public int selectCheckPayroll();//급여명세 발행여부 확인
 	public int deleteMonthPayroll();//급여명세 해당달 삭제
+	public int deleteMonthAwhi();//수당기록 해당달 삭제
 }
