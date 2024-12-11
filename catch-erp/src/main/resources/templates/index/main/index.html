@@ -59,11 +59,12 @@
     <div class="col-md-12 p-3">
         <div class="row g-4">
             <!-- Left Calendar Section -->
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card shadow-sm rounded-4 bg-primary text-white p-3 mb-4">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group">
                             <button class="btn btn-primary active">매입</button>
+                            <button class="btn btn-primary">매출</button>
                             <button class="btn btn-primary">결제처리</button>
                             <button class="btn btn-light">결제현황</button>
                         </div>
@@ -141,33 +142,21 @@
                         </div>
                         <div class="text-center">
                             <div class="d-flex align-items-center justify-content-center gap-3">
-                                <i class="bi bi-cloud-sun fs-1 text-warning"></i>
-                                <h2 class="mb-0">13.9°</h2>
+                                <img id="weatherIcon" />
+                                <h2 class="mb-0" id="temperature"></h2>
                             </div>
-                            <p class="text-muted mb-4">맑음<br>어제보다 2.5°</p>
+                            <p class="text-muted mb-4" id="description" style="font-weight: bolder;"></p>
                             <div class="row text-center g-3">
-                                <div class="col-3">
-                                    <div class="p-2 rounded bg-light">
-                                        <small class="d-block text-muted">기온</small>
-                                        <small class="text-primary" id="temperature"></small>
-                                    </div>
-                                </div>
-                                <div class="col-3">
+                                <div class="col-6">
                                     <div class="p-2 rounded bg-light">
                                         <small class="d-block text-muted">위치</small>
                                         <small class="text-success" id="place"></small>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-6">
                                     <div class="p-2 rounded bg-light">
-                                        <small class="d-block text-muted">설명</small>
-                                        <small class="text-warning" id="description"></small>
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="p-2 rounded bg-light">
-                                        <small class="d-block text-muted">일몰</small>
-                                        <small>19-20</small>
+                                        <small class="d-block text-muted">바람세기</small>
+                                        <small class="text-warning" id="wind"></small>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +165,7 @@
                 </div>
             </div>
 
-            <!-- Right AI Tools Section -->
+            <!-- Right AI Tools Section
             <div class="col-md-4">
                 <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body">
@@ -225,10 +214,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <script>
+    let weatherBtn = document.querySelector('#refreshWeatherBtn');
+    window.onload = function() {
+        weatherBtn.click();
+    }
     document.addEventListener('DOMContentLoaded', function() {
         let monthCount = 0;
         let now = new Date();
@@ -242,17 +235,17 @@
          * API : https://home.openweathermap.org/
          * 
          */
-        let weatherBtn = document.querySelector('#refreshWeatherBtn');
         
         weatherBtn.addEventListener('click', function () {
-            navigator.geolocation.getCurrentPosition(success);
+            navigator.geolocation.getCurrentPosition(success); // https에서만 사용 가능
         });
-
-        weatherBtn.click();
+        
         
         const tempSection = document.querySelector('#temperature');
         const placeSection = document.querySelector('#place');
         const descSection = document.querySelector('#description');
+        const windSection = document.querySelector('#wind');
+        const weatherIconSection = document.querySelector('#weatherIcon');
 
         const API_KEY = '2e8e530640d52e8ca467d2271bc41f53'; // 날씨API KEY
 
@@ -274,10 +267,15 @@
                 const temp = json.main.temp; // 기온
                 const place = json.name; // 위치정보
                 const desc = json.weather[0].description; // ex:맑음
+                const wind = json.wind.speed;
+                const weatherIcon = json.weather[0].icon;
+                const weatherIconURL = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
 
-                tempSection.innerText = temp;
+                tempSection.innerText = temp+'°';
                 placeSection.innerText = place;
                 descSection.innerText = desc;
+                windSection.innerText = wind+'m/s';
+                weatherIconSection.setAttribute('src',weatherIconURL);
             })
         }
         // 이전 달 출력
