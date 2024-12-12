@@ -91,11 +91,14 @@
 	  let employeeCode = document.getElementById('employeeCode');
 	  
 	  if(phone.value == '' || email.value == '' || address.value == '' || detailAddress.value == ''){
-		alert("필수 입력란을 확인하세요.");
+		
+		toastr.clear();
+		toastr.warning('필수 입력란을 확인하세요.');
 		return;
 	  }
 	  if(isHpFormat(phone.value) == false){
-		alert("모바일 입력란 형식을 확인하세요.");
+		toastr.clear();
+		toastr.warning('모바일 입력란 형식을 확인하세요.');
 		return;
 	  }
 	  
@@ -127,11 +130,13 @@
 			.then(result=>{
 				document.querySelector('img[name="employeePhoto"]').src = '/images/' + result.employeeImage;
 			})
-			alert('사원정보가 정상적으로 변경되었습니다.')
+			toastr.clear();
+			toastr.success("사원정보가 정상적으로 변경되었습니다.");
 		})
 	  .then()
 	  .catch(err=>{console.log(`제품사진변경 실패! ${err}`)
-			alert("사원정보 변경 중 에러가 발생했습니다.")
+	  		toastr.clear();
+			toastr.error("사원정보 변경 중 에러가 발생했습니다.");
 		})
   })
   	//휴대폰번호 유효성 체크
@@ -239,7 +244,8 @@
 		 let monthCondition = monthConditionBox.options[monthConditionBox.selectedIndex].value;
 		 let employeeCode = document.getElementById('employeeCode').value;
 		 if(yearCondition == 'year' || monthCondition == 'month'){
-			alert('조회하실 기간을 설정해주세요.')
+			toastr.clear();
+			toastr.warning('조회하실 기간을 설정해주세요.');
 			return;
 		 } else {
 			fetch(`/attendance?employeeCode=${employeeCode}&yearCondition=${yearCondition}&monthCondition=${monthCondition}`)
@@ -248,7 +254,10 @@
 				attendanceGrid.resetData(result)
 				window.setTimeout(function(){attendanceGrid.refreshLayout();},200);
 			})
-			.catch(err=>{`근태정보 조회 실패! ${err}`})
+			.catch(err=>{`근태정보 조회 실패! ${err}`
+				toastr.clear();
+				toastr.error("근태정보 조회 중 에러가 발생했습니다.");
+			})
 		 }
 	 })
 	

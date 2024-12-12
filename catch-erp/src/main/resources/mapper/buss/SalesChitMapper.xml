@@ -17,7 +17,8 @@
             employee_name,
             employee_code,
             supply_price,
-            vat
+            vat,
+            slip_state
         )
         VALUES (
             #{saleslipNo},
@@ -28,7 +29,8 @@
             #{employeeName},
             #{employeeCode},
             #{supplyPrice},
-            #{vat}
+            #{vat},
+            'r1'
         )
     </insert>
 
@@ -65,6 +67,9 @@
 
     <!-- 판매전표 조회 -->
     <select id="selectSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
+        WITH b as (SELECT saleslip_no, SUM(delivery_price) delivery_price
+                   FROM saleslip_history
+                   GROUP BY saleslip_no)
         SELECT
             a.saleslip_no
             ,a.insert_date
@@ -77,8 +82,7 @@
             ,employee_code
             ,slip_state
             ,(supply_price + vat) delivery_price
-        FROM    sales_chit a JOIN saleslip_history b
-        ON      a.saleslip_no = b.saleslip_no
+        FROM    sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
         ORDER BY a.saleslip_no DESC
     </select>
 
@@ -105,21 +109,21 @@
 
     <!-- 판매전표 검색 -->
     <select id="searchSalesChit" resultType="com.cherp.app.buss.vo.SalesChitVO">
-        SELECT a.saleslip_no
-                ,insert_date
-                ,client_code
-                ,client_name
-                ,acc_code
-                ,dep_bacct
+        WITH b as (SELECT saleslip_no, SUM(delivery_price) delivery_price
+                    FROM saleslip_history
+                    GROUP BY saleslip_no)
+        SELECT  a.saleslip_no
+                ,a.insert_date
+                ,a.client_code
+                ,a.client_name
+                ,a.dep_bacct
                 ,supply_price
-                ,sales_summary
+                ,vat
                 ,employee_name
                 ,employee_code
-                ,vat
                 ,slip_state
-                ,delivery_price
-        FROM sales_chit a JOIN saleslip_history b
-        ON a.saleslip_no = b.saleslip_no
+                ,(supply_price + vat) delivery_price
+        FROM    sales_chit a JOIN b ON a.saleslip_no = b.saleslip_no
         WHERE 1 = 1
         <if test="insertDate != null">
             AND a.insert_date >=  #{insertDate} AND a.insert_date <![CDATA[ < ]]> #{insertDate} + 1
@@ -133,6 +137,7 @@
         <if test="itemName != null">
             AND b.item_name LIKE '%' || #{itemName} || '%'
         </if>
+        ORDER BY a.saleslip_no DESC
     </select>
 
 

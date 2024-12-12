@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부족수량',
                 name: 'deficiencyQuantity',
-                align: "center",
+                align: "right",
                 width: 100,
                 whiteSpace: 'normal',
                 sortingType: 'desc',
@@ -519,8 +519,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 let params = {
                     whCode: whCode, itemCode: itemCode
                 }
-                console.log(whCode, itemCode)
-
+                // 창고와 상품이 선택되면 재고 수량 fetch
                 if (whCode && itemCode) {
                     fetch('/quantity/' + whCode + '/' + itemCode)
                         .then(result => result.json())
@@ -626,7 +625,7 @@ document.addEventListener("DOMContentLoaded", async function () {
      let orderModalTriggerBtn = document.getElementById('orderModal');
      orderModalTriggerBtn.addEventListener('click', function () {
 	 			if(document.getElementById("inputClientName").value == ''){
-	 				alert("발주서를 조회할 거래처를 선택해주세요.");
+                    toastr.warning("발주서를 조회할 거래처를 선택해주세요.");
 	 				return ;
 	 			}
                  let existentNo = []; //페이지 그리드에 있는 행들의 발주번호를 모은 배열
@@ -660,7 +659,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             header: {height: 40},
             bodyHeight: 500,
             columnOptions: {
-                frozenCount: 4, frozenBorderWidth: 1
+                frozenCount: 3, frozenBorderWidth: 1
             },
             width: 'auto',
             contextMenu: null,
@@ -676,10 +675,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             }],
             columns: [{
-                header: '발주번호', name: 'orderNo', align: "center", width: 120, whiteSpace: 'normal', className: 'border',
-            }, {
-                header: '거래처코드', name: 'clientCode', align: "center", width: 120, whiteSpace: 'normal',
-            }, {
+                header: '발주번호', name: 'orderNo', align: "center", width: 100, whiteSpace: 'normal', className: 'border',
+            },  {
                 header: '거래처명',
                 name: 'clientName',
                 align: "center",
@@ -699,18 +696,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                     }
                 }
             }, {
-                header: '사원코드',
-                name: 'employeeCode',
-                align: "center",
-                width: 100,
-                whiteSpace: 'normal',
-                className: 'border'
-            }, {
                 header: '사원명', name: 'name', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
             }, {
-                header: '품목코드', name: 'itemCode', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
+                header: '품목코드', name: 'itemCode', align: "center", width: 200, whiteSpace: 'normal', className: 'border'
             }, {
-                header: '품목명', name: 'itemName', align: "center", width: 100, whiteSpace: 'normal', className: 'border'
+                header: '품목명', name: 'itemName', align: "center", width: 250, whiteSpace: 'normal', className: 'border'
             }, {
                 header: '수량',
                 name: 'quantity',
@@ -725,9 +715,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '단가',
                 name: 'price',
                 align: "right",
-                width: 200,
+                width: 160,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 formatter: ({value}) => {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
@@ -736,9 +725,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '공급가액',
                 name: 'supplyPrice',
                 align: "right",
-                width: 200,
+                width: 160,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 formatter: ({value}) => {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
@@ -747,9 +735,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '부가세',
                 name: 'vat',
                 align: "right",
-                width: 200,
+                width: 160,
                 whiteSpace: 'normal',
-                editor: 'text',
                 className: 'border',
                 formatter: ({value}) => {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
@@ -765,9 +752,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     inputClientName.addEventListener('change', () => {
         let inputClientNameValue = document.getElementById('inputClientName').value;
-        console.log('이벤트 리스너 안')
         if (inputClientNameValue !== '') {
-            console.log("발주서 if 안")
             window.setTimeout(function () {
                 fetch('/clientOrderList/' + inputClientNameValue)
                     .then(result => result.json())
@@ -775,7 +760,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                     .catch(error => console.log(error))
             }, 200)
         } else {
-            console.log("발주서 else 안")
             window.setTimeout(function () {
                 fetch('/ordersList')
                     .then(result => result.json())
@@ -877,30 +861,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         insertSales.employeeCode = document.getElementById('empCodeInput').value.trim();
         // 입금계좌
         insertSales.depBacct = document.getElementById('accountInput').value.trim();
-        // 매출계정
-        // insertSales.accCode = document.getElementById('accCodeInput').value.trim();
-
         // 그리드 정보
         insertSales.saleslipHistories = salesChit.getData();
 
         // 빈 값 확인 - 마스터 정보
         if(insertSales.clientName === '') {
-            alert('거래처명을 입력하세요.')
+            toastr.warning('거래처명을 입력하세요.')
             return;
         }
 
         if(insertSales.employeeName === '') {
-            alert('담당자명을 입력하세요.')
+            toastr.warning('담당자명을 입력하세요.')
             return;
         }
 
         if(insertSales.depBacct === '') {
-            alert('입금계좌를 입력하세요.')
+            toastr.warning('입금계좌를 입력하세요.')
             return;
         }
 
         if(insertSales.saleslipHistories.length === 0) {
-            alert('발주서를 불러와 작성해주세요.')
+            toastr.warning('발주서를 불러와 작성해주세요.')
             return;
         }
 
@@ -910,7 +891,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         if (hasEmptyGridValues) {
-            alert('테이블에 빈 값이 포함되어 있습니다. 모든 필드를 입력해주세요.');
+            toastr.warning('테이블에 빈 값이 포함되어 있습니다. 모든 필드를 입력해주세요.');
             return; // 전송 중단
         }
 
@@ -918,7 +899,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let hasInvalidGridData = insertSales.saleslipHistories.some(row => {
             // '재고수량'이 음수인지 체크
             if (row['deficiencyQuantity'] < 0) {
-                alert('창고 수량이 부족합니다. 담당자에게 확인 부탁드립니다.');
+                toastr.warning('창고 수량이 부족합니다. 담당자에게 확인 부탁드립니다.');
                 return true; // 음수일 경우 오류 표시 후 중단
             }
             return false;
@@ -962,13 +943,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
             .then(result => {
                 if (result.status === 200) {
-                    alert("저장 완료");
-                    location.reload();
+                    toastr.success("판매완료 되었습니다.");
                 }
             })
             .then(result => {
                 console.log("판매전표 에러 : ", res.message)
             })
+
+        setTimeout(() => {
+            location.reload();
+        }, 3000)
     })
 
     // onGridMounted 이벤트 사용

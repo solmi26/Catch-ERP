@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 header: '품목명',
                 name: 'c3',
                 align: "center",
-                //width: 170,
+                width: '270',
                 whiteSpace: 'normal'
             },
             {
@@ -615,7 +615,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '품목명',
 		            name: 'c5',
 		            align: "center",
-		            width: 150,
+		            width: 270,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -624,7 +624,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '거래처명',
 		            name: 'c6',
 		            align: "center",
-		            width: 140,
+		            width: 230,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -884,7 +884,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '품목코드',
 		            name: 'c4',
 		            align: "center",
-		            width: 100,
+		            width: 150,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -894,7 +894,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '품목명',
 		            name: 'c5',
 		            align: "center",
-		            width: 100,
+		            width: 270,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -903,7 +903,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		            header: '거래처명',
 		            name: 'c6',
 		            align: "center",
-		            width: 140,
+		            width: 230,
 		            whiteSpace: 'normal',
 		            className:'border',
 		            filter: 'select',
@@ -1074,25 +1074,30 @@ document.addEventListener("DOMContentLoaded", function () {
 	
     let adjustTargetList = []; //이정보는 재고조정에 사용될 StocksAdjustVO객체(DB에 등록한거) 형태의 배열
     reportBtn.addEventListener("click", function(){		
-		if(grid.getRowCount()<1){						
-				alert('재고조정을 실시할 작업 건을 추가하세요.');						
+		if(grid.getRowCount()<1){			
+			toastr.clear();
+			toastr.warning('재고조정을 실시할 작업 건을 추가하세요.');	
+			throw new Error("(출하수량 오버)재고조정 중지시키기!");		
 		}
 		if(overHandleCheck){
-			alert('동일 품목에 대한 출하수량이 재고수량을 초과합니다.');
+			toastr.clear();
+			toastr.warning('동일 품목에 대한 출하수량이 재고수량을 초과합니다.');
 			throw new Error("(출하수량 오버)재고조정 중지시키기!")
 		}
 		let pageGrid = grid.getData();
 		pageGrid.forEach(ele=>{
 			if(ele.c4 == '상품 출고'){	
 				if(isNaN(Number(ele.c6)) || Number(ele.c6) < 1 || Number(ele.c6) > Number(ele.c8) || Number(ele.c6) > Number(ele.c5)){ //c.5 지시수량 / c.6 실출하수량
-					alert('유효한 작업수량을 입력하세요.') //출고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
+					toastr.clear();
+					toastr.warning('유효한 작업수량을 입력하세요.');//출고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
 					throw new Error("(출고)재고조정 중지시키기!");
 				}
 			}
 			
 			if(ele.c4 == '상품 입고'){
 				if(isNaN(Number(ele.c7)) || Number(ele.c7) < 1 || Number(ele.c7) > Number(ele.c5)){ //입고수량을 숫자가 아니거나 1미만인 상태에서 재고조정을 누르는 경우 모달띄우는 부트스트랩 클래스제거
-					alert('유효한 작업수량을 입력하세요.')				
+					toastr.clear();
+					toastr.warning('유효한 작업수량을 입력하세요.');
 					throw new Error("(입고)재고조정 중지시키기!");
 				}
 			}
@@ -1194,8 +1199,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		
        
        let reportSubmit = document.getElementById('reportSubmit');
-       reportSubmit.addEventListener("click", function(){			
-			let flag = confirm("재고조정을 완료하시겠습니까?");
+       reportSubmit.addEventListener("click", function(){	
+			let flag = confirm("입출고 처리를 완료하시겠습니까?");
 			if(flag == false){
 				return;
 			} else {			
@@ -1209,13 +1214,16 @@ document.addEventListener("DOMContentLoaded", function () {
 					console.log("성공할 거 같음?" + result)
 					})
 				.catch(err=>{
+					toastr.clear();
+					toastr.error("입출고 처리 중 에러가 발생했습니다.");
 					console.log("실패함" + err)
 				})			
-				
-				alert('재고조정처리되었습니다.')
+				toastr.clear();
+				toastr.success("정상적으로 입출고 처리되었습니다.");
 				let data = [];
 				grid.resetData(data);
 			}
+			
        })
     //#endregion
     
@@ -1392,7 +1400,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				grid.appendRows(dataArr);
 				disabledCell();
 			} else {
-				alert('한 번에 15건만을 처리할 수 있습니다.')
+				toastr.clear();
+				toastr.warning('한 번에 15건만을 처리할 수 있습니다.');
 				return;
 			}
 			},200)	
@@ -1426,7 +1435,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					grid.appendRows(dataArr);
 					disabledCell();
 		} else {
-			alert('한 번에 15건을 처리할 수 있습니다.')
+			toastr.clear();
+			toastr.warning('한 번에 15건만을 처리할 수 있습니다.');
 		}
 	})		
 			
@@ -1499,6 +1509,37 @@ document.addEventListener("DOMContentLoaded", function () {
 		saleRow.forEach(ele=>{
 			grid.disableCell(ele, 'c7');
 		})
+	}
+	
+	//toastr 함수
+	function showConfirm3(callback) {
+	  // 커스텀 toastr 알림 생성
+	  toastr.info(
+	    `
+	   입출고 처리하시겠습니까? <br>
+	    <button id="btn-yes" style="margin:5px; padding:5px 10px; border-radius:3px;">예</button>
+	    <button id="btn-no" style="margin:5px; padding:5px 10px; border-radius:3px;">아니오</button>
+	    `,
+	    '',
+	    {
+	      timeOut: 0, 
+	      extendedTimeOut: 0,
+	      closeButton: false,
+	      tapToDismiss: false,
+	      allowHtml: true,
+	    }
+	  );
+	
+	  
+	  $(document).on('click', '#btn-yes', function () {
+	    toastr.clear(); 
+	    callback(true); 
+	  });
+	
+	  $(document).on('click', '#btn-no', function () {
+	    toastr.clear(); 
+	    callback(false); 
+	  });
 	}
 	
 	//#endregion 체크박스관련 & 그 외

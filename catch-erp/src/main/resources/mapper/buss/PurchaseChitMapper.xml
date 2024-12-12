@@ -110,7 +110,7 @@
             #{itemCode},
             #{itemName},
             #{quantity},
-            #{restockingPrice},
+            #{price},
             sysdate + 5,
             #{quantity}
         )
@@ -135,17 +135,18 @@
 
     <!-- 구매전표 검색 -->
     <select id="searchPurchaseChit" resultType="com.cherp.app.buss.vo.PurchaseChitVO">
-        SELECT a.purcslip_no
-        ,insert_date
-        ,client_code
-        ,client_name
-        ,supply_price
-        ,employee_name
-        ,employee_code
-        ,vat
-        ,slip_state
-        FROM purchase_chit a JOIN purchase_history b
-        ON a.purcslip_no = b.purcslip_no
+        WITH b as (SELECT purcslip_no, SUM(restocking_price) total_price
+                    FROM purchase_history
+                    GROUP BY purcslip_no)
+        SELECT
+                a.purcslip_no,
+                insert_date,
+                client_code,
+                client_name,
+                supply_price,
+                vat,
+        (supply_price + vat) totalPrice
+        FROM purchase_chit a JOIN b ON a.purcslip_no = b.purcslip_no
         WHERE 1 = 1
         <if test="insertDate != null">
             AND a.insert_date >=  #{insertDate} AND a.insert_date <![CDATA[ < ]]> #{insertDate} + 1
@@ -159,6 +160,7 @@
         <if test="itemName != null">
             AND b.item_name LIKE '%' || #{itemName} || '%'
         </if>
+        ORDER BY a.purcslip_no DESC
     </select>
 
     <!-- 구매전표별 구매내역 보기-->

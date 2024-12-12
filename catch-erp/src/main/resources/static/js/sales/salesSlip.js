@@ -51,11 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 background: '#f8f9fa', text: 'black'
             }, focused: {
                 background: '#f8f9fa', border: '#f64a4a'
-            }, evenRow: {
-                background: 'white'
-            }, oddRow: {
-                background: 'white'
-            }
+            },
         }
     });
 
@@ -85,14 +81,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '판매전표번호',
                 name: 'saleslipNo',
                 align: "center",
-                width: 210,
+                width: 250,
                 whiteSpace: 'normal',
-                className: 'border'
+                className: 'border',
+                formatter: ({ value }) => `<span class="btn-link text-primary" style="cursor: pointer">${value}</span>`,
             }, {
                 header: '발주일자',
                 name: 'insertDate',
                 align: "center",
-                width: 210,
+                width: 250,
                 whiteSpace: 'normal',
                 className: 'border',
                 filter: {
@@ -107,13 +104,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '거래처명',
                 name: 'clientName',
                 align: "center",
-                width: 210,
+                width: 250,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
                 header: '금액합계',
                 name: 'deliveryPrice', align: "right",
-                width: 210,
+                width: 250,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -124,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '공급가액',
                 name: 'supplyPrice', align: "right",
-                width: 210,
+                width: 250,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -136,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, {
                 header: '부가세',
                 name: 'vat', align: "right",
-                width: 210,
+                width: 250,
                 whiteSpace: 'normal',
                 sortable: true,
                 sortingType: 'desc',
@@ -196,7 +193,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     saleslipHistory.resetData(data);
                     sortColor();
                 })
-                .catch(error => alert('판매전표별 내역을 불러오지 못했습니다.'))
+                .catch(error => toastr.error('판매전표별 내역을 불러오지 못했습니다.'))
 
             window.setTimeout(function () {
                 saleslipHistory.refreshLayout();
@@ -238,14 +235,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '창고명',
                 name: 'whName',
                 align: "center",
-                width: 200,
+                width: 150,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
                 header: '품목명',
                 name: 'itemName',
                 align: "center",
-                width: 100,
+                width: 250,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {

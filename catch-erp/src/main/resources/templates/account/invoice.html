@@ -46,8 +46,7 @@
           </ul>
 
           <button class="btn btn-danger resetBtn">발송취소</button>
-          <button class="btn btn-secondary">인쇄</button>
-          <button class="btn btn-secondary">Excel</button>
+          <button class="btn btn-secondary btn-excel">Excel</button>
         </div>
 
         <!-- Main Table 토스트 UI 그리드 -->
@@ -193,9 +192,9 @@
           <div class="modal-header">
             <h5 class="modal-title" id="modalLabel">세금계산서</h5>
           </div>
-          <div class="modal-body p-0 stm">
+          <div class="modal-body p-0 stm" id="invoice-form">
             <!-- 빨간 부분(공급자용)-->
-            <div class="invoice-form">
+            <div class="invoice-form" >
               <div class="invoice-header">
                 <div style="color: #ff0000; font-weight: bold" id="title1"></div>
                 <div id="allow1"></div>
@@ -412,7 +411,7 @@
 
           <!-- 모달 푸터 -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-success">인쇄</button>
+            <button class="btn btn-secondary btn-pdf">PDF 저장/인쇄</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
           </div>
         </div>

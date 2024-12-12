@@ -26,7 +26,18 @@ class RequiredColumnHeader {
 }
 
 
+class UnderlineRenderer {
+    constructor(props) {
+        const el = document.createElement('div');
+        el.style.textDecoration = 'underline';
+        el.textContent = props.value;
+        this.el = el;
+    }
 
+    getElement() {
+        return this.el;
+    }
+}
 
 
 //숫자타입 인풋

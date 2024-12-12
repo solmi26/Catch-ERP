@@ -195,6 +195,12 @@
 		background-color: rgb(170 203 115) !important;
 	}
 	
+	.underline-link {
+	  text-decoration: underline !important;
+	  color: #007bff; /* Bootstrap primary color */
+	  cursor: pointer;
+}
+	
 	/* .sideHome:hover{
 		background-color: white !important;
 	}

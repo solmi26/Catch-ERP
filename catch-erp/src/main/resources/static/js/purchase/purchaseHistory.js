@@ -81,7 +81,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 align: "center",
                 width: 250,
                 whiteSpace: 'normal',
-                className: 'border'
+                className: 'border',
+                formatter: ({ value }) => `<span class="btn-link text-primary" style="cursor: pointer">${value}</span>`,
             }, {
                 header: '발주일자',
                 name: 'insertDate',
@@ -142,6 +143,27 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
             },],
+            summary: {
+                height: 40,
+                position: 'bottom', // or 'top'
+                columnContent: {
+                    totalPrice: {
+                        template: function (valueMap) {
+                            return `평균 금액: ${Math.floor(valueMap.avg).toLocaleString()}<br>총 금액: ${Math.floor(valueMap.sum).toLocaleString()}`;
+                        }
+                    },
+                    supplyPrice: {
+                        template: function (valueMap) {
+                            return `평균 공급가액: ${Math.floor(valueMap.avg).toLocaleString()}<br>총 공급가액: ${Math.floor(valueMap.sum).toLocaleString()}`;
+                        }
+                    },
+                    vat: {
+                        template: function (valueMap) {
+                            return `평균 부가세: ${Math.floor(valueMap.avg).toLocaleString()}<br>총 부가세: ${Math.floor(valueMap.sum).toLocaleString()}`;
+                        }
+                    }
+                }
+            }
         });
 
         // 모든 판매전표 조회
@@ -213,14 +235,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '창고명',
                 name: 'whName',
                 align: "center",
-                width: 200,
+                width: 150,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
                 header: '품목명',
                 name: 'itemName',
                 align: "center",
-                width: 100,
+                width: 300,
                 whiteSpace: 'normal',
                 className: 'border'
             }, {
@@ -239,7 +261,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 header: '입고상태',
                 name: 'restockingStatus',
                 align: "center",
-                width: 150,
+                width: 100,
                 whiteSpace: 'normal',
                 sortable: true,
                 className: 'border'
@@ -288,6 +310,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; // 숫자에 콤마 추가
                 }
             },],
+
         });
 
         return purchaseHistory;
@@ -434,12 +457,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 200)
     });
 
-    window.setTimeout(function () {
-        fetch('/purchase/contractItem')
-            .then(result => result.json())
-            .then(data => itemGrid.resetData(data))
-            .catch(error => console.log(error))
-    }, 200)
+    // window.setTimeout(function () {
+    //     fetch('/purchase/contractItem')
+    //         .then(result => result.json())
+    //         .then(data => itemGrid.resetData(data))
+    //         .catch(error => console.log(error))
+    // }, 200)
 
     // 품목 그리드
     let itemGrid;
