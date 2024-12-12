@@ -519,8 +519,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 let params = {
                     whCode: whCode, itemCode: itemCode
                 }
-                console.log(whCode, itemCode)
-
+                // 창고와 상품이 선택되면 재고 수량 fetch
                 if (whCode && itemCode) {
                     fetch('/quantity/' + whCode + '/' + itemCode)
                         .then(result => result.json())
@@ -950,11 +949,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             .then(result => {
                 console.log("판매전표 에러 : ", res.message)
             })
-    })
 
-    setTimeout(() => {
-        location.reload();
-    }, 3000)
+        setTimeout(() => {
+            location.reload();
+        }, 3000)
+    })
 
     // onGridMounted 이벤트 사용
     salesChit.on('onGridMounted', () => {
