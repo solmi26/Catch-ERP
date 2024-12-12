@@ -151,7 +151,9 @@
 							,#{healthInsurance}
 							,#{employmentInsurance}
 							,#{leaveRate}
-							,#{allowanceHistoryVO, mode=IN, typeHandler=com.cherp.app.empl.vo.PayrollArrayStructHandler}  
+							,#{allowanceHistoryVO, 
+							   mode=IN, 
+							   typeHandler=com.cherp.app.empl.vo.PayrollArrayStructHandler}  
 	                         )
 		
 	

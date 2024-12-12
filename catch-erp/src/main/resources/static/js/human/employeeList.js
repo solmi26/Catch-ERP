@@ -128,7 +128,7 @@ function refreshRowNum (id) {
 }
 
 
-//고정수당 모달 이벤트
+//고정수당 모달 뜨는 이벤트
 allowanceGrid.on('click',function (ev) {
 	if (ev.targetType == 'cell' && ev.columnName != 'allowancePrice') {
 	currentTarget = ev;		
@@ -145,12 +145,27 @@ allowanceGrid.on('click',function (ev) {
 	}
 })
 
-//고정수당모달 이벤트
+//고정수당항목모달 이벤트
 allowanceItemGrid.on('click',function (ev) {
 	if(ev.targetType == 'cell') {
+		let flag = false;
+		let list = allowanceGrid.getData();
 		let allowanceCode = allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceCode')
 		let allowanceName =	allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceName')
 		let allowanceCheck =	allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceCheck')
+		//중복검사
+		/*
+		for (let ele of list) {
+			if (ele.allowanceName == allowanceName) {
+				flag = true;
+				alert("이미 존재하는 수당입니다.")
+				break;
+			}
+		}
+		if (flag) {
+			return;
+		}
+		*/
 		allowanceGrid.setValue(currentTarget.rowKey,'allowanceCode',allowanceCode)
 		allowanceGrid.setValue(currentTarget.rowKey,'allowanceName',allowanceName)
 		allowanceGrid.setValue(currentTarget.rowKey,'allowanceCheck',allowanceCheck)
@@ -227,7 +242,7 @@ saveBtn.addEventListener('click',function(){
 	resign = new Date(resignationDate.value)
 
 	if (resignationDate != "") {
-		if (resign > hhire && statusType != "m3") {
+		if (resign > hire && statusType != "m3") {
 			alert("재직구분을 다시 선택해주세요")
 			return;
 		}
