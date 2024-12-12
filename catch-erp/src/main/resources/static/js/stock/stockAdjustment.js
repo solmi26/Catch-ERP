@@ -1016,6 +1016,8 @@ document.addEventListener("DOMContentLoaded", function () {
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
             let adjustNo = "_" + document.getElementById("adjustNo").innerHTML;
             pdf.save(`재고조정보고서${adjustNo}.pdf`);
+            toastr.clear();
+			toastr.success("PDF 저장이 완료되었습니다.");
         });
     });
           
