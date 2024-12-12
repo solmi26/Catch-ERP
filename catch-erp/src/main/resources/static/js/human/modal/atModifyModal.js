@@ -37,10 +37,7 @@
             header: '날짜',
             name: 'attendanceDate',
 	        editor: {
-	          type:'datePicker',
-	          options:{
-	          	language: 'ko'
-	          	},
+	          type:gridDate,
 	          }
             },
             {

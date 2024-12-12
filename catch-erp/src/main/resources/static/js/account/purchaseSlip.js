@@ -595,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         header: "공급가액",
         name: "c5",
-        align: "rigth",
+        align: "right",
         width: 160,
         whiteSpace: "normal",
         editor: "text",

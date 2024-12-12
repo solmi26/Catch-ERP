@@ -519,8 +519,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 let params = {
                     whCode: whCode, itemCode: itemCode
                 }
-                console.log(whCode, itemCode)
-
+                // 창고와 상품이 선택되면 재고 수량 fetch
                 if (whCode && itemCode) {
                     fetch('/quantity/' + whCode + '/' + itemCode)
                         .then(result => result.json())
@@ -753,9 +752,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     inputClientName.addEventListener('change', () => {
         let inputClientNameValue = document.getElementById('inputClientName').value;
-        console.log('이벤트 리스너 안')
         if (inputClientNameValue !== '') {
-            console.log("발주서 if 안")
             window.setTimeout(function () {
                 fetch('/clientOrderList/' + inputClientNameValue)
                     .then(result => result.json())
@@ -763,7 +760,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                     .catch(error => console.log(error))
             }, 200)
         } else {
-            console.log("발주서 else 안")
             window.setTimeout(function () {
                 fetch('/ordersList')
                     .then(result => result.json())
@@ -865,9 +861,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         insertSales.employeeCode = document.getElementById('empCodeInput').value.trim();
         // 입금계좌
         insertSales.depBacct = document.getElementById('accountInput').value.trim();
-        // 매출계정
-        // insertSales.accCode = document.getElementById('accCodeInput').value.trim();
-
         // 그리드 정보
         insertSales.saleslipHistories = salesChit.getData();
 
@@ -951,12 +944,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             .then(result => {
                 if (result.status === 200) {
                     toastr.success("판매완료 되었습니다.");
-                    location.reload();
                 }
             })
             .then(result => {
                 console.log("판매전표 에러 : ", res.message)
             })
+
+        setTimeout(() => {
+            location.reload();
+        }, 3000)
     })
 
     // onGridMounted 이벤트 사용

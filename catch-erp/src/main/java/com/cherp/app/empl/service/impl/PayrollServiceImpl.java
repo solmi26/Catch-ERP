@@ -51,6 +51,7 @@ public class PayrollServiceImpl implements PayrollService {
 		System.out.println(map);
 		return mapper.updateSalaryCheck(map);
 	}
+	
 	@Override
 	public int payrollInsert(String mode) {
 		System.out.println(mode);
