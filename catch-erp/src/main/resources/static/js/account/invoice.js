@@ -326,13 +326,34 @@ document.addEventListener("DOMContentLoaded", function () {
   // 국세청 즉시 전송 선택
   document.querySelector(".now-save").addEventListener("click", function () {
     console.log("즉시 전송 버튼 선택");
+	
+	Swal.fire({
+		  title: "범용 공인인증서 번호 입력",
+		  input: "text",
+		  inputPlaceholder: "범용 공인인증서 번호를 입력하세요",
+		  showCancelButton: true,
+		  confirmButtonText: "확인",
+		  cancelButtonText: "취소",
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		    const inputCode = result.value;
 
+		    if (inputCode !== "1234567") { // 인증 코드 비교
+		      Swal.fire({
+		        icon: "error",
+		        title: "인증 실패",
+		        text: "범용 공인인증서 번호가 일치하지 않습니다.",
+		      });
+		      return;
+		    }
+
+    // 사업자등록 번호가 일치하면 로직 실행
     let selectedRows = grid.getCheckedRows(); // 체크된 데이터
     console.log("선택된 데이터 : ", selectedRows);
 
     if (selectedRows.length === 0) {
       //alert("전송할 데이터를 선택하세요.");
-	  toastr.clear();
+      toastr.clear();
       toastr.warning("전송할 데이터를 선택하세요.");
       return;
     }
@@ -345,8 +366,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (invalidRows.length > 0) {
       //alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
-	  toastr.clear();
-	  toastr.warning("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+      toastr.clear();
+      toastr.warning("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
       return;
     }
 
@@ -361,8 +382,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (sendRows.length > 0) {
       //alert("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
-	  toastr.clear();
-	  toastr.warning("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
+      toastr.clear();
+      toastr.warning("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
       return;
     }
 
@@ -390,8 +411,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((result) => {
         console.log("업데이트 결과 : ", result);
         //alert("국세청 전송이 완료되었습니다.");
-		toastr.clear();
-		toastr.success(`국세청 전송이 완료되었습니다.`);
+        toastr.clear();
+        toastr.success(`국세청 전송이 완료되었습니다.`);
 
         // 전송시 그리드 재로드
         loadGridData();
@@ -399,22 +420,52 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((error) => {
         console.log("업데이트 요청 중 오류 발생 : ", error);
         //alert("국세청 전송 중 오류가 발생했습니다.");
-		toastr.clear();
-		toastr.error("국세청 전송 중 오류가 발생했습니다.");
+        toastr.clear();
+        toastr.error("국세청 전송 중 오류가 발생했습니다.");
       });
-  });
+	  } else if (result.dismiss === Swal.DismissReason.cancel) {
+	        Swal.fire({
+	          icon: "info",
+	          title: "취소됨",
+	          text: "전송이 취소되었습니다.",
+	        });
+	      }
+	    });
+	  });
+	  
+	  
 
   // 일반 전송 버튼 선택
   document.querySelector(".save").addEventListener("click", function () {
     console.log("일반 전송 버튼 선택");
+
+	Swal.fire({
+	  title: "범용 공인인증서 번호 입력",
+	  input: "text",
+	  inputPlaceholder: "범용 공인인증서 번호를 입력하세요",
+	  showCancelButton: true,
+	  confirmButtonText: "확인",
+	  cancelButtonText: "취소",
+	}).then((result) => {
+	  if (result.isConfirmed) {
+	    const inputCode = result.value;
+
+	    if (inputCode !== "1234567") { // 인증 코드 비교
+	      Swal.fire({
+	        icon: "error",
+	        title: "인증 실패",
+	        text: "범용 공인인증서 번호가 일치하지 않습니다.",
+	      });
+	      return;
+	    }
 
     let selectedRows = grid.getCheckedRows(); // 체크된 데이터
     console.log("선택된 데이터 : ", selectedRows);
 
     if (selectedRows.length === 0) {
       //alert("전송할 데이터를 선택하세요.");
-	  toastr.clear();
-	  toastr.warning("전송할 데이터를 선택하세요.");
+      toastr.clear();
+      toastr.warning("전송할 데이터를 선택하세요.");
       return;
     }
 
@@ -426,8 +477,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (invalidRows.length > 0) {
       //alert("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
-	  toastr.clear();
-	  toastr.warning("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
+      toastr.clear();
+      toastr.warning("작성일자가 오늘 이후인 세금계산서는 전송할 수 없습니다.");
       return;
     }
 
@@ -443,8 +494,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (sendRows.length > 0) {
       //alert("이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다.");
-	  toastr.clear();
-	  toastr.warning("이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다.");
+      toastr.clear();
+      toastr.warning(
+        "이미 전송중이거나 국세청 전송이 완료된 건이 포함되어 있습니다."
+      );
       return;
     }
 
@@ -472,19 +525,29 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((result) => {
         console.log("업데이트 결과 : ", result);
         //alert("전송이 완료되었습니다. 익일 0시에 국세청으로 자동 전송됩니다.");
-		toastr.clear();
-		toastr.success(`전송이 완료되었습니다. 익일 0시에 국세청으로 자동 전송됩니다.`);
-		
+        toastr.clear();
+        toastr.success(
+          `전송이 완료되었습니다. 익일 0시에 국세청으로 자동 전송됩니다.`
+        );
+
         // 전송시 그리드 재로드
         loadGridData();
       })
       .catch((error) => {
         console.log("업데이트 요청 중 오류 발생 : ", error);
         //alert("전송 중 오류가 발생했습니다.");
-		toastr.clear();
-		toastr.error(`전송 중 오류가 발생했습니다.`);
+        toastr.clear();
+        toastr.error(`전송 중 오류가 발생했습니다.`);
       });
-  });
+	  } else if (result.dismiss === Swal.DismissReason.cancel) {
+	     Swal.fire({
+	       icon: "info",
+	       title: "취소됨",
+	       text: "전송이 취소되었습니다.",
+	       });
+	       }
+	     });
+	   });
 
   // 발송 취소 버튼 선택
   document.querySelector(".resetBtn").addEventListener("click", function () {
@@ -495,8 +558,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (selectedRows.length === 0) {
       //alert("전송할 데이터를 선택하세요.");
-	  toastr.clear();
-	  toastr.warning("전송할 데이터를 선택하세요.");
+      toastr.clear();
+      toastr.warning("전송할 데이터를 선택하세요.");
       return;
     }
 
@@ -510,8 +573,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (noSendRows.length > 0) {
       //alert("이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다.");
-	  toastr.clear();
-	  toastr.warning("이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다.");
+      toastr.clear();
+      toastr.warning(
+        "이미 미전송 상태이거나 국세청 전송 완료된 건이 포함되어있습니다."
+      );
       return;
     }
 
@@ -539,8 +604,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((result) => {
         console.log("발송 취소 결과 : ", result);
         //alert("발송취소가 완료되었습니다.");
-		toastr.clear();
-		toastr.success("발송취소가 완료되었습니다.");
+        toastr.clear();
+        toastr.success("발송취소가 완료되었습니다.");
 
         // 전송시 그리드 재로드
         loadGridData();
@@ -548,8 +613,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((error) => {
         console.log("발송 취소 요청 중 오류 발생 : ", error);
         //alert("발송 취소 중 오류가 발생했습니다.");
-		toastr.clear();
-		toastr.error("발송 취소 중 오류가 발생했습니다.");
+        toastr.clear();
+        toastr.error("발송 취소 중 오류가 발생했습니다.");
       });
   });
 
@@ -560,70 +625,70 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(event.rowKey);
     }
   });
-  
+
   // 엑셀 내보내기
   document.querySelector(".btn-excel").addEventListener("click", function () {
-  // 선택된 데이터 가져오기
-  const selectedData = grid.getCheckedRows();
+    // 선택된 데이터 가져오기
+    const selectedData = grid.getCheckedRows();
 
-  if (selectedData.length > 0) {
-    // 선택된 데이터가 있는 경우, 임시 Toast Grid를 생성하여 내보냄
-    const tempGrid = new tui.Grid({
-      el: document.createElement("div"), // DOM에 추가하지 않을 임시 요소
-      data: selectedData, // 선택된 데이터
-      columns: grid.getColumns(), // 기존 Grid의 컬럼 복사
-    });
-    tempGrid.export("xlsx", { fileName: "선택된_전자세금계산서.xlsx" });
-  } else {
-    // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
-    toastr.success(`선택된 데이터가 없어 전체 데이터를 다운로드합니다.`);
-    grid.export("xlsx", { fileName: "전체_전자세금계산서.xlsx" });
-  }
-});
+    if (selectedData.length > 0) {
+      // 선택된 데이터가 있는 경우, 임시 Toast Grid를 생성하여 내보냄
+      const tempGrid = new tui.Grid({
+        el: document.createElement("div"), // DOM에 추가하지 않을 임시 요소
+        data: selectedData, // 선택된 데이터
+        columns: grid.getColumns(), // 기존 Grid의 컬럼 복사
+      });
+      tempGrid.export("xlsx", { fileName: "선택된_전자세금계산서.xlsx" });
+    } else {
+      // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
+      toastr.success(`선택된 데이터가 없어 전체 데이터를 다운로드합니다.`);
+      grid.export("xlsx", { fileName: "전체_전자세금계산서.xlsx" });
+    }
+  });
 
-// PDF 단건 저장
-document.querySelector(".btn-pdf").addEventListener("click", async () => {
-  console.log("PDF 저장 버튼 클릭");
-  
-  // 캡처 대상 설정 (모달이 열려 있거나 특정 요소를 선택 가능)
-  const element = document.getElementById('invoice-form');
-  if (!element) {
-    toastr.error("캡처할 데이터가 없습니다.");
-    return;
-  }
+  // PDF 단건 저장
+  document.querySelector(".btn-pdf").addEventListener("click", async () => {
+    console.log("PDF 저장 버튼 클릭");
 
-  // 캡처 및 PDF 생성
-  try {
-    const canvas = await html2canvas(element, { scale: 2 }); // 캡처 및 해상도 설정
-    const imgData = canvas.toDataURL('image/png'); // 캔버스를 이미지로 변환
-    const imgWidth = 190; // 이미지 가로 길이 (A4 기준 210mm - 여백)
-    const pageHeight = imgWidth * 1.414; // A4 비율
-    const imgHeight = (canvas.height * imgWidth) / canvas.width; // 이미지 높이 비율 계산
-    let heightLeft = imgHeight;
-
-    const pdf = new jspdf.jsPDF('p', 'mm', 'a4'); // PDF 생성
-    let position = 0;
-
-    // 첫 페이지
-    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    // 추가 페이지
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+    // 캡처 대상 설정 (모달이 열려 있거나 특정 요소를 선택 가능)
+    const element = document.getElementById("invoice-form");
+    if (!element) {
+      toastr.error("캡처할 데이터가 없습니다.");
+      return;
     }
 
-    // PDF 다운로드
-    pdf.save('invoice.pdf');
-    toastr.success("PDF 저장이 완료되었습니다.");
-  } catch (error) {
-    console.error("PDF 생성 오류:", error);
-    toastr.error("PDF 생성 중 오류가 발생했습니다.");
-  }
-});
+    // 캡처 및 PDF 생성
+    try {
+      const canvas = await html2canvas(element, { scale: 2 }); // 캡처 및 해상도 설정
+      const imgData = canvas.toDataURL("image/png"); // 캔버스를 이미지로 변환
+      const imgWidth = 190; // 이미지 가로 길이 (A4 기준 210mm - 여백)
+      const pageHeight = imgWidth * 1.414; // A4 비율
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; // 이미지 높이 비율 계산
+      let heightLeft = imgHeight;
+
+      const pdf = new jspdf.jsPDF("p", "mm", "a4"); // PDF 생성
+      let position = 0;
+
+      // 첫 페이지
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // 추가 페이지
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      // PDF 다운로드
+      pdf.save("invoice.pdf");
+      toastr.success("PDF 저장이 완료되었습니다.");
+    } catch (error) {
+      console.error("PDF 생성 오류:", error);
+      toastr.error("PDF 생성 중 오류가 발생했습니다.");
+    }
+  });
 
   // 전체, 미전송, 전송완료 클릭하면 해당 정보 표시 기능 (추후 수정해서 사용)
   const statusBoxes = document.querySelectorAll(".status-box");
@@ -632,6 +697,5 @@ document.querySelector(".btn-pdf").addEventListener("click", async () => {
       const status = box.querySelector(".status-label").textContent;
       filterByStatus(status);
     });
-    
   });
 });

@@ -1199,8 +1199,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		
        
        let reportSubmit = document.getElementById('reportSubmit');
-       reportSubmit.addEventListener("click", function(){			
-			let flag = confirm("재고조정을 완료하시겠습니까?");
+       reportSubmit.addEventListener("click", function(){	
+			let flag = confirm("입출고 처리를 완료하시겠습니까?");
 			if(flag == false){
 				return;
 			} else {			
@@ -1214,13 +1214,16 @@ document.addEventListener("DOMContentLoaded", function () {
 					console.log("성공할 거 같음?" + result)
 					})
 				.catch(err=>{
+					toastr.clear();
+					toastr.error("입출고 처리 중 에러가 발생했습니다.");
 					console.log("실패함" + err)
 				})			
 				toastr.clear();
-				toastr.success("재고조정 처리되었습니다.");
+				toastr.success("정상적으로 입출고 처리되었습니다.");
 				let data = [];
 				grid.resetData(data);
 			}
+			
        })
     //#endregion
     
@@ -1397,7 +1400,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				grid.appendRows(dataArr);
 				disabledCell();
 			} else {
-				alert('한 번에 15건만을 처리할 수 있습니다.')
+				toastr.clear();
+				toastr.warning('한 번에 15건만을 처리할 수 있습니다.');
 				return;
 			}
 			},200)	
@@ -1431,7 +1435,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					grid.appendRows(dataArr);
 					disabledCell();
 		} else {
-			alert('한 번에 15건을 처리할 수 있습니다.')
+			toastr.clear();
+			toastr.warning('한 번에 15건만을 처리할 수 있습니다.');
 		}
 	})		
 			
@@ -1504,6 +1509,37 @@ document.addEventListener("DOMContentLoaded", function () {
 		saleRow.forEach(ele=>{
 			grid.disableCell(ele, 'c7');
 		})
+	}
+	
+	//toastr 함수
+	function showConfirm3(callback) {
+	  // 커스텀 toastr 알림 생성
+	  toastr.info(
+	    `
+	   입출고 처리하시겠습니까? <br>
+	    <button id="btn-yes" style="margin:5px; padding:5px 10px; border-radius:3px;">예</button>
+	    <button id="btn-no" style="margin:5px; padding:5px 10px; border-radius:3px;">아니오</button>
+	    `,
+	    '',
+	    {
+	      timeOut: 0, 
+	      extendedTimeOut: 0,
+	      closeButton: false,
+	      tapToDismiss: false,
+	      allowHtml: true,
+	    }
+	  );
+	
+	  
+	  $(document).on('click', '#btn-yes', function () {
+	    toastr.clear(); 
+	    callback(true); 
+	  });
+	
+	  $(document).on('click', '#btn-no', function () {
+	    toastr.clear(); 
+	    callback(false); 
+	  });
 	}
 	
 	//#endregion 체크박스관련 & 그 외

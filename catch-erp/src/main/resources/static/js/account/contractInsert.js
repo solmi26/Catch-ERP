@@ -163,11 +163,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const contractDate = document.getElementById("contract-date").value.trim();
     const contractName = document.getElementById("contract-name").value.trim();
     const clientCode = document.getElementById("c_clientInput2").value.trim();
-
+	
+	// 추가
+	const startDate = document.getElementById("billing-start-date").value.trim();
+	const endDate = document.getElementById("billing-end-date").value.trim();
+	const empName = document.getElementById("c_empName").value.trim();
+	
     const missingFields = [];
     if (!contractDate) missingFields.push("계약일자");
     if (!contractName) missingFields.push("계약명");
     if (!clientCode) missingFields.push("거래처");
+	
+	// 추가
+	if (!startDate) missingFields.push("계약 시작일");
+	if (!endDate) missingFields.push("계약 종료일");
+	if (!empName) missingFields.push("계약 담당자");
 
     if (missingFields.length > 0) {
       //alert(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
@@ -175,15 +185,30 @@ document.addEventListener("DOMContentLoaded", function () {
 	  toastr.warning(`${missingFields.join(", ")}은(는) 필수 입력 값입니다.`);
       return; // 서버로 전송X
     }
+	
+	// 계약 시작일과 종료일 유효성 검사
+	if (new Date(startDate) > new Date(endDate)) {
+	  toastr.clear();
+	  toastr.warning("계약 시작일은 계약 종료일보다 클 수 없습니다.");
+	  return; // 서버로 전송하지 않음
+	}
 
     // 그리드 데이터 수집 및 필수 값 입력 확인(품목명, 단가)
     const gridData = grid.getData(); // 전체 그리드 데이터
     const invalidRows = []; // 누락된 데이터 정보를 저장할 배열
+	const itemNames = new Set(); // 품목 중복 확인용 Set
 
     gridData.forEach((row, index) => {
       const missingFields = [];
       if (!row.itemName) missingFields.push("품목명");
       //if (!row.price || row.price <= 0) missingFields.push('단가'); -> 단가는 0원 일 경우가 발생할 수도 있을 것 같아서 제외 함.
+	  
+	  // 품목 중복 확인
+	  if (itemNames.has(row.itemName)) {
+	    invalidRows.push(`${index + 1}행: 품목명이 중복되었습니다. (${row.itemName})`);
+	  } else {
+	    itemNames.add(row.itemName); // 중복되지 않은 품목 추가
+	  }
 
       if (missingFields.length > 0) {
         invalidRows.push(`${index + 1}행의 ${missingFields.join(", ")}이 누락되었습니다.`);
