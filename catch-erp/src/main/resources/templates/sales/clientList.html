@@ -386,6 +386,7 @@
             pagination:"local",
             data: clientContractList,
             paginationSize:8,
+            minHeight:400,
             movableColumns:true,
             paginationCounter:"rows",
             resizableColumnFit:true,
@@ -483,9 +484,10 @@
             data: clientContractItemList, // toast ui table 에 입력할 데이터값
             scrollX: true,
             scrollY: true, // 가로, 세로 스크롤 사용 유무 판단
+            bodyHeight: 400,
             pageOptions: {
                 useClient: true,
-                perPage: 13
+                perPage: 7
             },
             columns: [
                         {

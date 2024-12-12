@@ -35,9 +35,9 @@ public class AttendanceArrayStructHandler implements TypeHandler<Object> {
 		int arrayIndex = 0;
 		for (AttendanceVO vo : list ) {
 			obj[0] = vo.getEmployeeCode();
-			obj[1] = simpleDateFormat.format(vo.getAttendanceDate());			
-			obj[2] = simpleDateFormat.format(vo.getAttendanceTime());
-			obj[3] = simpleDateFormat.format(vo.getLeaveTime());
+			obj[1] = vo.getAttendanceDate() != null ? simpleDateFormat.format(vo.getAttendanceDate()) : null;			
+			obj[2] = vo.getAttendanceTime() != null ? simpleDateFormat.format(vo.getAttendanceTime()) : null;
+			obj[3] = vo.getLeaveTime() != null ?simpleDateFormat.format(vo.getLeaveTime()) : null;
 			obj[4] = vo.getAttCode();
 			array[arrayIndex++] = conn.createStruct("ATTELE", obj);
 		}

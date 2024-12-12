@@ -59,6 +59,7 @@
     </div>	
     <div class="gridWrapper">
       <button type="button" class="btn btn-success" id="newAcc" data-bs-toggle="modal" data-bs-target="#accountSearchModal" style="margin-bottom: 10px;">입금등록</button>
+      <button type="button" class="btn btn-success" id="downExcel" style="margin-bottom: 10px;">Excel</button>
       <div id="grid"></div>
       <div id="pagination" class="tui-pagination"></div> <!-- 페이징 ui -->
     </div>
@@ -364,6 +365,13 @@
     searchClientBtn.addEventListener("click", function(){
       clientInfoList()		
     })
+
+    // excel download(Grid)
+    let downloadExcel = document.querySelector('#downExcel');
+      downloadExcel.addEventListener('click', function() {
+        saveExcel(grid);
+      })
+
     //처음 페이지 로드시 전체 제품 로드
     clientInfoList()
     //제품리스트 조회 함수
