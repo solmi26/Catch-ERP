@@ -28,7 +28,7 @@ public interface EmployeeMapper {
 	
 	
 	public int updateStatusType (List<EmployeeVO> employee); //사원다건 퇴직처리
-	
+	public int updateEmployeeSalary (String employeeCode); //사원단건 소득세 재산정
 	
 	
 	

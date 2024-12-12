@@ -127,6 +127,11 @@ public class RestEmployeeController {
 		return employeeService.statusTypeUpdate(employee);
 	}
 	
+	@GetMapping("employees/empSalary/{employeeCode}")
+	public int employeeSalryUpdate(@PathVariable(name = "employeeCode") String employeeCode) {
+		return employeeService.employeSalaryUpdate(employeeCode);
+	}
+	
 	
 	/* 파일저장를 위한 private 메서드 */
 	private String makeFolder() {
