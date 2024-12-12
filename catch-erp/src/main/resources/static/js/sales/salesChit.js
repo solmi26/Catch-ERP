@@ -950,11 +950,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             .then(result => {
                 console.log("판매전표 에러 : ", res.message)
             })
-    })
 
-    setTimeout(() => {
-        location.reload();
-    }, 3000)
+        setTimeout(() => {
+            location.reload();
+        }, 3000)
+    })
 
     // onGridMounted 이벤트 사용
     salesChit.on('onGridMounted', () => {
