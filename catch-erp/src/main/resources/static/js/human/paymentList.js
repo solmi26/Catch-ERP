@@ -277,7 +277,7 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					    <tr>
 					      <td class="background-payment">주말근로수당</td>
 					      <td>시급의 1.5배(약 ${(Math.round(ele.timeSalary*1.5/10)*10).toLocaleString()}원) X 주말근무시간</td>
-					      <td>${(Math.round(ele.nightAllowance/10)*10).toLocaleString()}원</td>
+					      <td>${(Math.round(ele.weekendAllowance/10)*10).toLocaleString()}원</td>
 					    </tr>
 					  </table>
 					</div>`

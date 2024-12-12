@@ -450,7 +450,8 @@ document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
 function dataToInput (data) {
 	console.log(data)
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
-	document.querySelector('#employeePhoto').src = '/images/'+data.employeeDetailVO.employeeImage
+    let imgSrc = data.employeeDetailVO.employeeImage != null ? '/images/' + data.employeeDetailVO.employeeImage : '/img/imageNo.jpg' 
+	document.querySelector('#employeePhoto').src = imgSrc
 	document.querySelector('#imgInput').value = null;
 	document.querySelector('.img-Text').value = null;
 
