@@ -86,7 +86,7 @@
 					<div class="col">
 						<button type="button" class="btn btn-sm btn-secondary excel-Btn">Excel</button>
 						<button type="button" class="btn btn-sm btn-success insert-Btn">저장</button>
-						<input type="file" class="excel-Input" style="display:none;" accept="*.xls">Excel</button>
+						<input type="file" class="excel-Input" style="display:none;" accept="*.xls">
 					</div>
 				</div>
 			</div>
@@ -187,6 +187,7 @@
 	    	{
 	    	  header:'사원코드',
 	    	  name:'사원코드',
+	    	  hidden:true,
 	    	},
 	        {
 	          header: '사원아이디',
@@ -216,10 +217,12 @@
 	        {
 	          header: '근태유형코드',
 	          name: '근태유형코드',
+	          hidden:true
 		    },
 		    {
 		      header:'근태유형',
 		      name:'근태유형',
+		      hidden:true,
 		     	  relations: [
 		     	       {
 		     	         targetNames: ['출근시간', '퇴근시간'],
@@ -254,7 +257,18 @@
 	      ],
 	      data: [{}
 	      ],
-	      showDummyRows: true
+	      showDummyRows: true,
+	      contextMenu: ({ rowKey, columnName }) => [
+	          [
+	            {
+	              name: 'export',
+	              label: '엑셀출력',
+                  action: () => {
+                      grid.export('xlsx', {includeHiddenColumns:true });
+                    },	              
+	            }
+	        ]
+	          ]
 	    });
 	    
 	  

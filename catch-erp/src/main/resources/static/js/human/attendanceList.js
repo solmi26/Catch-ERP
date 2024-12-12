@@ -35,6 +35,13 @@ atModifyGrid.on('click',function(ev){
 	}
 })
 //#endregion
+
+//수정저장 블러처리
+document.querySelector('.save-Btn').addEventListener('mouseover',function () {
+	atModifyGrid.blur()
+})
+
+
 //근태항목 그리드 클릭이벤트
 atItemGrid.on('click',function (ev) {
 	console.log(ev)

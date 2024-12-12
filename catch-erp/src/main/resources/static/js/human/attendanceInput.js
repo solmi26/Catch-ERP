@@ -179,8 +179,10 @@ function nullCheck (data) {
 document.querySelector('.excel-Btn').addEventListener('click',function () {
 	document.querySelector('.excel-Input').click()
 })
-document.querySelector('.excel-Input').addEventListener('change',function (ev) {
+document.querySelector('.excel-Input').addEventListener('input',function (ev) {
 	readExcel(ev)
+	ev.target.value = null;
+	
 })
 let row
 function readExcel(event) {
@@ -194,8 +196,8 @@ function readExcel(event) {
         workBook.SheetNames.forEach(function (sheetName) {
             
             rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
-            grid.resetData(rows)
         })
+            grid.appendRows(rows)
     };
     reader.readAsBinaryString(input.files[0]);
 }
