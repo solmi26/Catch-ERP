@@ -325,6 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	      data: selectedData, // 선택된 데이터
 	      columns: c_grid.getColumns(), // 기존 Grid의 컬럼 복사
 	    });
+	    toastr.success(`다운로드 되었습니다.`);
 	    tempGrid.export("xlsx", { fileName: "선택된_계약_데이터.xlsx" });
 	  } else {
 	    // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
