@@ -239,10 +239,6 @@
 
 	<!-- RECEIVABLES_LOG 테이블 insert(채권 거래 내역 등록) -->  
 	<insert id="insertReceivable" parameterType="com.cherp.app.acct.vo.SalesVO">
-	<selectKey keyProperty="logId" order="BEFORE" resultType="int">
-			SELECT NVL(MAX(log_id),0) + 1
-			FROM receivables_log
-	</selectKey>
 		INSERT INTO  receivables_log(
 	            log_id <!-- 번호 --> 
 	            ,rec_date <!-- == 매출전표 --> 
@@ -251,7 +247,7 @@
 	            ,sales_chit_no <!-- 매출전표번호 --> 
 
 	        ) VALUES(
-	           #{logId}
+	           RECEIVABLES_LOG_SEQ.NEXTVAL
 	           ,#{chitDate}
 	           ,#{totalPrice}
 	           ,#{clientCode}
@@ -318,10 +314,6 @@
 	
 	<!-- payables_log 테이블 insert(채무 거래 내역 등록) -->  
 	<insert id="insertReceivableSM" parameterType="com.cherp.app.acct.vo.PayablesVO">
-	<selectKey keyProperty="recLogId" order="BEFORE" resultType="int">
-			SELECT NVL(MAX(rec_log_id),0) + 1
-			FROM payables_log
-	</selectKey>
 		INSERT INTO payables_log(
 	            rec_log_id <!-- 번호 --> 
 	            ,rec_date <!-- == 매입전표 -->
@@ -329,7 +321,7 @@
 	            ,client_code <!-- 거래처코드 --> 
 	            ,purchase_chit_no <!-- 매입전표번호 -->
 	        ) VALUES(
-	           #{recLogId}
+	        	PAYABLES_LOG_SEQ.NEXTVAL
 	           ,#{chitDate}
 	           ,#{totalPrice}
 	           ,#{clientCode}
