@@ -86,7 +86,7 @@
     </div>
 </div>
 
-<!-- 판매목록 전표 모달 -->
+<!-- 구매목록 전표 모달 -->
 <div class="modal fade" id="purchaseHistoryModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -99,7 +99,10 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <p class="msg"><small>※구매내역을 확인하세요</small></p>
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+                <div>
+                    <button id="PurchaseExcelBtn" class="btn btn-success" style="border: 1px solid grey !important;">Excel</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
             </div>
         </div>
     </div>

@@ -523,5 +523,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     initItemGrid()
 
+    let ExcelBtn = document.getElementById("salesExcelBtn");
+    ExcelBtn.addEventListener("click",function(){
+        saveExcel(saleslipHistory);
+    })
+
 });
 
