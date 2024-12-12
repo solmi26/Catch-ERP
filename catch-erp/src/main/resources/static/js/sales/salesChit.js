@@ -975,5 +975,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     const myModal = new bootstrap.Modal('#accountSearchModal')
+
+    let ExcelBtn = document.getElementById("orderExcelBtn");
+    ExcelBtn.addEventListener("click",function(){
+        saveExcel(ordersGrid);
+    })
 });
 
