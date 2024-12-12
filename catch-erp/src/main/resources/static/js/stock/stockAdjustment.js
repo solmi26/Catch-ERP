@@ -1317,7 +1317,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	.then(result => result.json())
 	.then(result => {
 		let filteredResult = result.filter(ele=>{
-			return ele.departmentName == "영업팀" || ele.departmentName == "믈류팀"; 
+			return ele.departmentName == "영업팀" || ele.departmentName == "물류팀"; 
 		})
 		let dataArr = [];
 		filteredResult.forEach(ele=>{
