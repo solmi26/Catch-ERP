@@ -519,8 +519,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 let params = {
                     whCode: whCode, itemCode: itemCode
                 }
-                console.log(whCode, itemCode)
-
+                // 창고와 상품이 선택되면 재고 수량 fetch
                 if (whCode && itemCode) {
                     fetch('/quantity/' + whCode + '/' + itemCode)
                         .then(result => result.json())
