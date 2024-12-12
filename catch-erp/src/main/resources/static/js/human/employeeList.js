@@ -69,6 +69,9 @@ let readonly = [
 grid.on('click', function (ev) {
 	if (ev.targetType == 'cell') {
 		document.querySelector('#saveBtn').dataset.mode = 'update';
+		document.querySelector('.empSal-Btn').style = 'display:block'
+		document.querySelector('#saveBtn').innerText = '수정'
+		
 		document.querySelector('.employee-box').querySelectorAll('.hide-opt').forEach(ele => {
 		ele.style = 'opacity:100;'
 		})
@@ -209,10 +212,11 @@ bankGrid.on('click',function (ev) {
 
 //신규버튼 클릭 이벤트
 document.querySelector('#newBtn').addEventListener('click',function () {
+			document.querySelector('#saveBtn').innerText = '저장'
 	let input = document.querySelector('#employeeTabContent').querySelectorAll('input')
 	document.querySelector('.employee-box').querySelector('[name="empStatus"]').disabled = true;
 	document.querySelector('.employee-box').querySelector('[name="resignationDate"]').disabled = true;
-
+	document.querySelector('.empSal-Btn').style = 'display:none'
 	document.querySelector('#saveBtn').dataset.mode = 'insert';
 	input.forEach(ele => {
 		ele.value = null;
@@ -450,7 +454,8 @@ document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
 function dataToInput (data) {
 	console.log(data)
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
-	document.querySelector('#employeePhoto').src = '/images/'+data.employeeDetailVO.employeeImage
+    let imgSrc = data.employeeDetailVO.employeeImage != null ? '/images/' + data.employeeDetailVO.employeeImage : '/img/imageNo.jpg' 
+	document.querySelector('#employeePhoto').src = imgSrc
 	document.querySelector('#imgInput').value = null;
 	document.querySelector('.img-Text').value = null;
 
@@ -495,8 +500,108 @@ function dataToInput (data) {
 
 	}
 }
+//employees/empSalary/
+document.querySelector('.empSal-Btn').addEventListener('click', async function () {
+	let flag;
+	flag = confirm('현재 사원정보를 저장하고 세금을 재산정 하시겠습니까?')
+	if (flag) {
+			//인풋 유효성검사
+			if (!formValidity()){
+				return;
+			}
+			//퇴직검사	
+			let hireDate = document.querySelector('.employee-box').querySelector('[name="hireDate"]')
+			let resignationDate = document.querySelector('.employee-box').querySelector('[name="resignationDate"]')
+			let statusType = document.querySelector('.employee-box').querySelector('[name="statusType"]')
+			let empStatus = document.querySelector('.employee-box').querySelector('[name="empStatus"]')
+			let emplpyeeCode = document.querySelector('.employee-box').querySelector('[name="employeeCode"]') 
+			let now = new Date();
+			hire = new Date(hireDate.value)
+			resign = new Date(resignationDate.value)
+		
+			if (resignationDate != "") {
+				if (resign > hire && statusType != "m3") {
+					alert("재직구분을 다시 선택해주세요")
+					return;
+				}
+			}
+		
+			
+			let EmployeeVO = {};
+			// EmployeeVO 필드값 넣기
+			let empInfo = document.querySelectorAll('.EmployeeVO')
+			empInfo.forEach(ele => {
+				EmployeeVO[ele.name] = ele.value;
+			})
+			
+			// EmployeeDetailVO 
+			let EmployeeDetailVO = {}
+			let detailInfo = document.querySelectorAll('.EmployeeDetailVO')
+			detailInfo.forEach(ele => {
+				EmployeeDetailVO[ele.name] = ele.value;
+			})
+			
+			
+			
+			EmployeeVO['employeeDetailVO'] = EmployeeDetailVO 
+			
+			// EmployeeSalaryVO 필드값 넣기
+			let EmployeeSalaryVO = {};
+			let salaryInfo = document.querySelectorAll('.EmployeeSalaryVO')
+			salaryInfo.forEach(ele => {
+				EmployeeSalaryVO[ele.name] = ele.value;
+			})
+			EmployeeVO['employeeSalaryVO'] = EmployeeSalaryVO 
+			
+			
+			// FixedVO 필드값넣기
+			let FixedVO =[]
+			let index = 0;
+			allowanceGrid.getData().forEach(ele => {
+				console.log(ele)
+				let obj = {};
+				obj['allowanceCheck'] = ele.allowanceCheck
+				obj['allowanceCode'] = ele.allowanceCode
+				obj['allowanceName'] = ele.allowanceName
+				obj['allowancePrice'] = ele.allowancePrice
+				FixedVO[index] = obj;
+				index += 1;
+			})
+		
+			EmployeeVO['fixedVO'] = FixedVO;
+			
+			//사진첨부하기
+			let formData = new FormData();
+			let imgInput = document.querySelector('#imgInput')
+			if (imgInput.files.length != 0) {
+			formData.append("imageFile", imgInput.files[0]);		
+			}else {
+			formData.append("imageFile", imgInput.files[0]);		
+			}
+			formData.append("EmployeeVO", JSON.stringify(EmployeeVO))
 
-
+			await fetch('/employees/emps',{
+				  method:'put',
+				  body: formData
+			})
+			.then()
+			
+			fetch('/employees/empSalary/'+emplpyeeCode.value)
+			.then(
+				data => {
+					alert("인사정보가 저장되고, 소득세가 재산정되었습니다.")
+				}
+			)
+			
+		
+		
+		
+		
+		
+	}else {
+		return;
+	}
+})
 
 //날짜를 yyyy-mm-dd형식으로 바꿔주는 함수
 function dateFormatter (date) {

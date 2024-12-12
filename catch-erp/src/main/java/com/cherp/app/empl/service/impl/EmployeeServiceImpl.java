@@ -83,6 +83,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return (salary + detail + emp + fixed+attHi+pay+allHi+awhi+backup)/9;
 	}
 	
+	@Override
+	public int employeSalaryUpdate(String employeeCode) {
+		return employeemapper.updateEmployeeSalary(employeeCode);
+	}
+	
 	public String byteToString (byte[] bytes) {
 		StringBuilder builder = new StringBuilder();
 		for (byte ele : bytes) {
