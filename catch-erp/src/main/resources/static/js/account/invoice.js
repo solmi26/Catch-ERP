@@ -326,28 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 국세청 즉시 전송 선택
   document.querySelector(".now-save").addEventListener("click", function () {
     console.log("즉시 전송 버튼 선택");
-	
-	Swal.fire({
-		  title: "범용 공인인증서 번호 입력",
-		  input: "text",
-		  inputPlaceholder: "범용 공인인증서 번호를 입력하세요",
-		  showCancelButton: true,
-		  confirmButtonText: "확인",
-		  cancelButtonText: "취소",
-		}).then((result) => {
-		  if (result.isConfirmed) {
-		    const inputCode = result.value;
 
-		    if (inputCode !== "1234567") { // 인증 코드 비교
-		      Swal.fire({
-		        icon: "error",
-		        title: "인증 실패",
-		        text: "범용 공인인증서 번호가 일치하지 않습니다.",
-		      });
-		      return;
-		    }
-
-    // 사업자등록 번호가 일치하면 로직 실행
     let selectedRows = grid.getCheckedRows(); // 체크된 데이터
     console.log("선택된 데이터 : ", selectedRows);
 
@@ -386,6 +365,26 @@ document.addEventListener("DOMContentLoaded", function () {
       toastr.warning("이미 국세청 전송이 완료된 건이 포함되어 있습니다.");
       return;
     }
+    
+    	Swal.fire({
+		  title: "범용 공인인증서 번호 입력",
+		  input: "password", // 입력 타입을 'password'로 설정
+		  inputPlaceholder: "범용 공인인증서 번호를 입력하세요",
+		  showCancelButton: true,
+		  confirmButtonText: "확인",
+		  cancelButtonText: "취소",
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		    const inputCode = result.value;
+
+		    if (inputCode !== "1234567") { // 인증 코드 비교
+		      Swal.fire({
+		        icon: "error",
+		        title: "인증 실패",
+		        text: "범용 공인인증서 번호가 일치하지 않습니다.",
+		      });
+		      return;
+		    }
 
     // 국세청 즉시 전송할 데이터
     let nowSendData = noSendRows.map((row) => ({
@@ -439,26 +438,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".save").addEventListener("click", function () {
     console.log("일반 전송 버튼 선택");
 
-	Swal.fire({
-	  title: "범용 공인인증서 번호 입력",
-	  input: "text",
-	  inputPlaceholder: "범용 공인인증서 번호를 입력하세요",
-	  showCancelButton: true,
-	  confirmButtonText: "확인",
-	  cancelButtonText: "취소",
-	}).then((result) => {
-	  if (result.isConfirmed) {
-	    const inputCode = result.value;
-
-	    if (inputCode !== "1234567") { // 인증 코드 비교
-	      Swal.fire({
-	        icon: "error",
-	        title: "인증 실패",
-	        text: "범용 공인인증서 번호가 일치하지 않습니다.",
-	      });
-	      return;
-	    }
-
     let selectedRows = grid.getCheckedRows(); // 체크된 데이터
     console.log("선택된 데이터 : ", selectedRows);
 
@@ -500,6 +479,26 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       return;
     }
+    
+    	Swal.fire({
+	  title: "범용 공인인증서 번호 입력",
+	   input: "password", // 입력 타입을 'password'로 설정
+	  inputPlaceholder: "범용 공인인증서 번호를 입력하세요",
+	  showCancelButton: true,
+	  confirmButtonText: "확인",
+	  cancelButtonText: "취소",
+	}).then((result) => {
+	  if (result.isConfirmed) {
+	    const inputCode = result.value;
+
+	    if (inputCode !== "1234567") { // 인증 코드 비교
+	      Swal.fire({
+	        icon: "error",
+	        title: "인증 실패",
+	        text: "범용 공인인증서 번호가 일치하지 않습니다.",
+	      });
+	      return;
+	    }
 
     // 일반 전송할 데이터
     let nowSendData = noSendRows.map((row) => ({
@@ -638,6 +637,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data: selectedData, // 선택된 데이터
         columns: grid.getColumns(), // 기존 Grid의 컬럼 복사
       });
+      toastr.success(`다운로드 되었습니다.`);
       tempGrid.export("xlsx", { fileName: "선택된_전자세금계산서.xlsx" });
     } else {
       // 선택된 데이터가 없는 경우 전체 데이터를 내보냄
