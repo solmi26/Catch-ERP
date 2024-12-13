@@ -161,7 +161,7 @@ allowanceItemGrid.on('click',function (ev) {
 		for (let ele of list) {
 			if (ele.allowanceName == allowanceName) {
 				flag = true;
-				alert("이미 존재하는 수당입니다.")
+				toastr.warning("이미 존재하는 수당입니다.")
 				break;
 			}
 		}
@@ -247,7 +247,7 @@ saveBtn.addEventListener('click',function(){
 
 	if (resignationDate != "") {
 		if (resign > hire && statusType != "m3") {
-			alert("재직구분을 다시 선택해주세요")
+			toastr.warning("재직구분을 다시 선택해주세요")
 			return;
 		}
 	}
@@ -313,7 +313,7 @@ saveBtn.addEventListener('click',function(){
 		 fetch('/employees/emps', {method: 'post', 
              body: formData
        }).then(
-		alert("사원정보가 등록되었습니다.")
+		toastr.success("사원정보가 등록되었습니다.")
 	   )
 	   .catch(
 
@@ -330,7 +330,7 @@ saveBtn.addEventListener('click',function(){
 			  body: formData
 		})
 		.then(
-		alert("사원정보가 수정되었습니다.")
+		toastr.success("사원정보가 수정되었습니다.")
 		)
 		.finally(
 		document.querySelector('.search-btn').click()	
@@ -424,7 +424,7 @@ document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
 			body:JSON.stringify(check)
 		})
 		.then(
-			alert("사원이 퇴직처리 되었습니다.")
+			toastr.success("사원이 퇴직처리 되었습니다.")
 		)
 		.then(
 			document.querySelector('.search-btn').click()
@@ -437,7 +437,7 @@ document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
 		})
 		fetch('/employees/emps?employeeCode='+str.substring(1),
 		{method:'delete',})
-		.then(data => {alert("사원정보가 삭제되었습니다.")})
+		.then(data => {toastr.success("사원정보가 삭제되었습니다.")})
 		.then(
 			data => {document.querySelector('.search-btn').click()}
 		)
@@ -521,7 +521,7 @@ document.querySelector('.empSal-Btn').addEventListener('click', async function (
 		
 			if (resignationDate != "") {
 				if (resign > hire && statusType != "m3") {
-					alert("재직구분을 다시 선택해주세요")
+					toastr.warning("재직구분을 다시 선택해주세요")
 					return;
 				}
 			}
@@ -589,7 +589,7 @@ document.querySelector('.empSal-Btn').addEventListener('click', async function (
 			fetch('/employees/empSalary/'+emplpyeeCode.value)
 			.then(
 				data => {
-					alert("인사정보가 저장되고, 소득세가 재산정되었습니다.")
+					toastr.success("인사정보가 저장되고, 소득세가 재산정되었습니다.")
 				}
 			)
 			
@@ -670,7 +670,7 @@ document.querySelector('.employee-box').querySelectorAll('[type="date"]').forEac
 	hire = new Date(hireDate.value)
 	resign = new Date(resignationDate.value)
 	if (hire > resign) {
-		alert("날짜를 다시 입력해주세요");
+		toastr.warning("날짜를 다시 입력해주세요");
 		ev.target.value = "";
 		ev.target.focus()
 	} else if (resign > now) {
@@ -691,7 +691,7 @@ document.querySelector('.employee-box').querySelector('[name="empStatus"]').addE
 	if (statusType.value == 'm1') {
 		e.target.value=""
 		statusType.focus()
-		alert("재직구분을 다시 지정해주세요")
+		toastr.warning("재직구분을 다시 지정해주세요")
 		
 	}
 })
@@ -702,13 +702,13 @@ document.querySelectorAll('.number-format').forEach(ele => {
 		if (isNaN(Number(value))) {
 			ev.target.value = ""
 			ev.target.focus()
-			alert("숫자를 입력해 주세요.")
+			toastr.warning("숫자를 입력해 주세요.")
 			
 		}
 		if (Number(ev.target.value) < 0) {
 			ev.target.value = ""
 			ev.target.focus()
-			alert("-없이 입력해 주세요.")
+			toastr.warning("-없이 입력해 주세요.")
 		}
 	})
 })
@@ -720,7 +720,7 @@ document.querySelector('[name="identityNo"]').addEventListener('change',function
 	let leng = ev.target.value.length
 	if (leng != 13) {
 		ev.target.value = ""
-		alert("주민등록번호 형식에 맞춰주세요.")
+		toastr.warning("주민등록번호 형식에 맞춰주세요.")
 		ev.target.focus()
 	}
 })
