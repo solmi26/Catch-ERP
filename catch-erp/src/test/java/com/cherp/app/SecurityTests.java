@@ -52,7 +52,7 @@ public class SecurityTests {
 		System.out.println("3");
 		System.err.println("왜안됨?"+bytes);
 		byte[] g = aesEncoder.decrypt(bytes);
-		System.out.println("4");
+		System.out.println("4");d
 		System.out.println(new String(g, StandardCharsets.UTF_8));
 		*/
 		LocalDate today = LocalDate.now();

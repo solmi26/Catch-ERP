@@ -38,12 +38,12 @@ document.querySelector('.dedu-save-Btn').addEventListener('click',function (ev) 
 	let name = modal.querySelector('[name="deductionsName"]')
 	let rate = modal.querySelector('[name="deductionsDeductible"]')
 	if (name.value == "") {
-		alert("이름을 다시 입력해주세요.")
+		toastr.warning("이름을 다시 입력해주세요.")
 		name.focus()
 		return;
 	}
 	if (rate < 0 || rate > 100) {
-		alert("공제율을 다시 입력해주새요.")
+		toastr.warning("공제율을 다시 입력해주새요.")
 		rate.value = 0;
 		rate.focus();
 		return;
@@ -62,7 +62,7 @@ document.querySelector('.dedu-save-Btn').addEventListener('click',function (ev) 
 		body:JSON.stringify(deductionVO)
 	})
 	.then(data => {
-		alert("공제가 수정되었습니다.")
+		toastr.success("공제가 수정되었습니다.")
 		deduGridDataLoad()
 		deduModifyModal.hide()
 	})
@@ -90,24 +90,24 @@ document.querySelector('.income-save-Btn').addEventListener('click',function (ev
 	let max = Number(parseNumber(maxRaw.value))
 	console.log(min)
 	if (name.value == "") {
-		alert("이름을 다시 입력해주세요.")
+		toastr.warning("이름을 다시 입력해주세요.")
 		name.focus()
 		return;
 	}
 	if (rate < 0 || rate > 100 || rate == "") {
-		alert("공제율을 다시 입력해주새요.")
+		toastr.warning("공제율을 다시 입력해주새요.")
 		rate.value = 0;
 		rate.focus();
 		return;
 	}
 	if (min < 0 || min >= max) {
-		alert("최소금액을 다시 입력해주새요.")
+		toastr.warning("최소금액을 다시 입력해주새요.")
 		minRaw.value = 0;
 		minRaw.focus();
 		return;
 	}
 	if (max < 0 ) {
-		alert("최대금액을 다시 입력해주새요.")
+		toastr.warning("최대금액을 다시 입력해주새요.")
 		maxRaw.value = 0;
 		maxRaw.focus();
 		return;
@@ -126,7 +126,7 @@ document.querySelector('.income-save-Btn').addEventListener('click',function (ev
 		body:JSON.stringify(deductionVO)
 	})
 	.then(data => {
-		alert("공제가 수정되었습니다.")
+		toastr.success("공제가 수정되었습니다.")
 		incomeGridDataLoad()
 		incomeModifyModal.hide()
 	})
@@ -213,7 +213,7 @@ function duplicationModCheck (target) {
 		}
 	} 
 	if (!flag) {
-		alert("해당되는 공제명이 이미 존재합니다.")
+		toastr.warning("해당되는 공제명이 이미 존재합니다.")
 		return false;
 	}
 	return true;

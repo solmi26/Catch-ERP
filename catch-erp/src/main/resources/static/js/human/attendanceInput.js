@@ -119,7 +119,7 @@ document.querySelector('.insert-Btn').addEventListener('click',function () {
 	})
 	.then(data => data.json())
 	.then(data => {
-		alert("입력이 완료되었습니다")
+		toastr.success("입력이 완료되었습니다")
 		grid.resetData([{}]);
 	})
 	
@@ -148,7 +148,7 @@ function validateCheck () {
     if (nullCheck.length !== 0 ) {
 		grid.focus(nullCheck[0].rowKey, nullCheck[0].errors[0].columnName)
 		let header =grid.getColumn(nullCheck[0].errors[0].columnName).header
-		alert(header + "의 내용을 입력해주세요")
+		toastr.warning(header + "의 내용을 입력해주세요")
 		return true;
 	}
 }
@@ -160,12 +160,12 @@ function nullCheck (data) {
 		
 		if ((ele.근태유형 !== '휴가') && (ele.근태유형 !== '공제')) {
 			if (ele.출근시간 == null) {
-				alert("출근시간을 입력해주세요")
+				toastr.warning("출근시간을 입력해주세요")
 				grid.focus(ele.rowKey, '출근시간')
 				return false ; 
 			} else if (ele.퇴근시간 == null) {
 				grid.focus(ele.rowKey, '퇴근시간')
-				alert("퇴근시간 입력을 입력해주세요")
+				toastr.warning("퇴근시간 입력을 입력해주세요")
 				return false;
 			}
 		}

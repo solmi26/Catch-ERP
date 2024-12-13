@@ -216,6 +216,7 @@
                         		)
 	
 	</update>
+	
 	<!-- zz -->
 	<!-- 인사정보 재직상태 변경(퇴직) -->
 	<update id="updateStatusType" parameterType="java.util.List">
@@ -369,6 +370,15 @@
 	</insert>
 	<!-- 셀렉트박스 정보 불러오기 -->
 	
+	<!-- 소득세 재산정 -->
+	<update id="updateEmployeeSalary" statementType="CALLABLE" >
+		CALL EMPLOYEE_ONE_SAL_UPDATE (
+							 #{employeeCode} 
+                        		)
+	
+	</update>
+		
+	
 	<!-- 공통코드 불러오기 -->
 	<select id="selectCommonCodeList" parameterType="java.util.ArrayList">
 	    SELECT code_rule,
@@ -380,6 +390,7 @@
 			#{commonCode}
 		</foreach>
 	</select>
+	
 	
 	
 	
