@@ -237,19 +237,22 @@
 
           let bankName = document.insertForm.querySelector('#bankName');
           if(bankName.value == '') {
-            alert('은행을 선택해주세요.');
+            toastr.clear();
+            toastr.warning('은행을 선택해주세요.');
             bankName.focus();
             return;
           }
           let bacctNo = document.insertForm.querySelector('#bacctNo');
           if(bacctNo.value == '') {
-            alert('계좌번호를 입력하세요.');
+            toastr.clear();
+            toastr.warning('계좌번호를 입력하세요.');
             bacctNo.focus();
             return;
           }
           let bacctName = document.insertForm.querySelector('#bacctName');
           if(bacctName.value == '') {
-            alert('계좌명을 입력하세요.');
+            toastr.clear();
+            toastr.warning('계좌명을 입력하세요.');
             bacctName.focus();
             return;
           }
@@ -258,7 +261,8 @@
       });
    	  // 계좌 수정 모달
       updateButton.addEventListener('click', function() {
-          alert('계좌 수정이 완료되었습니다.');
+          toastr.clear();
+          toastr.success('계좌 수정이 완료되었습니다.');
       });
     })
 

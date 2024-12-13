@@ -235,8 +235,7 @@
         let now = new Date();
         let currentMonth = now.getMonth();
         let currentYear = now.getFullYear();
-        let btnCount = 0; // 현시점 연,월 체크
-
+        let btnCount = 100; // 현시점 연,월 체크
         
         /**
          * 날씨 API 호출
@@ -293,8 +292,8 @@
                 currentMonth = 11;
                 currentYear--;
                 monthCount = 0;
-                btnCount--;
             }
+            btnCount--;
             generateCalendar(monthCount);
         });
         // 이후 달 출력
@@ -304,8 +303,8 @@
                 currentYear++;
                 currentMonth = 0;
                 monthCount = 0;
-                btnCount++;
             }
+            btnCount++;
             generateCalendar(monthCount);
         })
         // 달력 생성 함수
@@ -335,7 +334,7 @@
                     } else if (date > totalDays) {
                         html += '<td></td>';
                     } else {
-                        const isToday = date === now.getDate() && monthCount==0? 'bg-primary text-white rounded' : '';
+                        const isToday = date === now.getDate() && btnCount==100? 'bg-primary text-white rounded' : '';
                         html += `<td class="${isToday}">${date}</td>`;
                         date++;
                     }
