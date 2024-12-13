@@ -92,7 +92,26 @@ document.querySelector('.publication-Btn').addEventListener('click',async functi
 	let month = payrollY.getMonth();
 	
 	if (result.result > 0 ) {
-		flag = confirm(month+"월달의 급여명세서는 이미 발행되어 있습니다. 기존 명세서를 삭제하고 재발행 하시겠습니까?")
+			Swal.fire({
+			  html: `${month}월달의 급여명세서는 이미 발행되어 있습니다. <br> 기존 명세서를 삭제하고 재발행 하시겠습니까?`,
+			  icon: "warning",
+			  showCancelButton: true,
+			  confirmButtonColor: "#3085d6",
+			  cancelButtonColor: "#d33",
+			  confirmButtonText: "삭제",
+			  cancelButtonText:"취소"
+			}).then((result) => {
+				console.log(result.isConfirmed)
+				flag = result.isConfirmed
+				
+				if (flag) {
+				fetch("/employees/pay?mode=replace")
+				.then(data => {
+					toastr.success("급여명세서가 재발행되었습니다.")
+					datoToGrid()
+					})
+				}	
+			});
 	} else if (result.result == 0) {
 		fetch("/employees/pay?mode=create")
 		.then(data => {
@@ -101,13 +120,7 @@ document.querySelector('.publication-Btn').addEventListener('click',async functi
 		})
 	}
 		
-	if (flag) {
-		fetch("/employees/pay?mode=replace")
-		.then(data => {
-			toastr.success("급여명세서가 재발행되었습니다.")
-			datoToGrid()
-		})
-	}
+
 })
 //엑셀버튼
 document.querySelector('.excel-Btn').addEventListener('click',function () {
