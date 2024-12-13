@@ -713,51 +713,63 @@
                 let zipcode = document.insertClientForm.querySelector('#zipcode');
 
                 if(clientName.value == '') {
-                    alert('상호(명)을 입력하세요.');
+                    toastr.clear();
+                    toastr.warning('상호(명)을 입력하세요.');
                     clientName.focus();
                     return;
                 }
                 if(ceoName.value == '') {
-                    alert('대표자 명을 입력하세요.');
+                    toastr.clear();
+                    toastr.warning('대표자 명을 입력하세요.');
                     ceoName.focus();
                     return;
                 }
                 if(state.value == '') {
-                    alert('업태를 입력하세요.');
+                    toastr.clear();
+                    toastr.warning('업태를 입력하세요.');
                     state.focus();
                     return;
                 }
                 if(event.value == '') {
-                    alert('종목을 입력하세요.');
+                    toastr.clear();
+                    toastr.warning('종목을 입력하세요.');
                     event.focus();
                     return;
                 }
                 if(companyTel.value == '') {
-                    alert('회사 전화번호를 입력하세요.');
+                    toastr.clear();
+                    toastr.warning('회사 전화번호를 입력하세요.');
                     companyTel.focus();
                     return;
                 }
                 if(fax.value == '') {
-                    alert('팩스번호를 입력하세요.');
+                    toastr.clear();
+                    toastr.warning('팩스번호를 입력하세요.');
                     fax.focus();
                     return;
                 }
                 if(tradeType.value == '선택') {
-                    alert('거래 유형을 선택해주세요.');
+                    toastr.clear();
+                    toastr.warning('거래 유형을 선택해주세요.');
                     tradeType.focus();
                     return;
                 }
                 if(clientBacct.value == '') {
-                    alert('거래처 계좌를 입력하세요.')
+                    toastr.clear();
+                    toastr.warning('거래처 계좌를 입력하세요.')
                     clientBacct.focus();
                     return;
                 }
                 if(zipcode.value == '') {
-                    alert('주소를 입력하세요.')
+                    toastr.clear();
+                    toastr.warning('주소를 입력하세요.')
                     zipcode.focus();
                     return;
                 }
 
+                toastr.clear();
+                toastr.success("등록이 완료되었습니다.");
+                
                 document.insertClientForm.submit();
             });
             //#endregion 거래처 등록 유효성 검사

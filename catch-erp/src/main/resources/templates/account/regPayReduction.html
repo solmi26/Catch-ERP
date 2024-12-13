@@ -356,7 +356,8 @@
                       if(result==='success') {
                       location.reload(true);
                       } else {
-                        alert("결제가 취소되었습니다.")
+                        toastr.clear();
+                        toastr.error("결제가 취소되었습니다.");
                       }
                     })
                   }
