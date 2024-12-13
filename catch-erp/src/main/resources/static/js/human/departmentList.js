@@ -31,7 +31,7 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 	let inputs = document.querySelectorAll('.insert-input')
 	departmentVO = nullCheck(inputs)
 	if (departmentVO === false) {
-		alert("값을입력하세요")
+		toastr.warning("값을입력하세요")
 		return;
 	}
 	//중복값체크
@@ -48,11 +48,7 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 		})
 	.then(data => data.json())
 	.then(data => {
-		if (data.result != '1') {
-			alert("오류가 발생!")
-		}else {
-			alert("성공!")
-		}
+		toastr.success("부서가 등록되었습니다.")
 		mainGridDataLoad()
 		departmentReqModal.hide()
 		inputs.forEach(ele => {
@@ -140,7 +136,7 @@ document.querySelector('.modify-save-Btn').addEventListener('click',function (ev
 	let inputs = document.querySelectorAll('.modify-input')
 	departmentVO = nullCheck(inputs)
 	if (departmentVO === false) {
-		alert("값을입력하세요")
+		toastr.warning("값을입력하세요")
 		return;
 	}
 	//중복값체크
@@ -158,7 +154,7 @@ document.querySelector('.modify-save-Btn').addEventListener('click',function (ev
 		})
 	.then(data => data.json())
 	.then(data => {
-		alert("수정이 완료되었습니다.")
+		toastr.success("수정이 완료되었습니다.")
 		deptModifyModal.hide()
 		mainGridDataLoad()
 		departmentReqModal.hide()
@@ -230,7 +226,7 @@ function duplicationReqCheck (target) {
 		}
 	} 
 	if (!flag) {
-		alert("해당되는 부서코드가 이미 존재합니다.")
+		toastr.warning("해당되는 부서코드가 이미 존재합니다.")
 		return false;
 	}
 	for (let name of nameList) {
@@ -240,7 +236,7 @@ function duplicationReqCheck (target) {
 		}
 	} 
 	if (!flag) {
-		alert("해당되는 부서명이 이미 존재합니다.")
+		toastr.warning("해당되는 부서명이 이미 존재합니다.")
 		return false;
 	}
 	return true;
@@ -259,7 +255,7 @@ function duplicationModCheck (target) {
 		}
 	} 
 	if (!flag) {
-		alert("해당되는 부서명이 이미 존재합니다.")
+		toastr.warning("해당되는 부서명이 이미 존재합니다.")
 		return false;
 	}
 	return true;
@@ -268,7 +264,7 @@ function duplicationModCheck (target) {
 function countCheck(row) {
 	for (let ele of row) {
 		if (ele.count != 0) {
-			alert("부서원이 있는 부서는 삭제할수 없습니다.")
+			toastr.warning("부서원이 있는 부서는 삭제할수 없습니다.")
 			grid.focus(ele.rowKey,'count')
 			return false;
 		}
