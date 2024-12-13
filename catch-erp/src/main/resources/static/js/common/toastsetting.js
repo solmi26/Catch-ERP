@@ -294,3 +294,21 @@ function saveExcel(grid){
 		grid.export('xlsx',options);
 	
 	}
+
+function saveExcel2(grid){
+    let userName = document.getElementById('loginUserName').value; //header.html에 hidden input값을 읽어온다.
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+    var day = ('0' + today.getDate()).slice(-2);
+    var dateString = year + month + day + "_" + "판매내역";
+    const options = {
+        /*includeHeader: true,
+        includeHiddenColumns: false,
+        onlySelected: false,*/
+        fileName: `${dateString}`,
+    };
+
+    grid.export('xlsx',options);
+
+}

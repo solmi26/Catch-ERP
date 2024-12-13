@@ -525,7 +525,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let ExcelBtn = document.getElementById("salesExcelBtn");
     ExcelBtn.addEventListener("click",function(){
-        saveExcel(saleslipHistory);
+        saveExcel2(saleslipHistory);
     })
 
 });
