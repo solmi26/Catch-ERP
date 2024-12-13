@@ -1016,6 +1016,8 @@ document.addEventListener("DOMContentLoaded", function () {
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
             let adjustNo = "_" + document.getElementById("adjustNo").innerHTML;
             pdf.save(`재고조정보고서${adjustNo}.pdf`);
+            toastr.clear();
+			toastr.success("PDF 저장이 완료되었습니다.");
         });
     });
           
@@ -1317,7 +1319,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	.then(result => result.json())
 	.then(result => {
 		let filteredResult = result.filter(ele=>{
-			return ele.departmentName == "영업팀" || ele.departmentName == "믈류팀"; 
+			return ele.departmentName == "영업팀" || ele.departmentName == "물류팀"; 
 		})
 		let dataArr = [];
 		filteredResult.forEach(ele=>{

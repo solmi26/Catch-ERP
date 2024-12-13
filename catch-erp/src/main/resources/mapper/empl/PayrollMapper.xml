@@ -95,7 +95,8 @@
         <if test="payrollYEnd != null " >
         AND sp.payroll_ydate <![CDATA[ <=  ]]> #{payrollYEnd}
         </if>                 
-        </where>     
+        </where> 
+        ORDER BY employee_id    
     </select>
 
 	<!-- 급여명세서 단건조회 -->

@@ -127,7 +127,7 @@ document.querySelector('.new-Btn').addEventListener('click',function(){
 //엑셀버튼
 document.querySelector('.excel-Btn').addEventListener('click',function () {
 	saveExcel(grid);
-	alert("엑셀이 출력되었습니다.")
+	toastr.success("엑셀이 출력되었습니다.")
 })
 
 //#region 메인그리드 데이터 로드 함수

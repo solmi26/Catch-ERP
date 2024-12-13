@@ -1052,7 +1052,8 @@ document.addEventListener("DOMContentLoaded", function () {
             //재고조정번호를 파일명뒤에 넣어준다.
             let adjustNo = "_" + document.getElementById("adjustNo").innerHTML;
             pdf.save(`재고조정보고서${adjustNo}.pdf`);
-            
+            /*toastr.clear();
+			toastr.success("PDF 저장이 완료되었습니다.");*/
         });
     });
 	//#endregion

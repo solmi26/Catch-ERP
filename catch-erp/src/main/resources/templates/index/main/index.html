@@ -11,9 +11,13 @@
     <title>CatchERP</title>
     <style>
         .btn-primary {
-            background-color: #4154f1;
-            border-color: #4154f1;
+            background-color: #a2c5f1 !important;
+            border-color: #a2c5f1 !important;
         }
+        
+        .bg-primary {
+       background-color: #a2c5f1 !important;
+   }
     
         .btn-primary:hover, .btn-primary:focus {
             background-color: #3644d0;
@@ -52,34 +56,38 @@
         .list-group-item:last-child {
             margin-bottom: 0;
         }
+        
+
+  .no-click {
+    pointer-events: none;
+
+  }
         </style>
 </head>
 <body>
     <!-- Main Content Area -->
-    <div class="col-md-12 p-3">
+    <div class="col-md-12 p-3"></div>
         <div class="row g-4">
             <!-- Left Calendar Section -->
             <div class="col-md-8">
                 <div class="card shadow-sm rounded-4 bg-primary text-white p-3 mb-4">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group">
-                            <button class="btn btn-primary active">매입</button>
-                            <button class="btn btn-primary">매출</button>
-                            <button class="btn btn-primary">결제처리</button>
-                            <button class="btn btn-light">결제현황</button>
+          
+                            <button class="btn btn-light no-click" >결재현황</button>
                         </div>
                         <div>
-                            <button class="btn btn-primary"><i class="bi bi-arrow-clockwise"></i></button>
-                            <button class="btn btn-primary"><i class="bi bi-plus"></i></button>
+                            <button class="btn btn-primary no-click"><i class="bi bi-arrow-clockwise"></i></button>
+                            <button class="btn btn-primary no-click"><i class="bi bi-plus"></i></button>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6>구매요청 및 결정서</h6>
-                            <span>2024.12.05</span>
+                            <h5>물류팀 자재 구매요청</h5>
+                            <span>2024.12.16</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h6>결비 지출 품의서</h6>
+                            <h5>출장 경비 지출 결의서</h5>
                             <span>2024.12.13</span>
                         </div>
                     </div>
@@ -120,16 +128,15 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div class="btn-group">
-                                <button class="btn btn-secondary active">공지사항</button>
-                                <button class="btn btn-light">경조사/경사현</button>
+                                <button class="btn btn-secondary active no-click">공지사항</button>
                             </div>
                             <div>
-                                <button class="btn btn-light"><i class="bi bi-arrow-clockwise"></i></button>
-                                <button class="btn btn-light"><i class="bi bi-plus"></i></button>
+                                <button class="btn btn-light no-click"><i class="bi bi-arrow-clockwise"></i></button>
+                                <button class="btn btn-light no-click"><i class="bi bi-plus"></i></button>
                             </div>
                         </div>
                         <div class="text-center my-5">
-                            <p class="text-muted">결재처리 된 문서가 없습니다.</p>
+                            <h3 class="text-muted">[2025년 송년의 밤 일정] </h3>
                         </div>
                     </div>
                 </div>
@@ -215,6 +222,7 @@
                 </div>
             </div>
         </div> -->
+       
     </div>
 
     <script>
@@ -227,8 +235,7 @@
         let now = new Date();
         let currentMonth = now.getMonth();
         let currentYear = now.getFullYear();
-        let btnCount = 0; // 현시점 연,월 체크
-
+        let btnCount = 100; // 현시점 연,월 체크
         
         /**
          * 날씨 API 호출
@@ -285,8 +292,8 @@
                 currentMonth = 11;
                 currentYear--;
                 monthCount = 0;
-                btnCount--;
             }
+            btnCount--;
             generateCalendar(monthCount);
         });
         // 이후 달 출력
@@ -296,8 +303,8 @@
                 currentYear++;
                 currentMonth = 0;
                 monthCount = 0;
-                btnCount++;
             }
+            btnCount++;
             generateCalendar(monthCount);
         })
         // 달력 생성 함수
@@ -327,7 +334,7 @@
                     } else if (date > totalDays) {
                         html += '<td></td>';
                     } else {
-                        const isToday = date === now.getDate() && monthCount==0? 'bg-primary text-white rounded' : '';
+                        const isToday = date === now.getDate() && btnCount==100? 'bg-primary text-white rounded' : '';
                         html += `<td class="${isToday}">${date}</td>`;
                         date++;
                     }

@@ -92,27 +92,40 @@ document.querySelector('.publication-Btn').addEventListener('click',async functi
 	let month = payrollY.getMonth();
 	
 	if (result.result > 0 ) {
-		flag = confirm(month+"월달의 급여명세서는 이미 발행되어 있습니다. 기존 명세서를 삭제하고 재발행 하시겠습니까?")
+			Swal.fire({
+			  html: `${month}월달의 급여명세서는 이미 발행되어 있습니다. <br> 기존 명세서를 삭제하고 재발행 하시겠습니까?`,
+			  icon: "warning",
+			  showCancelButton: true,
+			  confirmButtonColor: "#3085d6",
+			  cancelButtonColor: "#d33",
+			  confirmButtonText: "삭제",
+			  cancelButtonText:"취소"
+			}).then((result) => {
+				console.log(result.isConfirmed)
+				flag = result.isConfirmed
+				
+				if (flag) {
+				fetch("/employees/pay?mode=replace")
+				.then(data => {
+					toastr.success("급여명세서가 재발행되었습니다.")
+					datoToGrid()
+					})
+				}	
+			});
 	} else if (result.result == 0) {
 		fetch("/employees/pay?mode=create")
 		.then(data => {
-			alert("급여명세서가 발행되었습니다.")
+			toastr.success("급여명세서가 발행되었습니다.")
 			datoToGrid()
 		})
 	}
 		
-	if (flag) {
-		fetch("/employees/pay?mode=replace")
-		.then(data => {
-			alert("급여명세서가 재발행되었습니다.")
-			datoToGrid()
-		})
-	}
+
 })
 //엑셀버튼
 document.querySelector('.excel-Btn').addEventListener('click',function () {
 	saveExcel(grid);
-	alert("엑셀이 출력되었습니다.")
+	toastr.success("엑셀이 출력되었습니다.")
 })
 //#region
 document.querySelector('.printModal-Btn').addEventListener('click',function () {
@@ -277,7 +290,7 @@ document.querySelector('.printModal-Btn').addEventListener('click',function () {
 					    <tr>
 					      <td class="background-payment">주말근로수당</td>
 					      <td>시급의 1.5배(약 ${(Math.round(ele.timeSalary*1.5/10)*10).toLocaleString()}원) X 주말근무시간</td>
-					      <td>${(Math.round(ele.nightAllowance/10)*10).toLocaleString()}원</td>
+					      <td>${(Math.round(ele.weekendAllowance/10)*10).toLocaleString()}원</td>
 					    </tr>
 					  </table>
 					</div>`
@@ -396,7 +409,7 @@ function sumCheck ()  {
 	let dedu = incomeTax + localTax + nationalInsurance + healthInsurance + employmentInsurance + leaveRate
 
 	if (dedu > sum ) {
-		alert("지급총액을 초과한 공제금액을 입력할수 없습니다.")
+		toastr.error("지급총액을 초과한 공제금액을 입력할수 없습니다.")
 		return true;
 	}
 	return false;
@@ -439,7 +452,7 @@ document.querySelectorAll('.examine-Btn').forEach(ele => {
 				body:JSON.stringify(check)
 			})
 			.then(data => {
-				alert("급여명세서의 검토여부가 변경되었습니다.")
+				toastr.success("급여명세서의 검토여부가 변경되었습니다.")
 				datoToGrid()
 			})
 		} else if (mode == 'cancel') {
@@ -449,7 +462,7 @@ document.querySelectorAll('.examine-Btn').forEach(ele => {
 				body:JSON.stringify(check)
 			})
 			.then(data => {
-				alert("급여명세서의 검토여부가 변경되었습니다.")
+				toastr.success("급여명세서의 검토여부가 변경되었습니다.")
 				datoToGrid()
 			})
 			
@@ -465,9 +478,9 @@ function validateCheck () {
 		salModifyGrid.focus(nullCheck[0].rowKey, nullCheck[0].errors[0].columnName)
 		let header =grid.getColumn(nullCheck[0].errors[0].columnName).header
 		if (nullCheck[0].errors[0].errorCode[0] == "MAX") {
-			alert(header+"의 값은 10억원 미만으로 지정해주세요.")
+			toastr.error(header+"의 값은 10억원 미만으로 지정해주세요.")
 		} else if (nullCheck[0].errors[0].errorCode[0] == "MIN") {
-			alert(header+"의 값은 1원 초과로 지정해주세요.")
+			toastr.error(header+"의 값은 1원 초과로 지정해주세요.")
 		};
 		return true;
 	}

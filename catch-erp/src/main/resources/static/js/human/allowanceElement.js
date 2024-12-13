@@ -22,7 +22,7 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 	let inputs = document.querySelectorAll('.insert-input')
 	allowanceVO = nullCheck(inputs)
 	if (allowanceVO === false) {
-		alert("값을입력하세요")
+		toastr.warning("값을입력하세요")
 		return;
 	}
 	// 중복값 검사
@@ -39,7 +39,7 @@ document.querySelector('.insert-Btn').addEventListener('click',function (ev) {
 		})
 	.then(data => data.json())
 	.then(data => {
-		alert("수당항목이 등록되었습니다.")
+		toastr.success("수당항목이 등록되었습니다.")
 		mainGridDataLoad()
 		allReqModal.hide()
 		inputs.forEach(ele => {
@@ -67,7 +67,7 @@ document.querySelector('.modify-Btn').addEventListener('click',function(ev){
 	let inputs = document.querySelectorAll('.modify-input')
 	AllItemVO = nullCheck(inputs);
 	if (AllItemVO === false){
-		alert("값을입력하세요")
+		toastr.warning("값을입력하세요")
 		return;
 	}
 	flag = duplicationModCheck(ev.target) 
@@ -163,7 +163,7 @@ function duplicationReqCheck (target) {
 		}
 	} 
 	if (!flag) {
-		alert("해당되는 수당코드가 이미 존재합니다.")
+		toastr.warning("해당되는 수당코드가 이미 존재합니다.")
 		return false;
 	}
 	for (let name of nameList) {
@@ -173,7 +173,7 @@ function duplicationReqCheck (target) {
 		}
 	} 
 	if (!flag) {
-		alert("해당되는 수당명이 이미 존재합니다.")
+		toastr.warning("해당되는 수당명이 이미 존재합니다.")
 		return false;
 	}
 	return true;
@@ -193,7 +193,7 @@ function duplicationModCheck (target) {
 		}
 	} 
 	if (!flag) {
-		alert("해당되는 수당명이 이미 존재합니다.")
+		toastr.warning("해당되는 수당명이 이미 존재합니다.")
 		return false;
 	}
 	return true;
@@ -204,7 +204,7 @@ function duplicationModCheck (target) {
 function countCheck(row) {
 	for (let ele of row) {
 		if (ele.count != 0) {
-			alert("해당 수당항목은 삭제할수 없는 상태입니다.")
+			toastr.warning("해당 수당항목은 삭제할수 없는 상태입니다.")
 			grid.focus(ele.rowKey,'attCode')
 			return false;
 		}
