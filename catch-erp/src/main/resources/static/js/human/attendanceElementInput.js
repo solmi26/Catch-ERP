@@ -1,6 +1,7 @@
 /**
  * 
  */
+let requireAtt = ["AT002"]
 //변수선언
 let currentTarget = null; 
 let currentName = '';
@@ -82,6 +83,11 @@ document.querySelector('.modify-Btn').addEventListener('click',function(ev){
 	if (!flag) {
 		return;
 	}
+	//필수항목
+	flag = checkRequireAtt([AttItemVO])
+	if (!flag) {
+		return;
+	}
 	fetch("/employees/attitem",{
 		method:"put",
 		headers:{"Content-Type":"application/json"},
@@ -96,15 +102,20 @@ document.querySelector('.modify-Btn').addEventListener('click',function(ev){
 
 //삭제버튼 클릭
 document.querySelector('.delete-Btn').addEventListener('click',function () {
+	let flag = false;
 	let rows = grid.getCheckedRows();
 	if (rows.length == 0) {
 		return;
 	}
-    let flag = countCheck(rows);
+    flag = countCheck(rows);
 	if (!flag) {
 		return;
 	}
-
+	//필수항목
+	flag = checkRequireAtt(rows)
+	if (!flag) {
+		return;
+	}
 	let list = ''
 	for (ele of rows) {
 		list += ','
@@ -220,3 +231,14 @@ function countCheck(row) {
 	return true;
 }
 
+function checkRequireAtt(rows) {
+	for (let ele of rows) {
+		for (let code of requireAtt) {
+			if (ele.attCode == code) {
+				toastr.warning(ele.attName+"는 변경하시거나 삭제할수 없습니다.")
+				return false;
+			}
+		} 
+	}
+	return true;
+}
