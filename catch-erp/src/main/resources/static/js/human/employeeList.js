@@ -2,7 +2,6 @@
  * 
  */
  const contextPath = document.querySelector('#contextPathHolder').dataset.contextPath;
-console.log(contextPath)
 /*
 document.querySelector('#employeeTabContent').querySelectorAll('input')
 */
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             tableRows.forEach(r => r.classList.remove('table-active'));
             this.classList.add('table-active');
-            console.log('zzzz')
 
             // Here you would typically populate the form with the selected employee's data
         });
@@ -79,7 +77,6 @@ grid.on('click', function (ev) {
 		document.querySelector('.employee-box').querySelector('[name="empStatus"]').disabled = false;
 		document.querySelector('.employee-box').querySelector('[name="resignationDate"]').disabled = false;
 		
-		console.log(ev);
 		window.setTimeout(function(){
 		allowanceGrid.refreshLayout();
 		}, 200) 
@@ -245,8 +242,8 @@ saveBtn.addEventListener('click',function(){
 	hire = new Date(hireDate.value)
 	resign = new Date(resignationDate.value)
 
-	if (resignationDate != "") {
-		if (resign > hire && statusType != "m3") {
+	if (resignationDate != null) {
+		if (resign < hire && statusType != "m3") {
 			toastr.warning("재직구분을 다시 선택해주세요")
 			return;
 		}
@@ -284,7 +281,6 @@ saveBtn.addEventListener('click',function(){
 	let FixedVO =[]
 	let index = 0;
 	allowanceGrid.getData().forEach(ele => {
-		console.log(ele)
 		let obj = {};
 		obj['allowanceCheck'] = ele.allowanceCheck
 		obj['allowanceCode'] = ele.allowanceCode
@@ -371,7 +367,6 @@ document.querySelector('.search-btn').addEventListener('click',function (ev) {
 	})
 	
 })
-console.log('gd')
 //파일첨부버튼(미리보기 설정)
 //#region
 document.querySelector('#imgBtn').addEventListener('click',function () {
@@ -412,7 +407,6 @@ document.querySelector('.delete-Btn').addEventListener('click',function(){
 //다건 퇴직,삭제처리
 document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
 	let check = grid.getCheckedRows()
-	console.log("gd")
 	let mode = ev.target.dataset.mode
 	if (check.length == 0) {
 		return;
@@ -452,18 +446,23 @@ document.querySelector('.delete-Btn').addEventListener('click',function (ev) {
  
 //데이터 인풋에 뿌리는 함수
 function dataToInput (data) {
-	console.log(data)
 				//틀릭시 받아온 인사세부정보 인풋태그에 뿌리기
     let imgSrc = data.employeeDetailVO.employeeImage != null ? '/images/' + data.employeeDetailVO.employeeImage : '/img/imageNo.jpg' 
 	document.querySelector('#employeePhoto').src = imgSrc
 	document.querySelector('#imgInput').value = null;
 	document.querySelector('.img-Text').value = null;
+	if (data['resignationDate'] == null) {
+		document.querySelector('.employee-box').querySelector(`[name="resignationDate"]`).value = null		
+	}
+	if (data['empStatus'] == null) {
+		document.querySelector('.employee-box').querySelector(`[name="empStatus"]`).value = null		
+	}
+	
 
 	for (let ele in data) {
 		
 		//만약 배열타입이면
 		if (Array.isArray(data[ele])) {
-			console.log(data[ele])
 			allowanceGrid.resetData(data[ele])			
 		//받아온 json VO객체 안의 VO객체 뿌리기
 		} else if (typeof(data[ele]) == "object") {
@@ -483,10 +482,8 @@ function dataToInput (data) {
 			//받아온 속성이 날짜타입인지 검사
 			
 				let input = document.querySelector('.employee-box').querySelector(`[name="${ele}"]`)
-				console.log(input)
 			if (ele == "hireDate" || ele == "resignationDate") {
 				let date = dateFormatter(data[ele])
-				console.log(date)
 				if (input != null) {
 				input.value = date
 				}
@@ -497,7 +494,7 @@ function dataToInput (data) {
 			}//end else
 			
 		}//end else
-
+		
 	}
 }
 //employees/empSalary/
@@ -558,7 +555,6 @@ document.querySelector('.empSal-Btn').addEventListener('click', async function (
 			let FixedVO =[]
 			let index = 0;
 			allowanceGrid.getData().forEach(ele => {
-				console.log(ele)
 				let obj = {};
 				obj['allowanceCheck'] = ele.allowanceCheck
 				obj['allowanceCode'] = ele.allowanceCode
