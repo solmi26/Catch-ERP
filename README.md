@@ -125,15 +125,19 @@ ERP의 풀네임은 Enterprise Resource Planning이고 전사적 자원 관리 �
 <strong>*개발 기간</strong> <br>
  <img src="https://github.com/user-attachments/assets/440fdad2-75f6-489f-ada5-5d1f971273c8" width="600" height="300"/>
 <br><br>
-<strong>*스토리 설계</strong>
-![image](https://github.com/user-attachments/assets/ade41c50-8255-48f1-a73e-bb29d11a97af)
-![image](https://github.com/user-attachments/assets/d2d03359-8557-44ba-ad7a-704d9bc8cd6e)
 
+<details>
+  <summary><strong>*스토리 설계</strong></summary>
+  <div markdown="1">
+    <img src="https://github.com/user-attachments/assets/ade41c50-8255-48f1-a73e-bb29d11a97af">
+    <img src="https://github.com/user-attachments/assets/d2d03359-8557-44ba-ad7a-704d9bc8cd6e">
+  </div>
+</details>
 
-<br>
-<br>
-
-<strong> *패키지 구조 </strong>
+<details>
+  <summary><strong>*패키지 구조</strong></summary>
+  <div markdown="1">
+    
 > <strong> src/main/java </strong>
 > > com.cherp.app
 > > > acct (회계) / buss (영업)  / empl (인사) / stck (재고) / test (테스트용) / common (공통) / security (시큐리티)
@@ -159,12 +163,17 @@ ERP의 풀네임은 Enterprise Resource Planning이고 전사적 자원 관리 �
 * static 패키지는 css, img, js 패키지로 세분류 되어있고 각 파트별 패키지와 공통함수, CSS를
   적용할 common 패키지로 세분류되어 있습니다.
 ```
+  </div>
+</details>
 
-<br>
-<br>
 
-<strong>*ERD 설계</strong>
-![image](https://github.com/user-attachments/assets/49171d6b-3863-472c-b5ff-8ba97a20f6cf)
+<details>
+  <summary><strong>*ERD 설계</strong></summary>
+  <div markdown="1">
+    <img src="https://github.com/user-attachments/assets/49171d6b-3863-472c-b5ff-8ba97a20f6cf">
+  </div>
+</details>
+
 
 <br>
 <br>
@@ -184,7 +193,7 @@ https://learned-hero-128.notion.site/Catch-ERP-API-15cafb8b8b3880399443e4ad515e5
   | :-: | :-:| 
   | <img src="https://github.com/user-attachments/assets/04220209-1408-430f-9cd7-ca03304511f8" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/170f1ceb-652d-4969-919f-44a1d5abced9" width="390" height="220"/> | 
   
-  | 마이페이지 - 나의 정보 조회 | 마이페이지 - 나의 정보 조회 |
+  | 마이페이지 - 나의 정보 조회 | 마이페이지 - 나의 근태태 조회 |
   | :-: | :-:| 
   | <img src="https://github.com/user-attachments/assets/fc8df316-35b1-48cc-b9c9-f9ab5b8a54ef" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/cfbd2c42-c78f-490f-8f2c-d7f8c5c037dd" width="390" height="220"/> | 
     
@@ -264,7 +273,7 @@ https://learned-hero-128.notion.site/Catch-ERP-API-15cafb8b8b3880399443e4ad515e5
   
   </div>
 </details>
-
+<br>
 <strong>*시연 영상</strong> <br>
 영상의 시연순서는 [ 권혁태 - 진솔미 - 남건우 - 서권우 - 유석진 ] 순서입니다. <br>
 영상 URL : 
@@ -335,7 +344,10 @@ https://learned-hero-128.notion.site/Catch-ERP-API-15cafb8b8b3880399443e4ad515e5
 <br>
 <br>
 
-## _Docs_
+## _Etc._
+
+PPT 작업 : canva
+DB 데이터 : 건우가 백업받아놓음.
 
 
 
