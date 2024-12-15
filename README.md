@@ -122,12 +122,12 @@ ERP의 풀네임은 Enterprise Resource Planning이고 전사적 자원 관리 �
 <br>
 
 ## _Project Details_
-<strong>*개발 기간</strong>
-![image](https://github.com/user-attachments/assets/440fdad2-75f6-489f-ada5-5d1f971273c8)
+<strong>*개발 기간</strong> <br>
+ <img src="https://github.com/user-attachments/assets/440fdad2-75f6-489f-ada5-5d1f971273c8" width="600" height="300"/>
 <br><br>
 <strong>*스토리 설계</strong>
-![image](https://github.com/user-attachments/assets/2b6eb6a2-6210-4064-8765-efaa43d2d481)
-![image](https://github.com/user-attachments/assets/6355c279-bc70-41d1-ba29-20ec0b58b673)
+![image](https://github.com/user-attachments/assets/ade41c50-8255-48f1-a73e-bb29d11a97af)
+![image](https://github.com/user-attachments/assets/d2d03359-8557-44ba-ad7a-704d9bc8cd6e)
 
 
 <br>
@@ -179,87 +179,95 @@ https://learned-hero-128.notion.site/Catch-ERP-API-15cafb8b8b3880399443e4ad515e5
 <details>
   <summary>로그인페이지 & Index & 마이페이지</summary>
   <div markdown="1">
-    <ul>
-      <li><strong>로그인 페이지</strong>
-      <img src="https://github.com/user-attachments/assets/04220209-1408-430f-9cd7-ca03304511f8" >
-      </li>
-      <li> <strong>Index 페이지</strong>
-       <img src="https://github.com/user-attachments/assets/170f1ceb-652d-4969-919f-44a1d5abced9" >
-      </li>
-      <li> <strong>마이페이지 - 나의 정보 조회</strong>
-       <img src="https://github.com/user-attachments/assets/fc8df316-35b1-48cc-b9c9-f9ab5b8a54ef" >
-      </li>
-      <li> <strong>마이페이지 - 근태 조회</strong>
-        <img src="https://github.com/user-attachments/assets/cfbd2c42-c78f-490f-8f2c-d7f8c5c037dd" >
-      </li>
-    </ul>
+
+  | 로그인 페이지 | Index 페이지 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/04220209-1408-430f-9cd7-ca03304511f8" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/170f1ceb-652d-4969-919f-44a1d5abced9" width="390" height="220"/> | 
+  
+  | 마이페이지 - 나의 정보 조회 | 마이페이지 - 나의 정보 조회 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/fc8df316-35b1-48cc-b9c9-f9ab5b8a54ef" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/cfbd2c42-c78f-490f-8f2c-d7f8c5c037dd" width="390" height="220"/> | 
+    
   </div>
 </details>
 
 <details>
   <summary>재고 파트</summary>
   <div markdown="1">
-    <ul>
-      <li><strong>입출고 처리</strong>
-        <img src="https://github.com/user-attachments/assets/28317317-70fa-4254-b0fb-7f022d9f6b07">
-      </li>
-      <li><strong>제품 조회 </strong>
-        <img src="https://github.com/user-attachments/assets/46f4e7f8-c176-4cec-8d7f-6fb3980b5359">
-      </li>
-      <li><strong>제품 상세 조회 </strong>
-        <img src="https://github.com/user-attachments/assets/c9614c6d-2146-49c6-8b53-527d81d42c28">
-      </li>
-    </ul>
+
+  | 입출고 처리 | 제품 조회 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/28317317-70fa-4254-b0fb-7f022d9f6b07" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/46f4e7f8-c176-4cec-8d7f-6fb3980b5359" width="390" height="220"/> | 
+    
+  | 제품 상세 조회 |
+  | :-: | 
+  | <img src="https://github.com/user-attachments/assets/28317317-70fa-4254-b0fb-7f022d9f6b07" width="390" height="220"/> | 
+  
   </div>
 </details>
 
 <details>
   <summary>영업 파트</summary>
+  
   <div markdown="1">
-    <ul>
-      <li><strong>거래처 관리 - 거래처 신규등록, 수정, 거래처별 계약상태&매입계약품목 조회가능</strong>
-       <img src="https://github.com/user-attachments/assets/e9b4b553-53b1-4823-9712-6e24048ee486">
-      </li>
-      <li><strong>구매입력</strong>
-       <img src="https://github.com/user-attachments/assets/e9444c85-6074-4495-aa3a-81855ea0e9c8">
-      </li>
-      <li><strong>구매조회</strong>
-      <img src="https://github.com/user-attachments/assets/e6ee4aa2-37b1-42f7-ba5f-b433c06c53c7">
-      </li>
-    </ul>
+
+  | 거래처 관리 1 | 거래처 관리 2 - 거래처 신규등록, 수정, 계약상태&매입계약품목 조회 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/e9b4b553-53b1-4823-9712-6e24048ee486" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/6c92b2dc-f295-4e5d-b9b4-dbd3f6c0c92e" width="390" height="220"/> |
+
+  | 구매입력 | 구매조회 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/e9444c85-6074-4495-aa3a-81855ea0e9c8" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/e6ee4aa2-37b1-42f7-ba5f-b433c06c53c7" width="390" height="220"/> | 
+  
   </div>
 </details>
 
 <details>
   <summary>회계 파트</summary>
   <div markdown="1">
-    <ul>
-      <li>거래처 신규등</li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+
+  | 계좌등록 | 매입단가 계약등록 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/8c5420a2-3c0d-46b9-8f08-475e36cf78d1" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/a94fc628-e42b-4e47-b9fc-87676fb43c8c" width="390" height="220"/> | 
+
+  | 매입단가 계약관리 | 전자 세금계산서 조회 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/dd9b7f81-1ccf-410a-8733-fa9e43413299" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/86e7feb6-b1a9-4b3b-be73-3c0fba3c45aa" width="390" height="220"/>
+
+  | 전자 세금계산서 조회2 | 매입전표 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/86e7feb6-b1a9-4b3b-be73-3c0fba3c45aa" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/86e7feb6-b1a9-4b3b-be73-3c0fba3c45aa" width="390" height="220"/>
+
+  | 전표관리 | 채권감소등록 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/874da8b3-d491-4261-8c30-2104b505d277" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/b6f4b3dc-acfd-48c2-809b-8c7972ea5b93" width="390" height="220"/>
+
   </div>
 </details>
 
 <details>
   <summary>인사 파트</summary>
   <div markdown="1">
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+
+  | 인사관리1-사원정보등록 | 인사관리2-급여정보등록 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/4ebc1717-dbe3-4684-aac2-cb1690b685b5" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/b9642b25-e982-47c0-a1ab-3a717c5d2c87" width="390" height="220"/>
+
+  | 근태관리-근태입력&근태조회 | 기초등록-부서등록&공제항목등록 |
+  | :-: | :-:| 
+  | <img src="https://github.com/user-attachments/assets/f6896f48-bc95-4649-b3ed-e8a3000326b1" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/787b2cb0-ab1a-4506-bc79-3f75e4cd0ac4" width="390" height="220"/>
+
+  | 기초등록-수당항목등록&근태항목등록 |
+  |:-: | 
+  | <img src="https://github.com/user-attachments/assets/64983b14-2a6a-498c-8b8e-5a64f92a3288" width="390" height="220"/> | 
+  
+  
   </div>
 </details>
 
-<strong>*시연 영상</strong>
-
+<strong>*시연 영상</strong> <br>
+영상의 시연순서는 [ 권혁태 - 진솔미 - 남건우 - 서권우 - 유석진 ] 순서입니다. <br>
+영상 URL : 
 
 <br>
 <br>
@@ -300,11 +308,18 @@ https://learned-hero-128.notion.site/Catch-ERP-API-15cafb8b8b3880399443e4ad515e5
 ```
 남건우
 * 각자 진행하면서 좋았던점/배웠던점
+  ERP라는 다소 복잡한 프로그램을 구현하면서 각자가 맡은 파트의 유기적 관계를 파악하는데 많은 시간을 할애했다.
+  생소한 용어와 프로세스들 때문에 서로 이해하는 바가 달랐고, 본인의 파트가 팀원의 파트와 어떻게 연결되고 어떤 영향을 주는지
+  파악하는 것이 굉장히 중요했다. 이 과정이 소홀하면 이후의 개발단계에서 엄청난 후폭풍이 찾아올 것이 눈에 훤했기 때문이다.
+   때문에 하루에 3시간이상 회의를 하기도 했는데, 이번 프로젝트로 팀단위의 개발에 있어
+  소통과 회의기록 작성이 매우 중요함을 몸소 배웠다.
 
 * 아쉬웠던 점/고쳐갈 점
+  SQL 지식부족으로 상당 시간을 고전해서 SQL 공부의 필요성을 많이 느꼈다
 
 * 팀원들에게 하고 싶은 말
-
+  솔미, 석진, 권우형, 혁태 모두 고생많았고 어떻게 딱 열심히 하는 사람들끼리 팀이 되서 좋았다^^
+  수료하고 나서 나보면 텐텐줄께 잘살아
 ```
 
 ```
