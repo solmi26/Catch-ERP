@@ -191,13 +191,22 @@ function readExcel(event) {
     let rows
     reader.onload = function () {
         let data = reader.result;
-        let workBook = XLSX.read(data, { type: 'binary' });
+        let workBook = XLSX.read(data, { type: 'binary', cellDates: true, dateNF: 'yyyy-mm-dd' });
         
         workBook.SheetNames.forEach(function (sheetName) {
             
             rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
         })
-            grid.appendRows(rows)
+        rows.forEach(ele => {
+			if (ele.날짜.toString().length > 11) {
+				let date = new Date(ele.날짜)
+				let year = date.getFullYear()
+				let month = '00'+(date.getMonth()+1)
+				let day = '00'+(date.getDay())
+				ele.날짜 = year+'-'+month.toString().slice(-2)+'-'+day.toString().slice(-2);
+			}
+		})
+		grid.appendRows(rows)
     };
     reader.readAsBinaryString(input.files[0]);
 }

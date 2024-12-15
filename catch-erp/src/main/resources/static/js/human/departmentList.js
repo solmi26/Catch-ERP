@@ -2,6 +2,7 @@
  * 
  */
 
+let requireDept = ["D001","D002","D003","D004"]
 
 
 
@@ -88,14 +89,19 @@ empGrid.on('click',function (ev) {
 //삭제버튼 클릭 이벤트
 document.querySelector('.del-Btn').addEventListener('click',function () {
 	let rows = grid.getCheckedRows();
-	
+	flag = false;
 	if (rows.length == 0) {
 		return;
 	}
-	let flag = countCheck(rows);
+	flag = countCheck(rows);
 	if (!flag) {
 		return;
 	}
+	flag = checkRequireDept(rows);
+	if (!flag) {
+		return;
+	}
+
 	let list = ""
 	for (ele of rows) {
 		list += ","
@@ -142,6 +148,11 @@ document.querySelector('.modify-save-Btn').addEventListener('click',function (ev
 	//중복값체크
 	//중복값체크
 	flag =duplicationModCheck(ev.target)
+	if (!flag) {
+		return;
+	}
+	//필수부서 체크
+	flag = checkRequireDept([departmentVO]);
 	if (!flag) {
 		return;
 	}
@@ -271,4 +282,14 @@ function countCheck(row) {
 	}
 	return true;
 }
-
+function checkRequireDept(rows) {
+	for (let ele of rows) {
+		for (let code of requireDept) {
+			if (ele.departmentCode == code) {
+				toastr.warning(ele.departmentName+"은 변경하시거나 삭제할수 없습니다.")
+				return false;
+			}
+		} 
+	}
+	return true;
+}

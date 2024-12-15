@@ -157,7 +157,7 @@ allowanceItemGrid.on('click',function (ev) {
 		let allowanceName =	allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceName')
 		let allowanceCheck =	allowanceItemGrid.getFormattedValue(ev.rowKey,'allowanceCheck')
 		//중복검사
-		/*
+		
 		for (let ele of list) {
 			if (ele.allowanceName == allowanceName) {
 				flag = true;
@@ -168,7 +168,7 @@ allowanceItemGrid.on('click',function (ev) {
 		if (flag) {
 			return;
 		}
-		*/
+		
 		allowanceGrid.setValue(currentTarget.rowKey,'allowanceCode',allowanceCode)
 		allowanceGrid.setValue(currentTarget.rowKey,'allowanceName',allowanceName)
 		allowanceGrid.setValue(currentTarget.rowKey,'allowanceCheck',allowanceCheck)
