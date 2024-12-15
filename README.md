@@ -41,18 +41,14 @@ ERP의 풀네임은 Enterprise Resource Planning이고 전사적 자원 관리 �
 
 ## _Team Introduction_
 <br>
+<strong>*역할 분담 및 구현한 부분</strong>
+<br>
 
 | <img src="https://github.com/user-attachments/assets/79dd6f22-90bc-4459-a9c0-aecc4b92c15a" width="120" height="120"> | <img src="https://github.com/user-attachments/assets/e3046ab1-f0b2-490c-8f9a-6af52fda38b6" width="120" height="120"> | <img src="https://github.com/user-attachments/assets/c88897fb-4a7f-4b4b-9e4a-4f08137e81c8" width="120" height="120"> | <img src="https://github.com/user-attachments/assets/a95816c3-69ae-4f9f-88c4-623b945d21e5" width="120" height="120" > | <img src="https://github.com/user-attachments/assets/8ede5c25-0504-42ef-9ff1-5d03c2f7ba91" width="120" height="120"> |
 | :-: | :-: | :-: | :-: | :-: |
 | <strong><a href="https://github.com/sz5656">서권우</a></strong> | <strong><a href="https://github.com/superverygoodman">유석진</a></strong> | <strong><a href="https://github.com/solmi26">진솔미</a></strong> | <strong><a href="https://github.com/KunWooNam">남건우</a></strong> | <strong><a href="https://github.com/h0203t">권혁태</a></strong> |
 
-
-
-<br>
-<strong>*역할 분담 및 구현한 부분</strong>
-<br>
-<br>
-<img src="https://github.com/user-attachments/assets/1f15debf-6925-43bd-b636-e012e523c7f0" width="600" height="190"/>
+<img src="https://github.com/user-attachments/assets/1f15debf-6925-43bd-b636-e012e523c7f0" width="734" height="220"/>
 
 <br>
 <br>
