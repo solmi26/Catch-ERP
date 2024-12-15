@@ -275,7 +275,7 @@ https://learned-hero-128.notion.site/Catch-ERP-API-15cafb8b8b3880399443e4ad515e5
 <br>
 <strong>*시연 영상</strong> <br>
 영상의 시연순서는 [ 권혁태 - 진솔미 - 남건우 - 서권우 - 유석진 ] 순서입니다. <br>
-영상 URL : 
+영상 URL : <a href="https://youtu.be/_vcynqjDbZo">https://youtu.be/_vcynqjDbZo</a>
 
 <br>
 <br>
