@@ -248,7 +248,7 @@ https://learned-hero-128.notion.site/Catch-ERP-API-15cafb8b8b3880399443e4ad515e5
 
   | 전자 세금계산서 조회2 | 매입전표 |
   | :-: | :-:| 
-  | <img src="https://github.com/user-attachments/assets/86e7feb6-b1a9-4b3b-be73-3c0fba3c45aa" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/86e7feb6-b1a9-4b3b-be73-3c0fba3c45aa" width="390" height="220"/>
+  | <img src="https://github.com/user-attachments/assets/796b99b8-9bcf-45ef-b801-c181f337f73a" width="390" height="220"/> | <img src="https://github.com/user-attachments/assets/0fa3567f-20e1-4a9a-a780-012a12afd019" width="390" height="220"/>
 
   | 전표관리 | 채권감소등록 |
   | :-: | :-:| 
