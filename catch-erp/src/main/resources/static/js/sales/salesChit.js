@@ -508,7 +508,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         });
 
-        // 창고 수량 검색
+        // 창고 수량
         salesChit.on("editingFinish", (ev) => {
 
             const columnName = ev.columnName;
@@ -524,11 +524,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                     fetch('/quantity/' + whCode + '/' + itemCode)
                         .then(result => result.json())
                         .then(data => {
-                            salesChit.setValue(ev.rowKey, 'stocksQuantity', data.currentQuantity)
-                            let quantity = salesChit.getValue(ev.rowKey, 'quantity');
-                            let deficiencyQuantity = Number(data.currentQuantity) - Number(quantity);
+                            salesChit.setValue(ev.rowKey, 'stocksQuantity', data.currentQuantity) // 창고수량
+                            // 부족수량 계산
+                            let quantity = salesChit.getValue(ev.rowKey, 'quantity'); // 요구수량
+                            let deficiencyQuantity = data.currentQuantity - quantity; // 부족수량
                             // 부족수량 체크
-                            if (Number(data.currentQuantity) >= Number(quantity)) {
+                            if (data.currentQuantity >= quantity) {
                                 salesChit.setValue(ev.rowKey, 'deficiencyQuantity', 'X');
                             } else {
                                 salesChit.setValue(ev.rowKey, 'deficiencyQuantity', deficiencyQuantity)
